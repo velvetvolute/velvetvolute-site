@@ -47,8 +47,8 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:va
 .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
 .logo{font-family:var(--serif);font-size:26px;font-weight:600;letter-spacing:.06em;text-decoration:none;text-transform:uppercase}
 .logo span{color:var(--gold)}
-nav a,nav .cart-open{margin-left:28px;text-decoration:none;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-nav a:hover,nav .cart-open:hover{color:var(--ink)}
+nav a{margin-left:28px;text-decoration:none;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+nav a:hover{color:var(--ink)}
 .hero{background:radial-gradient(ellipse at 70% 40%,var(--hero-glow) 0%,var(--hero) 70%);color:var(--hero-ink);padding:110px 0 120px;text-align:center}
 .eyebrow{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
 .hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(44px,8vw,88px);line-height:1.02;margin:18px 0}
@@ -116,7 +116,7 @@ h2{font-family:var(--serif);font-weight:500;font-size:clamp(32px,5vw,48px);margi
 footer{background:var(--bar-bg);color:var(--foot,#b9ae9a);padding:46px 0 34px;font-size:12.5px;text-align:center}
 footer .logo{color:var(--bar-ink);display:inline-block;margin-bottom:14px}
 footer p{max-width:760px;margin:10px auto}
-@media(max-width:720px){nav a,nav .cart-open{margin-left:16px}.trust .wrap,.steps{grid-template-columns:1fr}section{padding:60px 0}.hero{padding:80px 0}}
+@media(max-width:720px){nav a{margin-left:16px}.trust .wrap,.steps{grid-template-columns:1fr}section{padding:60px 0}.hero{padding:80px 0}}
 .vial{border-color:var(--cap)}
 .vial::before{background:var(--cap)}
 .logo{display:flex;align-items:center;gap:12px}
@@ -127,7 +127,7 @@ footer .logo{justify-content:center}
 .about p{max-width:640px;margin:0 auto 16px;color:var(--muted);font-size:17px}
 .about .def{font-family:var(--serif);font-size:24px;font-style:italic;color:var(--ink);max-width:620px;margin:0 auto 26px;line-height:1.4}
 .about .def b{font-style:normal;font-weight:600;letter-spacing:.04em}
-@media(max-width:560px){.logo{font-size:20px;gap:8px}.mono{width:32px;height:32px;font-size:14px}nav a,nav .cart-open{margin-left:12px;font-size:11px;letter-spacing:.08em}}
+@media(max-width:560px){.logo{font-size:20px;gap:8px}.mono{width:32px;height:32px;font-size:14px}nav a{margin-left:12px;font-size:11px;letter-spacing:.08em}}
 :root:not([data-palette]) .card{border:1px solid transparent;
   background:linear-gradient(var(--surface),var(--surface)) padding-box,
     linear-gradient(155deg,rgba(205,176,138,.95) 0%,rgba(181,148,106,.38) 38%,rgba(181,148,106,.3) 62%,rgba(205,176,138,.7) 100%) border-box;
@@ -215,8 +215,15 @@ footer .logo{justify-content:center}
   :root[data-palette="camel-m"] .card:hover{box-shadow:none}
 }
 html{overflow-anchor:auto}
-.cart-open{position:relative;background:none;border:0;cursor:pointer;padding:0;font-family:var(--sans)}
-.cart-count{position:absolute;top:-9px;right:-14px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--gold);color:var(--on-gold);font:600 11px/18px var(--sans);letter-spacing:0;text-align:center}
+.nav{gap:18px}
+.nav nav{margin-left:auto}
+.cart-open{position:relative;flex:none;display:inline-flex;align-items:center;gap:8px;margin-left:22px;padding:9px 16px;border:1px solid var(--gold);border-radius:30px;background:transparent;color:var(--ink);font:500 12.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:.2s}
+.cart-open:hover{background:var(--gold);color:var(--on-gold)}
+.cart-open svg{display:block}
+nav a{white-space:nowrap}
+@media(max-width:900px){.nav{flex-wrap:wrap;height:auto;padding-top:12px;padding-bottom:10px;row-gap:8px}.nav nav{order:3;width:100%;margin:0;display:flex;justify-content:center;flex-wrap:wrap;gap:4px 0}.nav nav a:first-child{margin-left:0}.cart-open{margin-left:auto}}
+@media(max-width:560px){.cart-open{padding:8px 12px;letter-spacing:.1em}.nav nav a{margin-left:14px;font-size:11px;letter-spacing:.08em}}
+.cart-count{position:absolute;top:-8px;right:-8px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--gold);color:var(--on-gold);font:600 11px/18px var(--sans);letter-spacing:0;text-align:center}
 .card .order.add{width:100%;border:0;cursor:pointer}
 .card .order.add.done{background:#2f5a3a;color:#e8f0e2}
 .cart-ov{position:fixed;inset:0;z-index:60;background:rgba(10,3,5,.55);display:flex;justify-content:flex-end}
@@ -280,7 +287,7 @@ html{overflow-anchor:auto}
 <div class="bar">Free shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
   <a class="logo" href="#top"><span class="mono">VV</span>Velvet <span>Volute</span></a>
-  <nav><a href="#shop">Shop</a><button type="button" class="cart-open" id="cart-open" aria-label="Open cart">Cart<span class="cart-count" id="cart-count" hidden>0</span></button><a href="#about">About</a><a href="#how">How It Works</a><a href="#contact">Contact</a></nav>
+  <nav><a href="#shop">Shop</a><a href="#about">About</a><a href="#how">How It Works</a><a href="#contact">Contact</a></nav><button type="button" class="cart-open" id="cart-open" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></button>
 </div></header>
 
 <div class="hero" id="top"><div class="wrap">
