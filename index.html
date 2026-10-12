@@ -104,6 +104,7 @@ h2{font-family:var(--serif);font-weight:500;font-size:clamp(32px,5vw,48px);margi
 .sz.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .price{font-family:var(--sans);font-weight:500;font-size:26px;letter-spacing:.01em;font-variant-numeric:lining-nums tabular-nums;margin-top:12px;line-height:1.2}
 .price small{font:400 12px var(--sans);color:var(--muted);margin-left:6px;letter-spacing:.08em}
+.upg{display:inline-block;vertical-align:middle;margin-left:8px;padding:2px 9px;border:1px solid currentColor;border-radius:20px;font:500 11px/1.5 var(--sans);letter-spacing:.06em;color:var(--muted);white-space:nowrap}
 .sprays{display:block;margin-top:4px;font:400 13px var(--sans);letter-spacing:.04em;color:var(--muted);font-variant-numeric:lining-nums}
 .how{background:var(--surface);border-block:1px solid var(--line)}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;text-align:center}
@@ -452,7 +453,7 @@ PRODUCTS.forEach(p=>{p.r={5:p.p[5]+ROLL_EXTRA,10:p.p[10]+ROLL_EXTRA}});
 const low=p=>Math.min(...Object.values(p.p));
 const state={};
 const SPRAYS={2:25,3:35,5:60,10:120}; /* about 12 sprays per ml from a standard decant atomizer */
-function priceHTML(p,v,z){const _n=p[VIALS[v].key][z];return `$${Number.isInteger(_n)?_n:_n.toFixed(2)}<small>CAD · ${z} ml ${VIALS[v].label.toLowerCase()}</small><span class="sprays">${v==="roll"?"":`About ${SPRAYS[z]} sprays`}</span>`}
+function priceHTML(p,v,z){const _n=p[VIALS[v].key][z];return `$${Number.isInteger(_n)?_n:_n.toFixed(2)}<small>CAD · ${z} ml ${VIALS[v].label.toLowerCase()}</small>${v==="luxe"?`<span class="upg">+$3 luxury vial</span>`:v==="roll"?`<span class="upg">+$4 roll-on</span>`:""}<span class="sprays">${v==="roll"?"":`About ${SPRAYS[z]} sprays`}</span>`}
 
 /* Original illustrated bottles (generic shapes, not brand designs) tinted to each scent */
 function hashStr(t){let h=0;for(const c of t)h=(h*31+c.charCodeAt(0))>>>0;return h}
