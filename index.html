@@ -330,6 +330,12 @@ nav a{white-space:nowrap}
 .qz-c:hover,.qz-c:focus-visible{border-color:var(--gold);outline:none}
 .qz-c.on{border-color:var(--gold);background:var(--gold);color:#2c0610}
 .qz-c .dot{width:10px;height:10px;border-radius:50%;background:var(--c)}
+/* Camel palette: gold/muted text was nearly invisible on the camel quiz card; use deep merlot for labels and helper text */
+:root[data-palette="camel-m"] :is(.qz-step,.qz-gl,.qz-r .tag,.qz-r .soon,.sg-type legend,.sg-field){color:#2c0610;font-weight:600}
+:root[data-palette="camel-m"] .qz-gl span{font-weight:400;letter-spacing:.06em;text-transform:none;font-size:12px;color:#330a14}
+:root[data-palette="camel-m"] .qz-pyr summary{color:#2c0610}
+:root[data-palette="camel-m"] :is(.qz-hint,.qz-none,.qz-r .why,.qz-opt small,.qz-links button,.qz-back,.sg-field span,.sg-close){color:#330a14}
+:root[data-palette="camel-m"] .qz-m:not(.on){color:#330a14}
 .qz-live{border-top:1px solid var(--line);padding-top:14px}
 .qz-live .qz-step{margin-bottom:8px}
 /* filters & sort: inline on desktop, bottom sheet on phones */
