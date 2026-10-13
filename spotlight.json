@@ -4,7 +4,15 @@
   "until": "2026-10-31",
   "pct": 15,
   "picks": [
-    { "sq": "ZXPCML5QU6DKV5U2OFSVHC4Y", "why": "Coconut, rum and tobacco: the coziest thing on the shelf for cold October nights." },
-    { "sq": "6IXPDR425PPISJBHT2OAGJZY", "why": "Dark, rich and a little mysterious. Made for spooky season." }
+    {
+      "sq": "JQWKMPNXK3MMHWNFVD3RZVTW",
+      "name": "Replica Jazz Club",
+      "why": "Rum, tobacco leaf and vanilla bean, warmed by a whisper of smoky styrax. Jazz Club smells like a leather armchair in a dim bar while the first snow falls outside, the coziest thing you can wear in October."
+    },
+    {
+      "sq": "6IXPDR425PPISJBHT2OAGJZY",
+      "name": "Tom Ford Black Orchid",
+      "why": "Made for spooky season. Black truffle and dark orchid open rich and a little mysterious, then chocolate, patchouli and a curl of incense settle in like candle smoke in an old house. Wear it to the Halloween party, or on any October night when the dark comes early and you want to be remembered."
+    }
   ]
 }
