@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-palette="camel-m" data-pml="b">
+<html lang="en" data-palette="camel-m">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -351,11 +351,7 @@ nav a{white-space:nowrap}
 }
 @media(prefers-reduced-motion:reduce){.tools{transition:none}}
 /* spotlight cards */
-.pml{display:none}
-:root[data-pml=a] .pml-a,:root[data-pml=d] .pml-d{display:inline}
-:root[data-pml=e] .pml-d{display:inline;font-weight:400;opacity:.8}
-:root[data-pml=b] .pml-b{display:block;margin-top:2px;font:400 11px var(--sans);letter-spacing:.02em;opacity:.75;font-variant-numeric:lining-nums tabular-nums}
-:root[data-pml=c] .pml-c{display:inline-block;margin-left:10px;padding:3px 8px;border:1px solid currentColor;border-radius:20px;font:500 12px var(--sans);letter-spacing:.04em;vertical-align:.45em;opacity:.8}
+.pml-b{display:block;margin-top:2px;font:400 11px var(--sans);letter-spacing:.02em;opacity:.75;font-variant-numeric:lining-nums tabular-nums}
 .was{font-weight:400;font-size:.62em;opacity:.65;margin-right:8px;vertical-align:.2em}
 :root[data-palette="camel-m"] article.card.spot{border:1px solid #e9cf9a;
  background:radial-gradient(120% 70% at 50% 0%,rgba(255,236,190,.38),transparent 60%),radial-gradient(60% 40% at 18% 22%,rgba(92,52,24,.22),transparent 70%),#b08a5a;
@@ -653,7 +649,7 @@ const low=p=>Math.min(...Object.keys(p.p).map(z=>unit(p,"p",z)));
 const state={};
 const SPRAYS={2:25,3:35,5:60,10:120}; /* about 12 sprays per ml from a standard decant atomizer */
 const pml=(p,v,z)=>`$${(unit(p,VIALS[v].key,z)/z).toFixed(2)}/ml`;
-function priceHTML(p,v,z){const _b=p[VIALS[v].key][z],_n=unit(p,VIALS[v].key,z),_m=pml(p,v,z);return `${_n!==_b?`<s class="was">$${_b}</s>`:""}$${Number.isInteger(_n)?_n:_n.toFixed(2)}<span class="pml pml-c">${_m}</span><small>CAD · ${z} ml ${VIALS[v].label.toLowerCase()}<span class="pml pml-a"> · ${_m}</span></small><span class="sprays">${v==="roll"?"":`About ${SPRAYS[z]} sprays`}<span class="pml pml-d">${v==="roll"?"":" · "}${_m}</span></span>`}
+function priceHTML(p,v,z){const _b=p[VIALS[v].key][z],_n=unit(p,VIALS[v].key,z);return `${_n!==_b?`<s class="was">$${_b}</s>`:""}$${Number.isInteger(_n)?_n:_n.toFixed(2)}<small>CAD · ${z} ml ${VIALS[v].label.toLowerCase()}</small><span class="sprays">${v==="roll"?"":`About ${SPRAYS[z]} sprays`}</span>`}
 
 /* Original illustrated bottles (generic shapes, not brand designs) tinted to each scent */
 function hashStr(t){let h=0;for(const c of t)h=(h*31+c.charCodeAt(0))>>>0;return h}
@@ -730,7 +726,7 @@ function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"clas
    <div class="body"><div class="brand">${p.brand}</div><div class="name">${p.name}</div><div class="gender">${p.g==="Men"?"For men":"Unisex"}</div>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:""}<div class="notes">${p.notes}</div>${p.n?`<details class="pyr"><summary>Full notes</summary><dl><dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd></dl></details>`:""}
    <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}${k==="luxe"?'<span class="vup">+$3</span>':k==="roll"?'<span class="vup">+$4</span>':""}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
-   <div class="sizes">${V.sizes.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml<span class="pml pml-b">${pml(p,st.v,z)}</span></button>`).join("")}</div>
+   <div class="sizes">${V.sizes.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml<span class="pml-b">${pml(p,st.v,z)}</span></button>`).join("")}</div>
    <div class="price">${priceHTML(p,st.v,st.z)}</div>${inStock(p)?`<button type="button" class="order add">Add to cart</button>`:""}</div></article>`}
 function bind(card){const i=+card.dataset.i,p=PRODUCTS[i],st=state[i];
  card.querySelectorAll(".vt").forEach(b=>b.onclick=()=>{st.v=b.dataset.v;if(!VIALS[st.v].sizes.includes(st.z))st.z=VIALS[st.v].sizes[0];
