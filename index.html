@@ -318,6 +318,18 @@ nav a{white-space:nowrap}
 .qz-c .dot{width:10px;height:10px;border-radius:50%;background:var(--c)}
 .qz-live{border-top:1px solid var(--line);padding-top:14px}
 .qz-live .qz-step{margin-bottom:8px}
+.qz-pyr{margin-top:8px;font-size:13.5px}
+.qz-pyr summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:7px;color:#e8d3b4;font:500 11.5px var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.qz-pyr summary::-webkit-details-marker{display:none}
+.qz-pyr summary::before{content:"+";display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--gold);color:#2c0610;font-size:14px;font-weight:600;line-height:1}
+.qz-pyr[open] summary::before{content:"\2212"}
+.qz-pyr summary:focus-visible{outline:1px solid var(--gold);outline-offset:3px}
+.qz-pyr dl{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;margin:8px 0 0;padding-top:8px;border-top:1px solid var(--line)}
+.qz-pyr dt{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);padding-top:2px}
+.qz-pyr dd{margin:0;color:#e8d3b4;line-height:1.45;min-width:0}
+.qz-pill{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;align-items:center;background:#2c0610;border:1px solid #b5946a;border-radius:30px;box-shadow:0 12px 30px -10px rgba(0,0,0,.7)}
+.qz-pill-go{background:none;border:0;color:#e8d3b4;font:500 13px var(--sans);letter-spacing:.06em;padding:11px 6px 11px 18px;cursor:pointer}
+.qz-pill-x{background:none;border:0;color:#cdb08a;font-size:20px;line-height:1;padding:8px 14px 8px 8px;cursor:pointer}
 .qz-jump{position:sticky;bottom:0;display:block;width:100%;margin-top:14px;padding:12px 0;border:0;border-radius:30px;background:#b5946a;color:#2c0610;font:600 12.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;box-shadow:0 -8px 18px rgba(20,4,8,.6)}
 </style>
 </head>
@@ -343,6 +355,7 @@ nav a{white-space:nowrap}
   </div>
  </aside>
 </div>
+<div class="qz-pill" id="qz-pill" hidden><button type="button" class="qz-pill-go">Back to your scent matches</button><button type="button" class="qz-pill-x" aria-label="Hide">&times;</button></div>
 <div class="cart-toast" id="cart-toast" role="status" aria-live="polite"></div>
 <div class="bar">Free shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
@@ -652,7 +665,10 @@ chips();render();
    ["floral","Strong florals","Rose, jasmine, tuberose"],["coffee","Coffee"],["smoke","Tobacco or smoke"],["leather","Leather"],
    ["oud","Oud"],["lavender","Lavender"],["coconut","Coconut"],["sweet","Very sweet scents"],["any","Nothing, I'm open"]]}
  ];
- let mode="quick",step=0,ans={},last=null;
+ let mode="quick",step=0,ans={},last=null;const openNotes=new Set();
+ try{const sv=JSON.parse(sessionStorage.getItem("vv-scent")||"null");if(sv){mode=sv.mode||mode;step=sv.step||0;ans=sv.ans||{}}}catch(e){}
+ const saveQ=()=>{try{sessionStorage.setItem("vv-scent",JSON.stringify({mode,step,ans}))}catch(e){}};
+ const hasAns=()=>Object.values(ans).some(v=>Array.isArray(v)?v.length:v!==undefined);
  const SHORT={a:"All year",b:"Both",any:"Either"};
  const has=(p,re)=>re.test(p.notes);
  const AVOID={floral:p=>has(p,/rose|jasmine|tuberose|gardenia|orchid|iris|osmanthus|orange blossom|neroli|florals/i),coffee:p=>has(p,/coffee/i),
@@ -680,9 +696,10 @@ chips();render();
   return `<div class="qz-res">${r.map((x,k)=>{const p=x.p;return `<div class="qz-r ${k?"":"best"}"><div class="tag">${k?"Also try":"Best match"}</div>
     <h4>${esc(p.brand)} ${esc(p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,""))}</h4>
     <p class="why">${FAM_LABEL[p.cat]||p.cat} · ${SEA_TXT[p.sea]} · ${TM_TXT[p.tm]}</p><p class="n">${esc(p.notes)}</p>
+    ${p.n?`<details class="qz-pyr"${openNotes.has(x.i)?" open":""} data-i="${x.i}"><summary>Full notes</summary><dl><dt>Top</dt><dd>${p.n.t.map(esc).join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.map(esc).join(", ")}</dd><dt>Base</dt><dd>${p.n.b.map(esc).join(", ")}</dd></dl></details>`:""}
     <div class="row"><span class="from">From $${low(p)}${p.sq?"":`<span class="soon">${esc(p.limited||"Coming soon")}</span>`}</span><button type="button" class="qz-view" data-i="${x.i}">View</button></div></div>`}).join("")}</div>
    ${avail.length>1?`<div class="qz-set">Can't decide? Try ${avail.length===r.length?"all "+avail.length:"the "+avail.length+" in stock"} as 2 ml samples for $${setPrice}.<button type="button" data-a="set">Add ${avail.length} samples to cart</button></div>`:""}`}
- function draw(){if(mode==="quick")return quick();if(step>=Q.length)return results();steps()}
+  function draw(){saveQ();if(mode==="quick")return quick();if(step>=Q.length)return results();steps()}
  function quick(){
   const any=Object.values(ans).some(v=>Array.isArray(v)?v.length:v!==undefined);
   box.innerHTML=toggleHTML()+`<h3 class="qz-q" id="qz-title">Find your scent</h3><p class="qz-hint">Tap what you like. Your matches update as you go.</p>
@@ -711,6 +728,7 @@ chips();render();
  function bindRes(){
   const avail=picks().filter(x=>x.p.sq);
   box.querySelectorAll(".qz-view").forEach(b=>b.onclick=()=>showCard(+b.dataset.i));
+  box.querySelectorAll(".qz-pyr").forEach(d=>d.ontoggle=()=>{d.open?openNotes.add(+d.dataset.i):openNotes.delete(+d.dataset.i)});
   box.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const a=b.dataset.a;
    if(a==="again"||a==="clear"){step=0;ans={};draw()}
    else if(a==="set"){avail.forEach(x=>Cart.add(x.p,"classic",2));close();Cart.open()}
@@ -718,10 +736,14 @@ chips();render();
  function setFilters(fv,sv,gv){brand="All brands";fam=fv;sea=sv;gen=gv;fs.value=fv;document.getElementById("sea").value=sv;document.getElementById("gen").value=gv;chips();render()}
  function showCard(i){setFilters("All scents","all","all");close();
   const c=g.querySelector(`.card[data-i="${i}"]`);if(!c)return;c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}
- function open(){last=document.activeElement;step=0;draw();ov.hidden=false;document.body.style.overflow="hidden";setTimeout(()=>{const t=box.querySelector(".qz-m.on");if(t)t.focus({preventScroll:true})},30)}
- function close(){ov.hidden=true;document.body.style.overflow="";if(last&&last.focus)last.focus({preventScroll:true})}
+ const pill=document.getElementById("qz-pill");
+ function showPill(){pill.hidden=!(hasAns()&&(mode==="quick"||step>=Q.length))}
+ function open(){last=document.activeElement;pill.hidden=true;if(mode==="steps"&&step<Q.length&&!hasAns())step=0;draw();ov.hidden=false;document.body.style.overflow="hidden";setTimeout(()=>{const t=box.querySelector(".qz-m.on");if(t)t.focus({preventScroll:true})},30)}
+ function close(){ov.hidden=true;document.body.style.overflow="";showPill();if(last&&last.focus)last.focus({preventScroll:true})}
  document.querySelectorAll("[data-quiz]").forEach(b=>b.onclick=open);
  document.getElementById("qz-x").onclick=close;
+ pill.querySelector(".qz-pill-go").onclick=open;pill.querySelector(".qz-pill-x").onclick=()=>{pill.hidden=true};
+ showPill();
  ov.addEventListener("click",e=>{if(e.target===ov)close()});
  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!ov.hidden)close()});
  if(location.hash==="#quiz")open();
