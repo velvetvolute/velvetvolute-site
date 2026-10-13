@@ -648,17 +648,22 @@ chips();render();
   {k:"sea",q:"When will you wear it most?",short:"Season",o:[["c","Fall & winter"],["w","Spring & summer"],["a","All year round"]]},
   {k:"tm",q:"Where are you wearing it?",short:"Wearing it",o:[["d","Every day","Work, class, errands"],["n","Evenings out","Dinners, dates, nights out"],["b","A bit of everything"]]},
   {k:"g",q:"What style suits you?",short:"Style",o:[["Men","Classic masculine"],["Unisex","Unisex, for anyone"],["any","No preference"]]},
-  {k:"bud",q:"What's your budget for a 5 ml?",short:"Budget (5 ml)",hint:"Every fragrance also comes as a 2 ml sample.",o:[["25","Up to $25"],["40","Up to $40"],["999","Treat yourself"]]}
+  {k:"avoid",multi:9,q:"Anything you'd rather avoid?",short:"Skip anything with",hint:"Pick any that apply, and we'll leave them out.",o:[
+   ["floral","Strong florals","Rose, jasmine, tuberose"],["coffee","Coffee"],["smoke","Tobacco or smoke"],["leather","Leather"],
+   ["oud","Oud"],["lavender","Lavender"],["coconut","Coconut"],["sweet","Very sweet scents"],["any","Nothing, I'm open"]]}
  ];
  let mode="quick",step=0,ans={},last=null;
- const SHORT={a:"All year",b:"Both",any:"Either","999":"Any budget"};
+ const SHORT={a:"All year",b:"Both",any:"Either"};
+ const has=(p,re)=>re.test(p.notes);
+ const AVOID={floral:p=>has(p,/rose|jasmine|tuberose|gardenia|orchid|iris|osmanthus|orange blossom|neroli|florals/i),coffee:p=>has(p,/coffee/i),
+  smoke:p=>has(p,/tobacco|smok/i),leather:p=>has(p,/leather|suede/i),oud:p=>has(p,/\boud/i),lavender:p=>has(p,/lavender/i),coconut:p=>has(p,/coconut/i),sweet:p=>p.cat==="Sweet"};
  const SEA_TXT={c:"Fall & winter",w:"Spring & summer",a:"All year"},TM_TXT={d:"Daytime",n:"Evenings",b:"Day or night"};
  function score(p){let s=0;const f=ans.fam||[];
   if(f.length&&!f.includes("any"))s+=f.includes(p.cat)?5:0;
   const se=ans.sea||"a";if(se==="a")s+=p.sea==="a"?2:1;else s+=p.sea===se?3:p.sea==="a"?2:-3;
   const t=ans.tm||"b";if(t==="b")s+=p.tm==="b"?2:1;else s+=p.tm===t?2:p.tm==="b"?1:-1;
   if(ans.g==="Men")s+=p.g==="Men"?1:0;else if(ans.g==="Unisex")s+=p.g==="Unisex"?1.5:-2;
-  if(ans.bud&&p.p[5]>+ans.bud)s-=6;
+  (ans.avoid||[]).forEach(a=>{if(AVOID[a]&&AVOID[a](p))s-=8});
   if(p.sq)s+=.5;return s}
  function picks(){return PRODUCTS.map((p,i)=>({p,i,s:score(p)})).sort((a,b)=>b.s-a.s||low(a.p)-low(b.p)).filter(x=>x.s>0).reduce((out,x,_,all)=>{if(!out.length){const f=(ans.fam||[]).filter(v=>v!=="any");f.forEach(c=>{const t=all.find(y=>y.p.cat===c&&y.s>=5&&!out.includes(y));if(t)out.push(t)});out.sort((a,b)=>b.s-a.s)}if(out.length<3&&!out.includes(x))out.push(x);return out},[]).slice(0,3)}
  function esc(t){return String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
@@ -682,7 +687,7 @@ chips();render();
   const any=Object.values(ans).some(v=>Array.isArray(v)?v.length:v!==undefined);
   box.innerHTML=toggleHTML()+`<h3 class="qz-q" id="qz-title">Find your scent</h3><p class="qz-hint">Tap what you like. Your matches update as you go.</p>
    <div class="qz-groups">${Q.map((q,qi)=>{const sel=q.multi?(ans[q.k]||[]):[ans[q.k]];
-    return `<div class="qz-g"><div class="qz-gl">${q.short}${q.multi?` <span>up to ${q.multi}</span>`:""}</div><div class="qz-chips">${q.o.map(([v,l])=>`<button type="button" class="qz-c ${sel.includes(v)?"on":""}" aria-pressed="${sel.includes(v)}" data-q="${qi}" data-v="${v}">${q.k==="fam"&&DOT[v]?`<span class="dot" style="--c:${DOT[v]}"></span>`:""}${q.k==="fam"?l:(SHORT[v]||l)}</button>`).join("")}</div></div>`}).join("")}</div>
+    return `<div class="qz-g"><div class="qz-gl">${q.short}${q.multi?` <span>${q.multi>5?"pick any":"up to "+q.multi}</span>`:""}</div><div class="qz-chips">${q.o.map(([v,l])=>`<button type="button" class="qz-c ${sel.includes(v)?"on":""}" aria-pressed="${sel.includes(v)}" data-q="${qi}" data-v="${v}">${q.k==="fam"&&DOT[v]?`<span class="dot" style="--c:${DOT[v]}"></span>`:""}${q.k==="fam"||q.k==="avoid"?(q.k==="avoid"&&v==="any"?"Nothing":l):(SHORT[v]||l)}</button>`).join("")}</div></div>`}).join("")}</div>
    <div class="qz-live" aria-live="polite">${any?`<div class="qz-step">Your matches</div>`+resultsHTML(picks()):`<p class="qz-none">Pick a scent type or a season to see your matches.</p>`}</div>
    ${any?`<div class="qz-links"><button type="button" data-a="clear">Clear choices</button><button type="button" data-a="shop">Show all matches</button></div><button type="button" class="qz-jump">See my ${picks().length} matches &darr;</button>`:""}`;
   const jb=box.querySelector(".qz-jump");if(jb){jb.onclick=()=>box.querySelector(".qz-live").scrollIntoView({behavior:"smooth",block:"start"});
