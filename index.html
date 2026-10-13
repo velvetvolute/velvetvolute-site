@@ -354,7 +354,9 @@ nav a{white-space:nowrap}
 .zod-tag{align-self:flex-start;margin:2px 0 4px;padding:3px 11px;border-radius:30px;background:#3a0a17;color:#e8d3b4;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
 .zodiac{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px 20px;margin:0 0 30px;padding:18px 22px;border:1px solid rgba(181,148,106,.55);border-radius:8px;background:radial-gradient(120% 140% at 0% 0%,rgba(181,148,106,.16),transparent 60%),#3a0a17;color:#e8d3b4}
 .zodiac .zg{width:58px;height:58px;border-radius:50%;border:1px solid #b5946a;display:flex;align-items:center;justify-content:center;font:400 30px/1 "Segoe UI Symbol","Apple Symbols","Noto Sans Symbols",var(--serif);color:#e2c58f;font-variant-emoji:text}
-.zodiac .ze{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#cdb08a}
+.zodiac .ze{font:600 13.5px/1.4 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#f0d49a}
+.zodiac .ze b{font-weight:700;color:#ffe3a8}
+.zodiac .ze span{display:block;margin-top:2px;font:500 11.5px var(--sans);letter-spacing:.12em;color:#cdb08a}
 .zodiac h3{margin:2px 0 4px;font:500 24px/1.15 var(--serif);color:#f0dfc2}
 .zodiac p{margin:0;font-size:14.5px;line-height:1.5;color:#e8d3b4;max-width:62ch}
 .zodiac button{border:1px solid #b5946a;background:transparent;color:#e8d3b4;border-radius:30px;padding:9px 18px;font:500 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
@@ -764,7 +766,7 @@ fetch("zodiac.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
  const i=PRODUCTS.findIndex(p=>(z.sq&&p.sq===z.sq)||p.name===z.name);if(i<0)return;
  const p=PRODUCTS[i];ZOD={pct:Number(j.pct)||0,sq:p.sq||"",sign:z.sign,glyph:z.glyph};
  const M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],d=x=>M[x[0]-1]+" "+x[1],off=offPct(p);
- el.innerHTML=`<div class="zg" aria-hidden="true">${z.glyph}︎</div><div><div class="ze">${z.sign} season pick · ${d(z.from)} – ${d(z.to)}${off?` · ${off}% off`:""}</div><h3>${p.brand} ${p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"")}</h3><p>${z.why}</p></div><button type="button">See the scent</button>`;
+ el.innerHTML=`<div class="zg" aria-hidden="true">${z.glyph}︎</div><div><div class="ze"><b>${z.sign} season pick</b>${off?` · ${off}% off`:""}<span>${d(z.from)} – ${d(z.to)}</span></div><h3>${p.brand} ${p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"")}</h3><p>${z.why}</p></div><button type="button">See the scent</button>`;
  el.hidden=false;render();if(window.Cart&&Cart.refresh)Cart.refresh();
  el.querySelector("button").onclick=()=>{sherpaSet=null;brandSel.clear();fam="All scents";sea="all";gen="all";fs.value=fam;document.getElementById("sea").value=sea;genChips();chips();render();
   const c=g.querySelector(`.card[data-i="${i}"]`);if(c){c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}};
