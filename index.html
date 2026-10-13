@@ -105,6 +105,9 @@ h2{font-family:var(--serif);font-weight:500;font-size:clamp(32px,5vw,48px);margi
 .vials{display:flex;margin-top:12px;border:1px solid var(--line);border-radius:30px;padding:3px}
 .vt{flex:1;border:0;border-radius:30px;background:transparent;color:var(--muted);padding:6px 0;font:400 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
 .vt.on{background:var(--gold);color:var(--on-gold)}
+.vt{display:flex;flex-direction:column;align-items:center;justify-content:center;white-space:nowrap;letter-spacing:.12em;padding-left:4px;padding-right:4px}
+.vup{display:block;margin-top:1px;font-size:.85em;line-height:1.2;letter-spacing:.06em;opacity:.75;font-variant-numeric:lining-nums}
+.vt.on .vup{opacity:.85}
 .sizes{display:flex;gap:8px;margin-top:10px}
 .vialnote{max-width:700px;margin:-22px auto 40px;text-align:center;font-size:13px;color:var(--muted)}
 .vialnote b{color:var(--ink);font-weight:500}
@@ -650,7 +653,7 @@ const low=p=>Math.min(...Object.keys(p.p).map(z=>unit(p,"p",z)));
 const state={};
 const SPRAYS={2:25,3:35,5:60,10:120}; /* about 12 sprays per ml from a standard decant atomizer */
 const pml=(p,v,z)=>`$${(unit(p,VIALS[v].key,z)/z).toFixed(2)}/ml`;
-function priceHTML(p,v,z){const _b=p[VIALS[v].key][z],_n=unit(p,VIALS[v].key,z),_m=pml(p,v,z);return `${_n!==_b?`<s class="was">$${_b}</s>`:""}$${Number.isInteger(_n)?_n:_n.toFixed(2)}<span class="pml pml-c">${_m}</span><small>CAD · ${z} ml ${VIALS[v].label.toLowerCase()}<span class="pml pml-a"> · ${_m}</span></small>${v==="luxe"?`<span class="upg">+$3 luxury vial</span>`:v==="roll"?`<span class="upg">+$4 roll-on</span>`:""}<span class="sprays">${v==="roll"?"":`About ${SPRAYS[z]} sprays`}<span class="pml pml-d">${v==="roll"?"":" · "}${_m}</span></span>`}
+function priceHTML(p,v,z){const _b=p[VIALS[v].key][z],_n=unit(p,VIALS[v].key,z),_m=pml(p,v,z);return `${_n!==_b?`<s class="was">$${_b}</s>`:""}$${Number.isInteger(_n)?_n:_n.toFixed(2)}<span class="pml pml-c">${_m}</span><small>CAD · ${z} ml ${VIALS[v].label.toLowerCase()}<span class="pml pml-a"> · ${_m}</span></small><span class="sprays">${v==="roll"?"":`About ${SPRAYS[z]} sprays`}<span class="pml pml-d">${v==="roll"?"":" · "}${_m}</span></span>`}
 
 /* Original illustrated bottles (generic shapes, not brand designs) tinted to each scent */
 function hashStr(t){let h=0;for(const c of t)h=(h*31+c.charCodeAt(0))>>>0;return h}
@@ -725,7 +728,7 @@ function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"clas
  return `<article class="card${sp?" spot":""}" data-i="${i}">
    <div class="photo">${sp?`<div class="spot-rib"><span>&#10022;</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?`<img class="shot" loading="lazy" width="720" height="720" src="${st.v==="luxe"&&p.imgL?p.imgL:p.img}" alt="${p.rep?`${p.brand} ${p.name}: bottle photo coming soon, shown with`:`${p.brand} ${p.name} bottle beside`} ${st.v==="luxe"?"luxury":"classic"} decant vials and a roll-on on a wooden table" decoding="async">`:bottleArt(p,i)}</div>
    <div class="body"><div class="brand">${p.brand}</div><div class="name">${p.name}</div><div class="gender">${p.g==="Men"?"For men":"Unisex"}</div>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:""}<div class="notes">${p.notes}</div>${p.n?`<details class="pyr"><summary>Full notes</summary><dl><dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd></dl></details>`:""}
-   <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}</button>`).join("")}</div>
+   <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}${k==="luxe"?'<span class="vup">+$3</span>':k==="roll"?'<span class="vup">+$4</span>':""}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
    <div class="sizes">${V.sizes.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml<span class="pml pml-b">${pml(p,st.v,z)}</span></button>`).join("")}</div>
    <div class="price">${priceHTML(p,st.v,st.z)}</div>${inStock(p)?`<button type="button" class="order add">Add to cart</button>`:""}</div></article>`}
