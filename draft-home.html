@@ -129,6 +129,17 @@ footer{background:var(--wine-deep);color:var(--text-soft);border-top:1px solid v
 footer .wrap{display:grid;grid-template-columns:1fr 2fr;gap:var(--s2)}
 footer .brand{font-size:18px}
 
+/* zodiac season pick */
+.zod{margin-top:var(--s2);display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;padding:28px 32px;border:1px solid var(--line);border-radius:4px;background:linear-gradient(120deg,rgba(110,26,49,.55),rgba(44,6,16,.4))}
+.zod .zg{display:grid;place-items:center;width:64px;height:64px;border:1px solid var(--gold);border-radius:50%;font:400 28px/1 var(--serif);color:var(--gold)}
+.zod .ze{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.zod .ze b{font:500 12px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.zod .ze i{font:500 11px/1 var(--sans);font-style:normal;letter-spacing:.14em;text-transform:uppercase;background:var(--gold);color:var(--wine-deep);border-radius:999px;padding:6px 12px}
+.zod .ze span{font:400 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text-soft)}
+.zod h3{font:500 28px/1.1 var(--serif);color:var(--gold);margin:12px 0 10px}
+.zod p{font:italic 400 15px/1.75 var(--italic);color:var(--text);max-width:640px}
+@media (max-width:768px){.zod{grid-template-columns:1fr;gap:18px;padding:24px}.zod .btn{justify-self:start}}
+
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.btn{transition:none}.card:hover{transform:none}}
 
 /* responsive */
@@ -230,6 +241,15 @@ footer .brand{font-size:18px}
         </div>
       </article>
     </div>
+    <aside class="zod" id="zodiac" aria-label="Zodiac season pick">
+      <div class="zg" aria-hidden="true">&#9806;&#xFE0E;</div>
+      <div>
+        <div class="ze"><b>Libra season pick</b><i>10% off</i><span>Sep 23 – Oct 22</span></div>
+        <h3>Nishane Ani</h3>
+        <p>Libra is ruled by Venus, and Ani is built on the notes astrologers have long tied to that planet: rose, vanilla, benzoin and sandalwood. Sharp ginger and bergamot keep them in check, so it never tips too sweet or too fresh. It moves from a Saturday brunch to a late dinner with the easy charm your sign is known for.</p>
+      </div>
+      <a class="btn btn-line" href="https://velvetvolute.ca/">See the scent</a>
+    </aside>
   </div>
 </section>
 
@@ -310,5 +330,25 @@ footer .brand{font-size:18px}
   </div>
 </footer>
 
+<script>
+/* Zodiac season pick: reads zodiac.json (same file as the live site) and switches on each sign's first day, Toronto time.
+   If the file can't load (e.g. in a preview), the Libra pick above stays as written. */
+(function(){
+  var el=document.getElementById("zodiac");if(!el||!window.fetch)return;
+  fetch("zodiac.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(j){
+    if(!j||!Array.isArray(j.signs))return;
+    var t=new Date(new Date().toLocaleString("en-US",{timeZone:"America/Toronto"})),md=(t.getMonth()+1)*100+t.getDate();
+    var z=j.signs.find(function(x){var a=x.from[0]*100+x.from[1],b=x.to[0]*100+x.to[1];return a<=b?(md>=a&&md<=b):(md>=a||md<=b)});
+    if(!z)return;
+    var M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],d=function(x){return M[x[0]-1]+" "+x[1]};
+    el.querySelector(".zg").textContent=z.glyph+"\uFE0E";
+    el.querySelector(".ze b").textContent=z.sign+" season pick";
+    var off=el.querySelector(".ze i");if(j.pct){off.textContent=j.pct+"% off"}else{off.remove()}
+    el.querySelector(".ze span").textContent=d(z.from)+" – "+d(z.to);
+    el.querySelector("h3").textContent=z.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"");
+    el.querySelector("p").textContent=z.why;
+  }).catch(function(){});
+})();
+</script>
 </body>
 </html>
