@@ -359,6 +359,23 @@ nav a{white-space:nowrap}
 .vv-rule::after{background:linear-gradient(90deg,var(--gold),transparent)}
 .vv-rule span{font-size:11px;line-height:1;opacity:.85}
 .about-page{padding-top:56px}
+.letter{position:relative;max-width:660px;margin:18px auto 0;padding:58px 56px 50px;text-align:left;color:#2a0610;
+ background:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .16 0 0 0 0 .08 0 0 0 0 .03 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+  radial-gradient(120% 90% at 50% 0%,#cfae84 0%,#c09a6e 55%,#b08a5a 100%);
+ box-shadow:0 34px 60px -28px rgba(0,0,0,.75),0 0 0 1px rgba(255,236,200,.18) inset}
+.letter::before,.letter::after{content:"";position:absolute;pointer-events:none;border:1px solid rgba(42,6,16,.42)}
+.letter::before{inset:14px}
+.letter::after{inset:19px;border-color:rgba(42,6,16,.2)}
+.letter-mono{width:46px;height:46px;margin:0 auto 22px;border:1px solid rgba(42,6,16,.55);border-radius:50%;display:flex;align-items:center;justify-content:center;font:italic 500 19px/1 var(--serif);letter-spacing:-.02em;color:#2a0610}
+.letter h2{text-align:center;color:#2a0610;margin:0 0 26px}
+.letter p{max-width:none;margin:0 0 16px;color:#3a1018;font-size:16.5px;line-height:1.75}
+.letter .def{margin:0 0 22px;color:#2a0610;font-size:23px;line-height:1.45;text-align:left;max-width:none}
+.letter .hl{text-decoration-color:#2a0610}
+.letter .ps{margin-top:24px;font:italic 400 21px/1.4 var(--serif);color:#2a0610}
+.letter .signoff{margin-top:26px;text-align:left;color:#2a0610}
+@media(max-width:600px){.letter{padding:44px 28px 38px}.letter::before{inset:10px}.letter::after{inset:14px}.letter .def{font-size:21px}.letter p{font-size:16px}}
+
 .about-cta{text-align:center;margin-top:40px}
 .nav nav a[aria-current]{color:var(--gold)}
 a.cart-open{text-decoration:none}
@@ -446,13 +463,16 @@ a.cart-open{text-decoration:none}
 
 <main><section class="about about-page" id="about"><div class="wrap">
   <div class="eyebrow">About the Brand</div>
+  <article class="letter">
+   <div class="letter-mono" aria-hidden="true">VV</div>
   <h2>Fragrance, curated</h2>
-  <p class="def">I don't just sell decants. I curate a beautiful collection of scents, very much like putting together the perfect playlist: some are smooth &amp; sexy, some make you feel like a boss, and some make you wanna party 'til 5am. But either way, it's <u class="hl">one banger after another</u>.</p>
-  <p>I don't just select a wide range of popular fragrances that I know are poised to sell. Every fragrance is thoughtfully chosen. If I wouldn't wear it, I wouldn't offer it. Each one is part of a curated luxury collection that will continue to grow, so expect at least one new addition every month.</p>
-  <p>I built the Velvet Volute collection on balance: sophisticated yet playful, youthful but mature, masculine but with a sweet, sensual side. Every scent is modern and elegant, chosen for the smooth, suave individual who maneuvers through the world with a quiet confidence. The kind of person who would rather pull up in a Rolls-Royce or a Maybach than a fast, flashy Lambo.</p>
-  <p>They might not be for everyone, but they're for the real ones. With a scent for every mood &amp; vibe.</p>
-  <p class="def" style="margin-top:6px">Press play on something new.</p>
-  <p class="signoff">Peace &amp; Love,<span>Izzi</span></p>
+   <p class="def">I don't just sell decants. I curate a beautiful collection of scents, very much like putting together the perfect playlist: some are smooth &amp; sexy, some make you feel like a boss, and some make you wanna party 'til 5am. But either way, it's <u class="hl">one banger after another</u>.</p>
+   <p>I don't just select a wide range of popular fragrances that I know are poised to sell. Every fragrance is thoughtfully chosen. If I wouldn't wear it, I wouldn't offer it. Each one is part of a curated luxury collection that will continue to grow, so expect at least one new addition every month.</p>
+   <p>I built the Velvet Volute collection on balance: sophisticated yet playful, youthful but mature, masculine but with a sweet, sensual side. Every scent is modern and elegant, chosen for the smooth, suave individual who maneuvers through the world with a quiet confidence. The kind of person who would rather pull up in a Rolls-Royce or a Maybach than a fast, flashy Lambo.</p>
+   <p>They might not be for everyone, but they're for the real ones. With a scent for every mood &amp; vibe.</p>
+   <p class="ps">Press play on something new.</p>
+   <p class="signoff">Peace &amp; Love,<span>Izzi</span></p>
+  </article>
   <div class="vv-rule" aria-hidden="true"><span>&#10022;</span></div>
   <div class="eyebrow">The Name</div>
   <h2>Why Velvet Volute?</h2>
