@@ -11,6 +11,22 @@ const SHIPPING = {
   roc: { cents: 2300, label: "Shipping (rest of Canada)" },
 };
 
+// Monthly spotlight: same spotlight.json the site shows, read from this deploy, so the
+// discount charged always matches the discount displayed. Prices round down to whole dollars.
+async function loadSpotlight(req) {
+  try {
+    const r = await fetch(new URL("/spotlight.json", req.url), { headers: { "cache-control": "no-cache" } });
+    if (!r.ok) return null;
+    const j = await r.json();
+    const now = Date.now();
+    if (j.until && now > Date.parse(j.until + "T23:59:59-05:00")) return null;
+    if (j.from && now < Date.parse(j.from + "T00:00:00-04:00")) return null;
+    const pct = Math.max(0, Math.min(50, Number(j.pct) || 0));
+    const ids = new Set((j.picks || []).map((p) => String(p.sq)));
+    return pct && ids.size ? { pct, ids, label: String(j.label || "").slice(0, 30) } : null;
+  } catch { return null; }
+}
+
 const json = (status, body) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
 
@@ -49,15 +65,28 @@ export default async (req) => {
       }
     }
 
+    const spot = await loadSpotlight(req);
     const lineItems = [];
+    const discounts = [];
     let subtotal = 0;
     for (const it of items) {
       const key = `${it.sq}|${String(it.v || "").toLowerCase().replace(/\s+/g, " ").trim()}`;
       const v = variations[key];
       const qty = Math.max(1, Math.min(10, parseInt(it.q, 10) || 1));
       if (!v) return json(400, { error: `"${it.label || it.v}" is no longer available. Please remove it and try again.` });
-      lineItems.push({ catalog_object_id: v.id, quantity: String(qty) });
-      subtotal += v.cents * qty;
+      if (spot && spot.ids.has(String(it.sq))) {
+        // one line per unit so each fixed discount applies to exactly one vial
+        const sale = Math.floor((v.cents * (100 - spot.pct)) / 100 / 100) * 100;
+        for (let n = 0; n < qty; n++) {
+          const uid = `spot${discounts.length + 1}`;
+          discounts.push({ uid, name: `${spot.label} Spotlight ${spot.pct}% off`.trim(), type: "FIXED_AMOUNT", amount_money: { amount: v.cents - sale, currency: "CAD" }, scope: "LINE_ITEM" });
+          lineItems.push({ catalog_object_id: v.id, quantity: "1", applied_discounts: [{ discount_uid: uid }] });
+        }
+        subtotal += sale * qty;
+      } else {
+        lineItems.push({ catalog_object_id: v.id, quantity: String(qty) });
+        subtotal += v.cents * qty;
+      }
     }
 
     const shipCents = ship === "pickup" || subtotal >= FREE_SHIPPING_CENTS ? 0 : SHIPPING[ship].cents;
@@ -82,6 +111,7 @@ export default async (req) => {
       order: {
         location_id: LOCATION_ID,
         line_items: lineItems,
+        ...(discounts.length ? { discounts } : {}),
         pricing_options: { auto_apply_taxes: true },
         reference_id: ship === "pickup" ? "PICKUP" : ship.toUpperCase(),
       },

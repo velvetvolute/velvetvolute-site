@@ -318,6 +318,38 @@ nav a{white-space:nowrap}
 .qz-c .dot{width:10px;height:10px;border-radius:50%;background:var(--c)}
 .qz-live{border-top:1px solid var(--line);padding-top:14px}
 .qz-live .qz-step{margin-bottom:8px}
+/* filters & sort: inline on desktop, bottom sheet on phones */
+.fbar,.sheet-head,.sheet-foot{display:none}
+.fback{position:fixed;inset:0;z-index:57;background:rgba(10,3,5,.55)}
+@media(max-width:720px){
+ .fbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 22px}
+ .fbtn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--gold);background:transparent;color:var(--ink);padding:9px 16px;border-radius:30px;font:500 12px var(--sans);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+ .fcount{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--gold);color:var(--on-gold);font:600 11px/1 var(--sans);letter-spacing:0}
+ .fbar .count{font-size:13px}
+ .tools{position:fixed;left:0;right:0;bottom:0;z-index:58;margin:0!important;display:flex;flex-direction:column;align-items:stretch;gap:14px;background:#2c0610;border-top:1px solid var(--gold);border-radius:16px 16px 0 0;padding:18px 20px calc(18px + env(safe-area-inset-bottom,0px));box-shadow:0 -20px 50px -20px rgba(0,0,0,.7);transform:translateY(105%);visibility:hidden;transition:transform .25s ease,visibility .25s}
+ .tools.open{transform:none;visibility:visible}
+ .tools label{justify-content:space-between;color:#cdb08a}
+ .tools select{flex:0 1 62%;min-width:0}
+ .tools>.count{display:none}
+ .sheet-head{display:flex;align-items:center;justify-content:space-between;color:#e8d3b4;font:500 13px var(--sans);letter-spacing:.16em;text-transform:uppercase}
+ .sheet-head button{background:none;border:0;color:#cdb08a;font-size:28px;line-height:1;padding:0 4px;cursor:pointer}
+ .sheet-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:4px}
+ #fclear{background:none;border:0;color:#cdb08a;font:500 14px var(--sans);text-decoration:underline;cursor:pointer;padding:6px 0}
+ #fdone{flex:1;max-width:240px;padding:13px 0;border:0;border-radius:30px;background:#b5946a;color:#2c0610;font:600 12.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+}
+@media(prefers-reduced-motion:reduce){.tools{transition:none}}
+/* spotlight cards */
+.was{font-weight:400;font-size:.62em;opacity:.65;margin-right:8px;vertical-align:.2em}
+:root[data-palette="camel-m"] article.card.spot{border:1px solid #e9cf9a;
+ background:radial-gradient(120% 70% at 50% 0%,rgba(255,236,190,.38),transparent 60%),radial-gradient(60% 40% at 18% 22%,rgba(92,52,24,.22),transparent 70%),#b08a5a;
+ box-shadow:0 0 0 1px rgba(233,207,154,.55),0 0 34px rgba(233,200,130,.42),0 22px 44px -18px rgba(0,0,0,.7)}
+.card.spot .photo{position:relative}
+.card.spot .photo::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,240,205,.32) 48%,transparent 60%);background-size:250% 100%;animation:spotsheen 5.5s ease-in-out infinite}
+@keyframes spotsheen{0%,55%{background-position:120% 0}100%{background-position:-120% 0}}
+.spot-rib{position:absolute;top:12px;right:12px;z-index:2;padding:5px 12px;border-radius:20px;background:linear-gradient(135deg,#f3dcaa,#c9a066);color:#2c0610;font:600 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.spot-rib span{font-size:11px}
+.spot-why{margin:2px 0 6px;font:italic 400 16px/1.35 var(--serif);color:#2c0610}
+@media(prefers-reduced-motion:reduce){.card.spot .photo::after{animation:none}}
 /* brand chips: compact, one swipeable row on phones */
 .brandbar{gap:7px;margin-bottom:16px}
 .brandbar .chip{padding:6px 13px;font-size:11px;letter-spacing:.1em}
@@ -411,9 +443,12 @@ nav a{white-space:nowrap}
   <p class="quiz-cta">Not sure where to start? <button type="button" data-quiz>Let the Scent Sherpa guide you</button></p>
   <div class="brandbar" id="brands"></div>
   <div class="genbar" id="genbar" role="group" aria-label="Who it's for"><span>For</span><button type="button" class="gchip on" data-g="all">Everyone</button><button type="button" class="gchip" data-g="Men">Men</button><button type="button" class="gchip" data-g="Unisex">Unisex</button></div>
-  <div class="tools">
-    <label>Scent<select id="fam"></select></label>
-    <label>Season<select id="sea"><option value="all">Any season</option><option value="c">Fall &amp; winter</option><option value="w">Spring &amp; summer</option></select></label>
+  <div class="fbar"><button type="button" class="fbtn" id="fbtn" aria-controls="tools" aria-expanded="false"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Filters &amp; sort<span class="fcount" id="fcount" hidden></span></button><span class="count" id="count2"></span></div>
+  <div class="fback" id="fback" hidden></div>
+  <div class="tools" id="tools" role="dialog" aria-label="Filters and sort">
+    <div class="sheet-head"><b>Filters &amp; sort</b><button type="button" id="fclose" aria-label="Close filters">&times;</button></div>
+    <label id="fam-l">Scent<select id="fam"></select></label>
+    <label id="sea-l">Season<select id="sea"><option value="all">Any season</option><option value="c">Fall &amp; winter</option><option value="w">Spring &amp; summer</option></select></label>
     <label>Sort<select id="sort">
       <option value="brand">Brand A–Z</option>
       <option value="brand-desc">Brand Z–A</option>
@@ -421,6 +456,7 @@ nav a{white-space:nowrap}
       <option value="high">Price: high to low</option>
     </select></label>
     <span class="count" id="count"></span>
+    <div class="sheet-foot"><button type="button" id="fclear">Clear all</button><button type="button" id="fdone">Show <span id="fdone-n"></span></button></div>
   </div>
   <div class="sherpa-bar" id="sherpa-bar" hidden><span>Showing the <b id="sherpa-n"></b> that fit your Scent Sherpa answers, best matches first.</span><span class="sb-act"><button type="button" data-quiz>Change answers</button><button type="button" id="sherpa-clear">Show all fragrances</button></span></div>
   <div class="grid" id="grid"></div>
@@ -523,7 +559,7 @@ const PRODUCTS=[
  {brand:"Claude Marsal",name:"Or Noir Caf\u00e9 Parfum",g:"Men",sq:"IGK65TSUCPCGLTA7O7OP7XMT",img:IMG["u-ornoir.jpg"],imgL:IMG_L["u-ornoir.jpg"],sea:"c",tm:"n",cat:"Sweet",cat2:"Spicy",notes:"Pink pepper and lavender over toffee, cinnamon, coffee, amber, tonka and vanilla.",p:{2:10,5:20,10:35},l:{3:18,5:23,10:38},color:"#5a3220",n:{t:["Pink pepper", "Juniper", "Violet"],h:["Lavender", "Sage", "Toffee", "Cinnamon"],b:["Coffee", "Amber", "Tonka bean", "Vanilla", "Suede"]}},
  {brand:"Claude Marsal",name:"Le Piano Eau de Parfum",g:"Men",sq:"JUINXX3FUCEBNI3FGJQLAULG",img:IMG["u-piano.jpg"],imgL:IMG_L["u-piano.jpg"],sea:"w",tm:"d",cat:"Fresh",notes:"Citrus and neroli over airy florals and sea notes, drying down to musk, amber and cedar.",p:{2:10,5:20,10:35},l:{3:18,5:23,10:38},color:"#9cc0c8",n:{t:["Lime", "Orange", "Lemon", "Mandarin", "Neroli", "Bergamot", "Jasmine"],h:["Freesia", "Cyclamen", "Hyacinth", "Rose", "Violet", "Peach", "Rosemary", "Nutmeg", "Coriander", "Calone", "Mignonette", "Sea notes"],b:["White musk", "Amber", "Cedar", "Patchouli", "Oakmoss"]}},
  {brand:"Gabriella Antosh",name:"Zoltan Extrait de Parfum",g:"Men",sq:"KKI3DK26WYBVAERBJMRI2BVQ",img:IMG["u-zoltan.jpg"],imgL:IMG_L["u-zoltan.jpg"],sea:"a",tm:"b",cat:"Spicy",notes:"Icy mint and grapefruit over cinnamon and rose, with leather, tonka and amber in the base.",p:{2:10,5:22,10:40},l:{3:18,5:25,10:43},color:"#a04a2a",n:{t:["Mint", "Peppermint", "Grapefruit", "Blood mandarin", "Ice"],h:["Cinnamon", "Red rose", "Musk"],b:["Leather", "Tonka bean", "Indian patchouli", "Amber"]}},
- {brand:"Armani",name:"I Will Eau de Parfum",g:"Men",sq:"2SLX3E67ZUQTY7XT2OI2PLNR",img:IMG["u-iwill.jpg"],imgL:IMG_L["u-iwill.jpg"],rep:1,sea:"c",tm:"n",cat:"Sweet",cat2:"Spicy",notes:"Madagascar vanilla and lavender, lifted by cardamom and bergamot, over a soft woody leather.",p:{2:10,5:20,10:35},l:{3:18,5:23,10:38},color:"#9a6a3a",n:{t:["Cardamom", "Calabrian bergamot"],h:["Lavender", "Violet leaf", "Sage"],b:["Madagascar vanilla", "Woody leather", "Patchouli"]}},
+ {brand:"Armani",name:"I Will Eau de Parfum",g:"Men",sq:"2SLX3E67ZUQTY7XT2OI2PLNR",img:IMG["u-iwill.jpg"],imgL:IMG_L["u-iwill.jpg"],rep:1,sea:"c",tm:"n",cat:"Sweet",cat2:"Spicy",notes:"Madagascar vanilla and lavender, lifted by cardamom and bergamot, over a soft woody leather.",p:{2:12,5:22,10:40},l:{3:21,5:25,10:43},color:"#9a6a3a",n:{t:["Cardamom", "Calabrian bergamot"],h:["Lavender", "Violet leaf", "Sage"],b:["Madagascar vanilla", "Woody leather", "Patchouli"]}},
  {brand:"Ferragamo",name:"Uomo Signature Eau de Parfum",g:"Men",sq:"CENIOXSZE3IM2XDDFTHGCQBE",img:IMG["u-ferragamo.jpg"],imgL:IMG_L["u-ferragamo.jpg"],rep:1,sea:"c",tm:"n",cat:"Spicy",cat2:"Sweet",notes:"Mandarin and pink pepper open into cinnamon and cardamom, over leather with a soft touch of coffee and tonka.",p:{2:10,5:15,10:25},l:{3:15,5:18,10:28},color:"#7a4a2a",n:{t:["Italian mandarin", "Pink pepper", "Grapefruit"],h:["Cinnamon", "Cardamom", "Cypress"],b:["Tonka bean", "Leather", "Roasted coffee beans", "Patchouli"]}},
  {brand:"Givenchy",name:"Gentleman R\u00e9serve Priv\u00e9e Eau de Parfum",g:"Men",sq:"CPQZVESNT2M27ETVZCOK7U6U",img:IMG["givenchy-gentleman-rp.jpg"],imgL:IMG_L["givenchy-gentleman-rp.jpg"],sea:"c",tm:"n",cat:"Woody",cat2:"Sweet",notes:"Iris, whisky and chestnut. Polished and a little boozy.",p:{2:10,5:20,10:30},l:{3:18,5:23,10:33},color:"#b07a36",n:{t:["Bergamot"],h:["Iris", "Chestnut"],b:["Whisky", "Woody notes", "Amber"]}},
  {brand:"Maison Margiela",name:"Replica Coffee Break",g:"Unisex",sq:"R6RQ2KN46KOJNXXLIK3Y5UHT",img:IMG["u-coffee.jpg"],imgL:IMG_L["u-coffee.jpg"],sea:"c",tm:"d",cat:"Sweet",cat2:"Woody",notes:"Coffee, steamed milk and lavender. Cozy caf\u00e9 comfort.",p:{2:10,5:20,10:35},l:{3:18,5:23,10:38},color:"#8a5a3c",n:{t:["Coffee accord", "Red apple", "Lemon"],h:["Lavender", "Spearmint", "Orange blossom"],b:["Milk mousse accord", "Sandalwood", "Cedarwood"]}},
@@ -568,10 +604,16 @@ const VIALS={classic:{label:"Classic",key:"p",sizes:[2,5,10]},luxe:{label:"Luxur
 const ROLL_EXTRA=4; /* roll-on = Classic price + $4, rounded up to the nearest $5 */
 const up5=n=>Math.ceil(n/5)*5;
 PRODUCTS.forEach(p=>{p.r={5:p.p[5]+ROLL_EXTRA,10:p.p[10]+ROLL_EXTRA}});
-const low=p=>Math.min(...Object.values(p.p));
+/* ===== SPOTLIGHT =====
+   Monthly picks live in spotlight.json (sq ids, % off, dates). The checkout function reads the same file,
+   so the discount shown here is the discount charged. Discounted prices round down to whole dollars. */
+let SPOT={pct:0,ids:[],label:"",why:{}};
+const isSpot=p=>!!SPOT.pct&&!!p.sq&&SPOT.ids.includes(p.sq)&&inStock(p);
+const unit=(p,key,z)=>{const n=p[key][z];return isSpot(p)?Math.floor(n*(100-SPOT.pct)/100):n};
+const low=p=>Math.min(...Object.keys(p.p).map(z=>unit(p,"p",z)));
 const state={};
 const SPRAYS={2:25,3:35,5:60,10:120}; /* about 12 sprays per ml from a standard decant atomizer */
-function priceHTML(p,v,z){const _n=p[VIALS[v].key][z];return `$${Number.isInteger(_n)?_n:_n.toFixed(2)}<small>CAD · ${z} ml ${VIALS[v].label.toLowerCase()}</small>${v==="luxe"?`<span class="upg">+$3 luxury vial</span>`:v==="roll"?`<span class="upg">+$4 roll-on</span>`:""}<span class="sprays">${v==="roll"?"":`About ${SPRAYS[z]} sprays`}</span>`}
+function priceHTML(p,v,z){const _b=p[VIALS[v].key][z],_n=unit(p,VIALS[v].key,z);return `${_n!==_b?`<s class="was">$${_b}</s>`:""}$${Number.isInteger(_n)?_n:_n.toFixed(2)}<small>CAD · ${z} ml ${VIALS[v].label.toLowerCase()}</small>${v==="luxe"?`<span class="upg">+$3 luxury vial</span>`:v==="roll"?`<span class="upg">+$4 roll-on</span>`:""}<span class="sprays">${v==="roll"?"":`About ${SPRAYS[z]} sprays`}</span>`}
 
 /* Original illustrated bottles (generic shapes, not brand designs) tinted to each scent */
 function hashStr(t){let h=0;for(const c of t)h=(h*31+c.charCodeAt(0))>>>0;return h}
@@ -642,10 +684,10 @@ function bottleArt(p,i){
 </svg>`}
 const STORE="https://velvet-volute.square.site/?location=LQAEH3F1YK86M";
 function vdescHTML(v,z){return v==="classic"?"A traditional glass screw-top atomizer.":v==="luxe"?`A thick-glass, pressurized atomizer, crimp-sealed for a fine, even mist.${z===5?" (The 5 ml adds a shatterproof resin shell over the glass.)":""}`:"A thick, clear glass bottle with a stainless steel rollerball and a walnut cap, for a precise dab on the go."}
-function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v];
- return `<article class="card" data-i="${i}">
-   <div class="photo">${p.img?`<img class="shot" loading="lazy" width="720" height="720" src="${st.v==="luxe"&&p.imgL?p.imgL:p.img}" alt="${p.rep?`${p.brand} ${p.name}: bottle photo coming soon, shown with`:`${p.brand} ${p.name} bottle beside`} ${st.v==="luxe"?"luxury":"classic"} decant vials and a roll-on on a wooden table" decoding="async">`:bottleArt(p,i)}</div>
-   <div class="body"><div class="brand">${p.brand}</div><div class="name">${p.name}</div><div class="gender">${p.g==="Men"?"For men":"Unisex"}</div>${p.limited?`<div class="limited">${p.limited}</div>`:""}<div class="notes">${p.notes}</div>${p.n?`<details class="pyr"><summary>Full notes</summary><dl><dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd></dl></details>`:""}
+function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v],sp=isSpot(p);
+ return `<article class="card${sp?" spot":""}" data-i="${i}">
+   <div class="photo">${sp?`<div class="spot-rib"><span>&#10022;</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?`<img class="shot" loading="lazy" width="720" height="720" src="${st.v==="luxe"&&p.imgL?p.imgL:p.img}" alt="${p.rep?`${p.brand} ${p.name}: bottle photo coming soon, shown with`:`${p.brand} ${p.name} bottle beside`} ${st.v==="luxe"?"luxury":"classic"} decant vials and a roll-on on a wooden table" decoding="async">`:bottleArt(p,i)}</div>
+   <div class="body"><div class="brand">${p.brand}</div><div class="name">${p.name}</div><div class="gender">${p.g==="Men"?"For men":"Unisex"}</div>${p.limited?`<div class="limited">${p.limited}</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:""}<div class="notes">${p.notes}</div>${p.n?`<details class="pyr"><summary>Full notes</summary><dl><dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd></dl></details>`:""}
    <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
    <div class="sizes">${V.sizes.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml</button>`).join("")}</div>
@@ -664,16 +706,39 @@ function equalize(){const cs=[...g.querySelectorAll(".card")];
  cs.forEach(c=>{const d=c.querySelector(".pyr");if(d&&c._open)d.open=true})}
 let _eqT,_eqW=innerWidth;addEventListener("resize",()=>{if(innerWidth===_eqW)return;_eqW=innerWidth;clearTimeout(_eqT);_eqT=setTimeout(equalize,150)});
 document.fonts&&document.fonts.ready.then(()=>equalize());
+function passes(p,i,skip){return (!sherpaSet||sherpaSet.includes(i))&&(!brandSel.size||brandSel.has(p.brand))
+ &&(skip==="fam"||fam==="All scents"||p.cat===fam||p.cat2===fam)&&(gen==="all"||p.g===gen)&&(skip==="sea"||sea==="all"||p.sea===sea||p.sea==="a")}
+function filterOptions(){
+ [...fs.options].forEach(o=>{if(o.value==="All scents")return;const n=PRODUCTS.filter((p,i)=>passes(p,i,"fam")&&(p.cat===o.value||p.cat2===o.value)).length;
+  o.textContent=`${FAM_LABEL[o.value]||o.value} (${n})`;o.hidden=o.disabled=!n&&o.value!==fam});
+ const ss2=document.getElementById("sea");let any=0;
+ [...ss2.options].forEach(o=>{if(o.value==="all")return;const n=PRODUCTS.filter((p,i)=>passes(p,i,"sea")&&(p.sea===o.value||p.sea==="a")).length;
+  const only=PRODUCTS.filter((p,i)=>passes(p,i,"sea")&&p.sea===o.value).length;any+=only;o.textContent=`${o.value==="c"?"Fall & winter":"Spring & summer"} (${n})`;o.hidden=o.disabled=!only&&o.value!==sea});
+ document.getElementById("sea-l").hidden=!any&&sea==="all";
+ const act=(fam!=="All scents")+(sea!=="all")+(sortBy!=="brand");const fc=document.getElementById("fcount");fc.hidden=!act;fc.textContent=act}
 function render(){
  const sb=document.getElementById("sherpa-bar");
- let list=PRODUCTS.filter((p,i)=>(!sherpaSet||sherpaSet.includes(i))&&(!brandSel.size||brandSel.has(p.brand))&&(fam==="All scents"||p.cat===fam||p.cat2===fam)&&(gen==="all"||p.g===gen)&&(sea==="all"||p.sea===sea||p.sea==="a"));
+ let list=PRODUCTS.filter((p,i)=>passes(p,i));
  const byBrand=(a,b)=>a.brand.localeCompare(b.brand)||a.name.localeCompare(b.name);
  if(sherpaSet&&sortBy==="brand")list.sort((a,b)=>sherpaSet.indexOf(PRODUCTS.indexOf(a))-sherpaSet.indexOf(PRODUCTS.indexOf(b)));else list.sort(sortBy==="brand"?byBrand:sortBy==="brand-desc"?(a,b)=>byBrand(b,a):sortBy==="low"?(a,b)=>low(a)-low(b)||byBrand(a,b):(a,b)=>low(b)-low(a)||byBrand(a,b));
- document.getElementById("count").textContent=`${list.length} fragrance${list.length===1?"":"s"}`;
- if(sb){sb.hidden=!sherpaSet;if(sherpaSet)document.getElementById("sherpa-n").textContent=`${list.length} fragrance${list.length===1?"":"s"}`}
+ if(!sherpaSet&&(sortBy==="brand"||sortBy==="brand-desc"))list=list.filter(isSpot).concat(list.filter(p=>!isSpot(p)));
+ const cnt=`${list.length} fragrance${list.length===1?"":"s"}`;
+ document.getElementById("count").textContent=cnt;document.getElementById("count2").textContent=cnt;document.getElementById("fdone-n").textContent=cnt;
+ if(sb){sb.hidden=!sherpaSet;if(sherpaSet)document.getElementById("sherpa-n").textContent=cnt}
+ filterOptions();
  g.innerHTML=list.map(cardHTML).join("");g.querySelectorAll(".card").forEach(bind);equalize()}
 chips();render();
 document.getElementById("sherpa-clear").onclick=()=>{sherpaSet=null;render()};
+(function(){const t=document.getElementById("tools"),bk=document.getElementById("fback"),btn=document.getElementById("fbtn");let lastF=null;
+ const open=()=>{lastF=document.activeElement;t.classList.add("open");bk.hidden=false;btn.setAttribute("aria-expanded","true");document.body.style.overflow="hidden";setTimeout(()=>document.getElementById("fclose").focus(),30)};
+ const close=()=>{t.classList.remove("open");bk.hidden=true;btn.setAttribute("aria-expanded","false");document.body.style.overflow="";if(lastF&&lastF.focus)lastF.focus({preventScroll:true})};
+ btn.onclick=open;bk.onclick=close;document.getElementById("fclose").onclick=close;document.getElementById("fdone").onclick=()=>{close();document.getElementById("grid").scrollIntoView({behavior:"smooth",block:"start"})};
+ document.getElementById("fclear").onclick=()=>{fam="All scents";sea="all";sortBy="brand";fs.value=fam;document.getElementById("sea").value=sea;ss.value=sortBy;render()};
+ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&t.classList.contains("open"))close()});})();
+fetch("spotlight.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(!j||!Array.isArray(j.picks))return;const now=Date.now();
+ if(now>Date.parse(j.until+"T23:59:59-05:00")||(j.from&&now<Date.parse(j.from+"T00:00:00-04:00")))return;
+ SPOT={pct:Number(j.pct)||15,ids:j.picks.map(x=>String(x.sq)),label:j.label||"",why:Object.fromEntries(j.picks.map(x=>[String(x.sq),x.why||""]))};
+ render();if(window.Cart&&Cart.refresh)Cart.refresh()}).catch(()=>{});
 
 /* ===== FIND YOUR SCENT =====
    Two modes in one popup: Quick pick (tap options, matches update live) and Step by step (one question at a time).
@@ -739,7 +804,7 @@ document.getElementById("sherpa-clear").onclick=()=>{sherpaSet=null;render()};
  function bindToggle(){box.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{if(mode===b.dataset.mode)return;mode=b.dataset.mode;step=0;draw()})}
  function resultsHTML(r){
   if(!r.length)return `<p class="qz-none">Nothing fits all of that yet. Try a different budget or season.</p>`;
-  const avail=r.filter(x=>inStock(x.p)),setPrice=avail.reduce((a,x)=>a+x.p.p[2],0);
+  const avail=r.filter(x=>inStock(x.p)),setPrice=avail.reduce((a,x)=>a+unit(x.p,"p",2),0);
   const used=new Set();return `<div class="qz-res">${r.map((x,k)=>{const p=x.p;return `<div class="qz-r ${k?"":"best"}"><div class="tag">${k?"Also on your trail":"The Sherpa’s top pick"}</div>
     <h4>${esc(p.brand)} ${esc(p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,""))}</h4>
     <p class="why">${FAM_LABEL[p.cat]||p.cat}${p.cat2?" with "+(FAM_LABEL[p.cat2]||p.cat2).toLowerCase():""} · ${SEA_TXT[p.sea]} · ${TM_TXT[p.tm]}</p><p class="n">${whyText(p,k,used)}</p>
@@ -870,7 +935,7 @@ var Cart=(function(){
  var VN={classic:"Classic",luxe:"Luxury",roll:"Roll-on"};
  function save(){try{localStorage.setItem(KEY,JSON.stringify({lines:lines,ship:ship}))}catch(e){}}
  function money(n){return "$"+(Number.isInteger(n)?n:n.toFixed(2))}
- function priceOf(p,v,z){return p[VIALS[v].key][z]}
+ function priceOf(p,v,z){return unit(p,VIALS[v].key,z)}
  function find(sq){return PRODUCTS.find(function(p){return p.sq===sq})}
  function count(){return lines.reduce(function(a,l){return a+l.q},0)}
  function subtotal(){return lines.reduce(function(a,l){var p=find(l.sq);return a+(p?priceOf(p,l.v,l.z)*l.q:0)},0)}
@@ -921,7 +986,7 @@ var Cart=(function(){
  $("cart-checkout").onclick=checkout;
  addEventListener("pageshow",function(){var b=$("cart-checkout");b.disabled=false;b.textContent="Checkout"});
  badge();
- return {add:add,open:open};
+ return {add:add,open:open,refresh:function(){draw();badge()}};
 })();
 </script>
 
