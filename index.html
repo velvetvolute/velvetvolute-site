@@ -541,7 +541,7 @@ const PRODUCTS=[
 ];
 const brands=["All brands",...[...new Set(PRODUCTS.map(p=>p.brand))].sort()];
 const fams=["All scents",...[...new Set(PRODUCTS.map(p=>p.cat))].sort()];
-let brand="All brands",fam="All scents",gen="all",sea="all",sortBy="brand",sherpaSet=null;
+const brandSel=new Set();let fam="All scents",gen="all",sea="all",sortBy="brand",sherpaSet=null;
 const FAM_LABEL={Fresh:"Fresh & citrusy",Sweet:"Sweet & cozy",Spicy:"Warm & spicy",Woody:"Woody & earthy",Leather:"Leather & smoky"};
 const bb=document.getElementById("brands"),g=document.getElementById("grid"),fs=document.getElementById("fam"),ss=document.getElementById("sort");
 fs.innerHTML=fams.map(c=>`<option value="${c}">${FAM_LABEL[c]||c}</option>`).join("");
@@ -549,8 +549,8 @@ document.getElementById("sea").onchange=e=>{sea=e.target.value;render()};
 fs.onchange=()=>{fam=fs.value;render()};const gb=document.getElementById("genbar");function genChips(){gb.querySelectorAll(".gchip").forEach(b=>{b.classList.toggle("on",b.dataset.g===gen);b.setAttribute("aria-pressed",b.dataset.g===gen)})}
 gb.querySelectorAll(".gchip").forEach(b=>b.onclick=()=>{gen=b.dataset.g;genChips();render()});ss.onchange=()=>{sortBy=ss.value;render()};
 function chips(){bb.innerHTML=brands.map(c=>{const n=c==="All brands"?PRODUCTS.length:PRODUCTS.filter(p=>p.brand===c).length;
- return `<button class="chip ${c===brand?'on':''}" data-c="${c}">${c}<small>${n}</small></button>`}).join("");
- bb.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{brand=b.dataset.c;chips();render()})}
+ const on=c==="All brands"?!brandSel.size:brandSel.has(c);return `<button class="chip ${on?'on':''}" data-c="${c}" aria-pressed="${on}">${c}<small>${n}</small></button>`}).join("");
+ bb.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{const c=b.dataset.c;if(c==="All brands")brandSel.clear();else if(brandSel.has(c))brandSel.delete(c);else brandSel.add(c);if(brandSel.size===brands.length-1)brandSel.clear();chips();render()})}
 const VIALS={classic:{label:"Classic",key:"p",sizes:[2,5,10]},luxe:{label:"Luxury",key:"l",sizes:[3,5,10]},roll:{label:"Roll-on",key:"r",sizes:[5,10]}};
 const ROLL_EXTRA=4; /* roll-on = Classic price + $4, rounded up to the nearest $5 */
 const up5=n=>Math.ceil(n/5)*5;
@@ -653,7 +653,7 @@ let _eqT,_eqW=innerWidth;addEventListener("resize",()=>{if(innerWidth===_eqW)ret
 document.fonts&&document.fonts.ready.then(()=>equalize());
 function render(){
  const sb=document.getElementById("sherpa-bar");
- let list=PRODUCTS.filter((p,i)=>(!sherpaSet||sherpaSet.includes(i))&&(brand==="All brands"||p.brand===brand)&&(fam==="All scents"||p.cat===fam||p.cat2===fam)&&(gen==="all"||p.g===gen)&&(sea==="all"||p.sea===sea||p.sea==="a"));
+ let list=PRODUCTS.filter((p,i)=>(!sherpaSet||sherpaSet.includes(i))&&(!brandSel.size||brandSel.has(p.brand))&&(fam==="All scents"||p.cat===fam||p.cat2===fam)&&(gen==="all"||p.g===gen)&&(sea==="all"||p.sea===sea||p.sea==="a"));
  const byBrand=(a,b)=>a.brand.localeCompare(b.brand)||a.name.localeCompare(b.name);
  if(sherpaSet&&sortBy==="brand")list.sort((a,b)=>sherpaSet.indexOf(PRODUCTS.indexOf(a))-sherpaSet.indexOf(PRODUCTS.indexOf(b)));else list.sort(sortBy==="brand"?byBrand:sortBy==="brand-desc"?(a,b)=>byBrand(b,a):sortBy==="low"?(a,b)=>low(a)-low(b)||byBrand(a,b):(a,b)=>low(b)-low(a)||byBrand(a,b));
  document.getElementById("count").textContent=`${list.length} fragrance${list.length===1?"":"s"}`;
@@ -832,7 +832,7 @@ document.getElementById("sherpa-clear").onclick=()=>{sherpaSet=null;render()};
    else if(a==="shop"){const order=PRODUCTS.map((p,i)=>({i,s:score(p)})).filter(x=>fits(PRODUCTS[x.i])&&x.s>0).sort((a,b)=>b.s-a.s).map(x=>x.i);
     picks().forEach(x=>{if(!order.includes(x.i))order.unshift(x.i)});
     setFilters("All scents","all","all");sherpaSet=order;render();close();const sb=document.getElementById("sherpa-bar");setTimeout(()=>window.scrollTo({top:sb.getBoundingClientRect().top+scrollY-document.querySelector("header").offsetHeight-16,behavior:"smooth"}),30)}})}
- function setFilters(fv,sv,gv){sherpaSet=null;brand="All brands";fam=fv;sea=sv;gen=gv;fs.value=fv;document.getElementById("sea").value=sv;genChips();chips();render()}
+ function setFilters(fv,sv,gv){sherpaSet=null;brandSel.clear();fam=fv;sea=sv;gen=gv;fs.value=fv;document.getElementById("sea").value=sv;genChips();chips();render()}
  function showCard(i){setFilters("All scents","all","all");close();
   const c=g.querySelector(`.card[data-i="${i}"]`);if(!c)return;c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}
  const pill=document.getElementById("qz-pill");
