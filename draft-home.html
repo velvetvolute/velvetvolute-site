@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Velvet Volute Draft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Draft 1: UI UX Pro Max design system (Editorial Grid, brand overrides in design-system/velvet-volute/pages/home.md) */
+:root{
+  color-scheme:light;
+  --wine:#4A0E1E; --wine-deep:#2C0610; --gold:#CDB08A; --gold-ink:#7A5A30;
+  --ivory:#FAF7F2; --paper:#FFFFFF; --ink:#22140F; --ink-soft:#5B4A42; --rule:#E3D8CA;
+  --serif:"Cormorant Garamond",Georgia,serif; --sans:"Montserrat",system-ui,sans-serif;
+  --s1:24px; --s2:48px; --s3:72px; --s4:96px;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--ivory);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold-ink);outline-offset:3px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 var(--s1)}
+.label{font:600 11px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--gold-ink)}
+.rule{border:0;border-top:1px solid var(--rule)}
+
+/* bar + nav */
+.bar{background:var(--wine-deep);color:var(--gold);text-align:center;font:500 11px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;padding:11px 16px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:rgba(250,247,242,.94);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--rule)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{font:500 22px/1 var(--serif);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--wine)}
+.links{display:flex;gap:32px;list-style:none;padding:0}
+.links a{font:500 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--ink-soft);padding:8px 0}
+.links a:hover{color:var(--wine)}
+.cart{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border:1px solid var(--wine);border-radius:999px;color:var(--wine);text-decoration:none;font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase}
+
+/* hero */
+.hero{padding:var(--s3) 0 var(--s4)}
+.hero .wrap{display:grid;grid-template-columns:7fr 5fr;gap:var(--s3);align-items:center}
+.hero h1{font:400 clamp(3rem,7vw,6.2rem)/.95 var(--serif);color:var(--wine);letter-spacing:-.01em;margin:22px 0 28px}
+.hero h1 em{font-style:italic;color:var(--gold-ink)}
+.def{font:italic 400 19px/1.5 var(--serif);color:var(--ink-soft);border-left:2px solid var(--gold);padding-left:18px;max-width:440px}
+.def b{font-style:normal;font-weight:600;color:var(--ink)}
+.hero p.lede{margin:24px 0 36px;max-width:500px;color:var(--ink-soft)}
+.ctas{display:flex;flex-wrap:wrap;gap:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 30px;border-radius:999px;font:600 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;transition:background .2s,color .2s}
+.btn-solid{background:var(--wine);color:var(--ivory)}
+.btn-solid:hover{background:var(--wine-deep)}
+.btn-line{border:1px solid var(--wine);color:var(--wine)}
+.btn-line:hover{background:var(--wine);color:var(--ivory)}
+.hero figure{position:relative}
+.hero figure img{border-radius:4px;box-shadow:0 30px 60px -30px rgba(44,6,16,.45)}
+.hero figcaption{position:absolute;left:-28px;bottom:28px;background:var(--paper);padding:14px 18px;border:1px solid var(--rule);font:italic 500 17px/1.3 var(--serif);color:var(--wine)}
+.hero figcaption span{display:block;font:500 11px/1.4 var(--sans);font-style:normal;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:4px}
+
+/* trust strip */
+.trust{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--paper)}
+.trust ul{display:grid;grid-template-columns:repeat(3,1fr);list-style:none;padding:0}
+.trust li{padding:28px var(--s1);display:flex;gap:16px;align-items:flex-start}
+.trust li+li{border-left:1px solid var(--rule)}
+.trust svg{flex:none;width:22px;height:22px;stroke:var(--gold-ink)}
+.trust b{display:block;font:600 13px/1.3 var(--sans);letter-spacing:.06em;margin-bottom:4px}
+.trust span{font-size:14px;color:var(--ink-soft)}
+
+/* spotlight */
+.spot{background:var(--wine);color:var(--ivory);padding:var(--s4) 0}
+.spot .label{color:var(--gold)}
+.spot-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:var(--s2)}
+.spot h2{font:400 clamp(2.2rem,4.5vw,3.6rem)/1 var(--serif);margin-top:16px}
+.spot h2 em{color:var(--gold)}
+.pct{font:500 13px/1.4 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(205,176,138,.5);border-radius:999px;padding:10px 18px;white-space:nowrap}
+.picks{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)}
+.pick{display:grid;grid-template-columns:180px 1fr;gap:28px;align-items:start}
+.pick img{border-radius:3px}
+.pick h3{font:500 30px/1.1 var(--serif);margin:10px 0 12px}
+.pick p{font-size:15px;color:#E9D9DC;line-height:1.7}
+.pick .from{display:block;margin-top:16px;font:500 13px/1 var(--sans);letter-spacing:.1em;color:var(--gold)}
+
+/* collection */
+.coll{padding:var(--s4) 0}
+.coll-head{display:grid;grid-template-columns:5fr 7fr;gap:var(--s3);align-items:end;margin-bottom:var(--s2)}
+.coll h2{font:400 clamp(2.4rem,5vw,4rem)/1 var(--serif);color:var(--wine);margin-top:16px}
+.coll-head p{color:var(--ink-soft);max-width:520px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px 32px}
+.card a{text-decoration:none;display:block}
+.card .ph{overflow:hidden;border-radius:3px;background:var(--paper)}
+.card img{transition:transform .5s ease}
+.card a:hover img{transform:scale(1.03)}
+.card .meta{display:flex;justify-content:space-between;gap:12px;margin-top:16px;align-items:baseline}
+.card .house{font:600 11px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--gold-ink)}
+.card h3{font:500 24px/1.15 var(--serif);color:var(--ink);margin-top:8px}
+.card .price{font:500 14px/1 var(--sans);color:var(--ink);white-space:nowrap}
+.card .price small{font-size:12px;color:var(--ink-soft);font-weight:400}
+.card p{font-size:14px;color:var(--ink-soft);margin-top:6px}
+.coll-cta{text-align:center;margin-top:var(--s3)}
+
+/* how it works */
+.how{background:var(--paper);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:var(--s4) 0}
+.how h2{font:400 clamp(2.2rem,4.5vw,3.4rem)/1 var(--serif);color:var(--wine);margin:16px 0 var(--s2)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s2);list-style:none;padding:0;counter-reset:s}
+.steps li{border-top:1px solid var(--wine);padding-top:24px}
+.steps .n{font:italic 400 52px/1 var(--serif);color:var(--gold-ink)}
+.steps h3{font:600 14px/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;margin:18px 0 10px}
+.steps p{font-size:15px;color:var(--ink-soft)}
+.steps a{color:var(--wine);text-underline-offset:3px}
+
+/* letter */
+.letter{padding:var(--s4) 0}
+.letter .wrap{display:grid;grid-template-columns:4fr 8fr;gap:var(--s3)}
+.letter h2{font:400 clamp(2.2rem,4.5vw,3.4rem)/1 var(--serif);color:var(--wine);margin-top:16px}
+.letter blockquote{font:400 clamp(1.5rem,2.6vw,2.1rem)/1.35 var(--serif);color:var(--ink)}
+.letter blockquote u{text-decoration-color:var(--gold);text-decoration-thickness:2px;text-underline-offset:6px;font-style:italic;color:var(--wine)}
+.letter .sig{margin-top:28px;font:italic 500 22px/1.2 var(--serif);color:var(--gold-ink)}
+.letter .sig a{display:inline-block;margin-top:14px;font:600 12px/1 var(--sans);font-style:normal;letter-spacing:.16em;text-transform:uppercase;color:var(--wine);text-underline-offset:4px}
+
+/* closing */
+.close{background:var(--wine-deep);color:var(--ivory);padding:var(--s4) 0;text-align:center}
+.close .label{color:var(--gold)}
+.close h2{font:400 clamp(2.4rem,5vw,4rem)/1 var(--serif);margin:16px 0 18px}
+.close p{color:#E9D9DC;margin-bottom:34px}
+.close .btn-solid{background:var(--gold);color:var(--wine-deep)}
+.close .btn-solid:hover{background:#E0C8A4}
+.close .btn-line{border-color:var(--gold);color:var(--gold)}
+.close .btn-line:hover{background:var(--gold);color:var(--wine-deep)}
+.close .ctas{justify-content:center}
+footer{background:var(--wine-deep);color:#BFA9AE;border-top:1px solid rgba(205,176,138,.2);padding:var(--s2) 0;font-size:12px;line-height:1.7}
+footer .wrap{display:grid;grid-template-columns:1fr 2fr;gap:var(--s2)}
+footer .brand{color:var(--gold);font-size:18px}
+
+/* motion: hover transitions only, reduced-motion safe */
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card img,.btn{transition:none}}
+
+/* responsive */
+@media (max-width:1024px){
+  .links{display:none}
+  .hero .wrap,.coll-head,.letter .wrap,footer .wrap{grid-template-columns:1fr;gap:var(--s2)}
+  .picks{grid-template-columns:1fr}
+  .hero figcaption{left:16px}
+}
+@media (max-width:768px){
+  .grid{grid-template-columns:repeat(2,1fr);gap:32px 16px}
+  .steps,.trust ul{grid-template-columns:1fr}
+  .trust li+li{border-left:0;border-top:1px solid var(--rule)}
+  .spot-head{flex-direction:column;align-items:flex-start}
+  .pick{grid-template-columns:120px 1fr;gap:18px}
+  .pick h3{font-size:24px}
+  :root{--s3:48px;--s4:64px}
+}
+@media (max-width:480px){
+  .grid{grid-template-columns:1fr}
+  .card .meta{flex-direction:column;gap:6px}
+  .bar{font-size:10px;letter-spacing:.12em}
+}
+</style>
+</head>
+<body>
+<div class="bar">Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
+
+<nav aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="https://velvetvolute.ca/">Velvet Volute</a>
+    <ul class="links">
+      <li><a href="#collection">Shop</a></li>
+      <li><a href="https://velvetvolute.ca/about.html">About the Brand</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="cart" href="https://velvetvolute.ca/" aria-label="Cart, 0 items">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+      Cart · 0
+    </a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="rv">
+      <span class="label">Fragrance decants · Ottawa</span>
+      <h1>Quiet luxury, <em>poured by hand</em></h1>
+      <p class="def"><b>vo·lute</b> (vuh-LOOT): a soft, spiralling curl, like a wisp of smoke drifting through the air.</p>
+      <p class="lede">A curated collection of luxury fragrances, each one thoughtfully chosen. Try them without committing to a full bottle: hand-decanted from authentic bottles, picked up in Ottawa or shipped across Canada.</p>
+      <div class="ctas">
+        <a class="btn btn-solid" href="#collection">Browse fragrances</a>
+        <a class="btn btn-line" href="https://velvetvolute.ca/">Ask the Scent Sherpa</a>
+      </div>
+    </div>
+    <figure class="rv">
+      <img src="img/lux-u-jazz-a3317c0b34.jpg" width="600" height="600" alt="Replica Jazz Club full bottle beside three decant vials in 2, 5 and 10 ml">
+      <figcaption>Replica Jazz Club<span>Bottle to vial, 2 to 10 ml</span></figcaption>
+    </figure>
+  </div>
+</header>
+
+<section class="trust" aria-label="Why Velvet Volute">
+  <ul class="wrap">
+    <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg><div><b>100% Authentic</b><span>Poured from genuine bottles</span></div></li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" aria-hidden="true"><path d="M10 3h4v4l3 3v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V10l3-3V3Z"/><path d="M7 14h10"/></svg><div><b>Try Before You Buy</b><span>2 to 10 ml, spray or roll-on</span></div></li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg><div><b>Pickup or Shipping</b><span>Ottawa meet-up, or shipped across Canada (free over $85)</span></div></li>
+  </ul>
+</section>
+
+<section class="spot" aria-labelledby="spot-h">
+  <div class="wrap">
+    <div class="spot-head rv">
+      <div>
+        <span class="label">The October spotlight</span>
+        <h2 id="spot-h">Two for the <em>dark evenings</em></h2>
+      </div>
+      <span class="pct">15% off this month</span>
+    </div>
+    <div class="picks">
+      <article class="pick rv">
+        <img src="img/lux-u-jazz-a3317c0b34.jpg" width="180" height="180" loading="lazy" alt="Replica Jazz Club bottle and vials">
+        <div>
+          <span class="label">Maison Margiela</span>
+          <h3>Replica Jazz Club</h3>
+          <p>Rum, tobacco leaf and vanilla bean, warmed by a whisper of smoky styrax. Jazz Club smells like a leather armchair in a dim bar while the first snow falls outside, the coziest thing you can wear in October.</p>
+          <span class="from">From $12 · 2 ml</span>
+        </div>
+      </article>
+      <article class="pick rv">
+        <img src="img/lux-tf-black-orchid-f86a218a09.jpg" width="180" height="180" loading="lazy" alt="Tom Ford Black Orchid bottle and vials">
+        <div>
+          <span class="label">Tom Ford</span>
+          <h3>Black Orchid</h3>
+          <p>Made for spooky season. Black truffle and dark orchid open rich and a little mysterious, then chocolate, patchouli and a curl of incense settle in like candle smoke in an old house.</p>
+          <span class="from">From $15 · 2 ml</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="coll" id="collection" aria-labelledby="coll-h">
+  <div class="wrap">
+    <div class="coll-head rv">
+      <div>
+        <span class="label">The collection</span>
+        <h2 id="coll-h">Our fragrances</h2>
+      </div>
+      <p>Every fragrance is thoughtfully chosen, with at least one new addition every month. Curate your own playlist by notes, season and mood, or let the Scent Sherpa guide you.</p>
+    </div>
+    <div class="grid">
+      <article class="card rv"><a href="https://velvetvolute.ca/"><div class="ph"><img src="img/lux-nishane-hacivat-bbc61edb0c.jpg" width="600" height="600" loading="lazy" alt="Nishane Hacivat bottle and vials"></div>
+        <div class="meta"><div><span class="house">Nishane</span><h3>Hacivat Extrait</h3></div><span class="price"><small>from</small> $15</span></div>
+        <p>Pineapple and grapefruit over oakmoss and woods.</p></a></article>
+      <article class="card rv"><a href="https://velvetvolute.ca/"><div class="ph"><img src="img/lux-tf-tuscan-leather-efbf1bc0e3.jpg" width="600" height="600" loading="lazy" alt="Tom Ford Tuscan Leather bottle and vials"></div>
+        <div class="meta"><div><span class="house">Tom Ford</span><h3>Tuscan Leather</h3></div><span class="price"><small>from</small> $20</span></div>
+        <p>Raspberry, saffron and rich leather. Bold and luxurious.</p></a></article>
+      <article class="card rv"><a href="https://velvetvolute.ca/"><div class="ph"><img src="img/lux-givenchy-gentleman-rp-6675c41d1f.jpg" width="600" height="600" loading="lazy" alt="Givenchy Gentleman Réserve Privée bottle and vials"></div>
+        <div class="meta"><div><span class="house">Givenchy</span><h3>Gentleman Réserve Privée</h3></div><span class="price"><small>from</small> $10</span></div>
+        <p>Iris, whisky and chestnut. Polished and a little boozy.</p></a></article>
+      <article class="card rv"><a href="https://velvetvolute.ca/"><div class="ph"><img src="img/lux-tf-ombre-leather-f497e845f1.jpg" width="600" height="600" loading="lazy" alt="Tom Ford Ombré Leather bottle and vials"></div>
+        <div class="meta"><div><span class="house">Tom Ford</span><h3>Ombré Leather</h3></div><span class="price"><small>from</small> $15</span></div>
+        <p>Cardamom and jasmine over soft leather and patchouli.</p></a></article>
+      <article class="card rv"><a href="https://velvetvolute.ca/"><div class="ph"><img src="img/lux-nishane-ani-9d47054efb.jpg" width="600" height="600" loading="lazy" alt="Nishane Ani bottle and vials"></div>
+        <div class="meta"><div><span class="house">Nishane</span><h3>Ani Extrait</h3></div><span class="price"><small>from</small> $15</span></div>
+        <p>Ginger and bergamot over cardamom, rose and vanilla.</p></a></article>
+      <article class="card rv"><a href="https://velvetvolute.ca/"><div class="ph"><img src="img/lux-tf-black-orchid-f86a218a09.jpg" width="600" height="600" loading="lazy" alt="Tom Ford Black Orchid bottle and vials"></div>
+        <div class="meta"><div><span class="house">Tom Ford</span><h3>Black Orchid</h3></div><span class="price"><small>from</small> $15</span></div>
+        <p>Black truffle, dark orchid, patchouli and chocolate.</p></a></article>
+    </div>
+    <div class="coll-cta"><a class="btn btn-line" href="https://velvetvolute.ca/">See the full collection</a></div>
+  </div>
+</section>
+
+<section class="how" id="how" aria-labelledby="how-h">
+  <div class="wrap">
+    <span class="label">Simple</span>
+    <h2 id="how-h">How it works</h2>
+    <ol class="steps">
+      <li class="rv"><span class="n" aria-hidden="true">01</span><h3>Pick your scents</h3><p>Curate your own playlist: look through the notes, sort through the filters, or take the <a href="https://velvetvolute.ca/">Scent Sherpa</a>'s quiz to guide you to new finds you might not have known you'd like.</p></li>
+      <li class="rv"><span class="n" aria-hidden="true">02</span><h3>Order online</h3><p>Add your vials to the cart, choose pickup or shipping, and pay securely by card through Square. Prefer e-Transfer? Just email me.</p></li>
+      <li class="rv"><span class="n" aria-hidden="true">03</span><h3>Pickup or shipping</h3><p>Meet at the Shoppers Drug Mart on Carling, or ship anywhere in Canada: $18 to Ontario and Quebec, $23 everywhere else, free over $85.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="letter" aria-labelledby="letter-h">
+  <div class="wrap">
+    <div class="rv"><span class="label">About the brand</span><h2 id="letter-h">Fragrance, curated</h2></div>
+    <div class="rv">
+      <blockquote>I don't just sell decants. I curate a beautiful collection of scents, very much like putting together the perfect playlist: some are smooth &amp; sexy, some make you feel like a boss, and some make you wanna party 'til 5am. But either way, it's <u>one banger after another</u>.</blockquote>
+      <p class="sig">Peace &amp; Love, Izzi<br><a href="https://velvetvolute.ca/about.html">Read the full letter</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="close" id="contact" aria-labelledby="close-h">
+  <div class="wrap rv">
+    <span class="label">Get in touch</span>
+    <h2 id="close-h">Ready to order?</h2>
+    <p>Shop online, or email me with questions or to pay by e-Transfer.</p>
+    <div class="ctas">
+      <a class="btn btn-solid" href="#collection">Shop now</a>
+      <a class="btn btn-line" href="mailto:velvetvolute@gmail.com">velvetvolute@gmail.com</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><span class="brand">Velvet Volute</span><p style="margin-top:10px">© 2026 Velvet Volute</p></div>
+    <div>
+      <p>All decants are hand-decanted from authentic original bottles and repackaged in new containers. The original manufacturer's bottle and packaging are not included.</p>
+      <p style="margin-top:8px">Not affiliated with, endorsed by, or associated with any fragrance brand or designer. All trademarks belong to their respective owners and are used only to identify the authentic products from which each decant is prepared.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
