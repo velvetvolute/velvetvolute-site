@@ -355,6 +355,11 @@ nav a{white-space:nowrap}
 .about .signoff span{display:block;margin-top:2px;font:italic 600 30px/1.2 var(--serif);letter-spacing:.02em}
 .sherpa-link{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em;text-decoration-color:var(--gold);cursor:pointer}
 .sherpa-link:hover{color:var(--gold)}
+.vv-rule{display:flex;align-items:center;justify-content:center;gap:14px;margin:46px auto 30px;max-width:220px;color:var(--gold)}
+.vv-rule::before,.vv-rule::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.vv-rule::after{background:linear-gradient(90deg,var(--gold),transparent)}
+.vv-rule span{font-size:11px;line-height:1;opacity:.85}
+a.cart-open{text-decoration:none}
 /* spotlight cards */
 .pml-b{display:block;margin-top:2px;font:400 11px var(--sans);letter-spacing:.02em;opacity:.75;font-variant-numeric:lining-nums tabular-nums}
 .was{font-weight:400;font-size:.62em;opacity:.65;margin-right:8px;vertical-align:.2em}
@@ -454,13 +459,13 @@ nav a{white-space:nowrap}
 <div class="bar">Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
   <a class="logo" href="#top"><span class="mono">VV</span>Velvet <span>Volute</span></a>
-  <nav><a href="#shop">Shop</a><a href="#about">About</a><a href="#how">How It Works</a><a href="#contact">Contact</a></nav><button type="button" class="cart-open" id="cart-open" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></button>
+  <nav><a href="#shop">Shop</a><a href="/about">About</a><a href="#how">How It Works</a><a href="#contact">Contact</a></nav><button type="button" class="cart-open" id="cart-open" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></button>
 </div></header>
 
 <div class="hero" id="top"><div class="wrap">
   <div class="hero-mono">VV</div>
   <div class="eyebrow">Velvet Volute · Fragrance Decants</div>
-  <h1>Scent that<br><em>lingers</em></h1>
+  <h1>Curated,<br><em>never crowded</em></h1>
   <p class="hdef"><b>vo·lute</b> <span>(vuh-LOOT)</span> · a soft, spiralling curl, like a wisp of smoke drifting through the air.</p>
   <p>Try the world's most loved fragrances without committing to a full bottle. Hand-decanted from authentic bottles, picked up in Ottawa or shipped across Canada.</p>
   <a class="btn" href="#shop">Browse fragrances</a><button type="button" class="btn btn-quiz" data-quiz>Ask the Scent Sherpa</button>
@@ -545,21 +550,6 @@ nav a{white-space:nowrap}
     <div id="qz-body"></div>
   </div>
 </div>
-
-<section class="about" id="about"><div class="wrap">
-  <div class="eyebrow">About the Brand</div>
-  <h2>Fragrance, curated</h2>
-  <p class="def">I don't just sell decants. I curate a beautiful collection of scents, very much like putting together the perfect playlist: some are smooth &amp; sexy, some make you feel like a boss, and some make you wanna party 'til 5am. But either way, it's <u class="hl">one banger after another</u>.</p>
-  <p>I don't just select a wide range of popular fragrances that I know are poised to sell. Every fragrance is thoughtfully chosen. If I wouldn't wear it, I wouldn't offer it. Each one is part of a curated luxury collection that will continue to grow, so expect at least one new addition every month.</p>
-  <p>I built the Velvet Volute collection on balance: sophisticated yet playful, youthful but mature, masculine but with a sweet, sensual side. Every scent is modern and elegant, chosen for the smooth, suave individual who maneuvers through the world with a quiet confidence. The kind of person who would rather pull up in a Rolls-Royce or a Maybach than a fast, flashy Lambo.</p>
-  <p>They might not be for everyone, but they're for the real ones. With a scent for every mood &amp; vibe.</p>
-  <p class="def" style="margin-top:6px">Press play on something new.</p>
-  <p class="signoff">Peace &amp; Love,<span>Izzi</span></p>
-  <div class="eyebrow" style="margin-top:44px">The Name</div>
-  <h2>Why Velvet Volute?</h2>
-  <p>Like a volute, a great fragrance doesn't sit still; it drifts, curls, dances and lingers long after you've passed by. Velvet is for the feel of it: smooth, rich and a little indulgent.</p>
-  <p>Velvet Volute exists so you can try those fragrances without committing to a full bottle. Every decant is poured by hand from an authentic bottle, so you get the real thing, just in a size that lets you find what you love.</p>
-</div></section>
 
 <section class="how" id="how"><div class="wrap">
   <div class="eyebrow" style="text-align:center">Simple</div>
@@ -1045,7 +1035,7 @@ var Cart=(function(){
   .catch(function(e){msg((e&&e.message)||"Checkout couldn't be started. Please try again, or email velvetvolute@gmail.com.");btn.disabled=false;btn.textContent="Checkout"});
  }
  document.addEventListener("DOMContentLoaded",function(){});
- $("cart-open").onclick=open;$("cart-x").onclick=close;
+ $("cart-open").onclick=open;$("cart-x").onclick=close;if(location.hash==="#cart"){history.replaceState(null,"",location.pathname);open();}
  $("cart-ov").addEventListener("click",function(e){if(e.target===$("cart-ov"))close()});
  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("cart-ov").hidden)close()});
  document.querySelectorAll('input[name=ship]').forEach(function(r){r.onchange=function(){ship=r.value;save();draw()}});
