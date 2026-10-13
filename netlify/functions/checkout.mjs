@@ -27,6 +27,20 @@ async function loadSpotlight(req) {
   } catch { return null; }
 }
 
+// Zodiac season pick: same zodiac.json as the site. Smaller discount, never stacks with the Spotlight.
+async function loadZodiac(req) {
+  try {
+    const r = await fetch(new URL("/zodiac.json", req.url), { headers: { "cache-control": "no-cache" } });
+    if (!r.ok) return null;
+    const j = await r.json();
+    const t = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Toronto" }));
+    const md = (t.getMonth() + 1) * 100 + t.getDate();
+    const z = (j.signs || []).find((x) => { const a = x.from[0] * 100 + x.from[1], b = x.to[0] * 100 + x.to[1]; return a <= b ? md >= a && md <= b : md >= a || md <= b; });
+    const pct = Math.max(0, Math.min(50, Number(j.pct) || 0));
+    return z && z.sq && pct ? { pct, sq: String(z.sq), label: `${z.sign} season pick` } : null;
+  } catch { return null; }
+}
+
 const json = (status, body) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
 
@@ -65,7 +79,7 @@ export default async (req) => {
       }
     }
 
-    const spot = await loadSpotlight(req);
+    const [spot, zod] = await Promise.all([loadSpotlight(req), loadZodiac(req)]);
     const lineItems = [];
     const discounts = [];
     let subtotal = 0;
@@ -74,12 +88,14 @@ export default async (req) => {
       const v = variations[key];
       const qty = Math.max(1, Math.min(10, parseInt(it.q, 10) || 1));
       if (!v) return json(400, { error: `"${it.label || it.v}" is no longer available. Please remove it and try again.` });
-      if (spot && spot.ids.has(String(it.sq))) {
+      const deal = spot && spot.ids.has(String(it.sq)) ? { pct: spot.pct, name: `${spot.label} Spotlight ${spot.pct}% off`.trim() }
+        : zod && zod.sq === String(it.sq) ? { pct: zod.pct, name: `${zod.label} ${zod.pct}% off` } : null;
+      if (deal) {
         // one line per unit so each fixed discount applies to exactly one vial
-        const sale = Math.floor((v.cents * (100 - spot.pct)) / 100 / 100) * 100;
+        const sale = Math.floor((v.cents * (100 - deal.pct)) / 100 / 100) * 100;
         for (let n = 0; n < qty; n++) {
           const uid = `spot${discounts.length + 1}`;
-          discounts.push({ uid, name: `${spot.label} Spotlight ${spot.pct}% off`.trim(), type: "FIXED_AMOUNT", amount_money: { amount: v.cents - sale, currency: "CAD" }, scope: "LINE_ITEM" });
+          discounts.push({ uid, name: deal.name, type: "FIXED_AMOUNT", amount_money: { amount: v.cents - sale, currency: "CAD" }, scope: "LINE_ITEM" });
           lineItems.push({ catalog_object_id: v.id, quantity: "1", applied_discounts: [{ discount_uid: uid }] });
         }
         subtotal += sale * qty;

@@ -351,6 +351,7 @@ nav a{white-space:nowrap}
 .spot-why{margin:2px 0 6px;font:italic 400 16px/1.35 var(--serif);color:#2c0610}
 @media(prefers-reduced-motion:reduce){.card.spot .photo::after{animation:none}}
 /* zodiac season pick */
+.zod-tag{align-self:flex-start;margin:2px 0 4px;padding:3px 11px;border-radius:30px;background:#3a0a17;color:#e8d3b4;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
 .zodiac{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px 20px;margin:0 0 30px;padding:18px 22px;border:1px solid rgba(181,148,106,.55);border-radius:8px;background:radial-gradient(120% 140% at 0% 0%,rgba(181,148,106,.16),transparent 60%),#3a0a17;color:#e8d3b4}
 .zodiac .zg{width:58px;height:58px;border-radius:50%;border:1px solid #b5946a;display:flex;align-items:center;justify-content:center;font:400 30px/1 "Segoe UI Symbol","Apple Symbols","Noto Sans Symbols",var(--serif);color:#e2c58f;font-variant-emoji:text}
 .zodiac .ze{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#cdb08a}
@@ -619,7 +620,10 @@ PRODUCTS.forEach(p=>{p.r={5:p.p[5]+ROLL_EXTRA,10:p.p[10]+ROLL_EXTRA}});
    so the discount shown here is the discount charged. Discounted prices round down to whole dollars. */
 let SPOT={pct:0,ids:[],label:"",why:{}};
 const isSpot=p=>!!SPOT.pct&&!!p.sq&&SPOT.ids.includes(p.sq)&&inStock(p);
-const unit=(p,key,z)=>{const n=p[key][z];return isSpot(p)?Math.floor(n*(100-SPOT.pct)/100):n};
+let ZOD={pct:0,sq:"",sign:"",glyph:""};
+const isZod=p=>!!ZOD.pct&&!!p.sq&&p.sq===ZOD.sq&&inStock(p);
+const offPct=p=>isSpot(p)?SPOT.pct:isZod(p)?ZOD.pct:0; /* never stacks: the bigger deal wins */
+const unit=(p,key,z)=>{const n=p[key][z],o=offPct(p);return o?Math.floor(n*(100-o)/100):n};
 const low=p=>Math.min(...Object.keys(p.p).map(z=>unit(p,"p",z)));
 const state={};
 const SPRAYS={2:25,3:35,5:60,10:120}; /* about 12 sprays per ml from a standard decant atomizer */
@@ -697,7 +701,7 @@ function vdescHTML(v,z){return v==="classic"?"A traditional glass screw-top atom
 function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v],sp=isSpot(p);
  return `<article class="card${sp?" spot":""}" data-i="${i}">
    <div class="photo">${sp?`<div class="spot-rib"><span>&#10022;</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?`<img class="shot" loading="lazy" width="720" height="720" src="${st.v==="luxe"&&p.imgL?p.imgL:p.img}" alt="${p.rep?`${p.brand} ${p.name}: bottle photo coming soon, shown with`:`${p.brand} ${p.name} bottle beside`} ${st.v==="luxe"?"luxury":"classic"} decant vials and a roll-on on a wooden table" decoding="async">`:bottleArt(p,i)}</div>
-   <div class="body"><div class="brand">${p.brand}</div><div class="name">${p.name}</div><div class="gender">${p.g==="Men"?"For men":"Unisex"}</div>${p.limited?`<div class="limited">${p.limited}</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:""}<div class="notes">${p.notes}</div>${p.n?`<details class="pyr"><summary>Full notes</summary><dl><dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd></dl></details>`:""}
+   <div class="body"><div class="brand">${p.brand}</div><div class="name">${p.name}</div><div class="gender">${p.g==="Men"?"For men":"Unisex"}</div>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:""}<div class="notes">${p.notes}</div>${p.n?`<details class="pyr"><summary>Full notes</summary><dl><dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd></dl></details>`:""}
    <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
    <div class="sizes">${V.sizes.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml</button>`).join("")}</div>
@@ -751,32 +755,20 @@ fetch("spotlight.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
  render();if(window.Cart&&Cart.refresh)Cart.refresh()}).catch(()=>{});
 
 /* ===== ZODIAC SEASON PICK =====
-   One pick per sign. It switches automatically on the first day of each sign's season.
-   To change a pick, edit "pick" (a word from the fragrance name) and "why". */
-(function(){
- const Z=[
-  {sign:"Capricorn",g:"♑",from:[12,22],to:[1,19],pick:"Papilefiko",why:"Capricorn season arrives in the deepest cold, and Papilefiko brings the evergreen forest indoors. Cardamom and lavender open clean and aromatic before balsam fir, styrax and moss settle in, steady and resinous. It wears like a well-made wool coat: quiet, composed and built to last, for the climber who keeps going long after everyone else has turned back."},
-  {sign:"Aquarius",g:"♒",from:[1,20],to:[2,18],pick:"Jazz Club",why:"Aquarius is the water-bearer, pouring for everyone in the room, and Jazz Club is the room. Pink pepper and neroli lift into rum and clary sage before tobacco leaf, vanilla bean and smoky styrax take over. It suits the friend who would rather improvise than follow the chart, and it keeps you warm through the coldest stretch of February."},
-  {sign:"Pisces",g:"♓",from:[2,19],to:[3,20],pick:"La Melodie Maximal",why:"Pisces, the two fish, has always belonged to the water, and La Mélodie smells like a walk along the shore. Sea notes and grapefruit drift over jasmine, then ambergris, oakmoss and a soft pour of whisky give it depth. It is dreamy and easy to wear, a fitting soundtrack for the last weeks of winter as the ice starts to let go."},
-  {sign:"Aries",g:"♈",from:[3,21],to:[4,19],pick:"Zoltan",why:"Aries opens the zodiac year, and Zoltan captures that first rush. Icy mint and grapefruit hit bright and bracing, then cinnamon and red rose bring the heat your ruling planet Mars is known for. Leather, tonka and amber carry it through the day with confidence. Wear it when you are ready to lead and the snow is finally giving way."},
-  {sign:"Taurus",g:"♉",from:[4,20],to:[5,20],pick:"Wulong Cha",why:"Taurus is ruled by Venus, the planet of pleasure, and Wulong Cha is the pleasure of a slow afternoon. Bergamot and sweet orange brighten a cup of oolong tea warmed with nutmeg, then fig and soft musk settle close to your skin. It is calm, sunny and made for May, when you finally have time to linger outside."},
-  {sign:"Gemini",g:"♊",from:[5,21],to:[6,20],pick:"Hacivat",why:"Gemini loves a good conversation, and Hacivat takes its name from the silver-tongued half of Turkey's famous shadow-puppet duo. Pineapple, grapefruit and bergamot open bright and quick, then cedar, patchouli and oakmoss give it a dry, grounded finish. It has two moods in one bottle, which suits you perfectly, and it moves easily from a June patio to a late dinner."},
-  {sign:"Cancer",g:"♋",from:[6,21],to:[7,22],pick:"Le Piano",why:"Cancer is ruled by the Moon and guided by the tides, and Le Piano smells like a summer evening by the water. Citrus and neroli open into sea notes, freesia and soft rose, then white musk and cedar settle in gently, clean and close to the skin. It feels comforting and fresh at once, made for long July days with the people you call home."},
-  {sign:"Leo",g:"♌",from:[7,23],to:[8,22],pick:"Tempfluo",why:"Leo is ruled by the Sun, and Tempfluo glows like late-afternoon light in August. Saffron, mandarin and bergamot shine at the start, then orange blossom and praline add warmth before cashmere wood and vanilla carry you into the evening. It is bright, generous and a little golden, which is exactly how you like to walk into a room."},
-  {sign:"Virgo",g:"♍",from:[8,23],to:[9,22],pick:"Uomo (2021)",why:"Virgo season arrives with the harvest, and Valentino Uomo has the clean precision you appreciate. Bergamot and lemon open crisp and bright, powdery iris and earthy vetiver form its heart, and a finish of cardamom and black pepper keeps it sharp. Every note has a purpose, and it is right at home in September, from the office to dinner."},
-  {sign:"Libra",g:"♎",from:[9,23],to:[10,22],pick:"Ani Extrait",why:"Bright ginger and bergamot open onto a soft Turkish rose, the flower of your ruling planet Venus, before settling into creamy vanilla and sandalwood. It feels as right at a Saturday brunch as it does at a candlelit dinner. For a sign that loves beauty in balance, this is an easy one to fall for."},
-  {sign:"Scorpio",g:"♏",from:[10,23],to:[11,21],pick:"Black Orchid",why:"Scorpio season asks for a scent with secrets, and Black Orchid keeps plenty. Black truffle and dark florals open rich and shadowy, then settle into chocolate, patchouli and a curl of incense that lingers on your scarf long after you leave. Wear it on the longest November evenings, when you would rather be remembered than simply noticed."},
-  {sign:"Sagittarius",g:"♐",from:[11,22],to:[12,21],pick:"Tuscan Leather",why:"Your sign is the archer on horseback, forever chasing the next horizon, and Tuscan Leather smells like the journey. Saffron and raspberry flash bright at the start, then frankincense and jasmine lead into supple leather and warm amber. It is bold, generous and made for December nights when you say yes to every plan."}];
- const el=document.getElementById("zodiac");if(!el)return;
+   Picks, write-ups and the discount live in zodiac.json (the checkout reads the same file).
+   The pick switches automatically on the first day of each sign's season (Toronto time). */
+fetch("zodiac.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
+ const el=document.getElementById("zodiac");if(!j||!el||!Array.isArray(j.signs))return;
  const t=new Date(new Date().toLocaleString("en-US",{timeZone:"America/Toronto"})),md=(t.getMonth()+1)*100+t.getDate();
- const z=Z.find(x=>{const a=x.from[0]*100+x.from[1],b=x.to[0]*100+x.to[1];return a<=b?md>=a&&md<=b:md>=a||md<=b});
- const i=z&&PRODUCTS.findIndex(p=>p.name.includes(z.pick));if(!z||i<0)return;
- const p=PRODUCTS[i],M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],d=x=>M[x[0]-1]+" "+x[1];
- el.innerHTML=`<div class="zg" aria-hidden="true">${z.g}\uFE0E</div><div><div class="ze">${z.sign} season pick · ${d(z.from)} – ${d(z.to)}</div><h3>${p.brand} ${p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"")}</h3><p>${z.why}</p></div><button type="button">See the scent</button>`;
- el.hidden=false;
+ const z=j.signs.find(x=>{const a=x.from[0]*100+x.from[1],b=x.to[0]*100+x.to[1];return a<=b?md>=a&&md<=b:md>=a||md<=b});if(!z)return;
+ const i=PRODUCTS.findIndex(p=>(z.sq&&p.sq===z.sq)||p.name===z.name);if(i<0)return;
+ const p=PRODUCTS[i];ZOD={pct:Number(j.pct)||0,sq:p.sq||"",sign:z.sign,glyph:z.glyph};
+ const M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],d=x=>M[x[0]-1]+" "+x[1],off=offPct(p);
+ el.innerHTML=`<div class="zg" aria-hidden="true">${z.glyph}︎</div><div><div class="ze">${z.sign} season pick · ${d(z.from)} – ${d(z.to)}${off?` · ${off}% off`:""}</div><h3>${p.brand} ${p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"")}</h3><p>${z.why}</p></div><button type="button">See the scent</button>`;
+ el.hidden=false;render();if(window.Cart&&Cart.refresh)Cart.refresh();
  el.querySelector("button").onclick=()=>{sherpaSet=null;brandSel.clear();fam="All scents";sea="all";gen="all";fs.value=fam;document.getElementById("sea").value=sea;genChips();chips();render();
   const c=g.querySelector(`.card[data-i="${i}"]`);if(c){c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}};
-})();
+}).catch(()=>{});
 
 /* ===== FIND YOUR SCENT =====
    Two modes in one popup: Quick pick (tap options, matches update live) and Step by step (one question at a time).
