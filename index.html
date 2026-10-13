@@ -318,9 +318,21 @@ nav a{white-space:nowrap}
 .qz-c .dot{width:10px;height:10px;border-radius:50%;background:var(--c)}
 .qz-live{border-top:1px solid var(--line);padding-top:14px}
 .qz-live .qz-step{margin-bottom:8px}
+/* brand chips: compact, one swipeable row on phones */
+.brandbar{gap:7px;margin-bottom:16px}
+.brandbar .chip{padding:6px 13px;font-size:11px;letter-spacing:.1em}
+.brandbar .chip small{margin-left:5px;font-size:10px}
+@media(max-width:720px){
+ .brandbar{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-left:-24px;margin-right:-24px;padding:2px 24px 6px;
+  -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent 100%)}
+ .brandbar::-webkit-scrollbar{display:none}
+ .brandbar .chip{flex:none;scroll-snap-align:start;white-space:nowrap}
+ .genbar{margin:0 0 18px}
+ .tools{gap:10px 14px;margin-bottom:28px}
+}
 .genbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin:-6px 0 24px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .genbar span{margin-right:4px}
-.gchip{border:1px solid var(--line);background:transparent;color:var(--muted);padding:6px 16px;font:400 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:30px}
+.gchip{border:1px solid var(--line);background:transparent;color:var(--muted);padding:6px 13px;font:400 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:30px}
 .gchip:hover{border-color:var(--gold);color:var(--ink)}
 .gchip.on{background:var(--gold);border-color:var(--gold);color:var(--on-gold)}
 .qz-fam{margin-top:10px;display:flex;flex-direction:column;gap:6px}
@@ -518,7 +530,7 @@ const PRODUCTS=[
  {brand:"Maison Margiela",name:"Replica Jazz Club",g:"Unisex",sq:"JQWKMPNXK3MMHWNFVD3RZVTW",img:IMG["u-jazz.jpg"],imgL:IMG_L["u-jazz.jpg"],sea:"c",tm:"n",cat:"Sweet",cat2:"Leather",notes:"Rum, tobacco leaf and vanilla. A smoky, boozy lounge.",p:{2:10,5:20,10:35},l:{3:18,5:23,10:38},color:"#9a5a2a",n:{t:["Pink pepper", "Neroli", "Lemon"],h:["Rum", "Java vetiver", "Clary sage"],b:["Tobacco leaf", "Vanilla bean", "Styrax"]}},
  {brand:"Nishane",name:"Ani Extrait de Parfum",g:"Unisex",sq:"5QQ4SJTXANHQPQIU7ORYBAJB",img:IMG["nishane-ani.jpg"],imgL:IMG_L["nishane-ani.jpg"],sea:"c",tm:"b",cat:"Sweet",cat2:"Spicy",notes:"Ginger and bergamot over cardamom and rose, with vanilla, sandalwood and benzoin.",p:{2:15,5:30,10:48},l:{3:26,5:33,10:51},color:"#d9b27a",n:{t:["Ginger", "Bergamot", "Pink pepper", "Green notes"],h:["Cardamom", "Black currant", "Turkish rose"],b:["Vanilla", "Benzoin", "Sandalwood", "Cedar", "Patchouli", "Ambergris", "Musk"]}},
  {brand:"Nishane",name:"Fan Your Flames Extrait de Parfum",g:"Unisex",sq:"ZXPCML5QU6DKV5U2OFSVHC4Y",img:IMG["u-fyf.jpg"],imgL:IMG_L["u-fyf.jpg"],sea:"c",tm:"n",cat:"Sweet",cat2:"Woody",notes:"Coconut, tobacco, rum and tonka. Warm and addictive.",p:{2:15,5:35,10:65},l:{3:26,5:38,10:68},color:"#c9873a",n:{t:["Coconut", "Rum"],h:["Tobacco", "Tonka bean"],b:["Chinese cedar", "Oakmoss"]}},
-{brand:"Nishane",name:"Fan Your Flames X Extrait de Parfum",g:"Unisex",sq:"PE33TD43HYRTTZC5A6JHU25A",img:IMG["u-fyfx.jpg"],imgL:IMG_L["u-fyfx.jpg"],rep:1,sea:"c",tm:"n",cat:"Sweet",cat2:"Woody",notes:"Coconut, rum and tobacco with thyme and mastic, over tonka, cedar and patchouli. A woodier, more herbal take on Fan Your Flames.",p:{2:20,5:40,10:70},l:{3:33,5:43,10:73},color:"#d9a24a",n:{t:["Coconut", "Rum", "Mastic"],h:["Tobacco", "Tonka bean", "Thyme", "Carrot"],b:["Cedar", "Oakmoss", "Patchouli"]}},
+{brand:"Nishane",name:"Fan Your Flames X Extrait de Parfum",g:"Unisex",sq:"PE33TD43HYRTTZC5A6JHU25A",soon:1,limited:"Arriving soon",img:IMG["u-fyfx.jpg"],imgL:IMG_L["u-fyfx.jpg"],rep:1,sea:"c",tm:"n",cat:"Sweet",cat2:"Woody",notes:"Coconut, rum and tobacco with thyme and mastic, over tonka, cedar and patchouli. A woodier, more herbal take on Fan Your Flames.",p:{2:20,5:40,10:70},l:{3:33,5:43,10:73},color:"#d9a24a",n:{t:["Coconut", "Rum", "Mastic"],h:["Tobacco", "Tonka bean", "Thyme", "Carrot"],b:["Cedar", "Oakmoss", "Patchouli"]}},
  {brand:"Nishane",name:"Hacivat Extrait de Parfum",g:"Unisex",sq:"ZWRPIQIHVK7HZA2GOFV7NRE2",img:IMG["nishane-hacivat.jpg"],imgL:IMG_L["nishane-hacivat.jpg"],sea:"w",tm:"d",cat:"Fresh",cat2:"Woody",notes:"Pineapple, grapefruit and bergamot over a dry base of oakmoss, patchouli and woods. Bright up front, earthy underneath.",p:{2:15,5:35,10:65},l:{3:26,5:38,10:68},color:"#a8b860",n:{t:["Pineapple", "Grapefruit", "Bergamot"],h:["Cedar", "Patchouli", "Jasmine"],b:["Oakmoss", "Woody notes"]}},
  {brand:"Nishane",name:"Kredo Extrait de Parfum",g:"Unisex",sq:"AW3KVJLCAKI7SLNFDO6J7WPV",img:IMG["u-kredo.jpg"],imgL:IMG_L["u-kredo.jpg"],rep:1,sea:"c",tm:"b",cat:"Leather",cat2:"Spicy",notes:"Pink pepper, cardamom and osmanthus over oud, sandalwood and suede.",p:{2:20,5:40,10:75},l:{3:33,5:43,10:78},color:"#a0603a",n:{t:["Pink pepper", "Cardamom"],h:["Osmanthus"],b:["Oud accord", "Sandalwood", "Suede"]}},
  {brand:"Nishane",name:"Papilefiko Extrait de Parfum",g:"Unisex",sq:"HAQDGYJNCWMIHP5A5GJJSRHJ",img:IMG["u-papilefiko.jpg"],imgL:IMG_L["u-papilefiko.jpg"],rep:1,sea:"a",tm:"b",cat:"Woody",notes:"Cardamom, lavender and jasmine over fir balsam, styrax and moss.",p:{2:20,5:40,10:75},l:{3:33,5:43,10:78},color:"#6a7a4a",n:{t:["Cardamom", "Coriander", "Citrus"],h:["Lavender", "Artemisia", "Jasmine"],b:["Balsam fir", "Styrax", "Moss"]}},
@@ -539,6 +551,7 @@ const PRODUCTS=[
  {brand:"Valentino",name:"Uomo Born in Roma Purple Melancholia",g:"Men",sq:"4R5LGTZLZQUWDBINL746IB7P",img:IMG["u-purple.jpg"],imgL:IMG_L["u-purple.jpg"],sea:"c",tm:"b",cat:"Sweet",cat2:"Spicy",notes:"Cardamom over coconut and lavender, settling into warm amberwood.",p:{2:12,5:25,10:40},l:{3:21,5:28,10:43},color:"#7a5a9a",n:{t:["Cardamom", "Bergamot"],h:["Lavandin", "Coconut accord"],b:["Amberwood"]}},
  {brand:"Yves Saint Laurent",name:"La Nuit de L'Homme",g:"Men",sq:"I2YT222LFWFYRAWUXOQSDZPB",img:IMG["u-lanuit.jpg"],imgL:IMG_L["u-lanuit.jpg"],sea:"c",tm:"n",cat:"Spicy",cat2:"Woody",notes:"Cardamom, lavender and cedar. A seductive evening classic.",p:{2:10,5:20,10:35},l:{3:18,5:23,10:38},color:"#3a3a5a",n:{t:["Cardamom", "Bergamot"],h:["Lavender", "Virginia cedar"],b:["Vetiver", "Caraway", "Tonka bean"]}}
 ];
+const inStock=p=>!!p.sq&&!p.soon;
 const brands=["All brands",...[...new Set(PRODUCTS.map(p=>p.brand))].sort()];
 const fams=["All scents",...[...new Set(PRODUCTS.map(p=>p.cat))].sort()];
 const brandSel=new Set();let fam="All scents",gen="all",sea="all",sortBy="brand",sherpaSet=null;
@@ -636,7 +649,7 @@ function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"clas
    <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
    <div class="sizes">${V.sizes.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml</button>`).join("")}</div>
-   <div class="price">${priceHTML(p,st.v,st.z)}</div>${p.sq?`<button type="button" class="order add">Add to cart</button>`:""}</div></article>`}
+   <div class="price">${priceHTML(p,st.v,st.z)}</div>${inStock(p)?`<button type="button" class="order add">Add to cart</button>`:""}</div></article>`}
 function bind(card){const i=+card.dataset.i,p=PRODUCTS[i],st=state[i];
  card.querySelectorAll(".vt").forEach(b=>b.onclick=()=>{st.v=b.dataset.v;if(!VIALS[st.v].sizes.includes(st.z))st.z=VIALS[st.v].sizes[0];
   const n=document.createElement("div");n.innerHTML=cardHTML(p);const c=n.firstElementChild;c.style.minHeight=card.style.minHeight;card.replaceWith(c);bind(c)});
@@ -714,7 +727,7 @@ document.getElementById("sherpa-clear").onclick=()=>{sherpaSet=null;render()};
   const t=ans.tm||"b";if(t==="b")s+=p.tm==="b"?2:1;else s+=p.tm===t?2:p.tm==="b"?1:-1;
   (ans.avoid||[]).forEach(a=>{if(AVOID[a]&&AVOID[a](p))s-=8});
   (ans.love||[]).forEach(a=>{if(LOVE[a]&&LOVE[a].test(allNotes(p)))s+=2.5});
-  if(p.sq)s+=.5;return s}
+  if(inStock(p))s+=.5;return s}
  function picks(){return PRODUCTS.map((p,i)=>({p,i,s:score(p)})).sort((a,b)=>b.s-a.s||low(a.p)-low(b.p)).filter(x=>x.s>0).reduce((out,x,_,all)=>{if(!out.length){const f=(ans.fam||[]).filter(v=>v!=="any");f.forEach(c=>{const t=all.find(y=>(y.p.cat===c||y.p.cat2===c)&&y.s>=5&&!out.includes(y));if(t)out.push(t)});out.sort((a,b)=>b.s-a.s)}if(out.length<3&&!out.includes(x))out.push(x);return out},[]).slice(0,3)}
  function esc(t){return String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
  function pick(q,v,single){
@@ -726,12 +739,12 @@ document.getElementById("sherpa-clear").onclick=()=>{sherpaSet=null;render()};
  function bindToggle(){box.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{if(mode===b.dataset.mode)return;mode=b.dataset.mode;step=0;draw()})}
  function resultsHTML(r){
   if(!r.length)return `<p class="qz-none">Nothing fits all of that yet. Try a different budget or season.</p>`;
-  const avail=r.filter(x=>x.p.sq),setPrice=avail.reduce((a,x)=>a+x.p.p[2],0);
+  const avail=r.filter(x=>inStock(x.p)),setPrice=avail.reduce((a,x)=>a+x.p.p[2],0);
   const used=new Set();return `<div class="qz-res">${r.map((x,k)=>{const p=x.p;return `<div class="qz-r ${k?"":"best"}"><div class="tag">${k?"Also on your trail":"The Sherpa’s top pick"}</div>
     <h4>${esc(p.brand)} ${esc(p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,""))}</h4>
     <p class="why">${FAM_LABEL[p.cat]||p.cat}${p.cat2?" with "+(FAM_LABEL[p.cat2]||p.cat2).toLowerCase():""} · ${SEA_TXT[p.sea]} · ${TM_TXT[p.tm]}</p><p class="n">${whyText(p,k,used)}</p>
     ${p.n?`<details class="qz-pyr"${openNotes.has(x.i)?" open":""} data-i="${x.i}"><summary>Full notes</summary><dl><dt>Top</dt><dd>${p.n.t.map(esc).join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.map(esc).join(", ")}</dd><dt>Base</dt><dd>${p.n.b.map(esc).join(", ")}</dd></dl></details>`:""}
-    <div class="row"><span class="from">From $${low(p)}${p.sq?"":`<span class="soon">${esc(p.limited||"Coming soon")}</span>`}</span><button type="button" class="qz-view" data-i="${x.i}">View</button></div></div>`}).join("")}</div>
+    <div class="row"><span class="from">From $${low(p)}${inStock(p)?"":`<span class="soon">${esc(p.limited||"Coming soon")}</span>`}</span><button type="button" class="qz-view" data-i="${x.i}">View</button></div></div>`}).join("")}</div>
    ${avail.length>1?`<div class="qz-set">Can't decide? Try ${avail.length===r.length?"all "+avail.length:"the "+avail.length+" in stock"} as 2 ml samples for $${setPrice}.<button type="button" data-a="set">Add ${avail.length} samples to cart</button></div>`:""}`}
   const PROPER=/^(Italian|Chinese|Madagascar|Turkish|Haitian|Australian|Calabrian|Indian|Java|Sicilian|Bulgarian|Egyptian|Virginia|Mysore|Tahitian|Bourbon|Indonesian|Sri|Florentine)$/;
  const lc=a=>a.map(x=>x.split(" ").map(w=>PROPER.test(w)?w:w.toLowerCase()).join(" "));
@@ -790,7 +803,7 @@ document.getElementById("sherpa-clear").onclick=()=>{sherpaSet=null;render()};
   if(seaFit==="stretch")out+=` Heads up: it's happiest in ${c.SEA}.`;
   const av=(ans.avoid||[]).filter(v=>v!=="any"&&AV_TXT[v]).map(v=>AV_TXT[v]);
   if(!k&&av.length)out+=` None of my picks lean on ${list(av)}.`;
-  if(!p.sq)out+=" It's arriving soon, so check back shortly.";
+  if(!inStock(p))out+=" It's arriving soon, so check back shortly.";
   return esc(out.replace(/\s+/g," ").trim())}
  const short=n=>n.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"");
  function famInfo(q){const sel=(ans.fam||[]).filter(v=>v!=="any");if(!sel.length)return "";
@@ -823,7 +836,7 @@ document.getElementById("sherpa-clear").onclick=()=>{sherpaSet=null;render()};
    <div class="qz-links"><button type="button" data-a="again">Retake the quiz</button><button type="button" data-a="shop">Show all matches</button></div>`;
   bindToggle();bindRes()}
  function bindRes(){
-  const avail=picks().filter(x=>x.p.sq);
+  const avail=picks().filter(x=>inStock(x.p));
   box.querySelectorAll(".qz-view").forEach(b=>b.onclick=()=>showCard(+b.dataset.i));
   box.querySelectorAll(".qz-pyr").forEach(d=>d.ontoggle=()=>{d.open?openNotes.add(+d.dataset.i):openNotes.delete(+d.dataset.i)});
   box.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const a=b.dataset.a;
