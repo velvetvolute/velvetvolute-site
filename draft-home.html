@@ -144,7 +144,9 @@ footer .brand{font-size:18px}
 
 /* responsive */
 @media (max-width:1024px){
-  .links{display:none}
+  nav .wrap{flex-wrap:wrap;height:auto;padding-block:12px 10px;row-gap:6px}
+  .links{order:3;width:100%;justify-content:center;flex-wrap:wrap;gap:2px 22px;border-top:1px solid var(--line);padding-top:6px}
+  .links a{display:inline-flex;align-items:center;min-height:44px}
   .hero .wrap,.coll-head,.letter .wrap,footer .wrap{grid-template-columns:1fr;gap:var(--s2)}
   .picks{grid-template-columns:1fr}
   .hero figcaption{left:16px}
@@ -162,6 +164,9 @@ footer .brand{font-size:18px}
   .grid{grid-template-columns:1fr}
   .card .meta{flex-direction:column;gap:6px}
   .bar{font-size:10px;letter-spacing:.12em}
+  .links{gap:0 16px}
+  .links a{font-size:11px;letter-spacing:.1em}
+  .cart{padding:0 14px}
   .brand{font-size:18px;letter-spacing:.12em}
 }
 </style>
