@@ -523,10 +523,11 @@ section.x-spot{padding:var(--x-s4) 0;color:var(--x-text);
 #spotlight .zodiac p{font:italic 400 15px/1.75 var(--x-italic);color:var(--x-text);max-width:640px}
 
 /* shop heading */
-.x-shop-head{display:grid;grid-template-columns:5fr 7fr;gap:var(--x-s3);align-items:end;margin-bottom:36px}
-.x-shop-head h2{font:400 clamp(2.4rem,5vw,4rem)/1 var(--serif);color:var(--x-gold);text-align:left;margin:0}
-.x-shop-head p{margin:0;color:var(--x-text);max-width:520px}
-.x-shop-head button{border:0;background:none;padding:0;font:inherit;color:var(--x-gold);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;cursor:pointer}
+.x-shop-head{max-width:640px;margin:0 auto 32px;text-align:center}
+.x-shop-head h2{font:400 clamp(2.4rem,5vw,4rem)/1 var(--serif);color:var(--x-gold);text-align:center;margin:0 0 18px}
+.x-shop-head p{margin:0 auto;color:var(--x-text);max-width:560px}
+.x-shop-head .x-sherpa{margin-top:14px;color:var(--x-soft)}
+.x-shop-head button{border:0;background:none;padding:0;font:inherit;font-weight:500;color:var(--x-gold);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;cursor:pointer}
 
 /* how it works */
 section.x-how{background:var(--x-surface);padding:var(--x-s4) 0 calc(var(--x-s4) + 8px);color:var(--x-text)}
@@ -561,7 +562,7 @@ footer p{max-width:none;margin:0 0 8px}
 
 @media (prefers-reduced-motion:reduce){.x-btn,.x-tlink{transition:none}}
 @media (max-width:1024px){
-  .x-hero .wrap,.x-shop-head,.x-letter .wrap,footer .wrap{grid-template-columns:1fr;gap:var(--x-s2)}
+  .x-hero .wrap,.x-letter .wrap,footer .wrap{grid-template-columns:1fr;gap:var(--x-s2)}
   .x-picks{grid-template-columns:1fr}
   .x-hero figcaption{left:16px}
 }
@@ -637,7 +638,7 @@ footer p{max-width:none;margin:0 0 8px}
 </div></section>
 
 <section id="shop"><div class="wrap">
-  <div class="x-shop-head"><h2>Our fragrances</h2><p>Every fragrance is thoughtfully chosen, with at least one new addition every month. Curate your own playlist by notes, season and mood, or <button type="button" data-quiz>let the Scent Sherpa guide you</button>.</p></div>
+  <div class="x-shop-head"><h2>Our fragrances</h2><p>Every fragrance is thoughtfully chosen, with at least one new addition every month. Curate your own playlist by notes, season and mood.</p><p class="x-sherpa">Not sure where to start? <button type="button" data-quiz>Let the Scent Sherpa guide you</button></p></div>
   <div class="brandbar" id="brands"></div>
   <div class="genbar" id="genbar" role="group" aria-label="Who it's for"><span>For</span><button type="button" class="gchip on" data-g="all">Everyone</button><button type="button" class="gchip" data-g="Men">Men</button><button type="button" class="gchip" data-g="Unisex">Unisex</button></div>
   <div class="fbar"><button type="button" class="fbtn" id="fbtn" aria-controls="tools" aria-expanded="false"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Filters &amp; sort<span class="fcount" id="fcount" hidden></span></button><span class="count" id="count2"></span></div>
