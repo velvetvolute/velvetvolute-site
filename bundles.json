@@ -1,0 +1,55 @@
+{
+  "pct": 10,
+  "sizes": [2, 5],
+  "bundles": [
+    {
+      "id": "time-capsule",
+      "name": "The Time Capsule Collection",
+      "house": "Nishane",
+      "blurb": "Four extraits from one Nishane collection, each with its own mood: Kredo's quiet conviction, Tempfluo's slow golden afternoon, Papilefiko's deep balsam and moss by the legendary Dominique Ropion, and Deziro's fresh sea air. Find your favourite, then go big on a 10 ml.",
+      "sq": ["AW3KVJLCAKI7SLNFDO6J7WPV", "6RRUWMTR6HR57YISIVFICWM3", "HAQDGYJNCWMIHP5A5GJJSRHJ", "NIBHBS673EEIIPPGJSAEI7JY"]
+    },
+    {
+      "id": "born-in-roma",
+      "name": "The Born in Roma Collection",
+      "house": "Valentino",
+      "blurb": "Four takes on one city. Green Stravaganza's gardens at sunrise, Yellow Dream's sunlit streets, Coral Fantasy's golden hour and Purple Melancholia's late night in a Roman palace. A full day in Rome, from first light to last call.",
+      "sq": ["E7TWUA2IZR65TXSYDMQKSHIL", "XRZWTFEH4VB5LESUQKZ2ZWWU", "WFC3PXWORS5A6XAMKWG7PGMJ", "4R5LGTZLZQUWDBINL746IB7P"]
+    },
+    {
+      "id": "leather",
+      "name": "The Leather Collection",
+      "house": "Tom Ford & Nishane",
+      "blurb": "Four ways to wear leather, from smooth to unapologetic. Ombre Leather's worn saddle, Tuscan Leather's smoky raspberry, Suède et Safran's tailored suede jacket and Kredo's oud-and-suede conviction.",
+      "sq": ["LMHN6IFHQPUTAW4H22NTVQKY", "Q6IFTTHV75EK3RJTB474ZTI5", "TC2TRWOK25KG3ZSUULU3PTSO", "AW3KVJLCAKI7SLNFDO6J7WPV"]
+    },
+    {
+      "id": "tom-ford",
+      "name": "The Tom Ford Collection",
+      "house": "Tom Ford",
+      "blurb": "The house essentials, side by side. Black Orchid's dark opulence, Noir's sensual evening classic, Ombre Leather's open-road ease and Tuscan Leather, one of the original Private Blends and still one of the boldest.",
+      "sq": ["6IXPDR425PPISJBHT2OAGJZY", "IEIPT6KIEZLX3W3U3CRDMOD6", "LMHN6IFHQPUTAW4H22NTVQKY", "Q6IFTTHV75EK3RJTB474ZTI5"]
+    },
+    {
+      "id": "nishane-x",
+      "name": "The Nishane X Collection",
+      "house": "Nishane",
+      "blurb": "Nishane's X line takes its classics somewhere darker and more grown. Fan Your Flames X adds thyme and mastic to the coconut-and-rum original, and Hundred Silent Ways X turns its white florals toward vanilla and leather after dark.",
+      "sq": ["PE33TD43HYRTTZC5A6JHU25A", "RIDSP2UTX5Z3YD5AFG2WQ5LQ"]
+    },
+    {
+      "id": "boozy",
+      "name": "The Boozy Collection",
+      "house": "Margiela, Nishane & Givenchy",
+      "blurb": "Last call, bottled. Jazz Club's rum and tobacco, Fan Your Flames' coconut and rum, Réserve Privée's whisky and chestnut, and Nefs, honeyed whiskey poured over oud. For the nights that run 'til 5am.",
+      "sq": ["JQWKMPNXK3MMHWNFVD3RZVTW", "ZXPCML5QU6DKV5U2OFSVHC4Y", "CPQZVESNT2M27ETVZCOK7U6U", "OZ5Z33WF6IPMP7W6MNJWE47G"]
+    },
+    {
+      "id": "warm",
+      "name": "The Warm Collection",
+      "house": "Armani, Margiela, Claude Marsal & Ferragamo",
+      "blurb": "Your cold-weather rotation. I Will's vanilla and lavender, Coffee Break's warm café, Or Noir Café's toffee and espresso, and Ferragamo Signature's cinnamon over soft leather. Smooth and cozy from first frost to the last snow.",
+      "sq": ["2SLX3E67ZUQTY7XT2OI2PLNR", "R6RQ2KN46KOJNXXLIK3Y5UHT", "IGK65TSUCPCGLTA7O7OP7XMT", "CENIOXSZE3IM2XDDFTHGCQBE"]
+    }
+  ]
+}

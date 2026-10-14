@@ -651,6 +651,38 @@ footer p{max-width:none;margin:0 0 8px}
   #spotlight .zodiac button{grid-column:1/-1;justify-self:start}
 }
 @media (max-width:480px){.x-pick{grid-template-columns:1fr}.x-pick img{max-width:220px}}
+
+/* special collections */
+section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradient(50% 70% at 85% 20%,rgba(110,26,49,.65),transparent 70%),var(--x-deep)} /* taste-skill-ignore: brand glow */
+.x-coll-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:var(--x-s2)}
+.x-coll h2{font:400 clamp(2.2rem,4.5vw,3.6rem)/1 var(--serif);color:var(--x-gold);margin:16px 0 0;text-align:left}
+.x-coll-head p{max-width:560px;margin:14px 0 0;color:var(--x-soft);font:400 16px/1.6 var(--sans)}
+.x-colls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.bundle{display:flex;flex-direction:column;padding:28px;border-radius:4px;color:#330a14;
+  background:radial-gradient(60% 40% at 18% 22%,rgba(92,52,24,.30),transparent 70%),radial-gradient(45% 35% at 82% 58%,rgba(70,38,16,.26),transparent 72%),#a07b52} /* taste-skill-ignore: camel card texture, matches shop cards */
+.bundle .house{font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#4a1a1f}
+.bundle h3{font:500 clamp(26px,2.6vw,32px)/1.1 var(--serif);color:#2c0610;margin:10px 0 14px}
+.bundle .shots{display:flex;gap:10px;margin:0 0 16px}
+.bundle .shots img{width:72px;height:72px;object-fit:cover;border-radius:50%;background:#8a6640}
+.bundle .blurb{font:italic 400 15px/1.7 var(--x-italic);margin:0 0 16px;color:#2a0610}
+.bundle ul{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px}
+.bundle li button{background:rgba(74,14,30,.1);border:0;border-radius:999px;padding:6px 12px;font:500 13px/1.2 var(--sans);color:#330a14;cursor:pointer}
+.bundle li button:hover{background:rgba(74,14,30,.2)}
+.bundle li .soon{font-weight:600;color:#6a1020}
+.bundle .buy{margin-top:auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:14px 18px}
+.bundle .sizes{display:inline-flex;border-radius:999px;background:rgba(74,14,30,.12);padding:3px}
+.bundle .sizes button{border:0;background:transparent;border-radius:999px;padding:8px 14px;font:500 13px/1 var(--sans);color:#330a14;cursor:pointer}
+.bundle .sizes button.on{background:#4a0e1e;color:#e8d3b4}
+.bundle .price{justify-self:end;text-align:right;font:600 22px/1.1 var(--sans);color:#2c0610}
+.bundle .price s{font-weight:400;font-size:15px;opacity:.7;margin-right:6px}
+.bundle .price small{display:block;font:500 13px/1.4 var(--sans);color:#5a1020}
+.bundle .add{grid-column:1/-1;padding:14px 0;border:0;border-radius:2px;background:#4a0e1e;color:#e8d3b4;font:500 13px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.bundle .add:hover:not(:disabled){background:#6a1a2e}
+.bundle .add:disabled{background:rgba(74,14,30,.35);color:#2c0610;cursor:default;letter-spacing:.12em}
+@media (max-width:900px){.x-colls{grid-template-columns:1fr}}
+@media (max-width:768px){.x-coll-head{flex-direction:column;align-items:flex-start}.bundle{padding:22px}.bundle .shots img{width:58px;height:58px}}
+@media (max-width:420px){.bundle .buy{grid-template-columns:1fr}.bundle .price{justify-self:start;text-align:left}}
+.cl-sub{display:block;margin-top:2px;font-size:12.5px;opacity:.85}
 </style>
 </head>
 <body>
@@ -684,7 +716,7 @@ footer p{max-width:none;margin:0 0 8px}
 <div class="bar">Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
   <a class="logo" href="#top"><span class="mono">VV</span>Velvet <span>Volute</span></a>
-  <nav><a href="#shop">Shop</a><a href="/about">About the Brand</a><a href="#how">How It Works</a><a href="#contact">Contact</a></nav><button type="button" class="cart-open" id="cart-open" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></button>
+  <nav><a href="#shop">Shop</a><a href="#collections">Special Collections</a><a href="/about">About the Brand</a><a href="#how">How It Works</a><a href="#contact">Contact</a></nav><button type="button" class="cart-open" id="cart-open" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></button>
 </div></header>
 
 <div class="x-hero" id="top"><div class="wrap">
@@ -785,6 +817,13 @@ footer p{max-width:none;margin:0 0 8px}
   </div>
 </div>
 
+<section class="x-coll" id="collections" aria-labelledby="coll-h" hidden><div class="wrap">
+  <div class="x-coll-head">
+    <div><span class="x-label">Curated sets</span><h2 id="coll-h">Special Collections</h2><p>Hand-picked sets of scents that belong together, like a playlist built around one mood. Take the whole set and save <span id="coll-pct">10%</span>.</p></div>
+  </div>
+  <div class="x-colls" id="colls"></div>
+</div></section>
+
 <section class="x-how" id="how"><div class="wrap">
   <h2>How it works</h2>
   <p class="sub">Order online in a few taps, no account needed. Every order is hand-poured into a fresh vial, from a 2 ml sample up to larger sizes.</p>
@@ -849,7 +888,7 @@ const PRODUCTS=[
  {brand:"Nishane",name:"Tempfluo Extrait de Parfum",g:"Unisex",sq:"6RRUWMTR6HR57YISIVFICWM3",img:IMG["u-tempfluo.jpg"],imgL:IMG_L["u-tempfluo.jpg"],imgR:IMG_R["u-tempfluo.jpg"],rep:1,sea:"a",tm:"b",cat:"Fresh",cat2:"Sweet",notes:"Bright mandarin, bergamot and orange blossom with a thread of saffron, softening into praline, cashmere wood and vanilla. Brighter than its notes suggest.",p:{2:20,5:40,10:75},l:{3:33,5:43,10:78},color:"#d99a5a",n:{t:["Saffron", "Mandarin", "Bergamot"],h:["Orange blossom", "Praline", "Jasmine"],b:["Cashmere wood", "Cedar", "Vanilla"]}},
  {brand:"Nishane",name:"Hundred Silent Ways X Extrait de Parfum",g:"Unisex",sq:"RIDSP2UTX5Z3YD5AFG2WQ5LQ",soon:1,img:IMG["u-hswx.jpg"],imgL:IMG_L["u-hswx.jpg"],imgR:IMG_R["u-hswx.jpg"],rep:1,sea:"c",tm:"b",cat:"Sweet",cat2:"Leather",limited:"Arriving soon",notes:"A rich white floral: tuberose, gardenia and iris over peach and mandarin, warmed with vanilla, leather and patchouli. A darker take on Hundred Silent Ways.",p:{2:18,5:40,10:70},l:{3:30,5:43,10:73},color:"#d9a090",n:{t:["Tuberose", "Mandarin", "Peach"],h:["Gardenia", "Orris", "Jasmine", "Heliotrope"],b:["Vanilla", "Leather", "Patchouli"]}},
  {brand:"Nishane",name:"Nefs Extrait de Parfum",g:"Unisex",sq:"OZ5Z33WF6IPMP7W6MNJWE47G",soon:1,img:IMG["u-nefs.jpg"],imgL:IMG_L["u-nefs.jpg"],imgR:IMG_R["u-nefs.jpg"],rep:1,sea:"c",tm:"n",cat:"Spicy",cat2:"Sweet",limited:"Arriving soon",notes:"Rose and honey with saffron and fig, over oud, whiskey, leather and amber. Rich, boozy and opulent.",p:{2:28,5:60,10:110},l:{3:45,5:63,10:113},color:"#b8822e",n:{t:["Honey", "Saffron", "Fig", "Violet", "Sage"],h:["Rose", "Osmanthus", "Nutmeg", "Jasmine", "Geranium"],b:["Oud", "Whiskey", "Vanilla", "Leather", "Amber", "Cinnamon", "Gurjan balsam", "Cedar"]}},
- {brand:"Nishane",name:"Su\u00e8de et Safran Extrait de Parfum",g:"Unisex",sq:"TC2TRWOK25KG3ZSUULU3PTSO",soon:1,img:IMG["u-suede.jpg"],imgL:IMG_L["u-suede.jpg"],imgR:IMG_R["u-suede.jpg"],rep:1,sea:"c",tm:"b",cat:"Leather",cat2:"Spicy",limited:"Arriving soon",notes:"Saffron and ambrette over soft suede and ginger, drying down to leather and musk.",p:{2:15,5:35,10:65},l:{3:26,5:38,10:68},color:"#8a5a3a",n:{t:["Saffron", "Ambrette"],h:["Suede", "Ginger"],b:["Leather", "Musk"]}},
+ {brand:"Nishane",name:"Su\u00e8de et Safran Extrait de Parfum",g:"Unisex",sq:"TC2TRWOK25KG3ZSUULU3PTSO",soon:1,img:IMG["u-suede.jpg"],imgL:IMG_L["u-suede.jpg"],imgR:IMG_R["u-suede.jpg"],rep:1,sea:"c",tm:"b",cat:"Leather",cat2:"Spicy",limited:"Arriving soon",notes:"Saffron and ambrette over soft suede and ginger, drying down to leather and musk.",p:{2:20,5:45,10:75},l:{3:33,5:48,10:78},color:"#8a5a3a",n:{t:["Saffron", "Ambrette"],h:["Suede", "Ginger"],b:["Leather", "Musk"]}},
  {brand:"Nishane",name:"Wulong Cha Extrait de Parfum",g:"Unisex",sq:"V55WG46EP3VHSPNRPSWAJKOV",soon:1,img:IMG["u-wulong.jpg"],imgL:IMG_L["u-wulong.jpg"],imgR:IMG_R["u-wulong.jpg"],rep:1,sea:"w",tm:"d",cat:"Fresh",limited:"Arriving soon",notes:"Bergamot, orange and mandarin over oolong tea and nutmeg, settling into fig and musk. Clean and bright.",p:{2:15,5:35,10:65},l:{3:26,5:38,10:68},color:"#9ab070",n:{t:["Bergamot", "Orange", "Mandarin", "Litsea cubeba"],h:["Oolong tea", "Nutmeg"],b:["Fig", "Musk"]}},
  {brand:"Parfums de Marly",name:"Altha\u00efr Eau de Parfum",g:"Men",sq:"BIOLOUFPWNNQQ2BOBZSMYZI5",soon:1,limited:"Arriving soon",img:IMG["u-althair.jpg"],imgL:IMG_L["u-althair.jpg"],imgR:IMG_R["u-althair.jpg"],rep:1,sea:"c",tm:"b",cat:"Sweet",cat2:"Spicy",notes:"Bergamot, orange blossom, cinnamon and cardamom over Bourbon vanilla and elemi, drying down to praline, guaiac wood, ambroxan and musk. A fresh, elegant vanilla.",p:{2:15,5:32,10:55},l:{3:26,5:35,10:58},color:"#c8873a",n:{t:["Bergamot","Orange blossom","Cinnamon","Cardamom"],h:["Bourbon vanilla","Elemi"],b:["Praline","Guaiac wood","Ambroxan","Musk"]}},
  {brand:"Tom Ford",name:"Black Orchid Eau de Parfum",g:"Unisex",sq:"6IXPDR425PPISJBHT2OAGJZY",img:IMG["tf-black-orchid.jpg"],imgL:IMG_L["tf-black-orchid.jpg"],imgR:IMG_R["tf-black-orchid.jpg"],sea:"c",tm:"n",cat:"Woody",cat2:"Sweet",notes:"Black truffle, dark orchid, patchouli and chocolate. Dark and opulent.",p:{2:15,5:30,10:55},l:{3:26,5:33,10:58},color:"#3a1a2a",n:{t:["Black truffle", "Gardenia", "Black currant", "Ylang-ylang", "Jasmine", "Bergamot", "Mandarin", "Lemon"],h:["Orchid", "Spices", "Fruity notes", "Lotus"],b:["Chocolate", "Patchouli", "Vanilla", "Incense", "Amber", "Sandalwood", "Vetiver", "White musk"]}},
@@ -1098,6 +1137,39 @@ fetch("zodiac.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
   const c=g.querySelector(`.card[data-i="${i}"]`);if(c){c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}};
 }).catch(()=>{});
 
+/* ===== SPECIAL COLLECTIONS =====
+   Sets live in bundles.json (scent ids, % off, sizes). The checkout reads the same file,
+   so the set price shown here is the price charged. A set can be bought once every scent in it is in stock. */
+let BUNDLES=null;
+const bItems=b=>b.sq.map(id=>PRODUCTS.find(p=>p.sq===id)).filter(Boolean);
+const bReady=b=>bItems(b).length===b.sq.length&&bItems(b).every(inStock);
+const bBase=(b,z)=>bItems(b).reduce((a,p)=>a+p.p[z],0);
+const bPrice=(b,z)=>Math.floor(bBase(b,z)*(100-BUNDLES.pct)/100);
+const bundleById=id=>BUNDLES&&BUNDLES.bundles.find(b=>b.id===id);
+const shortName=p=>p.name.replace(/^Uomo Born in Roma /,"").replace(/^Gentleman /,"").replace(/^Replica /,"").replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"");
+function collections(){
+ const sec=document.getElementById("collections"),box=document.getElementById("colls");if(!sec||!box||!BUNDLES)return;
+ const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+ document.getElementById("coll-pct").textContent=BUNDLES.pct+"%";
+ box.innerHTML=BUNDLES.bundles.map((b,bi)=>{const ps=bItems(b),ready=bReady(b);
+  return `<article class="bundle" data-b="${bi}"><span class="house">${esc(b.house)} · ${ps.length} scents</span><h3>${esc(b.name)}</h3>
+  <p class="blurb">${esc(b.blurb)}</p>
+  <ul>${ps.map(p=>`<li><button type="button" data-jump="${PRODUCTS.indexOf(p)}">${esc(shortName(p))}${inStock(p)?"":` <span class="soon">· arriving soon</span>`}</button></li>`).join("")}</ul>
+  <div class="buy"><div class="sizes" role="group" aria-label="Vial size">${BUNDLES.sizes.map((z,k)=>`<button type="button" data-z="${z}" class="${k?"":"on"}" aria-pressed="${!k}">${z} ml each</button>`).join("")}</div>
+  <div class="price"></div>
+  <button type="button" class="add" ${ready?"":"disabled"}>${ready?"Add the collection":"Arriving soon"}</button></div></article>`}).join("");
+ box.querySelectorAll(".bundle").forEach(el=>{const b=BUNDLES.bundles[+el.dataset.b];let z=BUNDLES.sizes[0];
+  const show=()=>{el.querySelector(".price").innerHTML=`<s>$${bBase(b,z)}</s>$${bPrice(b,z)}<small>Save $${bBase(b,z)-bPrice(b,z)} · ${bItems(b).length} × ${z} ml classic</small>`};
+  el.querySelectorAll("[data-z]").forEach(t=>t.onclick=()=>{z=+t.dataset.z;el.querySelectorAll("[data-z]").forEach(x=>{x.classList.toggle("on",x===t);x.setAttribute("aria-pressed",x===t)});show()});
+  el.querySelector(".add").onclick=()=>{if(bReady(b)&&window.Cart)Cart.addBundle(b,z)};
+  el.querySelectorAll("[data-jump]").forEach(t=>t.onclick=()=>vvJump(+t.dataset.jump));
+  show()});
+ sec.hidden=false;
+}
+fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(!j||!Array.isArray(j.bundles))return;
+ BUNDLES={pct:Math.max(0,Math.min(50,Number(j.pct)||0)),sizes:(j.sizes||[2,5]).map(Number),bundles:j.bundles};
+ collections();if(window.Cart&&Cart.refresh)Cart.refresh()}).catch(()=>{});
+
 /* ===== FIND YOUR SCENT =====
    Two modes in one popup: Quick pick (tap options, matches update live) and Step by step (one question at a time).
    Uses each fragrance's cat (scent family), sea (c = fall/winter, w = spring/summer, a = all year)
@@ -1295,19 +1367,29 @@ var Cart=(function(){
  function money(n){return "$"+(Number.isInteger(n)?n:n.toFixed(2))}
  function priceOf(p,v,z){return unit(p,VIALS[v].key,z)}
  function find(sq){return PRODUCTS.find(function(p){return p.sq===sq})}
+ function bun(id){return typeof bundleById==="function"?bundleById(id):null}
+ function linePrice(l){if(l.b){var b=bun(l.b);return b?bPrice(b,l.z):0}var p=find(l.sq);return p?priceOf(p,l.v,l.z):0}
+ function keep(l){return l.b?(typeof BUNDLES==="undefined"||!BUNDLES||!!bun(l.b)):!!find(l.sq)}
  function count(){return lines.reduce(function(a,l){return a+l.q},0)}
- function subtotal(){return lines.reduce(function(a,l){var p=find(l.sq);return a+(p?priceOf(p,l.v,l.z)*l.q:0)},0)}
+ function subtotal(){return lines.reduce(function(a,l){return a+linePrice(l)*l.q},0)}
  function shipCost(){if(!ship)return null;var s=subtotal();return ship==="pickup"||s>=FREE?0:SHIP[ship]}
  function badge(){var c=count(),b=$("cart-count");b.textContent=c;b.hidden=!c}
  function toast(t){var el=$("cart-toast");el.innerHTML=t+' <button type="button">View cart</button>';el.querySelector("button").onclick=open;el.classList.add("on");clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove("on")},2600)}
  function add(p,v,z){var l=lines.find(function(x){return x.sq===p.sq&&x.v===v&&x.z===z});
   if(l)l.q=Math.min(10,l.q+1);else lines.push({sq:p.sq,v:v,z:z,q:1});save();badge();draw();toast("Added "+p.name.split(" Eau")[0].split(" Extrait")[0]+" · "+z+" ml "+VN[v].toLowerCase())}
+ function addBundle(b,z){var l=lines.find(function(x){return x.b===b.id&&x.z===z});
+  if(l)l.q=Math.min(10,l.q+1);else lines.push({b:b.id,z:z,q:1});save();badge();draw();toast("Added "+b.name+" · "+z+" ml each")}
  function draw(){
   var box=$("cart-lines"),foot=$("cart-foot");
-  lines=lines.filter(function(l){return find(l.sq)});
+  lines=lines.filter(keep);
   if(!lines.length){box.innerHTML='<p class="cart-empty">Your cart is empty.</p>';foot.hidden=true;badge();return}
   foot.hidden=false;
-  box.innerHTML=lines.map(function(l,i){var p=find(l.sq),u=priceOf(p,l.v,l.z);
+  box.innerHTML=lines.map(function(l,i){
+   if(l.b){var b=bun(l.b);if(!b)return "";var ps=bItems(b),ub=bPrice(b,l.z),im=ps[0]&&ps[0].img;
+    return '<div class="cl">'+(im?'<img class="cl-img" src="'+im+'" width="120" height="120" alt="" loading="lazy">':'<span class="cl-img"></span>')+'<div class="cl-name">'+b.name+'<small>'+ps.length+' × '+l.z+' ml classic · '+money(ub)+' per set</small><span class="cl-sub">'+ps.map(shortName).join(", ")+'</span>'+
+    '<div class="cl-qty"><button type="button" data-i="'+i+'" data-d="-1" aria-label="One fewer">−</button><span>'+l.q+'</span><button type="button" data-i="'+i+'" data-d="1" aria-label="One more">+</button></div></div>'+
+    '<div class="cl-price">'+money(ub*l.q)+'</div><button type="button" class="cl-rm" data-rm="'+i+'">Remove</button></div>'}
+   var p=find(l.sq),u=priceOf(p,l.v,l.z);
    var img=l.v==="luxe"&&p.imgL?p.imgL:l.v==="roll"&&p.imgR?p.imgR:p.img;
    return '<div class="cl">'+(img?'<img class="cl-img" src="'+img+'" width="120" height="120" alt="" loading="lazy">':'<span class="cl-img"></span>')+'<div class="cl-name">'+p.brand+' '+p.name+'<small>'+VN[l.v]+' · '+l.z+' ml · '+money(u)+' each</small>'+
    '<div class="cl-qty"><button type="button" data-i="'+i+'" data-d="-1" aria-label="One fewer">−</button><span>'+l.q+'</span><button type="button" data-i="'+i+'" data-d="1" aria-label="One more">+</button></div></div>'+
@@ -1337,7 +1419,7 @@ var Cart=(function(){
   if(!ship){msg("Please choose Ottawa pickup or shipping first.");return}
   var btn=$("cart-checkout");btn.disabled=true;btn.textContent="Opening secure checkout…";
   fetch("/.netlify/functions/checkout",{method:"POST",headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({ship:ship,items:lines.map(function(l){var p=find(l.sq);return {sq:l.sq,v:VN[l.v]+", "+l.z+" ml",q:l.q,label:p.name+" "+l.z+" ml"}})})})
+   body:JSON.stringify({ship:ship,items:lines.map(function(l){if(l.b){var b=bun(l.b);return {bundle:l.b,z:l.z,q:l.q,label:b?b.name:l.b}}var p=find(l.sq);return {sq:l.sq,v:VN[l.v]+", "+l.z+" ml",q:l.q,label:p.name+" "+l.z+" ml"}})})})
   .then(function(r){return r.json().then(function(d){if(!r.ok||!d.url)throw new Error(d.error||"Checkout failed");return d})})
   .then(function(d){location.href=d.url})
   .catch(function(e){msg((e&&e.message)||"Checkout couldn't be started. Please try again, or email velvetvolute@gmail.com.");btn.disabled=false;btn.textContent="Checkout"});
@@ -1352,7 +1434,7 @@ var Cart=(function(){
  $("cart-checkout").onclick=checkout;
  addEventListener("pageshow",function(){var b=$("cart-checkout");b.disabled=false;b.textContent="Checkout"});
  badge();
- return {add:add,open:open,refresh:function(){draw();badge()}};
+ return {add:add,addBundle:addBundle,open:open,refresh:function(){draw();badge()}};
 })();
 </script>
 
