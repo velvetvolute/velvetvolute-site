@@ -41,6 +41,19 @@ async function loadZodiac(req) {
   } catch { return null; }
 }
 
+// Special Collections: same bundles.json the site shows. A set is charged as its scents' Classic
+// prices minus pct, rounded down to whole dollars, exactly as the site displays it.
+async function loadBundles(req) {
+  try {
+    const r = await fetch(new URL("/bundles.json", req.url), { headers: { "cache-control": "no-cache" } });
+    if (!r.ok) return null;
+    const j = await r.json();
+    const pct = Math.max(0, Math.min(50, Number(j.pct) || 0));
+    const sizes = (j.sizes || [2, 5]).map(Number);
+    return { pct, sizes, list: Array.isArray(j.bundles) ? j.bundles : [] };
+  } catch { return null; }
+}
+
 const json = (status, body) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
 
@@ -67,7 +80,15 @@ export default async (req) => {
   if (!items.length || !ship) return json(400, { error: "Your cart is empty or no delivery option was chosen." });
 
   try {
-    const ids = [...new Set(items.map((i) => String(i.sq || "")).filter((s) => /^[A-Z0-9]{10,40}$/.test(s)))];
+    const bundles = items.some((i) => i.bundle) ? await loadBundles(req) : null;
+    const setOf = (it) => (bundles ? bundles.list.find((b) => b.id === String(it.bundle)) : null);
+    for (const it of items) {
+      if (!it.bundle) continue;
+      const b = setOf(it);
+      if (!b || !bundles.sizes.includes(Number(it.z))) return json(400, { error: `"${it.label || it.bundle}" is no longer available. Please remove it and try again.` });
+    }
+    const allSq = items.flatMap((i) => (i.bundle ? setOf(i).sq : [i.sq]));
+    const ids = [...new Set(allSq.map((s) => String(s || "")).filter((s) => /^[A-Z0-9]{10,40}$/.test(s)))];
     if (!ids.length) return json(400, { error: "Unknown items in cart." });
     const { objects = [] } = await sq("/catalog/batch-retrieve", token, { object_ids: ids, include_related_objects: false });
     const variations = {};
@@ -84,6 +105,22 @@ export default async (req) => {
     const discounts = [];
     let subtotal = 0;
     for (const it of items) {
+      if (it.bundle) {
+        const b = setOf(it), z = Number(it.z);
+        const qty = Math.max(1, Math.min(10, parseInt(it.q, 10) || 1));
+        const vs = b.sq.map((id) => variations[`${id}|classic, ${z} ml`]);
+        if (vs.some((v) => !v)) return json(400, { error: `"${b.name}" is no longer available. Please remove it and try again.` });
+        const sum = vs.reduce((a, v) => a + v.cents, 0);
+        const sale = Math.floor((sum * (100 - bundles.pct)) / 100 / 100) * 100;
+        const top = vs.reduce((m, v, k) => (v.cents > vs[m].cents ? k : m), 0);
+        for (let n = 0; n < qty; n++) {
+          const uid = `set${discounts.length + 1}`;
+          if (sum > sale) discounts.push({ uid, name: `${b.name} ${bundles.pct}% off`, type: "FIXED_AMOUNT", amount_money: { amount: sum - sale, currency: "CAD" }, scope: "LINE_ITEM" });
+          vs.forEach((v, k) => lineItems.push(k === top && sum > sale ? { catalog_object_id: v.id, quantity: "1", applied_discounts: [{ discount_uid: uid }] } : { catalog_object_id: v.id, quantity: "1" }));
+        }
+        subtotal += sale * qty;
+        continue;
+      }
       const key = `${it.sq}|${String(it.v || "").toLowerCase().replace(/\s+/g, " ").trim()}`;
       const v = variations[key];
       const qty = Math.max(1, Math.min(10, parseInt(it.q, 10) || 1));
