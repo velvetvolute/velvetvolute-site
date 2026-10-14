@@ -9,3 +9,16 @@
   for = "/img/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# Keep design tools and notes in the project but off the live site
+[[redirects]]
+  from = "/.claude/*"
+  to = "/not-found"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/design-system/*"
+  to = "/not-found"
+  status = 404
+  force = true
