@@ -587,6 +587,53 @@ footer p{max-width:none;margin:0 0 8px}
 .cart-checkout:hover:not(:disabled){background:#2C0610}
 .cart-msg{color:#7A1020;font-weight:500}
 .cart-secure{color:#3A0A17;opacity:.85}
+/* cart: the whole drawer scrolls; total + checkout stay pinned at the bottom */
+.cart-panel{overflow:hidden}
+.cart-head{gap:12px}
+.cart-head h2{margin-right:auto}
+.cart-full{border:1px solid #4A0E1E;background:transparent;color:#3A0A17;border-radius:999px;min-height:36px;padding:0 14px;font:500 12px/1 var(--sans);letter-spacing:.08em;cursor:pointer;white-space:nowrap}
+.cart-full:hover{background:#4A0E1E;color:#E6D3BC}
+.cart-full[hidden]{display:none}
+.cart-body{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;overscroll-behavior:contain}
+.cart-lines{flex:none;overflow:visible;padding:4px 22px}
+.cart-foot{flex:none;padding:14px 22px 0}
+.cl{grid-template-columns:56px minmax(0,1fr) auto;grid-template-rows:auto auto;gap:2px 14px;padding:12px 0;align-items:start}
+.cl-img{grid-row:1/3;width:56px;height:56px;border-radius:4px;object-fit:cover;background:rgba(58,10,23,.12)}
+.cl-name{grid-row:1/3;font-size:15px}
+.cl-name small{font-size:13px}
+.cl-qty{margin-top:8px}
+.cl-qty button{width:30px;height:30px;font-size:16px}
+.cl-price{grid-column:3;grid-row:1}
+.cl-rm{grid-column:3;grid-row:2;align-self:end;justify-self:end;font-size:14px;min-height:30px}
+.ship-opts{margin-bottom:8px}
+.ship-opts legend{margin-bottom:6px;font-size:11px}
+.ship-opts label{padding:7px 12px;margin-bottom:5px;font-size:14.5px}
+.cart-free{font-size:14.5px;margin:4px 0 8px}
+.cart-row{font-size:15px;margin:2px 0}
+.cart-pay{position:sticky;bottom:0;margin:6px -22px 0;padding:6px 22px calc(14px + env(safe-area-inset-bottom,0px));background:var(--bar-bg);box-shadow:0 -10px 16px -14px rgba(42,6,16,.45)}
+.cart-pay .cart-row.total{margin-top:0}
+.cart-pay .cart-checkout{margin-top:10px}
+.cart-pay .cart-secure{margin-top:8px;font-size:12.5px}
+
+/* full-page cart */
+.cart-ov.full{background:var(--bar-bg)}
+.cart-ov.full .cart-panel{max-width:none;box-shadow:none}
+.cart-ov.full .cart-head{width:100%;max-width:1100px;margin:0 auto;padding:28px 24px 18px}
+.cart-ov.full .cart-head h2{font-size:clamp(30px,4vw,42px)}
+.cart-ov.full .cart-body{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:48px;align-content:start;width:100%;max-width:1100px;margin:0 auto;padding:8px 24px 48px}
+.cart-ov.full .cart-lines{padding:0}
+.cart-ov.full .cl{grid-template-columns:96px minmax(0,1fr) auto;gap:4px 20px;padding:18px 0}
+.cart-ov.full .cl-img{width:96px;height:96px}
+.cart-ov.full .cl-name{font-size:17px}
+.cart-ov.full .cart-foot{position:sticky;top:0;align-self:start;border:0;border-radius:6px;background:rgba(58,10,23,.08);padding:22px 22px 0}
+.cart-ov.full .cart-pay{position:static;margin:6px -22px 0;background:transparent;box-shadow:none;padding-bottom:22px}
+@media (max-width:820px){
+  .cart-ov.full .cart-body{grid-template-columns:1fr;gap:24px;padding-bottom:0}
+  .cart-ov.full .cart-foot{position:static;border-radius:0;margin:0 -24px;padding:18px 24px 0}
+  .cart-ov.full .cart-pay{position:sticky;bottom:0;margin:6px -24px 0;padding:8px 24px calc(16px + env(safe-area-inset-bottom,0px));background:var(--bar-bg);box-shadow:0 -10px 16px -14px rgba(42,6,16,.45)}
+  .cart-ov.full .cl{grid-template-columns:72px minmax(0,1fr) auto}
+  .cart-ov.full .cl-img{width:72px;height:72px}
+}
 @media (prefers-reduced-motion:reduce){.x-btn,.x-tlink{transition:none}}
 @media (max-width:1024px){
   .x-hero .wrap,.x-letter .wrap,footer .wrap{grid-template-columns:1fr;gap:var(--x-s2)}
@@ -610,7 +657,8 @@ footer p{max-width:none;margin:0 0 8px}
 
 <div class="cart-ov" id="cart-ov" hidden>
  <aside class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title">
-  <div class="cart-head"><h2 id="cart-title">Your cart</h2><button type="button" class="cart-x" id="cart-x" aria-label="Close cart">&times;</button></div>
+  <div class="cart-head"><h2 id="cart-title">Your cart</h2><button type="button" class="cart-full" id="cart-full">View full cart</button><button type="button" class="cart-x" id="cart-x" aria-label="Close cart">&times;</button></div>
+  <div class="cart-body" id="cart-body">
   <div class="cart-lines" id="cart-lines"></div>
   <div class="cart-foot" id="cart-foot">
    <fieldset class="ship-opts"><legend>Delivery</legend>
@@ -621,10 +669,13 @@ footer p{max-width:none;margin:0 0 8px}
    <p class="cart-free" id="cart-free"></p>
    <div class="cart-row"><span>Subtotal</span><span id="cart-sub">$0</span></div>
    <div class="cart-row"><span>Delivery</span><span id="cart-ship">Choose an option</span></div>
-   <div class="cart-row total"><span>Total</span><span id="cart-total">$0</span></div>
-   <button type="button" class="cart-checkout" id="cart-checkout">Checkout</button>
-   <p class="cart-msg" id="cart-msg" hidden></p>
-   <p class="cart-secure">Secure payment by Square. Any applicable tax is shown at checkout.</p>
+   <div class="cart-pay">
+    <div class="cart-row total"><span>Total</span><span id="cart-total">$0</span></div>
+    <button type="button" class="cart-checkout" id="cart-checkout">Checkout</button>
+    <p class="cart-msg" id="cart-msg" hidden></p>
+    <p class="cart-secure">Secure payment by Square. Any applicable tax is shown at checkout.</p>
+   </div>
+  </div>
   </div>
  </aside>
 </div>
@@ -1255,7 +1306,8 @@ var Cart=(function(){
   if(!lines.length){box.innerHTML='<p class="cart-empty">Your cart is empty.</p>';foot.hidden=true;badge();return}
   foot.hidden=false;
   box.innerHTML=lines.map(function(l,i){var p=find(l.sq),u=priceOf(p,l.v,l.z);
-   return '<div class="cl"><div class="cl-name">'+p.brand+' '+p.name+'<small>'+VN[l.v]+' · '+l.z+' ml · '+money(u)+' each</small>'+
+   var img=l.v==="luxe"&&p.imgL?p.imgL:l.v==="roll"&&p.imgR?p.imgR:p.img;
+   return '<div class="cl">'+(img?'<img class="cl-img" src="'+img+'" width="120" height="120" alt="" loading="lazy">':'<span class="cl-img"></span>')+'<div class="cl-name">'+p.brand+' '+p.name+'<small>'+VN[l.v]+' · '+l.z+' ml · '+money(u)+' each</small>'+
    '<div class="cl-qty"><button type="button" data-i="'+i+'" data-d="-1" aria-label="One fewer">−</button><span>'+l.q+'</span><button type="button" data-i="'+i+'" data-d="1" aria-label="One more">+</button></div></div>'+
    '<div class="cl-price">'+money(u*l.q)+'</div><button type="button" class="cl-rm" data-rm="'+i+'">Remove</button></div>'}).join("");
   box.querySelectorAll("[data-d]").forEach(function(b){b.onclick=function(){var l=lines[+b.dataset.i];l.q=Math.max(1,Math.min(10,l.q+(+b.dataset.d)));save();draw();badge()}});
@@ -1269,9 +1321,14 @@ var Cart=(function(){
   $("cart-total").textContent=money(s+(sc||0));
   $("cart-msg").hidden=true;
  }
- var last=null;
- function open(){last=document.activeElement;draw();$("cart-ov").hidden=false;document.body.style.overflow="hidden";setTimeout(function(){$("cart-x").focus()},30)}
- function close(){$("cart-ov").hidden=true;document.body.style.overflow="";if(last&&last.focus)last.focus()}
+ var last=null,pushed=false;
+ function open(){if($("cart-ov").hidden)last=document.activeElement;draw();$("cart-ov").hidden=false;document.body.style.overflow="hidden";setTimeout(function(){$("cart-x").focus()},30)}
+ function setFull(on){$("cart-ov").classList.toggle("full",on);$("cart-full").hidden=on;$("cart-x").setAttribute("aria-label",on?"Back to shopping":"Close cart");$("cart-body").scrollTop=0}
+ /* full-page view: its own history entry (#cart-page), so the phone's back button returns to the shop */
+ function openFull(){open();setFull(true);if(location.hash!=="#cart-page"){history.pushState({vvCart:1},"","#cart-page");pushed=true}}
+ function hide(){$("cart-ov").hidden=true;setFull(false);document.body.style.overflow="";if(last&&last.focus)last.focus()}
+ function close(){if(pushed&&location.hash==="#cart-page"){history.back();return}if(location.hash==="#cart-page")history.replaceState(null,"",location.pathname+location.search);hide()}
+ addEventListener("popstate",function(){if(location.hash!=="#cart-page"&&!$("cart-ov").hidden&&$("cart-ov").classList.contains("full")){pushed=false;hide()}});
  function msg(t){var m=$("cart-msg");m.textContent=t;m.hidden=false}
  function checkout(){
   if(!lines.length)return;
@@ -1284,7 +1341,9 @@ var Cart=(function(){
   .catch(function(e){msg((e&&e.message)||"Checkout couldn't be started. Please try again, or email velvetvolute@gmail.com.");btn.disabled=false;btn.textContent="Checkout"});
  }
  document.addEventListener("DOMContentLoaded",function(){});
- $("cart-open").onclick=open;$("cart-x").onclick=close;if(location.hash==="#cart"){history.replaceState(null,"",location.pathname);open();}
+ $("cart-open").onclick=open;$("cart-x").onclick=close;$("cart-full").onclick=openFull;
+ if(location.hash==="#cart"){history.replaceState(null,"",location.pathname);open();}
+ else if(location.hash==="#cart-page"){open();setFull(true)}
  $("cart-ov").addEventListener("click",function(e){if(e.target===$("cart-ov"))close()});
  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("cart-ov").hidden)close()});
  document.querySelectorAll('input[name=ship]').forEach(function(r){r.onchange=function(){ship=r.value;save();draw()}});
