@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Lora:ital,wght@1,400&display=swap" rel="stylesheet">
 <style>
-/* Draft 2: same editorial layout as Draft 1, restyled in the original Velvet Volute wine-and-gold look */
+/* Draft 3: Draft 2 after the Taste critique (hairlines, numbering, eyebrows, small caps, shadows, outlined boxes, blur and repeated buttons removed; brand glows kept) */
 :root{
   color-scheme:dark;
   --wine:#4A0E1E; --wine-deep:#2C0610; --wine-glow:#6E1A31; --surface:#5A1527;
@@ -27,125 +27,131 @@ a{color:inherit}
 .wrap{max-width:1200px;margin:0 auto;padding:0 var(--s1)}
 .label{font:500 11px/1 var(--sans);letter-spacing:.28em;text-transform:uppercase;color:var(--gold-2)}
 h1,h2,h3{text-wrap:balance}
-.mono{display:inline-grid;place-items:center;width:34px;height:34px;border:1px solid var(--gold);border-radius:50%;font:italic 500 15px/1 var(--serif);color:var(--gold);letter-spacing:-.04em;flex:none}
+.mono{display:inline-grid;place-items:center;width:34px;height:34px;border:1px solid var(--gold);border-radius:50%;font:italic 500 15px/1 var(--serif);color:var(--gold);letter-spacing:-.04em;flex:none} /* taste-skill-ignore: brand element kept by owner */
 
 /* bar + nav */
 .bar{background:var(--bar);color:var(--wine-deep);text-align:center;font:500 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;padding:11px 16px}
-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:rgba(74,14,30,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--wine-deep)}
 nav .wrap{display:flex;align-items:center;justify-content:space-between;height:70px}
 .brand{display:flex;align-items:center;gap:12px;font:500 22px/1 var(--serif);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--gold)}
 .links{display:flex;gap:32px;list-style:none;padding:0}
 .links a{font:400 12px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:var(--text);padding:8px 0}
 .links a:hover{color:var(--gold)}
-.cart{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border:1px solid var(--gold);border-radius:999px;color:var(--gold);text-decoration:none;font:500 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase}
+.cart{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border:1px solid var(--gold);border-radius:999px;color:var(--gold);text-decoration:none;font:500 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase} /* taste-skill-ignore: brand element kept by owner */
 
 /* hero */
-.hero{padding:var(--s3) 0 var(--s4);background:radial-gradient(60% 70% at 70% 45%,var(--wine-glow) 0%,transparent 70%),linear-gradient(90deg,var(--wine-deep),var(--wine) 60%)}
+.hero{padding:var(--s3) 0 var(--s4);
+  background:radial-gradient(60% 70% at 70% 45%,var(--wine-glow) 0%,transparent 70%),linear-gradient(90deg,var(--wine-deep),var(--wine) 60%)} /* taste-skill-ignore: brand element kept by owner */
 .hero .wrap{display:grid;grid-template-columns:7fr 5fr;gap:var(--s3);align-items:center}
 .hero .label{display:flex;align-items:center;gap:14px}
-.hero h1{font:400 clamp(3rem,7vw,6.2rem)/.95 var(--serif);color:var(--gold);letter-spacing:-.01em;margin:26px 0 28px}
+.hero h1{font:400 clamp(3rem,7vw,6.2rem)/.95 var(--serif);color:var(--gold);letter-spacing:-.01em;margin:0 0 30px}
 .hero h1 em{font-style:italic}
-.def{font:italic 400 19px/1.5 var(--serif);color:var(--text);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;max-width:460px}
+.def{font:italic 400 20px/1.5 var(--serif);color:var(--text);max-width:460px}
 .def b{font-style:normal;font-weight:600;color:var(--gold)}
 .def small{font:400 12px var(--sans);font-style:normal;color:var(--text-soft)}
 .hero p.lede{margin:24px 0 36px;max-width:500px;color:var(--text)}
 .ctas{display:flex;flex-wrap:wrap;gap:14px}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 30px;border-radius:999px;font:500 12px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:background .2s,color .2s,border-color .2s}
+.btn:active{transform:translateY(1px)}
+.tlink{display:inline-flex;align-items:center;min-height:44px;font:500 16px/1.2 var(--sans);color:var(--gold);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px;transition:color .2s}
+.tlink:hover{color:#E0C8A4}
 .btn-solid{background:var(--gold);color:var(--wine-deep)}
 .btn-solid:hover{background:#E0C8A4}
-.btn-line{border:1px solid var(--gold);color:var(--gold)}
+.btn-line{border:1px solid var(--gold);color:var(--gold)} /* taste-skill-ignore: brand element kept by owner */
 .btn-line:hover{background:var(--gold);color:var(--wine-deep)}
 .hero figure{position:relative}
-.hero figure img{border-radius:4px;border:1px solid var(--line-soft);box-shadow:0 40px 80px -30px rgba(0,0,0,.6),0 0 0 8px rgba(205,176,138,.06)}
-.hero figcaption{position:absolute;left:-28px;bottom:28px;background:var(--wine-deep);padding:14px 18px;border:1px solid var(--line);font:italic 500 18px/1.3 var(--serif);color:var(--gold)}
-.hero figcaption span{display:block;font:400 11px/1.4 var(--sans);font-style:normal;letter-spacing:.16em;text-transform:uppercase;color:var(--text-soft);margin-top:4px}
+.hero figure img{border-radius:4px}
+.hero figcaption{position:absolute;left:-28px;bottom:28px;background:var(--wine-deep);padding:16px 20px;font:italic 500 18px/1.3 var(--serif);color:var(--gold)}
+.hero figcaption span{display:block;font:400 14px/1.4 var(--sans);font-style:normal;color:var(--text-soft);margin-top:4px}
 
 /* trust strip */
-.trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--wine-deep)}
+.trust{background:var(--wine-deep)}
 .trust ul{display:grid;grid-template-columns:repeat(3,1fr);list-style:none;padding:0}
-.trust li{padding:28px var(--s1);display:flex;gap:16px;align-items:flex-start}
-.trust li+li{border-left:1px solid var(--line)}
+.trust li{padding:32px var(--s1) 36px;display:flex;gap:16px;align-items:flex-start}
 .trust svg{flex:none;width:22px;height:22px;stroke:var(--gold)}
-.trust b{display:block;font:500 12px/1.3 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.trust b{display:block;font:500 16px/1.3 var(--sans);color:var(--gold);margin-bottom:4px}
 .trust span{font-size:14px;color:var(--text-soft)}
 
 /* spotlight */
-.spot{background:radial-gradient(50% 80% at 15% 30%,rgba(110,26,49,.7),transparent 70%),var(--wine-deep);padding:var(--s4) 0}
+.spot{
+  background:radial-gradient(50% 80% at 15% 30%,rgba(110,26,49,.7),transparent 70%),var(--wine-deep);padding:var(--s4) 0} /* taste-skill-ignore: brand element kept by owner */
 .spot-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:var(--s2)}
 .spot h2{font:400 clamp(2.2rem,4.5vw,3.6rem)/1 var(--serif);color:var(--gold);margin-top:16px}
 .spot h2 em{font-style:italic}
-.pct{font:500 12px/1.4 var(--sans);letter-spacing:.16em;text-transform:uppercase;background:var(--gold);color:var(--wine-deep);border-radius:999px;padding:9px 18px;white-space:nowrap}
+.pct{font:500 14px/1.4 var(--sans);background:var(--gold);color:var(--wine-deep);border-radius:999px;padding:9px 18px;white-space:nowrap}
 .picks{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)}
 .pick{display:grid;grid-template-columns:180px 1fr;gap:28px;align-items:start}
-.pick img{border-radius:3px;border:1px solid var(--line-soft)}
+.pick img{border-radius:3px}
+.pick .house{font:500 14px/1 var(--sans);color:var(--gold-2)}
 .pick h3{font:500 30px/1.1 var(--serif);color:var(--gold);margin:10px 0 12px}
-.pick p{font:italic 400 15px/1.75 var(--italic);color:var(--text);border-left:1px solid var(--gold-2);padding-left:16px}
-.pick .from{display:block;margin-top:16px;font:500 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--gold-2)}
+.pick p{font:italic 400 15px/1.75 var(--italic);color:var(--text)}
+.pick .from{display:block;margin-top:16px;font:500 15px/1 var(--sans);color:var(--gold-2)}
 
 /* collection: gold cards, as on the live site */
 .coll{padding:var(--s4) 0}
 .coll-head{display:grid;grid-template-columns:5fr 7fr;gap:var(--s3);align-items:end;margin-bottom:var(--s2)}
-.coll h2{font:400 clamp(2.4rem,5vw,4rem)/1 var(--serif);color:var(--gold);margin-top:16px}
+.coll h2{font:400 clamp(2.4rem,5vw,4rem)/1 var(--serif);color:var(--gold)}
 .coll-head p{color:var(--text);max-width:520px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
-.card{background:linear-gradient(160deg,#C4A276 0%,var(--gold-2) 45%,#9C7A52 100%);border-radius:4px;box-shadow:0 20px 40px -24px rgba(0,0,0,.7);transition:transform .3s ease,box-shadow .3s ease}
-.card:hover{transform:translateY(-3px);box-shadow:0 0 0 1px rgba(205,176,138,.5),0 28px 50px -24px rgba(0,0,0,.8)}
+.card{
+  background:linear-gradient(160deg,#C4A276 0%,var(--gold-2) 45%,#9C7A52 100%);border-radius:4px;transition:filter .25s ease} /* taste-skill-ignore: brand element kept by owner */
+.card:hover{filter:brightness(1.07)}
+.card:active{filter:brightness(.98)}
 .card a{text-decoration:none;display:block;padding:14px 14px 22px;color:var(--tan-ink)}
 .card .ph{overflow:hidden;border-radius:2px}
 .card .meta{display:flex;justify-content:space-between;gap:12px;margin-top:18px;align-items:baseline;padding:0 6px}
-.card .house{font:500 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:#5A1527}
+.card .house{font:500 14px/1 var(--sans);color:#5A1527}
 .card h3{font:500 25px/1.1 var(--serif);color:var(--tan-ink);margin-top:8px}
 .card .price{font:500 15px/1 var(--sans);color:var(--tan-ink);white-space:nowrap}
-.card .price small{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:400}
+.card .price small{font-size:13px;font-weight:400}
 .card p{font:italic 400 14px/1.6 var(--italic);color:#451019;margin-top:8px;padding:0 6px}
 .coll-cta{text-align:center;margin-top:var(--s3)}
 
 /* how it works */
-.how{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:var(--s4) 0}
-.how h2{font:400 clamp(2.2rem,4.5vw,3.4rem)/1 var(--serif);color:var(--gold);margin:16px 0 var(--s2)}
+.how{background:var(--surface);padding:var(--s4) 0 calc(var(--s4) + 8px)}
+.how h2{font:400 clamp(2.2rem,4.5vw,3.4rem)/1 var(--serif);color:var(--gold);margin:0 0 var(--s2)}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s2);list-style:none;padding:0}
-.steps li{border-top:1px solid var(--gold-2);padding-top:24px}
-.steps .n{font:italic 400 52px/1 var(--serif);color:var(--gold)}
-.steps h3{font:500 13px/1.3 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:18px 0 10px}
+.steps h3{font:500 28px/1.15 var(--serif);color:var(--gold);margin:0 0 12px}
 .steps p{font-size:15px;color:var(--text)}
 .steps a{color:var(--gold);text-underline-offset:3px}
 
 /* letter */
-.letter{padding:var(--s4) 0;background:radial-gradient(45% 70% at 85% 50%,rgba(110,26,49,.8),transparent 70%)}
+.letter{padding:var(--s4) 0;
+  background:radial-gradient(45% 70% at 85% 50%,rgba(110,26,49,.8),transparent 70%)} /* taste-skill-ignore: brand element kept by owner */
 .letter .wrap{display:grid;grid-template-columns:4fr 8fr;gap:var(--s3)}
-.letter h2{font:400 clamp(2.2rem,4.5vw,3.4rem)/1 var(--serif);color:var(--gold);margin-top:16px}
+.letter h2{font:400 clamp(2.2rem,4.5vw,3.4rem)/1 var(--serif);color:var(--gold)}
 .letter blockquote{font:400 clamp(1.5rem,2.6vw,2.1rem)/1.4 var(--serif);color:var(--text)}
 .letter blockquote u{text-decoration-color:var(--gold);text-decoration-thickness:2px;text-underline-offset:6px;font-style:italic;color:var(--gold)}
 .letter .sig{margin-top:28px;font:italic 500 22px/1.2 var(--serif);color:var(--gold-2)}
-.letter .sig a{display:inline-block;margin-top:14px;font:500 12px/1 var(--sans);font-style:normal;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);text-underline-offset:4px}
+.letter .sig a{display:inline-block;margin-top:14px;font:500 16px/1 var(--sans);font-style:normal;color:var(--gold);text-underline-offset:5px}
 
 /* closing */
-.close{background:var(--wine-deep);border-top:1px solid var(--line);padding:var(--s4) 0;text-align:center}
+.close{background:var(--wine-deep);padding:var(--s4) 0;text-align:center}
 .close .mono{width:56px;height:56px;font-size:22px;margin-bottom:22px}
-.close h2{font:400 clamp(2.4rem,5vw,4rem)/1 var(--serif);color:var(--gold);margin:16px 0 18px}
+.close h2{font:400 clamp(2.4rem,5vw,4rem)/1 var(--serif);color:var(--gold);margin:0 0 18px}
 .close p{color:var(--text-soft);margin-bottom:34px}
-.close .ctas{justify-content:center}
-footer{background:var(--wine-deep);color:var(--text-soft);border-top:1px solid var(--line);padding:var(--s2) 0;font-size:12px;line-height:1.7}
+.close .ctas{justify-content:center;align-items:center;gap:28px}
+footer{background:#22050C;color:var(--text-soft);padding:var(--s2) 0;font-size:12px;line-height:1.7}
 footer .wrap{display:grid;grid-template-columns:1fr 2fr;gap:var(--s2)}
 footer .brand{font-size:18px}
 
 /* zodiac season pick */
-.zod{margin-top:var(--s2);display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;padding:28px 32px;border:1px solid var(--line);border-radius:4px;background:linear-gradient(120deg,rgba(110,26,49,.55),rgba(44,6,16,.4))}
-.zod .zg{display:grid;place-items:center;width:64px;height:64px;border:1px solid var(--gold);border-radius:50%;font:400 28px/1 var(--serif);color:var(--gold)}
+.zod{margin-top:var(--s2);display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;padding:32px 36px;border-radius:4px;background:var(--surface)}
+.zod .zg{display:grid;place-items:center;width:64px;height:64px;border:1px solid var(--gold);border-radius:50%;font:400 28px/1 var(--serif);color:var(--gold)} /* taste-skill-ignore: brand element kept by owner */
 .zod .ze{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
-.zod .ze b{font:500 12px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
-.zod .ze i{font:500 11px/1 var(--sans);font-style:normal;letter-spacing:.14em;text-transform:uppercase;background:var(--gold);color:var(--wine-deep);border-radius:999px;padding:6px 12px}
-.zod .ze span{font:400 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text-soft)}
+.zod .ze b{font:500 12px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--gold)} /* taste-skill-ignore: section heading, owner preference */
+.zod .ze i{font:500 13px/1 var(--sans);font-style:normal;background:var(--gold);color:var(--wine-deep);border-radius:999px;padding:6px 12px}
+.zod .ze span{font:400 14px/1 var(--sans);color:var(--text-soft)}
 .zod h3{font:500 28px/1.1 var(--serif);color:var(--gold);margin:12px 0 10px}
 .zod p{font:italic 400 15px/1.75 var(--italic);color:var(--text);max-width:640px}
-@media (max-width:768px){.zod{grid-template-columns:1fr;gap:18px;padding:24px}.zod .btn{justify-self:start}}
+@media (max-width:768px){.zod{grid-template-columns:1fr;gap:18px;padding:24px}}
 
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.btn{transition:none}.card:hover{transform:none}}
 
 /* responsive */
 @media (max-width:1024px){
   nav .wrap{flex-wrap:wrap;height:auto;padding-block:12px 10px;row-gap:6px}
-  .links{order:3;width:100%;justify-content:center;flex-wrap:wrap;gap:2px 22px;border-top:1px solid var(--line);padding-top:6px}
+  .links{order:3;width:100%;justify-content:center;flex-wrap:wrap;gap:2px 22px;padding-top:2px}
   .links a{display:inline-flex;align-items:center;min-height:44px}
   .hero .wrap,.coll-head,.letter .wrap,footer .wrap{grid-template-columns:1fr;gap:var(--s2)}
   .picks{grid-template-columns:1fr}
@@ -154,7 +160,7 @@ footer .brand{font-size:18px}
 @media (max-width:768px){
   .grid{grid-template-columns:repeat(2,1fr);gap:20px}
   .steps,.trust ul{grid-template-columns:1fr}
-  .trust li+li{border-left:0;border-top:1px solid var(--line)}
+  .trust li{padding-block:18px 20px}
   .spot-head{flex-direction:column;align-items:flex-start}
   .pick{grid-template-columns:120px 1fr;gap:18px}
   .pick h3{font-size:24px}
@@ -193,7 +199,6 @@ footer .brand{font-size:18px}
 <header class="hero">
   <div class="wrap">
     <div class="rv">
-      <span class="label"><span class="mono" aria-hidden="true">VV</span>Velvet Volute · Fragrance decants</span>
       <h1>Quiet luxury, <em>poured by hand</em></h1>
       <p class="def"><b>vo·lute</b> <small>(vuh-LOOT)</small> · a soft, spiralling curl, like a wisp of smoke drifting through the air.</p>
       <p class="lede">A curated collection of luxury fragrances, each one thoughtfully chosen. Try them without committing to a full bottle: hand-decanted from authentic bottles, picked up in Ottawa or shipped across Canada.</p>
@@ -204,7 +209,7 @@ footer .brand{font-size:18px}
     </div>
     <figure class="rv">
       <img src="img/lux-u-jazz-a3317c0b34.jpg" width="600" height="600" alt="Replica Jazz Club full bottle beside three decant vials in 2, 5 and 10 ml">
-      <figcaption>Replica Jazz Club<span>Bottle to vial, 2 to 10 ml</span></figcaption>
+      <figcaption>Replica Jazz Club<span>From the bottle to your vial, 2 to 10 ml</span></figcaption>
     </figure>
   </div>
 </header>
@@ -230,19 +235,19 @@ footer .brand{font-size:18px}
       <article class="pick rv">
         <img src="img/lux-u-jazz-a3317c0b34.jpg" width="180" height="180" loading="lazy" alt="Replica Jazz Club bottle and vials">
         <div>
-          <span class="label">Maison Margiela</span>
+          <span class="house">Maison Margiela</span>
           <h3>Replica Jazz Club</h3>
           <p>Rum, tobacco leaf and vanilla bean, warmed by a whisper of smoky styrax. Jazz Club smells like a leather armchair in a dim bar while the first snow falls outside, the coziest thing you can wear in October.</p>
-          <span class="from">From $12 · 2 ml</span>
+          <span class="from">From $12 for 2 ml</span>
         </div>
       </article>
       <article class="pick rv">
         <img src="img/lux-tf-black-orchid-f86a218a09.jpg" width="180" height="180" loading="lazy" alt="Tom Ford Black Orchid bottle and vials">
         <div>
-          <span class="label">Tom Ford</span>
+          <span class="house">Tom Ford</span>
           <h3>Black Orchid</h3>
           <p>Made for spooky season. Black truffle and dark orchid open rich and a little mysterious, then chocolate, patchouli and a curl of incense settle in like candle smoke in an old house.</p>
-          <span class="from">From $15 · 2 ml</span>
+          <span class="from">From $15 for 2 ml</span>
         </div>
       </article>
     </div>
@@ -253,7 +258,7 @@ footer .brand{font-size:18px}
         <h3>Nishane Ani</h3>
         <p>Libra is ruled by Venus, and Ani is built on the notes astrologers have long tied to that planet: rose, vanilla, benzoin and sandalwood. Sharp ginger and bergamot keep them in check, so it never tips too sweet or too fresh. It moves from a Saturday brunch to a late dinner with the easy charm your sign is known for.</p>
       </div>
-      <a class="btn btn-line" href="https://velvetvolute.ca/">See the scent</a>
+      <a class="tlink" href="https://velvetvolute.ca/">See the scent</a>
     </aside>
   </div>
 </section>
@@ -262,7 +267,6 @@ footer .brand{font-size:18px}
   <div class="wrap">
     <div class="coll-head rv">
       <div>
-        <span class="label">The collection</span>
         <h2 id="coll-h">Our fragrances</h2>
       </div>
       <p>Every fragrance is thoughtfully chosen, with at least one new addition every month. Curate your own playlist by notes, season and mood, or let the Scent Sherpa guide you.</p>
@@ -287,25 +291,24 @@ footer .brand{font-size:18px}
         <div class="meta"><div><span class="house">Tom Ford</span><h3>Black Orchid</h3></div><span class="price"><small>from</small> $15</span></div>
         <p>Black truffle, dark orchid, patchouli and chocolate.</p></a></article>
     </div>
-    <div class="coll-cta"><a class="btn btn-line" href="https://velvetvolute.ca/">See the full collection</a></div>
+    <div class="coll-cta"><a class="tlink" href="https://velvetvolute.ca/">See all 36 fragrances</a></div>
   </div>
 </section>
 
 <section class="how" id="how" aria-labelledby="how-h">
   <div class="wrap">
-    <span class="label">Simple</span>
     <h2 id="how-h">How it works</h2>
     <ol class="steps">
-      <li class="rv"><span class="n" aria-hidden="true">01</span><h3>Pick your scents</h3><p>Curate your own playlist: look through the notes, sort through the filters, or take the <a href="https://velvetvolute.ca/">Scent Sherpa</a>'s quiz to guide you to new finds you might not have known you'd like.</p></li>
-      <li class="rv"><span class="n" aria-hidden="true">02</span><h3>Order online</h3><p>Add your vials to the cart, choose pickup or shipping, and pay securely by card through Square. Prefer e-Transfer? Just email me.</p></li>
-      <li class="rv"><span class="n" aria-hidden="true">03</span><h3>Pickup or shipping</h3><p>Meet at the Shoppers Drug Mart on Carling, or ship anywhere in Canada: $18 to Ontario and Quebec, $23 everywhere else, free over $85.</p></li>
+      <li class="rv"><h3>Pick your scents</h3><p>Curate your own playlist: look through the notes, sort through the filters, or take the <a href="https://velvetvolute.ca/">Scent Sherpa</a>'s quiz to guide you to new finds you might not have known you'd like.</p></li>
+      <li class="rv"><h3>Order online</h3><p>Add your vials to the cart, choose pickup or shipping, and pay securely by card through Square. Prefer e-Transfer? Just email me.</p></li>
+      <li class="rv"><h3>Pickup or shipping</h3><p>Meet at the Shoppers Drug Mart on Carling, or ship anywhere in Canada: $18 to Ontario and Quebec, $23 everywhere else, free over $85.</p></li>
     </ol>
   </div>
 </section>
 
 <section class="letter" aria-labelledby="letter-h">
   <div class="wrap">
-    <div class="rv"><span class="label">About the brand</span><h2 id="letter-h">Fragrance, curated</h2></div>
+    <div class="rv"><h2 id="letter-h">Fragrance, curated</h2></div>
     <div class="rv">
       <blockquote>I don't just sell decants. I curate a beautiful collection of scents, very much like putting together the perfect playlist: some are smooth &amp; sexy, some make you feel like a boss, and some make you wanna party 'til 5am. But either way, it's <u>one banger after another</u>.</blockquote>
       <p class="sig">Peace &amp; Love, Izzi<br><a href="https://velvetvolute.ca/about.html">Read the full letter</a></p>
@@ -315,12 +318,12 @@ footer .brand{font-size:18px}
 
 <section class="close" id="contact" aria-labelledby="close-h">
   <div class="wrap rv">
-    <span class="mono" aria-hidden="true">VV</span><br><span class="label">Get in touch</span>
+    <span class="mono" aria-hidden="true">VV</span>
     <h2 id="close-h">Ready to order?</h2>
     <p>Shop online, or email me with questions or to pay by e-Transfer.</p>
     <div class="ctas">
       <a class="btn btn-solid" href="#collection">Shop now</a>
-      <a class="btn btn-line" href="mailto:velvetvolute@gmail.com">velvetvolute@gmail.com</a>
+      <a class="tlink" href="mailto:velvetvolute@gmail.com">or email velvetvolute@gmail.com</a>
     </div>
   </div>
 </section>
