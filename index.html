@@ -530,14 +530,6 @@ section.x-spot{padding:var(--x-s4) 0;color:var(--x-text);
 .x-shop-head .x-sherpa{margin-top:14px;color:var(--x-soft)}
 .x-shop-head button{border:0;background:none;padding:0;font:inherit;font-weight:500;color:var(--x-gold);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;cursor:pointer}
 
-/* how it works */
-section.x-how{background:var(--x-surface);padding:var(--x-s4) 0 calc(var(--x-s4) + 8px);color:var(--x-text)}
-.x-how h2{font:400 clamp(2.2rem,4.5vw,3.4rem)/1 var(--serif);color:var(--x-gold);margin:0 0 12px;text-align:left}
-.x-how .sub{margin:0 0 var(--x-s2);max-width:620px;text-align:left;color:var(--x-soft)}
-.x-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--x-s2);list-style:none;margin:0;padding:0}
-.x-steps h3{font:500 28px/1.15 var(--serif);color:var(--x-gold);margin:0 0 12px}
-.x-steps p{font-size:15px;color:var(--x-text);margin:0}
-.x-steps a{color:var(--x-gold);text-underline-offset:3px}
 
 /* letter */
 section.x-letter{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradient(45% 70% at 85% 50%,rgba(110,26,49,.8),transparent 70%),var(--bg)} /* taste-skill-ignore: brand glow */
@@ -642,7 +634,7 @@ footer p{max-width:none;margin:0 0 8px}
 }
 @media (max-width:768px){
   :root{--x-s3:48px;--x-s4:64px}
-  .x-steps,.x-trust ul{grid-template-columns:1fr}
+  .x-trust ul{grid-template-columns:1fr}
   .x-trust li{padding-block:18px 20px}
   .x-spot-head{flex-direction:column;align-items:flex-start}
   .x-pick{grid-template-columns:120px 1fr;gap:18px}
@@ -716,7 +708,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 <div class="bar">Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
   <a class="logo" href="#top"><span class="mono">VV</span>Velvet <span>Volute</span></a>
-  <nav><a href="#shop">Shop</a><a href="#collections">Special Collections</a><a href="/about">About the Brand</a><a href="#how">How It Works</a><a href="#contact">Contact</a></nav><button type="button" class="cart-open" id="cart-open" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></button>
+  <nav><a href="#shop">Shop</a><a href="#collections">Special Collections</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="#contact">Contact</a></nav><button type="button" class="cart-open" id="cart-open" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></button>
 </div></header>
 
 <div class="x-hero" id="top"><div class="wrap">
@@ -822,16 +814,6 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
     <div><span class="x-label">Curated sets</span><h2 id="coll-h">Special Collections</h2><p>Hand-picked sets of scents that belong together, like a playlist built around one mood. Take the whole set and save <span id="coll-pct">10%</span>.</p></div>
   </div>
   <div class="x-colls" id="colls"></div>
-</div></section>
-
-<section class="x-how" id="how"><div class="wrap">
-  <h2>How it works</h2>
-  <p class="sub">Order online in a few taps, no account needed. Every order is hand-poured into a fresh vial, from a 2 ml sample up to larger sizes.</p>
-  <ol class="x-steps">
-    <li><h3>Pick your scents</h3><p>Curate your own playlist: look through the notes, sort through the filters, or take the <a href="#shop" class="sherpa-link" data-quiz>Scent Sherpa</a>'s quiz to guide you to new finds you might not have known you'd like. Then choose your size and style.</p></li>
-    <li><h3>Order online</h3><p>Add your vials to the cart, choose pickup or shipping, and pay securely by card through Square. Prefer e-Transfer? Just email me.</p></li>
-    <li><h3>Pickup or shipping</h3><p>Meet at the Shoppers Drug Mart on Carling (I'll email you to set a time), or have it shipped anywhere in Canada: $18 to Ontario and Quebec, $23 everywhere else, and free on orders over $85.</p></li>
-  </ol>
 </div></section>
 
 <section class="x-letter" aria-labelledby="letter-h"><div class="wrap">
