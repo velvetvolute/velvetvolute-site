@@ -831,10 +831,11 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
   <h2>Ready to order?</h2>
   <p>Shop online, or email me with questions or to pay by e-Transfer.</p>
   <div class="x-ctas"><a class="x-btn x-solid" href="#shop">Shop now</a><a class="x-tlink" href="mailto:velvetvolute@gmail.com?subject=Velvet%20Volute%20order">or email velvetvolute@gmail.com</a></div>
+  <a class="fb-link fb-cta" href="https://www.facebook.com/profile.php?id=61595247606137" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v2.9h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>Like us on Facebook</a>
 </div></section>
 
 <footer><div class="wrap">
-  <div><div class="logo"><span class="mono">VV</span>Velvet Volute</div><p>© 2026 Velvet Volute</p></div>
+  <div><div class="logo"><span class="mono">VV</span>Velvet Volute</div><p>© 2026 Velvet Volute</p><a class="fb-link" href="https://www.facebook.com/profile.php?id=61595247606137" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v2.9h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>Like us on Facebook</a></div>
   <div>
     <p>All decants are hand-decanted from authentic original bottles and repackaged in new containers. The original manufacturer's bottle and packaging are not included.</p>
     <p>Not affiliated with, endorsed by, or associated with any fragrance brand or designer. All trademarks belong to their respective owners and are used only to identify the authentic products from which each decant is prepared.</p>
@@ -1483,6 +1484,10 @@ var Cart=(function(){
 })();
 </script>
 <style>
+/* Facebook link */
+.fb-link{display:inline-flex;align-items:center;gap:9px;margin:14px 0 4px;padding:9px 16px;border:1px solid #b5946a;border-radius:30px;background:#4a0e1e;color:#e8d3b4;text-decoration:none;font:500 12px var(--sans,system-ui);letter-spacing:.12em;text-transform:uppercase;transition:background .2s,color .2s}
+.fb-link:hover{background:#b5946a;color:#2c0610}
+.fb-cta{display:block;margin:30px auto 0;width:max-content;max-width:100%}
 /* Scent Sherpa assistant */
 .sh-fab{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:45;height:56px;border-radius:30px;border:2px solid #f0dcb8;background:linear-gradient(135deg,#e2c38f,#b5946a 60%,#9c7a4f);color:#2c0610;display:flex;align-items:center;gap:9px;cursor:pointer;box-shadow:0 10px 28px rgba(10,2,4,.6),0 0 0 4px rgba(226,195,143,.25);transition:transform .2s ease,box-shadow .2s ease;padding:0 20px 0 14px;font:600 13px var(--sans,system-ui);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
 .sh-fab::after{content:"";position:absolute;inset:-2px;border-radius:30px;border:2px solid #e2c38f;animation:shPulse 2.4s ease-out 1.2s 4;pointer-events:none;opacity:0}
