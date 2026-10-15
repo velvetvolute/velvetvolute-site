@@ -754,6 +754,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
     <label>Sort<select id="sort">
       <option value="brand">Brand A–Z</option>
       <option value="brand-desc">Brand Z–A</option>
+      <option value="new">Recently added</option>
       <option value="low">Price: low to high</option>
       <option value="high">Price: high to low</option>
     </select></label>
@@ -960,6 +961,8 @@ const HER={
 };
 PRODUCTS.forEach(p=>{const h=HER[p.name];if(h){p.her=h[0];p.herWhy=h[1]}});
 const inStock=p=>!!p.sq&&!p.soon;
+/* When each fragrance joined the collection (UTC), keyed by Square item id. Used by the "Recently added" sort. */
+const ADDED={"ZXPCML5QU6DKV5U2OFSVHC4Y":"2026-10-11T00:42","CPQZVESNT2M27ETVZCOK7U6U":"2026-10-11T00:42","R6RQ2KN46KOJNXXLIK3Y5UHT":"2026-10-11T00:42","JQWKMPNXK3MMHWNFVD3RZVTW":"2026-10-11T00:42","JUINXX3FUCEBNI3FGJQLAULG":"2026-10-11T00:42","2SLX3E67ZUQTY7XT2OI2PLNR":"2026-10-11T00:42","CENIOXSZE3IM2XDDFTHGCQBE":"2026-10-11T00:42","E7TWUA2IZR65TXSYDMQKSHIL":"2026-10-11T00:42","WFC3PXWORS5A6XAMKWG7PGMJ":"2026-10-11T00:42","6IXPDR425PPISJBHT2OAGJZY":"2026-10-11T00:42","I2YT222LFWFYRAWUXOQSDZPB":"2026-10-11T00:42","AW3KVJLCAKI7SLNFDO6J7WPV":"2026-10-11T00:42","IEIPT6KIEZLX3W3U3CRDMOD6":"2026-10-11T00:42","LMHN6IFHQPUTAW4H22NTVQKY":"2026-10-11T00:42","7JWDJBC2YGFN577RB6D2AWJI":"2026-10-11T00:42","6RRUWMTR6HR57YISIVFICWM3":"2026-10-11T00:42","IGK65TSUCPCGLTA7O7OP7XMT":"2026-10-11T00:42","5QQ4SJTXANHQPQIU7ORYBAJB":"2026-10-11T00:42","4R5LGTZLZQUWDBINL746IB7P":"2026-10-11T00:42","ZWRPIQIHVK7HZA2GOFV7NRE2":"2026-10-11T00:42","Q6IFTTHV75EK3RJTB474ZTI5":"2026-10-11T00:42","KKI3DK26WYBVAERBJMRI2BVQ":"2026-10-11T00:42","HAQDGYJNCWMIHP5A5GJJSRHJ":"2026-10-11T00:42","XRZWTFEH4VB5LESUQKZ2ZWWU":"2026-10-11T00:42","GM25IFJLU2DGTU243KTOJQH7":"2026-10-11T05:12","PE33TD43HYRTTZC5A6JHU25A":"2026-10-11T18:54","H3H6KYWKL24KR6EEZM7B7MIR":"2026-10-13T18:47","KTKK4UIN7XJTUQTWUT5FKHOS":"2026-10-13T18:47","WC4P3J4BYGBICYUBCCPVGEOV":"2026-10-13T21:05","NIBHBS673EEIIPPGJSAEI7JY":"2026-10-13T21:22","RIDSP2UTX5Z3YD5AFG2WQ5LQ":"2026-10-13T21:22","OZ5Z33WF6IPMP7W6MNJWE47G":"2026-10-13T21:23","TC2TRWOK25KG3ZSUULU3PTSO":"2026-10-13T21:24","V55WG46EP3VHSPNRPSWAJKOV":"2026-10-13T21:24","VATMWQOVHP5T5Y6NATNYLUIA":"2026-10-13T21:47","BIOLOUFPWNNQQ2BOBZSMYZI5":"2026-10-13T22:03","XLJ4LPB4VDJPEJKLLWRUDVS5":"2026-10-14T17:42","LIIP3QVKFSAXBVJPFFAID37G":"2026-10-15T20:27"};
 const brands=["All brands",...[...new Set(PRODUCTS.map(p=>p.brand))].sort()];
 const fams=["All scents",...[...new Set(PRODUCTS.map(p=>p.cat))].sort()];
 const brandSel=new Set();let fam="All scents",gen="all",sea="all",sortBy="brand",sherpaSet=null;
@@ -1096,7 +1099,7 @@ function render(){
  const sb=document.getElementById("sherpa-bar");
  let list=PRODUCTS.filter((p,i)=>passes(p,i));
  const byBrand=(a,b)=>a.brand.localeCompare(b.brand)||a.name.localeCompare(b.name);
- if(sherpaSet&&sortBy==="brand")list.sort((a,b)=>sherpaSet.indexOf(PRODUCTS.indexOf(a))-sherpaSet.indexOf(PRODUCTS.indexOf(b)));else list.sort(sortBy==="brand"?byBrand:sortBy==="brand-desc"?(a,b)=>byBrand(b,a):sortBy==="low"?(a,b)=>low(a)-low(b)||byBrand(a,b):(a,b)=>low(b)-low(a)||byBrand(a,b));
+ if(sherpaSet&&sortBy==="brand")list.sort((a,b)=>sherpaSet.indexOf(PRODUCTS.indexOf(a))-sherpaSet.indexOf(PRODUCTS.indexOf(b)));else list.sort(sortBy==="brand"?byBrand:sortBy==="brand-desc"?(a,b)=>byBrand(b,a):sortBy==="new"?(a,b)=>(ADDED[b.sq]||"").localeCompare(ADDED[a.sq]||"")||byBrand(a,b):sortBy==="low"?(a,b)=>low(a)-low(b)||byBrand(a,b):(a,b)=>low(b)-low(a)||byBrand(a,b));
  if(!sherpaSet&&(sortBy==="brand"||sortBy==="brand-desc"))list=list.filter(isSpot).concat(list.filter(p=>!isSpot(p)));
  const cnt=`${list.length} fragrance${list.length===1?"":"s"}`;
  document.getElementById("count").textContent=cnt;document.getElementById("count2").textContent=cnt;document.getElementById("fdone-n").textContent=cnt;
