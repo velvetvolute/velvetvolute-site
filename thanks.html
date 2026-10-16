@@ -1,24 +1,86 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Thank you | Velvet Volute</title>
+<title>Order confirmed | Velvet Volute</title>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#4a0e1e;--ink:#e8d3b4;--gold:#b5946a}
-body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 30%,#6e1a31,#2c0610 70%);color:var(--ink);font-family:Poppins,system-ui,sans-serif;text-align:center;padding:24px;box-sizing:border-box}
-.box{max-width:460px}
-.mono{width:74px;height:74px;margin:0 auto 22px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font:italic 30px Georgia,serif;color:var(--gold)}
-h1{font:400 40px Georgia,serif;margin:0 0 12px}
-p{font-size:16px;line-height:1.6;color:#e2c9a8}
-a{display:inline-block;margin-top:18px;padding:13px 30px;border:1px solid var(--gold);color:var(--ink);text-decoration:none;letter-spacing:.2em;text-transform:uppercase;font-size:12.5px}
+:root{--ink:#e8d3b4;--soft:#d9bf9c;--gold:#b5946a;--line:rgba(181,148,106,.35);--card:rgba(44,6,16,.55);
+ --serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',system-ui,-apple-system,'Segoe UI',sans-serif}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 18%,#6e1a31,#2c0610 72%) fixed;background-color:#2c0610;color:var(--ink);font:300 16px/1.6 var(--sans);padding:48px 16px 64px;display:flex;justify-content:center}
+.box{width:100%;max-width:520px;text-align:center}
+.mono{width:72px;height:72px;margin:0 auto 20px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font:italic 500 30px var(--serif);color:var(--gold)}
+h1{font:400 44px/1.1 var(--serif);margin:0 0 10px}
+.lede{color:var(--soft);margin:0 auto 26px;max-width:420px}
+.no{display:inline-block;margin:0 0 26px;padding:12px 22px;border:1px solid var(--gold);border-radius:2px}
+.no small{display:block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.no b{font:500 28px/1.2 var(--serif);letter-spacing:.06em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:20px 20px 16px;text-align:left;margin:0 0 22px}
+.card h2{font:500 13px var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
+.row{display:flex;justify-content:space-between;gap:14px;padding:7px 0;border-bottom:1px solid rgba(181,148,106,.15)}
+.row:last-child{border-bottom:0}
+.row span:first-child{min-width:0}
+.row em{display:block;font-style:normal;font-size:13.5px;color:var(--soft)}
+.row span:last-child{white-space:nowrap}
+.tot{font-weight:500;border-top:1px solid var(--line);border-bottom:0;margin-top:4px;padding-top:10px}
+.next p{margin:0 0 8px;color:var(--soft)}
+.next p:last-child{margin:0}
+a.btn{display:inline-block;margin-top:6px;padding:13px 30px;border:1px solid var(--gold);color:var(--ink);text-decoration:none;letter-spacing:.2em;text-transform:uppercase;font-size:12.5px}
+a.btn:hover{background:rgba(181,148,106,.12)}
+.help{font-size:14px;color:var(--soft);margin-top:22px}
+.help a{color:var(--ink)}
+[hidden]{display:none!important}
+@media(max-width:420px){h1{font-size:38px}body{padding-top:32px}}
 </style></head>
-<body><div class="box">
+<body><main class="box">
 <div class="mono">VV</div>
 <h1>Thank you!</h1>
-<p>Your order is in. Square has emailed your receipt. I'll hand-pour your decants and email you with pickup or shipping details soon.</p>
-<p>Questions? <span style="white-space:nowrap">velvetvolute@gmail.com</span></p>
-<a href="/">Back to the shop</a>
-</div>
-<script>try{localStorage.removeItem("vv-cart-v1")}catch(e){}</script>
+<p class="lede" id="lede">Your order is in. Square has emailed your receipt.</p>
+
+<div class="no" id="no" hidden><small>Order number</small><b id="no-val"></b></div>
+
+<section class="card" id="items" hidden><h2>Your order</h2><div id="rows"></div></section>
+
+<section class="card next"><h2>What happens next</h2><div id="next">
+ <p>I'll hand-pour your decants and email you with pickup or shipping details soon.</p>
+</div></section>
+
+<a class="btn" href="/">Back to the shop</a>
+<p class="help">Questions? Email <a href="mailto:velvetvolute@gmail.com">velvetvolute@gmail.com</a><span id="help-no"></span></p>
+</main>
+<script>
+(function(){
+ try{localStorage.removeItem("vv-cart-v1")}catch(e){}
+ var q=new URLSearchParams(location.search),id=q.get("orderId");
+ if(!id||!/^[A-Za-z0-9]{20,40}$/.test(id))return;
+ var $=function(i){return document.getElementById(i)};
+ var m=function(c){return "$"+(c/100).toFixed(2)};
+ var esc=function(t){var d=document.createElement("div");d.textContent=t;return d.innerHTML};
+ // ask the server to alert the shop only once per order from this browser
+ var key="vv-notified-"+id,first=true;
+ try{first=!localStorage.getItem(key)}catch(e){}
+ fetch("/.netlify/functions/order?id="+encodeURIComponent(id)+(first?"&notify=1":""))
+ .then(function(r){if(!r.ok)throw 0;return r.json()})
+ .then(function(o){
+  if(first&&o.paid){try{localStorage.setItem(key,"1")}catch(e){}}
+  $("no-val").textContent=o.no;$("no").hidden=false;
+  $("help-no").textContent=" and include "+o.no+".";
+  document.title="Order "+o.no+" confirmed | Velvet Volute";
+  $("lede").textContent=o.paid?"Your order is confirmed. Square has emailed your receipt.":"Your order is in. Square will email your receipt once the payment clears.";
+  var h="",sub=0;
+  o.items.forEach(function(i){sub+=i.total;h+='<div class="row"><span>'+(i.qty>1?i.qty+"× ":"")+esc(i.name)+(i.variation?"<em>"+esc(i.variation)+"</em>":"")+"</span><span>"+m(i.total)+"</span></div>"});
+  o.charges.forEach(function(c){h+='<div class="row"><span>'+esc(c.name)+"</span><span>"+m(c.total)+"</span></div>"});
+  if(o.method==="ship"&&!o.charges.length)h+='<div class="row"><span>Shipping</span><span>Free</span></div>';
+  if(o.tax)h+='<div class="row"><span>Tax</span><span>'+m(o.tax)+"</span></div>";
+  h+='<div class="row tot"><span>Total paid</span><span>'+m(o.total)+"</span></div>";
+  $("rows").innerHTML=h;$("items").hidden=false;
+  if(o.method==="pickup")$("next").innerHTML="<p>I'll hand-pour your decants and email you soon to set a pickup time at the Shoppers Drug Mart on Carling Ave.</p><p>Pickups are in 15-minute slots with 24 hours' notice.</p>";
+  else if(o.method==="ship")$("next").innerHTML="<p>I'll hand-pour your decants and ship them with Canada Post. I'll email you once they're on the way.</p>";
+ })
+ .catch(function(){});
+})();
+</script>
 </body></html>

@@ -54,6 +54,13 @@ async function loadBundles(req) {
   } catch { return null; }
 }
 
+// Velvet Volute order number, e.g. VV-K7Q4M2 (no 0/O/1/I so it reads clearly over text or email).
+const NO_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+function newOrderNumber() {
+  const b = crypto.getRandomValues(new Uint8Array(6));
+  return "VV-" + Array.from(b, (x) => NO_CHARS[x % NO_CHARS.length]).join("");
+}
+
 const json = (status, body) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
 
@@ -152,12 +159,13 @@ export default async (req) => {
     };
     if (shipCents > 0) checkout_options.shipping_fee = { name: SHIPPING[ship].label, charge: { amount: shipCents, currency: "CAD" } };
 
-    const note =
+    const orderNo = newOrderNumber();
+    const note = `Order ${orderNo} · ` + (
       ship === "pickup"
         ? "Ottawa pickup: I'll email you to set a time."
         : shipCents === 0
           ? `${SHIPPING[ship].label}: free (order over $85)`
-          : SHIPPING[ship].label;
+          : SHIPPING[ship].label);
 
     const link = await sq("/online-checkout/payment-links", token, {
       idempotency_key: crypto.randomUUID(),
@@ -166,7 +174,7 @@ export default async (req) => {
         line_items: lineItems,
         ...(discounts.length ? { discounts } : {}),
         pricing_options: { auto_apply_taxes: true },
-        reference_id: ship === "pickup" ? "PICKUP" : ship.toUpperCase(),
+        reference_id: `${orderNo} ${ship === "pickup" ? "PICKUP" : ship.toUpperCase()}`,
       },
       checkout_options,
       payment_note: note,
