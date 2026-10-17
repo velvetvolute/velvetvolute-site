@@ -97,8 +97,8 @@ ${FONTS}
 <body>
 <div class="bar">Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
-  <a class="logo" href="/"><span class="mono">VV</span>Velvet <span>Volute</span></a>
-  <nav><a href="/#shop">Shop</a><a href="/houses/"${current === "houses" ? ' aria-current="page"' : ""}>Fragrance Houses</a><a href="/collections/"${current === "collections" ? ' aria-current="page"' : ""}>Curated Collections</a><a href="/fragrance-101">Fragrance 101</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="/contact">Contact</a></nav><a class="cart-open" href="/#cart-page" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></a><button type="button" class="menu-open" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <button type="button" class="menu-open" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><a class="logo" href="/"><span class="mono">VV</span>Velvet <span>Volute</span></a>
+  <nav><a href="/#shop">Shop</a><a href="/houses/"${current === "houses" ? ' aria-current="page"' : ""}>Fragrance Houses</a><a href="/collections/"${current === "collections" ? ' aria-current="page"' : ""}>Curated Collections</a><a href="/fragrance-101">Fragrance 101</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="/contact">Contact</a></nav><div class="icons"><button type="button" class="search-open" id="search-open" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></button><a class="cart-open" href="/#cart-page" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></a></div>
 </div></header>
 <main>`;
 }
@@ -322,6 +322,18 @@ for (const [brand, items] of groups) { out(`houses/${hSlug(brand)}/index.html`, 
 out("houses/index.html", housesIndex(groups));
 for (const b of BUNDLES.bundles) { out(`collections/${b.id}/index.html`, collectionPage(b)); urls.push([cUrl(b), .7]); }
 out("collections/index.html", collectionsIndex());
+/* search index for the header search (nav.js): scents, houses, collections and the main pages */
+const SEARCH = [
+  ...PRODUCTS.map((p) => ({ t: "scent", b: p.brand, n: p.name, u: pUrl(p), i: "/" + p.img, s: inStock(p) ? `From ${money(low(p))}` : (p.limited || "Arriving soon"),
+    k: [p.cat, p.cat2, FAM_LABEL[p.cat], FAM_LABEL[p.cat2], ...(p.x || []), ...noteList(p), p.g, SEA_TXT[p.sea], TM_TXT[p.tm]].filter(Boolean).join(" ") })),
+  ...groups.map(([brand, items]) => ({ t: "house", b: "Fragrance house", n: brand, u: hUrl(brand), s: `${items.length} scent${items.length === 1 ? "" : "s"}`, k: items.map((p) => p.name).join(" ") })),
+  ...BUNDLES.bundles.map((b) => ({ t: "collection", b: "Curated collection", n: b.name, u: cUrl(b), s: `${bItems(b).length} scents, ${BUNDLES.pct}% off`, k: bItems(b).map((p) => p.brand + " " + p.name).join(" ") })),
+  { t: "page", b: "Guide", n: "Fragrance 101", u: "/fragrance-101", s: "EDT vs EDP vs Extrait vs Parfum, notes, families, how to wear it", k: "concentration edt edp extrait parfum beginner guide longevity sillage projection notes families glossary" },
+  { t: "page", b: "Page", n: "How It Works", u: "/how-it-works", s: "Ordering, pickup and shipping", k: "order pickup shipping e-transfer square canada post free shipping" },
+  { t: "page", b: "Page", n: "About the Brand", u: "/about", s: "Who Velvet Volute is", k: "about izzi story brand curated" },
+  { t: "page", b: "Page", n: "Contact", u: "/contact", s: "Email, Messenger, pickup booking", k: "contact email messenger facebook message pickup booking" },
+];
+writeFileSync(join(ROOT, "search.json"), JSON.stringify(SEARCH));
 writeFileSync(join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(([u, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod><priority>${pr}</priority></url>`).join("\n")}\n</urlset>\n`);
 const missing = groups.filter(([b]) => !HOUSES[b]).map(([b]) => b);
 console.log(`built ${PRODUCTS.length} scent pages, ${groups.length} houses, ${BUNDLES.bundles.length} collections, ${urls.length} sitemap urls${missing.length ? `; houses missing content: ${missing.join(", ")}` : ""}`);

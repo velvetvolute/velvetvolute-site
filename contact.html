@@ -481,6 +481,10 @@ a.ct-way:hover{background:#ad885e}
 .ct-way b{display:block;font:500 23px/1.15 var(--serif);color:#2a0610;margin:0 0 6px;text-wrap:balance;overflow-wrap:anywhere}
 .ct-way p{margin:0;color:#3a1018;font-size:15px;line-height:1.6}
 .ct-way .ct-l{display:inline-block;margin-top:10px;font:500 14px var(--sans);color:#2a0610;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(42,6,16,.6)}
+.ct-messenger{display:inline-flex;align-items:center;gap:10px;margin-top:12px;padding:12px 20px;border-radius:30px;background:#2a0610;color:#e8d3b4;text-decoration:none;font:600 12.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;transition:background .2s,transform .2s}
+.ct-messenger:hover{background:#4a0e1e;transform:translateY(-1px)}
+.ct-messenger svg{width:22px;height:22px;flex:none}
+.ct-msg .ct-l{display:block;margin-top:12px}
 .ct-form{padding:30px 28px 26px;border:1px solid rgba(181,148,106,.5);border-radius:4px}
 .ct-form h2{font-size:clamp(26px,3.4vw,34px);margin:0 0 6px;text-align:left}
 .ct-form .ct-sub{margin:0 0 20px;color:var(--muted);font-size:15px}
@@ -520,8 +524,8 @@ header{border-bottom:0}
 <body>
 <div class="bar">Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
-  <a class="logo" href="/"><span class="mono">VV</span>Velvet <span>Volute</span></a>
-  <nav><a href="/#shop">Shop</a><a href="/houses/">Fragrance Houses</a><a href="/collections/">Curated Collections</a><a href="/fragrance-101">Fragrance 101</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="/contact" aria-current="page">Contact</a></nav><a class="cart-open" href="/#cart" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span></a><button type="button" class="menu-open" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <button type="button" class="menu-open" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><a class="logo" href="/"><span class="mono">VV</span>Velvet <span>Volute</span></a>
+  <nav><a href="/#shop">Shop</a><a href="/houses/">Fragrance Houses</a><a href="/collections/">Curated Collections</a><a href="/fragrance-101">Fragrance 101</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="/contact" aria-current="page">Contact</a></nav><div class="icons"><button type="button" class="search-open" id="search-open" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></button><a class="cart-open" href="/#cart" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span></a></div>
 </div></header>
 
 <main><section class="about how-page ct-page" id="contact"><div class="wrap">
@@ -534,11 +538,12 @@ header{border-bottom:0}
         <p>The fastest way to reach me. Also how to order by e-Transfer: tell me what you'd like and I'll send a Square invoice.</p>
         <span class="ct-l">Write to me</span>
       </a>
-      <a class="ct-way" href="https://www.facebook.com/profile.php?id=61595247606137" target="_blank" rel="noopener">
-        <p class="eyebrow">Facebook</p><b>Velvet Volute on Facebook</b>
-        <p>Follow for new arrivals and Spotlight picks. Like the Page and send a message for a one-time 10% code on your first order.</p>
-        <span class="ct-l">Open the Page</span>
-      </a>
+      <div class="ct-way ct-msg">
+        <p class="eyebrow">Messenger</p><b>Message Velvet Volute</b>
+        <p>Chat with me directly through the Facebook Page. Quick questions, pickup changes, or to grab your one-time 10% code for a first order.</p>
+        <a class="ct-messenger" href="https://m.me/61595247606137" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2C6.36 2 2 6.13 2 11.7c0 2.91 1.19 5.44 3.14 7.17.16.15.26.35.27.57l.05 1.78c.02.57.6.94 1.12.71l1.99-.88c.17-.07.36-.09.54-.04.91.25 1.88.39 2.89.39 5.64 0 10-4.13 10-9.7S17.64 2 12 2zm6 7.46-2.94 4.66c-.47.74-1.47.93-2.17.4l-2.34-1.75a.6.6 0 0 0-.72 0l-3.16 2.4c-.42.32-.97-.18-.69-.63l2.94-4.66c.47-.74 1.47-.93 2.17-.4l2.34 1.75c.21.16.51.16.72 0l3.16-2.4c.42-.32.97.18.69.63z"/></svg>Message on Messenger</a>
+        <a class="ct-l" href="https://www.facebook.com/profile.php?id=61595247606137" target="_blank" rel="noopener">or open the Facebook Page</a>
+      </div>
       <a class="ct-way" href="https://calendar.app.google/9Gg9gioRktiA5eocA" target="_blank" rel="noopener">
         <p class="eyebrow">Ottawa pickup</p><b>Shoppers Drug Mart, Carling Ave</b>
         <p>Book a 15-minute pickup slot (24 hours' notice). Mon, Thu, Sat, Sun 11am to 8pm; Tue, Wed, Fri 5:30 to 8pm. I'll confirm by email.</p>

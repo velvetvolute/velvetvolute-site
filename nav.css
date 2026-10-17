@@ -1,43 +1,82 @@
-/* Site navigation: desktop keeps the top links; phones and tablets get a hamburger + slide-out side menu.
-   Loaded after each page's own styles so these rules win. */
-.menu-open{display:none}
+/* Site navigation: desktop keeps the top links; below 1200px a hamburger (left, like a shop app) opens a narrow
+   side menu from the left that covers ~40% of the screen so the page behind stays visible.
+   Also styles the header search button + overlay. Loaded after each page's own styles so these rules win. */
 /* seven links need room: tighten the top bar on laptops, switch to the drawer below 1200px */
 @media(max-width:1560px){.nav nav a{margin-left:13px;font-size:11.5px;letter-spacing:.09em}.logo{font-size:22px}}
 @media(max-width:1400px){.nav nav a{margin-left:11px;letter-spacing:.07em}.cart-open .cart-lbl{display:none}.cart-open{padding:9px 13px}}
+.nav .icons{display:flex;align-items:center;gap:6px;margin-left:auto;flex:none}
+.nav .icons .cart-open{margin-left:0}
+.search-open,.menu-open{display:inline-flex;align-items:center;justify-content:center;flex:none;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--ink,#b5946a);cursor:pointer}
+.search-open:hover,.search-open:focus-visible,.menu-open:hover,.menu-open:focus-visible{background:rgba(181,148,106,.14);outline:none}
+.search-open svg,.menu-open svg{display:block;width:24px;height:24px}
+.menu-open svg{width:27px;height:27px}
+.menu-open{display:none}
 @media(max-width:1200px){
-  .nav{flex-wrap:nowrap;height:64px;padding-top:0;padding-bottom:0;row-gap:0;gap:10px}
+  .nav{flex-wrap:nowrap;height:64px;padding-top:0;padding-bottom:0;row-gap:0;gap:8px}
   .nav nav{display:none}
-  .cart-open{margin-left:auto}
-  .menu-open{display:inline-flex;align-items:center;justify-content:center;flex:none;width:44px;height:44px;margin:0;padding:0;border:0;border-radius:50%;background:transparent;color:var(--ink,#b5946a);cursor:pointer}
-  .menu-open:hover,.menu-open:focus-visible{background:rgba(181,148,106,.14);outline:none}
-  .menu-open svg{display:block;width:26px;height:26px}
+  .menu-open{display:inline-flex;order:-1;margin-left:-10px}
 }
 @media(max-width:560px){
-  .nav{gap:8px}
+  header .wrap{padding:0 14px}
+  .nav{gap:4px}
+  .menu-open{margin-left:-8px}
   .cart-open .cart-lbl{display:none}
-  .cart-open{padding:8px 11px;margin-left:auto}
-  .logo{font-size:19px;gap:8px}
+  .cart-open{padding:8px 10px}
+  .logo{font-size:17px;gap:7px}
+  .logo .mono{width:30px;height:30px;font-size:13px}
 }
-/* drawer */
-.mnav{position:fixed;inset:0;z-index:80;display:flex;justify-content:flex-end}
+@media(max-width:360px){.logo{font-size:15px}.nav .icons{gap:0}}
+
+/* side menu (left) */
+.mnav{position:fixed;inset:0;z-index:80;display:flex;justify-content:flex-start}
 .mnav[hidden]{display:none}
-.mnav-back{position:absolute;inset:0;background:rgba(10,3,5,.6);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);opacity:0;transition:opacity .25s}
-.mnav-panel{position:relative;width:min(320px,86vw);height:100%;display:flex;flex-direction:column;background:#2c0610;color:#e8d3b4;border-left:1px solid #7a2a3d;box-shadow:-24px 0 60px -20px rgba(0,0,0,.8);transform:translateX(100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);padding:calc(14px + env(safe-area-inset-top,0px)) 0 calc(18px + env(safe-area-inset-bottom,0px))}
+.mnav-back{position:absolute;inset:0;background:rgba(10,3,5,.45);opacity:0;transition:opacity .25s}
+.mnav-panel{position:relative;width:clamp(176px,40vw,320px);height:100%;display:flex;flex-direction:column;background:#2c0610;color:#e8d3b4;border-right:1px solid #7a2a3d;box-shadow:24px 0 60px -20px rgba(0,0,0,.8);transform:translateX(-100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);padding:calc(10px + env(safe-area-inset-top,0px)) 0 calc(16px + env(safe-area-inset-bottom,0px))}
 .mnav.on .mnav-back{opacity:1}
 .mnav.on .mnav-panel{transform:none}
-.mnav-head{display:flex;align-items:center;justify-content:space-between;padding:4px 14px 14px 24px;border-bottom:1px solid rgba(181,148,106,.3)}
-.mnav-head .mono{width:38px;height:38px;border:1px solid #b5946a;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font:italic 500 16px 'Cormorant Garamond',Georgia,serif;color:#b5946a}
-.mnav-x{width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#cdb08a;font-size:30px;line-height:1;cursor:pointer}
+.mnav-head{display:flex;align-items:center;justify-content:space-between;padding:4px 8px 10px 14px;border-bottom:1px solid rgba(181,148,106,.3)}
+.mnav-head .mono{width:34px;height:34px;border:1px solid #b5946a;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font:italic 500 14px 'Cormorant Garamond',Georgia,serif;color:#b5946a}
+.mnav-x{width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:#cdb08a;font-size:28px;line-height:1;cursor:pointer}
 .mnav-x:hover,.mnav-x:focus-visible{background:rgba(181,148,106,.14);outline:none;color:#e8d3b4}
-.mnav-links{display:flex;flex-direction:column;padding:10px 10px 0;overflow-y:auto;flex:1}
-.mnav-links a{display:flex;align-items:center;justify-content:flex-start;gap:12px;min-height:54px;margin:0;padding:0 14px;border-radius:6px;color:#e8d3b4;text-decoration:none;font:500 21px/1.2 'Cormorant Garamond',Georgia,serif;letter-spacing:.02em;text-transform:none;transition:background .15s}
-.mnav-links a::after{content:"›";margin-left:auto;font-size:22px;color:#b5946a;opacity:.7}
+.mnav-links{display:flex;flex-direction:column;padding:8px 6px 0;overflow-y:auto;flex:1}
+.mnav-links a{display:flex;align-items:center;gap:8px;min-height:50px;margin:0;padding:8px 8px 8px 10px;border-radius:6px;color:#e8d3b4;text-decoration:none;font:500 17px/1.15 'Cormorant Garamond',Georgia,serif;letter-spacing:.01em;text-transform:none;text-wrap:balance;transition:background .15s}
 .mnav-links a:hover,.mnav-links a:focus-visible{background:rgba(181,148,106,.12);outline:none}
 .mnav-links a[aria-current]{color:#e2c38f}
-.mnav-links a[aria-current]::before{content:"";flex:none;width:4px;height:22px;margin-right:2px;border-radius:2px;background:#b5946a}
-.mnav-foot{padding:14px 24px 0;border-top:1px solid rgba(181,148,106,.3);display:flex;flex-direction:column;gap:12px}
-.mnav-cta{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border-radius:30px;background:#b5946a;color:#2c0610;text-decoration:none;font:600 12.5px 'Jost',system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.mnav-links a[aria-current]::before{content:"";flex:none;width:3px;height:20px;margin-left:-6px;border-radius:2px;background:#b5946a}
+.mnav-foot{padding:12px 12px 0;border-top:1px solid rgba(181,148,106,.3);display:flex;flex-direction:column;gap:10px}
+.mnav-cta{display:flex;align-items:center;justify-content:center;text-align:center;min-height:42px;padding:6px 10px;border-radius:30px;background:#b5946a;color:#2c0610;text-decoration:none;font:600 10.5px/1.25 'Jost',system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase}
 .mnav-cta.ghost{background:transparent;border:1px solid #b5946a;color:#e8d3b4}
-.mnav-mail{text-align:center;font:400 13px 'Jost',system-ui,sans-serif;color:#cdb08a;text-decoration:none}
+.mnav-mail{text-align:center;font:400 11px 'Jost',system-ui,sans-serif;color:#cdb08a;text-decoration:none;overflow-wrap:anywhere}
+@media(min-width:420px){.mnav-links a{font-size:19px;padding-left:14px}.mnav-cta{font-size:11.5px}.mnav-mail{font-size:12.5px}}
 body.mnav-lock{overflow:hidden}
-@media(prefers-reduced-motion:reduce){.mnav-back,.mnav-panel{transition:none}}
+
+/* search overlay */
+.vvs{position:fixed;inset:0;z-index:85;display:flex;flex-direction:column;align-items:center;background:rgba(20,4,8,.78);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;transition:opacity .2s;overflow-y:auto;padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(24px + env(safe-area-inset-bottom,0px))}
+.vvs[hidden]{display:none}
+.vvs.on{opacity:1}
+.vvs-box{width:100%;max-width:640px;background:#2c0610;border:1px solid #7a2a3d;border-radius:10px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8);transform:translateY(-10px);transition:transform .22s}
+.vvs.on .vvs-box{transform:none}
+.vvs-bar{display:flex;align-items:center;gap:10px;padding:12px 12px 12px 16px;border-bottom:1px solid rgba(181,148,106,.3)}
+.vvs-bar svg{flex:none;width:22px;height:22px;color:#b5946a}
+.vvs-in{flex:1;min-width:0;background:transparent;border:0;color:#e8d3b4;font:400 18px 'Jost',system-ui,sans-serif;outline:none}
+.vvs-in::-webkit-search-cancel-button,.vvs-in::-webkit-search-decoration{-webkit-appearance:none;appearance:none}
+.vvs-in::placeholder{color:#cdb08a;opacity:.6}
+.vvs-x{width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:#cdb08a;font-size:28px;line-height:1;cursor:pointer}
+.vvs-x:hover,.vvs-x:focus-visible{background:rgba(181,148,106,.14);outline:none;color:#e8d3b4}
+.vvs-hint{padding:14px 18px 6px;font:400 13px 'Jost',system-ui,sans-serif;color:#cdb08a}
+.vvs-chips{display:flex;flex-wrap:wrap;gap:7px;padding:6px 16px 16px}
+.vvs-chips button{border:1px solid #7a2a3d;border-radius:30px;background:transparent;color:#e8d3b4;padding:7px 13px;font:400 12.5px 'Jost',system-ui,sans-serif;cursor:pointer}
+.vvs-chips button:hover,.vvs-chips button:focus-visible{border-color:#b5946a;outline:none}
+.vvs-res{list-style:none;margin:0;padding:6px 8px 10px;max-height:min(62vh,520px);overflow-y:auto}
+.vvs-res li a{display:flex;align-items:center;gap:14px;padding:9px 10px;border-radius:8px;color:#e8d3b4;text-decoration:none}
+.vvs-res li a:hover,.vvs-res li a:focus-visible,.vvs-res li.sel a{background:rgba(181,148,106,.14);outline:none}
+.vvs-th{flex:none;width:52px;height:52px;border-radius:6px;object-fit:cover;background:#4a0e1e}
+.vvs-th.ico{display:flex;align-items:center;justify-content:center;border:1px solid #7a2a3d;color:#b5946a;font:italic 500 16px 'Cormorant Garamond',Georgia,serif}
+.vvs-t{min-width:0;flex:1}
+.vvs-b{display:block;font:600 10.5px 'Jost',system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#b5946a}
+.vvs-n{display:block;font:500 18px/1.2 'Cormorant Garamond',Georgia,serif;color:#e8d3b4;overflow-wrap:anywhere}
+.vvs-s{display:block;margin-top:2px;font:400 13px 'Jost',system-ui,sans-serif;color:#cdb08a}
+.vvs-none{padding:18px 18px 22px;color:#cdb08a;font:400 15px 'Jost',system-ui,sans-serif}
+.vvs-none a{color:#e8d3b4}
+body.vvs-lock{overflow:hidden}
+@media(prefers-reduced-motion:reduce){.mnav-back,.mnav-panel,.vvs,.vvs-box{transition:none}}
