@@ -20,7 +20,16 @@ h1{font:500 clamp(30px,4.2vw,46px)/1.08 var(--serif);letter-spacing:.01em;color:
 .pp-left,.pp-right{display:contents}
 .pp-photo{order:1}.pp-head{order:2}.pp-buy{order:3}.pp-story{order:4}
 @media(min-width:900px){.pp{grid-template-columns:minmax(0,46%) minmax(0,1fr);column-gap:48px;padding-top:28px;align-items:start}.pp-left,.pp-right{display:block}.pp-left{position:sticky;top:90px}.pp-buy{margin-top:22px}}
-.pp-photo img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border:1px solid var(--line);box-shadow:0 22px 40px -18px rgba(0,0,0,.6)}
+/* product photo: a swipeable strip of classic / luxury / roll-on. Same photo repeats when a vial type has no shot of its own. */
+.pp-photo.carousel{max-width:none;margin:0;position:relative}
+.pp-photo .track{scroll-behavior:smooth;outline:none}
+.pp-photo .track:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.pp-photo .slide figcaption{padding:10px 14px;justify-content:center}
+.pp-photo .slide figcaption b{font:500 12px var(--sans);letter-spacing:.2em;text-transform:uppercase;color:#e8d3b4}
+.car-btn{position:absolute;top:calc(50% - 10px);transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(44,6,16,.75);color:#e8d3b4;font:300 26px/1 var(--serif);cursor:pointer;display:none;align-items:center;justify-content:center;padding:0 0 3px;opacity:.75;transition:opacity .15s}
+.car-btn:hover{opacity:1}.car-btn.prev{left:10px}.car-btn.next{right:10px}
+@media(hover:hover) and (pointer:fine){.car-btn{display:flex}}
+.pp-photo .dots{margin-top:12px}
 .pp-brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:600 12px var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
 .pp-brand span{font-weight:400;letter-spacing:.12em;color:var(--muted);border-left:1px solid var(--line);padding-left:10px}
 .pp-brand:hover{text-decoration:underline;text-underline-offset:4px}

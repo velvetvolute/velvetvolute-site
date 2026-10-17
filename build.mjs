@@ -138,7 +138,9 @@ function productPage(p) {
   return head({ title, desc, url, image: p.img, jsonld: ld }) + crumbs([{ name: "Shop", href: "/" }, { name: p.brand, href: hUrl(p.brand) }, { name: p.name }]) + `
 <article class="pp wrap">
  <div class="pp-left">
- <div class="pp-photo"><img id="pp-img" src="/${p.img}" width="720" height="720" alt="${attr(p.brand + " " + p.name)} bottle beside classic decant vials on a wooden table" decoding="async" fetchpriority="high"></div>
+ <div class="pp-photo carousel" id="ppcar"><div class="track">${[["classic", p.img, "classic decant vials", "Classic vials"], ["luxe", p.imgL || p.img, "luxury decant bottles", "Luxury bottles"], ["roll", p.imgR || p.img, "roll-on vials", "Roll-ons"]].map(([k, src, what, cap], i) => `<figure class="slide" data-v="${k}"><img src="/${src}" width="720" height="720" alt="${attr(p.brand + " " + p.name)} bottle beside ${what} on a wooden table" decoding="async"${i ? ' loading="lazy"' : ' fetchpriority="high"'}><figcaption><b>${cap}</b></figcaption></figure>`).join("")}</div>
+  <button type="button" class="car-btn prev" aria-label="Previous vial type">‹</button><button type="button" class="car-btn next" aria-label="Next vial type">›</button>
+  <div class="dots" role="tablist" aria-label="Vial type photos">${Object.entries(VIALS).map(([k, o], i) => `<button type="button" role="tab" data-v="${k}" aria-label="${o.label}"${i ? "" : ' aria-selected="true" class="on"'}></button>`).join("")}</div></div>
  <div class="pp-buy">
   <section class="buy" id="buy">
    <div class="vials" role="group" aria-label="Vial type">${Object.entries(VIALS).map(([k, o], i) => `<button type="button" class="vt${i ? "" : " on"}" data-v="${k}" aria-pressed="${!i}">${o.label}${k === "luxe" ? '<span class="vup">+$3</span>' : k === "roll" ? '<span class="vup">+$4</span>' : ""}</button>`).join("")}</div>
@@ -174,10 +176,18 @@ var VD={classic:"A clear glass vial with a fine-mist atomizer. Our everyday deca
 function price(){var b=P[V[v].key][z];return b}
 function draw(){$("sizes").innerHTML=V[v].sizes.map(function(s){return '<button type="button" class="sz'+(s===z?" on":"")+'" data-s="'+s+'" aria-pressed="'+(s===z)+'">'+s+' ml<span class="pml-b">$'+(P[V[v].key][s]/s).toFixed(2)+'/ml</span></button>'}).join("");
  $("price").innerHTML='$'+price()+'<small>CAD · '+z+' ml '+V[v].label.toLowerCase()+'</small><span class="sprays">'+(v==="roll"?"":"About "+SPR[z]+" sprays")+'</span>';
- $("vdesc").textContent=VD[v];$("pp-img").src="/"+(v==="luxe"&&P.imgL?P.imgL:v==="roll"&&P.imgR?P.imgR:P.img);
- document.querySelectorAll(".vt").forEach(function(b){b.classList.toggle("on",b.dataset.v===v);b.setAttribute("aria-pressed",b.dataset.v===v)});
+ $("vdesc").textContent=VD[v];
+ document.querySelectorAll(".vt,#ppcar .dots button").forEach(function(b){var on=b.dataset.v===v;b.classList.toggle("on",on);b.setAttribute(b.classList.contains("vt")?"aria-pressed":"aria-selected",on)});
  document.querySelectorAll(".sz").forEach(function(b){b.onclick=function(){z=+b.dataset.s;draw()}})}
-document.querySelectorAll(".vt").forEach(function(b){b.onclick=function(){v=b.dataset.v;if(V[v].sizes.indexOf(z)<0)z=V[v].sizes[0];draw()}});
+/* the photo is a swipeable strip: classic, luxury, roll-on. Swiping it changes the vial type; the vial tabs and dots scroll it. */
+var KEYS=Object.keys(V),tr=document.querySelector("#ppcar .track"),st;
+function setV(nv,scroll){if(nv!==v){v=nv;if(V[v].sizes.indexOf(z)<0)z=V[v].sizes[0];draw()}if(scroll!==false)tr.scrollTo({left:tr.clientWidth*KEYS.indexOf(v),behavior:"smooth"})}
+tr.addEventListener("scroll",function(){clearTimeout(st);st=setTimeout(function(){var i=Math.max(0,Math.min(KEYS.length-1,Math.round(tr.scrollLeft/tr.clientWidth)));setV(KEYS[i],false)},60)},{passive:true});
+document.querySelectorAll(".vt,#ppcar .dots button").forEach(function(b){b.onclick=function(){setV(b.dataset.v)}});
+document.querySelector("#ppcar .prev").onclick=function(){setV(KEYS[(KEYS.indexOf(v)+KEYS.length-1)%KEYS.length])};
+document.querySelector("#ppcar .next").onclick=function(){setV(KEYS[(KEYS.indexOf(v)+1)%KEYS.length])};
+tr.tabIndex=0;tr.addEventListener("keydown",function(e){if(e.key==="ArrowLeft")document.querySelector("#ppcar .prev").click();if(e.key==="ArrowRight")document.querySelector("#ppcar .next").click()});
+window.addEventListener("resize",function(){tr.scrollTo({left:tr.clientWidth*KEYS.indexOf(v)})});
 var add=$("add");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.parse(localStorage.getItem(K)||"null")||{lines:[],ship:null,promo:null};s.lines=s.lines||[];var l=s.lines.find(function(x){return x.sq===P.sq&&x.v===v&&x.z===z});if(l)l.q=Math.min(10,l.q+1);else s.lines.push({sq:P.sq,v:v,z:z,q:1});localStorage.setItem(K,JSON.stringify(s));var n=s.lines.reduce(function(a,l){return a+l.q},0),c=$("cart-count");c.textContent=n;c.hidden=false}catch(e){}
  add.textContent="Added ✓";add.classList.add("done");var t=document.createElement("div");t.className="cart-toast on";t.innerHTML='Added '+P.name.split(" Eau")[0].split(" Extrait")[0]+' · '+z+' ml '+V[v].label.toLowerCase()+' <a href="/#cart-page">View cart</a>';document.body.appendChild(t);setTimeout(function(){add.textContent="Add to cart";add.classList.remove("done")},1400);setTimeout(function(){t.remove()},3200)};
 draw()})();`);
