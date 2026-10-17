@@ -1,24 +1,20 @@
 /* Site navigation: desktop keeps the top links; below 1200px a hamburger (left, like a shop app) opens a narrow
    side menu from the left that covers ~40% of the screen so the page behind stays visible.
    Also styles the header search button + overlay. Loaded after each page's own styles so these rules win. */
-/* seven links need room: tighten the top bar on laptops, switch to the drawer below 1200px */
-@media(max-width:1560px){.nav nav a{margin-left:13px;font-size:11.5px;letter-spacing:.09em}.logo{font-size:22px}}
-@media(max-width:1400px){.nav nav a{margin-left:11px;letter-spacing:.07em}.cart-open .cart-lbl{display:none}.cart-open{padding:9px 13px}}
+/* The side menu is the navigation at every width: the top bar keeps only hamburger, logo, search and cart */
+.nav{flex-wrap:nowrap;height:68px;padding-top:0;padding-bottom:0;row-gap:0;gap:10px}
+.nav nav{display:none}
 .nav .icons{display:flex;align-items:center;gap:6px;margin-left:auto;flex:none}
 .nav .icons .cart-open{margin-left:0}
 .search-open,.menu-open{display:inline-flex;align-items:center;justify-content:center;flex:none;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--ink,#b5946a);cursor:pointer}
 .search-open:hover,.search-open:focus-visible,.menu-open:hover,.menu-open:focus-visible{background:rgba(181,148,106,.14);outline:none}
 .search-open svg,.menu-open svg{display:block;width:24px;height:24px}
+.menu-open{order:-1;margin-left:-10px}
 .menu-open svg{width:27px;height:27px}
-.menu-open{display:none}
-@media(max-width:1200px){
-  .nav{flex-wrap:nowrap;height:64px;padding-top:0;padding-bottom:0;row-gap:0;gap:8px}
-  .nav nav{display:none}
-  .menu-open{display:inline-flex;order:-1;margin-left:-10px}
-}
+.logo{font-size:24px}
 @media(max-width:560px){
   header .wrap{padding:0 14px}
-  .nav{gap:4px}
+  .nav{gap:4px;height:64px}
   .menu-open{margin-left:-8px}
   .cart-open .cart-lbl{display:none}
   .cart-open{padding:8px 10px}
@@ -31,7 +27,7 @@
 .mnav{position:fixed;inset:0;z-index:80;display:flex;justify-content:flex-start}
 .mnav[hidden]{display:none}
 .mnav-back{position:absolute;inset:0;background:rgba(10,3,5,.45);opacity:0;transition:opacity .25s}
-.mnav-panel{position:relative;width:clamp(176px,40vw,320px);height:100%;display:flex;flex-direction:column;background:#2c0610;color:#e8d3b4;border-right:1px solid #7a2a3d;box-shadow:24px 0 60px -20px rgba(0,0,0,.8);transform:translateX(-100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);padding:calc(10px + env(safe-area-inset-top,0px)) 0 calc(16px + env(safe-area-inset-bottom,0px))}
+.mnav-panel{position:relative;width:clamp(176px,40vw,360px);height:100%;display:flex;flex-direction:column;background:#2c0610;color:#e8d3b4;border-right:1px solid #7a2a3d;box-shadow:24px 0 60px -20px rgba(0,0,0,.8);transform:translateX(-100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);padding:calc(10px + env(safe-area-inset-top,0px)) 0 calc(16px + env(safe-area-inset-bottom,0px))}
 .mnav.on .mnav-back{opacity:1}
 .mnav.on .mnav-panel{transform:none}
 .mnav-head{display:flex;align-items:center;justify-content:space-between;padding:4px 8px 10px 14px;border-bottom:1px solid rgba(181,148,106,.3)}
@@ -48,6 +44,7 @@
 .mnav-cta.ghost{background:transparent;border:1px solid #b5946a;color:#e8d3b4}
 .mnav-mail{text-align:center;font:400 11px 'Jost',system-ui,sans-serif;color:#cdb08a;text-decoration:none;overflow-wrap:anywhere}
 @media(min-width:420px){.mnav-links a{font-size:19px;padding-left:14px}.mnav-cta{font-size:11.5px}.mnav-mail{font-size:12.5px}}
+@media(min-width:900px){.mnav-panel{padding-top:18px}.mnav-head{padding:6px 14px 14px 22px}.mnav-links{padding:14px 12px 0}.mnav-links a{font-size:22px;min-height:58px;padding-left:16px}.mnav-foot{padding:16px 20px 0}.mnav-cta{min-height:46px;font-size:12.5px}}
 body.mnav-lock{overflow:hidden}
 
 /* search overlay */

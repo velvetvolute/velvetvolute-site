@@ -28,7 +28,6 @@
     btn.addEventListener("click",mOpen);x.addEventListener("click",mClose);back.addEventListener("click",mClose);
     links.addEventListener("click",function(e){var a=e.target.closest("a");if(a&&a.getAttribute("href").charAt(0)==="#")mClose()});
     document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!wrap.hidden)mClose()});
-    window.addEventListener("resize",function(){if(innerWidth>1200&&!wrap.hidden)mClose()});
     panel.addEventListener("keydown",function(e){if(e.key!=="Tab")return;var f=panel.querySelectorAll("a,button"),a=f[0],z=f[f.length-1];
       if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}});
   }
