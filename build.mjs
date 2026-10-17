@@ -178,16 +178,19 @@ function draw(){$("sizes").innerHTML=V[v].sizes.map(function(s){return '<button 
  $("price").innerHTML='$'+price()+'<small>CAD · '+z+' ml '+V[v].label.toLowerCase()+'</small><span class="sprays">'+(v==="roll"?"":"About "+SPR[z]+" sprays")+'</span>';
  $("vdesc").textContent=VD[v];
  document.querySelectorAll(".vt,#ppcar .dots button").forEach(function(b){var on=b.dataset.v===v;b.classList.toggle("on",on);b.setAttribute(b.classList.contains("vt")?"aria-pressed":"aria-selected",on)});
- document.querySelectorAll(".sz").forEach(function(b){b.onclick=function(){z=+b.dataset.s;draw()}})}
+ document.querySelectorAll(".sz").forEach(function(b){b.onclick=function(){z=+b.dataset.s;ZS[v]=z;draw()}})}
 /* the photo is a swipeable strip: classic, luxury, roll-on. Swiping it changes the vial type; the vial tabs and dots scroll it. */
-var KEYS=Object.keys(V),tr=document.querySelector("#ppcar .track"),st;
-function setV(nv,scroll){if(nv!==v){v=nv;if(V[v].sizes.indexOf(z)<0)z=V[v].sizes[0];draw()}if(scroll!==false)tr.scrollTo({left:tr.clientWidth*KEYS.indexOf(v),behavior:"smooth"})}
-tr.addEventListener("scroll",function(){clearTimeout(st);st=setTimeout(function(){var i=Math.max(0,Math.min(KEYS.length-1,Math.round(tr.scrollLeft/tr.clientWidth)));setV(KEYS[i],false)},60)},{passive:true});
+var KEYS=Object.keys(V),tr=document.querySelector("#ppcar .track"),st,tw=tr.clientWidth,ZS={classic:2};
+/* size follows you between vial types: a size you tapped is remembered for that type; otherwise the current size carries over when the new type offers it, else its smallest */
+function setV(nv,scroll){if(nv!==v){v=nv;var S=V[v].sizes;z=S.indexOf(ZS[v])>=0?ZS[v]:S.indexOf(z)>=0?z:S[0];draw()}if(scroll!==false)tr.scrollTo({left:tr.clientWidth*KEYS.indexOf(v),behavior:"smooth"})}
+function settled(){clearTimeout(st);var i=Math.max(0,Math.min(KEYS.length-1,Math.round(tr.scrollLeft/tr.clientWidth)));if(Math.abs(tr.scrollLeft-i*tr.clientWidth)<2)setV(KEYS[i],false)}
+if("onscrollend" in tr)tr.addEventListener("scrollend",settled);
+tr.addEventListener("scroll",function(){clearTimeout(st);st=setTimeout(settled,120)},{passive:true});
 document.querySelectorAll(".vt,#ppcar .dots button").forEach(function(b){b.onclick=function(){setV(b.dataset.v)}});
 document.querySelector("#ppcar .prev").onclick=function(){setV(KEYS[(KEYS.indexOf(v)+KEYS.length-1)%KEYS.length])};
 document.querySelector("#ppcar .next").onclick=function(){setV(KEYS[(KEYS.indexOf(v)+1)%KEYS.length])};
 tr.tabIndex=0;tr.addEventListener("keydown",function(e){if(e.key==="ArrowLeft")document.querySelector("#ppcar .prev").click();if(e.key==="ArrowRight")document.querySelector("#ppcar .next").click()});
-window.addEventListener("resize",function(){tr.scrollTo({left:tr.clientWidth*KEYS.indexOf(v)})});
+window.addEventListener("resize",function(){if(tr.clientWidth!==tw){tw=tr.clientWidth;tr.scrollTo({left:tw*KEYS.indexOf(v),behavior:"instant"})}});
 var add=$("add");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.parse(localStorage.getItem(K)||"null")||{lines:[],ship:null,promo:null};s.lines=s.lines||[];var l=s.lines.find(function(x){return x.sq===P.sq&&x.v===v&&x.z===z});if(l)l.q=Math.min(10,l.q+1);else s.lines.push({sq:P.sq,v:v,z:z,q:1});localStorage.setItem(K,JSON.stringify(s));var n=s.lines.reduce(function(a,l){return a+l.q},0),c=$("cart-count");c.textContent=n;c.hidden=false}catch(e){}
  add.textContent="Added ✓";add.classList.add("done");var t=document.createElement("div");t.className="cart-toast on";t.innerHTML='Added '+P.name.split(" Eau")[0].split(" Extrait")[0]+' · '+z+' ml '+V[v].label.toLowerCase()+' <a href="/#cart-page">View cart</a>';document.body.appendChild(t);setTimeout(function(){add.textContent="Add to cart";add.classList.remove("done")},1400);setTimeout(function(){t.remove()},3200)};
 draw()})();`);
