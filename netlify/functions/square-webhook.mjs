@@ -1,13 +1,19 @@
 // Square webhook for velvetvolute.ca. Subscribe this URL in the Square Developer dashboard to
-// "payment.completed" only; set SQUARE_WEBHOOK_SIGNATURE_KEY in Netlify.
+// "payment.updated" only; set SQUARE_WEBHOOK_SIGNATURE_KEY in Netlify.
+// Square sends payment.updated several times per payment (often 2–3 within a second, all
+// status COMPLETED), so each payment id is claimed once in Netlify Blobs before anything fires.
 // On a paid order it: 1) pings Justin's phone (NTFY_TOPIC), 2) retires a one-time promo code,
-// 3) emails the buyer a Velvet Volute order confirmation (GMAIL_USER + GMAIL_APP_PASSWORD).
-// Each of those is skipped silently when its env vars are missing.
+// 3) emails the buyer a Velvet Volute order confirmation via Resend (RESEND_API_KEY), with an
+//    identical copy to the shop (ORDER_COPY_TO). Each of those is skipped silently when its env vars are missing.
+import { getStore } from "@netlify/blobs";
 import { sq, LOCATION_ID, isReusableCode } from "../lib/square.mjs";
 import { summarize } from "./order.mjs";
 
 const SITE = process.env.SITE_URL || "https://velvetvolute.ca";
 const BOOKING_URL = "https://calendar.app.google/9Gg9gioRktiA5eocA";
+const SHOP_EMAIL = "velvetvolute@gmail.com";
+const MAIL_FROM = process.env.ORDER_EMAIL_FROM || "Velvet Volute <orders@velvetvolute.ca>";
+const MAIL_COPY = process.env.ORDER_COPY_TO || SHOP_EMAIL;
 const money = (c) => "$" + (c / 100).toFixed(2);
 
 async function validSignature(req, raw) {
@@ -18,6 +24,18 @@ async function validSignature(req, raw) {
   const mac = new Uint8Array(await crypto.subtle.sign("HMAC", k, new TextEncoder().encode(url + raw)));
   const sig = btoa(String.fromCharCode(...mac));
   return sig === (req.headers.get("x-square-hmacsha256-signature") || "");
+}
+
+// Atomically claim a payment id; returns false if another delivery already claimed it.
+// If Blobs is unavailable we proceed anyway (a rare duplicate beats a missed order) and log it.
+async function firstDelivery(paymentId) {
+  try {
+    const { modified } = await getStore("vv-orders").set(paymentId, new Date().toISOString(), { onlyIfNew: true });
+    return modified;
+  } catch (e) {
+    console.error("blobs unavailable, skipping dedupe", e);
+    return true;
+  }
 }
 
 async function notify(s) {
@@ -53,22 +71,28 @@ function emailHTML(s, ref) {
    <p style="margin:0 0 18px">Order number <b style="letter-spacing:.06em">${esc(s.no)}</b>${ref ? ` · Square reference ${esc(ref)}` : ""}</p>
    <table style="width:100%;border-collapse:collapse;font-size:15px">${rows}${charges}${s.method === "ship" && !s.charges.length ? `<tr><td style="padding:6px 0">Shipping</td><td style="padding:6px 0;text-align:right">Free</td></tr>` : ""}${s.discount ? `<tr><td style="padding:6px 0">Discounts</td><td style="padding:6px 0;text-align:right">−${money(s.discount)}</td></tr>` : ""}${s.tax ? `<tr><td style="padding:6px 0">Tax</td><td style="padding:6px 0;text-align:right">${money(s.tax)}</td></tr>` : ""}<tr><td style="padding:10px 0;border-top:1px solid #b5946a;font-weight:bold">Total paid</td><td style="padding:10px 0;border-top:1px solid #b5946a;text-align:right;font-weight:bold">${money(s.total)}</td></tr></table>
    <h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:22px 0 6px">What happens next</h3>${next}
-   <p style="margin-top:22px">Questions? Reply to this email or write to velvetvolute@gmail.com and include ${esc(s.no)}.</p>
+   <p style="margin-top:22px">Questions? Reply to this email or write to ${SHOP_EMAIL} and include ${esc(s.no)}.</p>
    <p style="color:#8a6d4b;font-size:13px">Peace &amp; Love, Izzi · <a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
   </div></div>`;
 }
 
+// Resend (https://resend.com): one HTTPS call, no SDK. The buyer gets the confirmation; the shop
+// gets an identical copy via BCC, so Justin sees exactly what the customer saw. Replies go to the
+// shop's Gmail. When no buyer email is on the payment, the copy is sent to the shop alone.
 async function emailBuyer(s, to, ref) {
-  const user = process.env.GMAIL_USER, pass = process.env.GMAIL_APP_PASSWORD;
-  if (!user || !pass || !to) return;
-  const { default: nodemailer } = await import("nodemailer");
-  const t = nodemailer.createTransport({ service: "gmail", auth: { user, pass } });
-  await t.sendMail({
-    from: `"Velvet Volute" <${user}>`, to, replyTo: user,
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return;
+  const body = {
+    from: MAIL_FROM,
+    to: [to || MAIL_COPY],
+    bcc: to ? [MAIL_COPY] : [],
+    reply_to: SHOP_EMAIL,
     subject: `Your Velvet Volute order ${s.no}`,
     text: [`Thank you for your order. Order number ${s.no}.`, ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""} ${money(i.total)}`), `Total paid ${money(s.total)}`, s.method === "pickup" ? `Pickup: book your slot at ${BOOKING_URL}` : "I'll email you once your decants ship."].join("\n"),
     html: emailHTML(s, ref),
-  });
+  };
+  const r = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
 }
 
 export default async (req) => {
@@ -77,10 +101,12 @@ export default async (req) => {
   if (!(await validSignature(req, raw))) return new Response("bad signature", { status: 401 });
   let ev; try { ev = JSON.parse(raw); } catch { return new Response("bad json", { status: 400 }); }
   const pay = ev?.data?.object?.payment;
-  // Subscribe only to payment.completed in Square, so each order triggers this exactly once.
-  if (ev.type !== "payment.completed" || !pay?.order_id || (pay.location_id && pay.location_id !== LOCATION_ID)) return new Response("ignored");
+  // Square has no payment.completed event: payment.updated fires on every change, so act only
+  // when the payment is COMPLETED, and only on the first delivery for that payment id.
+  if (!["payment.updated", "payment.created"].includes(ev.type) || pay?.status !== "COMPLETED" || !pay.order_id || (pay.location_id && pay.location_id !== LOCATION_ID)) return new Response("ignored");
   const token = process.env.SQUARE_ACCESS_TOKEN;
   if (!token) return new Response("not configured", { status: 500 });
+  if (!(await firstDelivery(pay.id))) return new Response("duplicate");
   try {
     const { order } = await sq(`/orders/${pay.order_id}`, token);
     if (!order) return new Response("no order");
@@ -89,6 +115,8 @@ export default async (req) => {
     return new Response("ok");
   } catch (e) {
     console.error(e);
+    // Release the claim so Square's automatic retry of this event can go through.
+    await getStore("vv-orders").delete(pay.id).catch(() => {});
     return new Response("error", { status: 500 });
   }
 };

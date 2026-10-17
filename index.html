@@ -134,6 +134,7 @@ h2{font-family:var(--serif);font-weight:500;font-size:clamp(32px,5vw,48px);margi
 footer{background:var(--bar-bg);color:var(--foot,#b9ae9a);padding:46px 0 34px;font-size:12.5px;text-align:center}
 footer .logo{color:var(--bar-ink);display:inline-block;margin-bottom:14px}
 footer p{max-width:760px;margin:10px auto}
+@media(max-width:1400px){nav a{margin-left:16px;font-size:12px;letter-spacing:.1em}}
 @media(max-width:720px){nav a{margin-left:16px}.trust .wrap,.steps{grid-template-columns:1fr}section{padding:60px 0}.hero{padding:80px 0}}
 .vial{border-color:var(--cap)}
 .vial::before{background:var(--cap)}
@@ -472,6 +473,8 @@ a.cart-open{text-decoration:none}
 .mood{margin:6px 0 10px;font:italic 400 14.5px/1.65 'Lora',Georgia,serif;color:#2a0610;letter-spacing:0;text-wrap:pretty;flex:0 0 auto;-webkit-font-smoothing:antialiased}
 .story{flex:0 0 auto}
 .mood.clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.pp-link{display:inline-block;align-self:flex-start;margin:2px 0 8px;font:600 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#4a0e1e;text-decoration:none;border-bottom:1px solid currentColor}
+.pp-link:hover{opacity:.75}
 .story-more{display:inline-flex;align-items:center;gap:6px;margin:-4px 0 10px;padding:0;border:0;background:none;color:#4a0e1e;font:600 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .story-more:hover{color:#6e1a31}
 /* ===== 2026 REDESIGN (UI UX Pro Max draft + Taste critique) =====
@@ -743,7 +746,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 <div class="bar">Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
   <a class="logo" href="#top"><span class="mono">VV</span>Velvet <span>Volute</span></a>
-  <nav><a href="#shop">Shop</a><a href="#collections">Special Collections</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="#contact">Contact</a></nav><button type="button" class="cart-open" id="cart-open" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></button>
+  <nav><a href="#shop">Shop</a><a href="/houses/">Fragrance Houses</a><a href="#collections">Special Collections</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="#contact">Contact</a></nav><button type="button" class="cart-open" id="cart-open" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></button>
 </div></header>
 
 <div class="x-hero" id="top"><div class="wrap">
@@ -999,6 +1002,8 @@ const HER={
 };
 PRODUCTS.forEach(p=>{const h=HER[p.name];if(h){p.her=h[0];p.herWhy=h[1]}});
 /* Scent Sherpa write-ups: each scent's own voice (vibe) and when it shines (when). Used instead of templates. */
+/* SHERPA: each scent's own one-line story (vibe) and when to wear it. FIT: hand-written, per-scent sentences for each
+   reason a scent can match the quiz (family, loved notes, "closest to", season, occasion, presence). No two scents share phrasing. */
 const SHERPA={
 "La Mélodie Maximal Parfum": {
 "vibe": "The easy one in the collection: citrus and sea air up front, a smooth whiskey-and-moss drydown that never shouts.",
@@ -1010,23 +1015,23 @@ const SHERPA={
 },
 "Le Piano Eau de Parfum": {
 "vibe": "Ocean and sun, played softly: lime, neroli and airy florals that settle into clean musk and cedar.",
-"when": "Warm days and daytime plans; the one to reach for when the forecast says sun."
+"when": "Pack it for the days the forecast promises sun and the plans run until late afternoon."
 },
 "Zoltan Extrait de Parfum": {
 "vibe": "Ice and fire in one bottle: mint and grapefruit that turn into cinnamon, rose and leather within the hour.",
-"when": "Winter nights out. It walks in cold and leaves warm, and people notice the turn."
+"when": "A winter night out is its stage; it walks in cold and leaves warm, and people notice the turn."
 },
 "I Will Eau de Parfum": {
 "vibe": "Armani's new signature: bergamot and lavender melting into Madagascar vanilla and a soft wood-and-leather accord.",
-"when": "The quietly expensive cold-weather scent for someone who'd rather be respected than noticed."
+"when": "Quietly expensive; wear it once the cold settles in if you'd rather be respected than noticed."
 },
 "Uomo Signature Eau de Parfum": {
 "vibe": "Ferragamo Uomo with the sugar cut: leather and dark-roast coffee under mandarin, pink pepper and cinnamon.",
-"when": "A suit-and-dinner scent for fall and winter evenings; sharp first, warm later."
+"when": "Suit-and-dinner territory once the clocks go back; sharp first, warm later."
 },
 "Gentleman Réserve Privée Eau de Parfum": {
-"vibe": "A real whisky absolute over iris and chestnut, finished dry with cedar and vetiver, bottled like a hip flask.",
-"when": "The gentleman's after-dark pick for cold months, when the good bottle comes out for the right company."
+"vibe": "A real whisky absolute over iris and chestnut, finished dry by cedar and vetiver, bottled like a hip flask.",
+"when": "After dark, late in the year, when the good bottle comes out for the right people."
 },
 "Le Male Elixir Parfum": {
 "vibe": "Le Male after dark: a breath of mint, then lavender, benzoin and tonka melting into honeyed vanilla with a touch of tobacco.",
@@ -1034,7 +1039,7 @@ const SHERPA={
 },
 "Replica Coffee Break": {
 "vibe": "Coming in from the cold to a warm café: roasted coffee, red apple and lavender over a milk-mousse accord as soft as foam.",
-"when": "Daytime comfort in fall and winter, for anyone who likes their gourmand gentle rather than syrupy."
+"when": "Weekday comfort from October to March, for anyone who likes a gourmand gentle rather than syrupy."
 },
 "Replica Jazz Club": {
 "vibe": "A Brooklyn jazz club in 2013: rum, tobacco leaf and vanilla bean, with cigar smoke in the air.",
@@ -1042,11 +1047,11 @@ const SHERPA={
 },
 "Baccarat Rouge 540 Eau de Parfum": {
 "vibe": "Kurkdjian's crystal glow: jasmine and saffron over ambergris and dry woods, with a sugared warmth that everyone recognizes.",
-"when": "Year-round and day-or-night, for someone who wants the trail people turn around for."
+"when": "Twelve months a year, noon or midnight, if you want the trail people turn around for."
 },
 "Petit Matin Eau de Parfum": {
 "vibe": "Paris at dawn: lemon and litsea cubeba over lavandin, orange blossom and hawthorn, settling into clean musks.",
-"when": "Spring and summer mornings; bright, clean and effortless for the daytime."
+"when": "Early light from May to September; bright, clean and effortless before noon."
 },
 "Ani Extrait de Parfum": {
 "vibe": "Blue ginger and bergamot that warm into Turkish rose, blackcurrant and a vanilla-benzoin drydown that stays close and warm.",
@@ -1054,113 +1059,464 @@ const SHERPA={
 },
 "Fan Your Flames Extrait de Parfum": {
 "vibe": "Coconut, rum and tobacco smoke melting into tonka, with cedar and oakmoss keeping it from turning to syrup.",
-"when": "Late nights with your closest friends, in fall and winter; warm, addictive and made for company."
+"when": "Late nights with your closest friends once the snow is down; warm, addictive, built for company."
 },
 "Fan Your Flames X Extrait de Parfum": {
 "vibe": "The original's flames turned down to a glow: softer, more tropical coconut and rum with thyme, carrot and mastic.",
-"when": "For someone who loves Fan Your Flames but wants it smoother; fall and winter evenings."
+"when": "If you love Fan Your Flames but want it smoother; cool evenings once the frost sets in."
 },
 "Hacivat Extrait de Parfum": {
-"vibe": "A bright burst of pineapple, grapefruit and bergamot that dries down to oakmoss and clear, timbered woods.",
-"when": "Spring and summer days when you want to be the most put-together person in the room."
+"vibe": "A bright burst of pineapple, grapefruit and bergamot, settling into oakmoss and clear, timbered woods.",
+"when": "Sunny days when the goal is to be the most put-together person present."
 },
 "Kredo Extrait de Parfum": {
-"vibe": "Pink pepper and cardamom over osmanthus, then oud, sandalwood and soft suede with real conviction.",
-"when": "Cold months, day or night, for someone who knows exactly what they stand for and wears it quietly."
+"vibe": "Pink pepper and cardamom above osmanthus, then oud, sandalwood and soft suede with real conviction.",
+"when": "The colder half of the year, whatever the hour, if you know what you stand for and wear it quietly."
 },
 "Papilefiko Extrait de Parfum": {
 "vibe": "Dominique Ropion's butterfly effect: crisp cardamom and lavandin over a deep floor of fir balsam, moss and styrax.",
-"when": "An all-year, day-or-night scent for the days you're building something."
+"when": "Any weather, any hour, on the days you're building something."
 },
 "Deziro Extrait de Parfum": {
 "vibe": "Alberto Morillas's aquatic fougère: mandarin and ambergris over mint, star anise and geranium, then sandalwood and vetiver.",
-"when": "Spring and summer daytime; fresh and easy, like the first morning of a long trip."
+"when": "Warm-weather daytime; fresh and easy, like the first morning of a long trip."
 },
 "Tempfluo Extrait de Parfum": {
 "vibe": "Anne Flipo's golden afternoon: mandarin and saffron melting into jasmine sambac, orange flower, praline and cashmere wood.",
-"when": "Any season, day or night; sweet and radiant, and easy to lose track of time in."
+"when": "Whatever the calendar says; sweet and radiant, the kind you lose track of time in."
 },
 "Hundred Silent Ways X Extrait de Parfum": {
 "vibe": "Tuberose, gardenia and iris blooming over peach, warmed by vanilla, leather and patchouli.",
-"when": "Cold-weather evenings, for when you'd rather let your presence do the talking."
+"when": "Chilly evenings, for when you'd rather let your presence do the talking."
 },
 "Wulong Cha X Extrait de Parfum": {
-"vibe": "Wulong Cha with its edges softened: bergamot, yuzu and mandarin over green tea, magnolia and a touch of thyme, on creamy fig.",
-"when": "Spring and summer daytime; calm, polished and effortlessly fresh."
+"vibe": "Wulong Cha with its edges softened: bergamot, yuzu and mandarin layered on green tea, magnolia and a thread of thyme, over creamy fig.",
+"when": "Warm mornings and afternoons; calm, polished, unhurried."
 },
 "Nefs Extrait de Parfum": {
 "vibe": "Nishane's flagship oriental: honey, saffron and fig over rose and osmanthus, poured onto oud, whiskey, leather and amber.",
-"when": "Winter nights and big occasions; rich, boozy and unapologetically opulent."
+"when": "Deep-winter nights and milestone occasions; rich, boozy and unapologetically opulent."
 },
 "Suède et Safran Extrait de Parfum": {
 "vibe": "A tailored suede jacket spiced with Iranian saffron and ambrette, drying down to leather and musk.",
-"when": "Cold months, day or night; Tuscan Leather's quieter cousin."
+"when": "Scarf weather, noon or night; Tuscan Leather's quieter cousin."
 },
 "Wulong Cha Extrait de Parfum": {
 "vibe": "Bergamot, orange and mandarin over a cup of oolong with a pinch of nutmeg, settling into fig and clean musk.",
-"when": "Spring and summer days; the first cup of a slow morning."
+"when": "Hot days and slow mornings; the first cup, poured properly."
 },
 "Tero Extrait de Parfum": {
 "vibe": "Carlos Benaïm's salted caramel crackling against black and Sichuan pepper, warming into patchouli, cinnamon bark, vetiver and oak.",
-"when": "Fall and winter evenings; rich, earthy and quietly commanding."
+"when": "Evenings after the leaves drop; rich, earthy and quietly commanding."
 },
 "Althaïr Eau de Parfum": {
 "vibe": "A majestic, surprisingly fresh Bourbon vanilla: bergamot, mandarin and elemi over orange blossom, cinnamon and cardamom, then praline and guaiac wood.",
-"when": "Cool evenings when you'd rather be noticed than loud; elegant rather than sweet."
+"when": "Brisk evenings for being noticed without being loud; elegance over sugar."
 },
 "Black Orchid Eau de Parfum": {
 "vibe": "Tom Ford's first fragrance: black truffle and ylang-ylang over black orchid, rum-soaked plum and patchouli.",
-"when": "Cold-weather nights when you want to be remembered; dark, opulent and unmistakable."
+"when": "Nights worth being remembered for; dark, opulent and unmistakable."
 },
 "Noir Eau de Parfum": {
 "vibe": "Tom Ford's most personal: bergamot, violet and pink pepper over iris, rose and nutmeg, revealing vanilla, amber and leather slowly.",
-"when": "Evening elegance for the colder months, with a sensual side underneath the suit."
+"when": "Evening elegance once the heating is on, with a sensual side underneath the suit."
 },
 "Ombre Leather Eau de Parfum": {
 "vibe": "Dust on wind, skin on skin: cardamom and jasmine sambac over a black leather accord, patchouli, white moss and amber.",
-"when": "Fall and winter, day or night, for the confident type who doesn't need to say much."
+"when": "Jacket season, any hour, for the confident type who doesn't need to say much."
 },
 "Tuscan Leather Eau de Parfum": {
 "vibe": "One of the original twelve Private Blends: raspberry and saffron cutting through rich, smoky leather, olibanum and black suede.",
-"when": "Cold-weather evenings when you want to own the room; luxurious and unapologetic."
+"when": "Winter evenings when owning the room is the plan; luxurious and unapologetic."
 },
 "Uomo Born in Roma Coral Fantasy": {
-"vibe": "Rome at sunset: a juicy red apple, clary sage at the heart and a soft, sweet tobacco that lasts into the night.",
-"when": "All year, day or night; smooth and easy to love, for plans that start with the sunset."
+"vibe": "Rome at sunset: a juicy red apple, clary sage at the heart and a gentle, sweet tobacco that lasts into the night.",
+"when": "Every month, every hour; smooth and easy to love, for plans that start at sunset."
 },
 "Uomo Born in Roma Green Stravaganza": {
 "vibe": "Rome's gardens at sunrise: Calabrian bergamot opening green and zesty, a coffee accord for the dark twist, vetiver to carry it.",
-"when": "Spring and summer days with just enough edge for the evening."
+"when": "Bright days with just enough edge to carry past the office doors."
 },
 "Uomo (2021)": {
 "vibe": "Lemon and bergamot over an iris heart laced with vetiver, finished sharp with cardamom and black pepper.",
-"when": "All year, office to evening; polished outside, a little rock and roll underneath."
+"when": "Desk to dinner in any season; polished outside, a little rock and roll underneath."
 },
 "Uomo Born in Roma Yellow Dream": {
 "vibe": "Roman sunlight: Italian mandarin and pineapple over a gingerbread accord, on vanilla absolute and cedarwood.",
-"when": "Spring and summer, day or night; sweet, sunny and playful, for good days and better company."
+"when": "Sunshine hours and warm nights; sweet, playful, for good days and better company."
 },
 "Uomo Born in Roma Purple Melancholia": {
 "vibe": "Spicy cardamom over a creamy coconut accord and lavender, settling into ambery woods.",
-"when": "Cold-weather nights and deep conversations; soft and a little wistful."
+"when": "Warm-month evenings and long talks; soft, creamy and a little wistful."
 },
 "Eros Najim Parfum": {
 "vibe": "Eros at desert sunset: yellow mandarin, saffron and cardamom over an oud accord, cedar and caramel, into incense and tonka.",
-"when": "Fall and winter evenings; the richer, smokier side of Eros."
+"when": "Nights from first frost to thaw; the richer, smokier side of Eros."
 },
 "Erba Pura Eau de Parfum": {
 "vibe": "A Mediterranean old town at golden hour: Sicilian orange, lemon and bergamot piled with ripe fruit over amber, vanilla and white musk.",
-"when": "Spring and summer days; bright, generous and impossible to miss."
+"when": "Heat, sunglasses and long evenings; bright, generous and impossible to miss."
 },
 "La Nuit de L'Homme Eau de Toilette": {
 "vibe": "Three pairs of opposites: cardamom against bergamot, lavender against cedar, vetiver against sweet tonka.",
-"when": "Dates, dim lights and close conversation in the colder months; a modern evening classic."
+"when": "Dim lights and close conversation on a cold night; a modern evening classic."
+}
+};
+const FIT={
+"La Mélodie Maximal Parfum": {
+"fam": "Oakmoss and guaiac are the backbone, earthy in the manner you like, with a splash of whisky poured over them.",
+"fam2": "Grapefruit and sea notes run the opening, so your bright side stays in charge until the moss moves in.",
+"love": "The whole composition is built around {n}, audible from the first spray instead of buried in the base.",
+"like": "Anyone who wears {s} will recognise the energy; the materials are simply a grade better.",
+"seaAll": "No month owns it: citrus keeps it lively in July and the moss keeps it grounded in January.",
+"occB": "Spray it ahead of {o} and it still makes sense at the gym beforehand or the bar afterwards.",
+"str": "Three sprays and the room knows you've arrived, so go lightly in close quarters."
+},
+"Or Noir Café Parfum": {
+"fam": "Think toffee and espresso crema, with suede beneath the sugar so it stays well clear of childish.",
+"fam2": "Cinnamon threads through the coffee from the start, which is where your spice craving gets answered.",
+"love": "You mentioned {n}; that's the first thing this bottle puts on the table.",
+"like": "People who keep {s} in rotation usually land here next, where the sweetness is darker and the coffee is real.",
+"sea": "Cold air brings the toffee out; a heatwave would flatten it.",
+"occ": "Sweetness with its jacket on and the lights turned low: {o} is exactly its register.",
+"str": "Carries for an hour or so, then settles into your collar for the rest of the evening."
+},
+"Le Piano Eau de Parfum": {
+"fam": "Lime and neroli set the key, so brightness is the first and last thing anyone notices.",
+"fam2": "Airy white petals hum beneath the citrus, florals without any perfume-counter weight.",
+"love": "Listen for the {n} in its middle section; that's the passage everything else was written around.",
+"like": "Coming from {s}, you'll find this sunnier and gentler, another reading of the same clean idea.",
+"sea": "Open windows and warm pavement are its natural habitat.",
+"occ": "Nobody at the next desk will object to it during {o}, and you'll still collect a compliment at lunch.",
+"str": "Enough presence to be caught walking past, never enough to enter a room ahead of you."
+},
+"Zoltan Extrait de Parfum": {
+"fam": "Cinnamon is the engine, firing once the icy top notes burn off.",
+"fam2": "A leather accord shows up in the second hour and gives the spice something to lean against.",
+"love": "What you want, {n} included, surfaces once the icy opening melts away.",
+"like": "With {s} on your shelf, meet its colder, stranger cousin.",
+"sea": "Frost outside is when the switch from mint to cinnamon feels most theatrical.",
+"occB": "Fine company for {o}, and the shape-shifting opening hands you something to talk about.",
+"str": "Noticeable within arm's reach, most of all during the cinnamon-and-rose stretch."
+},
+"I Will Eau de Parfum": {
+"fam": "Madagascar vanilla carries the entire drydown, which is the cozy signature you described.",
+"fam2": "Lavender against bergamot lends the first minutes a gentle warmth that reads as spice without a grain of pepper.",
+"love": "Armani placed {n} up front, and strangers stop you to ask about exactly that part.",
+"like": "Wearers of {s} get a familiar vanilla-and-woods glow here, tailored into a quieter Armani suit.",
+"sea": "A November scent in its bones; the vanilla only reads warm once the air turns crisp.",
+"occB": "Polished enough to take to {o}, soft enough that nobody minds it afterwards.",
+"str": "Lands in the sweet spot where colleagues notice and nobody is overwhelmed."
+},
+"Uomo Signature Eau de Parfum": {
+"fam": "Two kinds of heat, peppery and cinnamon-warm, frame the coffee and arrive before it.",
+"fam2": "A dry leather note runs under the coffee and keeps the sweetness honest.",
+"love": "Ferragamo sharpened the {n} when they reworked the original Uomo, so your taste is well served.",
+"like": "After {s}, this reads cleaner and drier, the same sweetness, less of the syrup.",
+"sea": "Cool evenings are where the coffee-and-leather pairing smells richest.",
+"occ": "A blazer scent, never a T-shirt scent, which is why it suits {o}.",
+"str": "Opens with a punch and settles into a steady hum that outlasts dessert."
+},
+"Gentleman Réserve Privée Eau de Parfum": {
+"fam": "The finish is dry and polished, more timber than resin; that's the woodiness you flagged.",
+"fam2": "Iris lends the powdered elegance that makes it floral in the gentleman's sense rather than the garden's.",
+"love": "Your taste for {n} is answered with a genuine whisky absolute poured over iris.",
+"like": "Beside {s}, it shares the iris-and-woods DNA and adds a dram on top.",
+"sea": "Whisky and chestnut want coat weather; linen would waste it.",
+"occ": "Keep it for {o}; it's the bottle that comes out when the company deserves it.",
+"str": "Holds through a long dinner without announcing itself across the dining room."
+},
+"Le Male Elixir Parfum": {
+"fam": "The sweetness you chose comes honeyed and resinous, with the lavender keeping it unmistakably Le Male.",
+"fam2": "Tobacco and a leathery undertone stop the honey from becoming a sweet shop.",
+"love": "Gaultier turned {n} up to eleven for the Elixir; this is where those notes get the spotlight.",
+"like": "Already a fan of {s}? This is its darker, longer-lasting evolution.",
+"sea": "Freezing nights are where honey and tobacco earn their keep.",
+"occ": "Engineered with {o} in mind; it's the one people still remember the next morning.",
+"str": "Big projection and a long tail; expect to find it on your scarf tomorrow."
+},
+"Replica Coffee Break": {
+"fam": "Milk mousse and roasted coffee make it a gourmand in the gentlest way, nearer a café than a bakery.",
+"fam2": "Lavender and a dash of warmth sit in the foam and keep it from reading as plain sugar.",
+"love": "Picture {n} served in a cup, with a slice of red apple on the saucer: that's this bottle.",
+"like": "Consider it the soft daytime relative of {s}: coffee and comfort without the night-out volume.",
+"sea": "Steamed-up windows and coat weather are the whole point of this bottle.",
+"occ": "Close, comforting and quiet enough that {o} can carry on around it, meetings included.",
+"str": "Stays within a hug's distance, which is how a coffee break ought to smell."
+},
+"Replica Jazz Club": {
+"fam": "A curl of cigar smoke over cured leaf gives it the leather-and-smoke character you ticked.",
+"fam2": "Rum and vanilla pod round the smoke into something cozy instead of ashtray-dark.",
+"love": "Think of {n} as the furniture of the room Margiela was recreating; every piece is on your skin.",
+"like": "Admirers of {s} tend to fall for this one: dimmer, boozier, the same kind of comfort.",
+"sea": "Cold nights make the rum and the tobacco leaf smell like a bar you don't want to leave.",
+"occ": "On {o}, something that stays near the collar is more alluring than one that shouts.",
+"str": "Intimate by design; it lives on your collar and only the person beside you gets the whole story."
+},
+"Baccarat Rouge 540 Eau de Parfum": {
+"fam": "Sugared ambergris pitched so high it almost smells like light: sweet, yes, but weightless.",
+"fam2": "A floor of cedar underneath stops the sweetness from floating off.",
+"love": "Kurkdjian's saffron, jasmine and amberwood trio is the most famous version of {n} on the market.",
+"like": "You named {s}; this is the original, not an interpretation.",
+"seaAll": "Heat makes it radiate and cold makes it linger, so there's no wrong season.",
+"occB": "{o} or a Tuesday, it draws the same question: who's wearing that?",
+"str": "The trail is the legend; people will smell you before they see you."
+},
+"Petit Matin Eau de Parfum": {
+"fam": "It opens like a window thrown open on a lemon grove: clean, bright, exactly as ordered.",
+"fam2": "White blossoms add a soft glow without ever turning perfumey.",
+"love": "Kurkdjian built the whole morning out of {n}, hence how clean it sits on skin.",
+"sea": "Linen, open shutters and first light suit it best.",
+"occ": "Dressed for {o} by nine and still fresh at five.",
+"str": "Hugs the skin and thins to a whisper of musk by afternoon, as a morning scent should."
+},
+"Ani Extrait de Parfum": {
+"fam": "Vanilla and benzoin turn the drydown into a blanket; this is sweetness as comfort rather than candy.",
+"fam2": "Ginger and cardamom spark the start, so the spice shows up before the vanilla takes charge.",
+"love": "Follow the {n} straight down its middle; the rose-and-vanilla pairing is why people adopt it as their signature.",
+"like": "Next to {s}, Ani is every bit as confident and sweet, with a Turkish, rose-tinted warmth.",
+"sea": "In cold months the vanilla-benzoin base becomes a soft cloud that follows you around.",
+"occB": "Equally at home at {o} and on an ordinary Wednesday; it's a signature, not a costume.",
+"str": "A few sprays in the morning are still working when you get home."
+},
+"Fan Your Flames Extrait de Parfum": {
+"fam": "Rum-soaked coconut and tonka do the sweet-talking, and a ribbon of smoke keeps the conversation adult.",
+"fam2": "Smoke and tobacco give the sugar a shadow, which is where its darker side shows.",
+"love": "Few bottles here make {n} this addictive.",
+"like": "Those who love {s} gravitate here for a similar tobacco warmth, served with rum and coconut instead of dried fruit.",
+"sea": "Winter turns the tonka and tobacco into a glow you can feel through a coat.",
+"occ": "Warm, inviting and hard not to lean into, which makes it ideal for {o}.",
+"str": "It fills the room on arrival and is still there after you've left."
+},
+"Fan Your Flames X Extrait de Parfum": {
+"fam": "Coconut and rum, turned down from a bonfire to a candle: still sweet, still cozy, far less smoke.",
+"fam2": "Mastic and cedar hold up the base, drier and woodier than the original.",
+"love": "Expect {n} gentler than in the original, and easier to wear on a weekday.",
+"like": "For anyone keen on {s}, this shares that creamy coconut softness with a boozy twist.",
+"sea": "Once patio season ends, it reads like a memory of summer, which is the charm.",
+"occB": "Friendly, never loud, it slips into {o} as easily as into a Sunday.",
+"str": "Present for hours without the room-filling blast its sibling has."
+},
+"Hacivat Extrait de Parfum": {
+"fam": "Pineapple and grapefruit light up the opening, vivid and fresh, with oakmoss waiting beneath.",
+"fam2": "Oakmoss and cedar make up its woody half: dry, clean, waiting under the fruit.",
+"love": "Nishane pushed the {n} hard here, and the result reads sharp and alive.",
+"like": "Mention {s} and this is what gets recommended as its closest rival, greener and mossier.",
+"sea": "Sun and heat make the pineapple and citrus sparkle; it was made for bright days.",
+"occ": "Sharp, confident and put-together, which is exactly what {o} calls for.",
+"str": "Loud in the best way; two sprays, not four."
+},
+"Kredo Extrait de Parfum": {
+"fam": "Suede and a hushed oud answer your leather pick in a tailored voice, nothing rugged about it.",
+"fam2": "Cardamom and pink pepper provide the spice, a quick flare before suede and sandalwood settle in.",
+"love": "Dig for {n} and you'll hit the core: osmanthus, oud and sandalwood.",
+"like": "Kredo sits next door to {s}: creamy oud and sandalwood, finished in suede.",
+"sea": "Hand it a cold morning and the suede and sandalwood come forward.",
+"occB": "It carries {o} without strain and a quiet day without boredom.",
+"str": "Composed, not loud; it keeps to handshake distance and keeps going all day."
+},
+"Papilefiko Extrait de Parfum": {
+"fam": "There's a forest floor under everything, resin and moss included; woody doesn't get more literal.",
+"fam2": "The opening stretch stays crisp and herbal, the fresh angle you were hoping for.",
+"love": "Ropion anchored the whole butterfly on {n}, and that's what keeps it both fresh and grounded.",
+"seaAll": "Aromatic enough for summer and resinous enough for winter, which keeps it off the bench all year.",
+"occB": "Signature material: {o} today, groceries tomorrow, same two sprays.",
+"str": "A steady, medium-volume hum, hour one to hour ten."
+},
+"Deziro Extrait de Parfum": {
+"fam": "Mandarin, mint and ambergris are the sea breeze; freshness here is the entire design, not a top note that vanishes.",
+"fam2": "Creamy and rooty woods close it out, so the woody preference gets its moment after the sea air clears.",
+"love": "Morillas poured {n} into the foundation, so the whole structure stands on exactly what you like.",
+"like": "Deziro is this collection's reply to {s}, with a smoother, more expensive finish.",
+"sea": "Humidity does it favours: mint and ambergris together feel like a breeze off the water.",
+"occ": "It handles {o} the way a good white shirt does.",
+"str": "Clean projection that reaches the next chair, not the next office."
+},
+"Tempfluo Extrait de Parfum": {
+"fam": "Jasmine sambac and orange flower hold the centre, powdered just enough to feel dressed up: floral as you meant it.",
+"fam2": "Its sweetness is praline-warm and edible, tucked under the flowers.",
+"love": "Anne Flipo lets {n} glow through the praline, the reason it feels so golden.",
+"like": "Lovers of {s} find a kindred sunlit sweetness here, floral and praline-warm.",
+"seaAll": "The mandarin lifts it through the heat while the praline carries it through the cold; it doesn't take a season off.",
+"occB": "Golden at {o}, golden at brunch; it doesn't distinguish.",
+"str": "Radiates for hours; the praline is what people smell across the table."
+},
+"Hundred Silent Ways X Extrait de Parfum": {
+"fam": "The bouquet is white and creamy, not green, with nothing timid about it.",
+"fam2": "Peach and vanilla sweeten the bouquet from underneath, which is the gourmand streak you were looking for.",
+"love": "Nishane folds {n} into a creamy white-floral vanilla, with the softness of a cashmere scarf.",
+"like": "Hundred Silent Ways X scratches the {s} itch with a creamier, more floral hand.",
+"sea": "The vanilla and leather beneath the bouquet need a chill outside to show themselves.",
+"occB": "Soft enough for a night in, sensual enough for {o}.",
+"str": "A soft bloom with a long reach; it fills a space without a sharp edge anywhere."
+},
+"Wulong Cha X Extrait de Parfum": {
+"fam": "Three citruses handle the brightness, and the tea keeps the edges rounded.",
+"fam2": "Magnolia floats in the tea, a floral touch so light it reads as calm more than bouquet.",
+"love": "Tea, blossom and creamy fig surround the {n} on your list.",
+"sea": "Patio season is its season; the yuzu and tea stay cool even when the day isn't.",
+"occ": "Calm and polished, it sees {o} out with no eyebrows raised.",
+"str": "Noticed when you lean in; never a cloud."
+},
+"Nefs Extrait de Parfum": {
+"fam": "Saffron and honey ignite the opening, warm spice first, with oud and whiskey queued behind.",
+"fam2": "Flowers bloom inside the oud, rose chief among them, the floral element in its most lavish form.",
+"love": "Honey and fig lift the {n} into Nishane's most opulent oriental.",
+"like": "Where {s} whispers, Nefs declares; richer, boozier, more rose.",
+"sea": "Oud and whiskey this rich belong to the darkest weeks on the calendar.",
+"occ": "Opulent and unapologetic; {o} is the only brief it takes.",
+"str": "One spray is a statement; two is a speech."
+},
+"Suède et Safran Extrait de Parfum": {
+"fam": "Buttery suede is the plot, start to finish; leather here means a soft jacket, not a saddle.",
+"fam2": "Iranian saffron spices the suede, a warm dusting that gives spice-lovers their due.",
+"love": "Saffron-spiced suede on musk is how this bottle handles {n}.",
+"like": "Anyone fond of {s} will know this as the quieter, softer cousin, suede in place of smoke.",
+"sea": "Suede is a cold-weather fabric, and this wears like one: best with a scarf.",
+"occ": "Bring it to {o} if you'd like to leave as the warm one, not the loud one.",
+"str": "Plush rather than piercing, yet it carries across a room."
+},
+"Wulong Cha Extrait de Parfum": {
+"fam": "Citrus poured over oolong, so the freshness tastes like something brewed instead of a cologne splash.",
+"fam2": "Fig and musk sweeten the base gently, more cream than sugar.",
+"love": "Oolong, nutmeg and fig keep the {n} company from top to base.",
+"sea": "Think iced oolong on a hot afternoon: that is the brief.",
+"occ": "Tea and citrus make an easy companion for {o}; it never oversteps.",
+"str": "Makes its point at conversational distance and leaves it there."
+},
+"Tero Extrait de Parfum": {
+"fam": "Two peppers crackle over the caramel, spice with real heat, not a dusting of cinnamon.",
+"fam2": "Salted caramel is the sweet half, savoury enough that it never slides into dessert.",
+"love": "Benaïm wraps salted caramel and pepper around the {n} on your wish list.",
+"like": "Tero takes the confident warmth of {s} somewhere earthier and saltier.",
+"sea": "Caramel and cinnamon bark only make sense once you can see your breath.",
+"occB": "Confident without ceremony, it reads right at {o} and right at the kitchen table.",
+"str": "The pepper makes it project; the caramel makes it last."
+},
+"Althaïr Eau de Parfum": {
+"fam": "Bourbon vanilla and praline deliver the sweetness, but elegantly, like a dessert plated at a good restaurant.",
+"fam2": "Warm spices occupy the middle, warmth without heat.",
+"love": "Parfums de Marly sets {n} against bourbon vanilla and praline, elegant, never sticky.",
+"like": "Althaïr is the elegant answer to {s}: the vanilla stays, the sugar leaves.",
+"sea": "Bourbon vanilla likes a cool room; it stays elegant where summer heat would make it cloying.",
+"occ": "Vanilla this composed was always meant for {o}.",
+"str": "Moderate projection with a lingering, powdery finish; it sits politely and stays late."
+},
+"Black Orchid Eau de Parfum": {
+"fam": "The orchid blooms dark and heady, florals with the lights off.",
+"fam2": "Truffle, spice and a plum steeped in rum supply the dark edge you reached for.",
+"love": "Tom Ford drenches {n} in truffle, rum and dark plum; nothing about it is subtle.",
+"like": "Should {s} be your idea of dark and sweet, Black Orchid goes darker still.",
+"sea": "Dark, dense and velvety, it belongs to the season of early sunsets.",
+"occ": "Nothing else here commands {o} like this does.",
+"str": "Unmissable on application and unmissable again at midnight."
+},
+"Noir Eau de Parfum": {
+"fam": "Powdery, tailored florals sit at its centre, the kind Tom Ford wears under a suit.",
+"fam2": "Nutmeg laces the florals; spice here is seasoning, not fire.",
+"love": "Noir treats {n} as a slow reveal, hidden under the iris until hour two.",
+"like": "Noir carries the iris-under-a-suit idea of {s} past sundown.",
+"sea": "The warmth at the bottom waits for the heating to come on.",
+"occ": "Sensual under the suit; {o} is where the slow reveal pays off.",
+"str": "Hovers close and grows warmer by the hour, the opposite of a blast."
+},
+"Ombre Leather Eau de Parfum": {
+"fam": "The leather accord is the point, full stop, black and supple, with cardamom so it never feels heavy.",
+"fam2": "Cardamom dusts the leather, which is as far as its spice goes, and exactly far enough.",
+"love": "Dust, wind and black leather make a setting for {n}.",
+"like": "Ombre Leather takes {s} and moves the dial from rich to raw.",
+"sea": "Patchouli and black leather are made for the months when jackets come out of storage.",
+"occ": "{o} suits it: confident, sleek, no explanation required.",
+"str": "Projects for a good while, then becomes a second skin."
+},
+"Tuscan Leather Eau de Parfum": {
+"fam": "Leather with saffron and fruit cut through it, the benchmark every other leather gets measured against.",
+"fam2": "Saffron is the spice, bright and bitter against the leather.",
+"love": "Call {n} the cloth, and the fruit and spice the cut.",
+"like": "Tuscan Leather is {s} itself, decanted.",
+"sea": "Smoky leather in a snowstorm is one of fragrance's great pairings.",
+"occ": "Wear it to {o} intending to own the room, because you will.",
+"str": "Commanding by nature; apply with restraint and it will still own the elevator."
+},
+"Uomo Born in Roma Coral Fantasy": {
+"fam": "Crisp red apple over soft tobacco makes the sweetness juicy instead of sugary.",
+"fam2": "Clary sage and a hint of spice keep the apple from turning into juice.",
+"love": "Valentino balances {n} with a bite of apple, keeping it well short of heavy.",
+"like": "Devotees of {s} feel at home here, in a lighter jacket.",
+"seaAll": "Apple in the summer, tobacco in the winter; it has something for every month.",
+"occB": "Apple and tobacco are easy company at {o} and easier still the morning after.",
+"str": "Easy to notice, hard to tire of; it keeps a comfortable middle volume."
+},
+"Uomo Born in Roma Green Stravaganza": {
+"fam": "Bergamot opens it zesty and green, and vetiver keeps the freshness crisp instead of soapy.",
+"fam2": "Coffee and vetiver lend it a dark, woody twist beneath the green opening.",
+"love": "Coffee and vetiver give the {n} a dark, Roman twist.",
+"like": "Greener and more Roman than {s}, with coffee where the incense would be.",
+"sea": "Bergamot this green wants sunshine and a short-sleeve shirt.",
+"occ": "Green, quiet and office-safe, with just enough edge to survive {o} and the drink after.",
+"str": "Lives close to the shirt; meant for whoever is next to you, not the room."
+},
+"Uomo (2021)": {
+"fam": "Iris lends it the powdery, tailored floral quality you went looking for.",
+"fam2": "Bergamot and lemon brighten the opening, a quick shot of light before the iris.",
+"love": "Iris is the heart, with {n} orbiting around it.",
+"like": "The {s} lineage runs straight through this iris; Ferragamo's version is drier and quieter.",
+"sea": "Iris and vetiver feel crispest when the air is.",
+"occB": "Office-polite and evening-ready, it moves from {o} to whatever follows without changing register.",
+"str": "Discreet by design, a private pleasure more than a public one."
+},
+"Uomo Born in Roma Yellow Dream": {
+"fam": "Pineapple, gingerbread and vanilla absolute keep it sweet in a sunny, playful way never a heavy one.",
+"fam2": "Gingerbread brings the spice, baked, not peppery.",
+"love": "Gingerbread and vanilla absolute sweeten the {n}, playful over heavy.",
+"like": "Yellow Dream has the sunny, sweet crowd-appeal of {s} with a Roman gingerbread twist.",
+"sea": "Pineapple and mandarin are at their sunniest in midsummer, and so is this.",
+"occ": "Sunny enough to improve {o}, light enough to go unremarked.",
+"str": "A skin scent after the first hour; sweet, soft and strictly for close company."
+},
+"Uomo Born in Roma Purple Melancholia": {
+"fam": "Coconut cream sweetens the lavender; it's gourmand, but the kind that stays wearable.",
+"fam2": "Cardamom sits on top of the coconut, the spiced detail that keeps plain sweetness at bay.",
+"love": "Coconut cream and lavender wrap the {n}, soft as a late-night conversation.",
+"like": "When {s} is your coconut-and-lavender reference, this is its moodier sibling.",
+"sea": "The coconut reads tropical in the heat, and that's where it was meant to live.",
+"occB": "Soft-spoken at {o}, softer still in a late conversation afterwards.",
+"str": "Hums where others shout, and the coconut keeps humming well after dark."
+},
+"Eros Najim Parfum": {
+"fam": "The opening leads with heat, and incense keeps the spice smoky, not sugary.",
+"fam2": "Caramel and tonka sweeten the oud and smoke, so the gourmand side you like has its place.",
+"love": "Oud and incense darken the {n}, which is the whole idea behind the Najim flanker.",
+"like": "Najim takes the sweet-spicy pull of {s} and smokes it over oud and incense.",
+"sea": "Incense and oud keep you company on the walk home when the sidewalks are icy.",
+"occ": "Smoky, sweet and after-dark by design, it's an easy yes for {o}.",
+"str": "Present without being pushy; the incense is what lingers on a sweater."
+},
+"Erba Pura Eau de Parfum": {
+"fam": "Sicilian citrus, three kinds of it, piles up at the top, so what you get is a fruit bowl, not a sea breeze.",
+"fam2": "The base glows, ambery and musky, the cozy side under all that citrus.",
+"love": "Sicilian citrus and ripe fruit crowd around {n}, and there is no missing it.",
+"like": "Erba Pura chases the sweet, radiant trail of {s} down a Mediterranean street.",
+"sea": "Ripe fruit and citrus want long evenings and a tan.",
+"occ": "Bold for {o}, but bold in the happiest possible way.",
+"str": "Sunshine at full volume; it announces itself from across the street."
+},
+"La Nuit de L'Homme Eau de Toilette": {
+"fam": "Cardamom leads, cool and warm at the same time: spice as seduction instead of heat.",
+"fam2": "Vetiver and cedar dry it down, the woody register that stops it reading as a plain sweet scent.",
+"love": "Cardamom and lavender put {n} in the spotlight, with cedar keeping the lights low.",
+"like": "A cousin of {s} through its cardamom-and-cedar restraint, built for after dark.",
+"sea": "The tonka warms as the temperature drops; it's one for the longer nights.",
+"occ": "Lean in; {o} is what the cardamom-and-tonka pairing was invented for.",
+"str": "Famously soft in the modern formula; it's there for whoever gets within a kiss of it."
 }
 };
 /* Strength (1 soft & close, 2 noticeable, 3 bold) and extra descriptors per scent, from Fragrantica longevity/sillage votes and accords. */
 const TAGS={"La Mélodie Maximal Parfum": {"s": 3, "x": ["boozy", "aquatic", "aromatic"]}, "Or Noir Café Parfum": {"s": 2, "x": ["gourmand", "powdery", "aromatic"]}, "Le Piano Eau de Parfum": {"s": 2, "x": ["aromatic", "powdery", "green"]}, "Zoltan Extrait de Parfum": {"s": 2, "x": ["amber", "green", "musky"]}, "I Will Eau de Parfum": {"s": 2, "x": ["aromatic", "powdery", "amber"]}, "Uomo Signature Eau de Parfum": {"s": 2, "x": ["gourmand", "aromatic", "amber"]}, "Gentleman Réserve Privée Eau de Parfum": {"s": 2, "x": ["boozy", "powdery", "amber"]}, "Le Male Elixir Parfum": {"s": 3, "x": ["amber", "aromatic", "gourmand"]}, "Replica Coffee Break": {"s": 1, "x": ["gourmand", "aromatic", "amber"]}, "Replica Jazz Club": {"s": 1, "x": ["boozy", "aromatic", "amber"]}, "Baccarat Rouge 540 Eau de Parfum": {"s": 3, "x": ["amber", "aromatic", "resinous"]}, "Petit Matin Eau de Parfum": {"s": 1, "x": ["musky", "aromatic"]}, "Ani Extrait de Parfum": {"s": 3, "x": ["powdery", "amber", "resinous"]}, "Fan Your Flames Extrait de Parfum": {"s": 3, "x": ["boozy", "gourmand"]}, "Fan Your Flames X Extrait de Parfum": {"s": 2, "x": ["boozy", "gourmand", "aromatic"]}, "Hacivat Extrait de Parfum": {"s": 3, "x": ["fruity", "green"]}, "Kredo Extrait de Parfum": {"s": 2, "x": ["oud", "musky", "powdery"]}, "Papilefiko Extrait de Parfum": {"s": 2, "x": ["aromatic", "green", "amber"]}, "Deziro Extrait de Parfum": {"s": 2, "x": ["aromatic", "green", "aquatic"]}, "Tempfluo Extrait de Parfum": {"s": 3, "x": ["musky", "amber", "gourmand"]}, "Hundred Silent Ways X Extrait de Parfum": {"s": 3, "x": ["powdery", "animalic", "smoky"]}, "Wulong Cha X Extrait de Parfum": {"s": 2, "x": ["tea", "green", "aromatic"]}, "Nefs Extrait de Parfum": {"s": 3, "x": ["oud", "boozy", "amber"]}, "Suède et Safran Extrait de Parfum": {"s": 3, "x": ["musky", "powdery"]}, "Wulong Cha Extrait de Parfum": {"s": 2, "x": ["tea", "fruity", "aromatic"]}, "Tero Extrait de Parfum": {"s": 3, "x": ["gourmand", "amber"]}, "Althaïr Eau de Parfum": {"s": 2, "x": ["powdery", "musky", "gourmand"]}, "Black Orchid Eau de Parfum": {"s": 3, "x": ["gourmand", "amber", "powdery"]}, "Noir Eau de Parfum": {"s": 2, "x": ["amber", "powdery", "aromatic"]}, "Ombre Leather Eau de Parfum": {"s": 2, "x": ["animalic", "smoky", "amber"]}, "Tuscan Leather Eau de Parfum": {"s": 3, "x": ["fruity", "animalic", "smoky"]}, "Uomo Born in Roma Coral Fantasy": {"s": 2, "x": ["fruity", "aromatic"]}, "Uomo Born in Roma Green Stravaganza": {"s": 1, "x": ["aromatic", "green", "gourmand"]}, "Uomo (2021)": {"s": 1, "x": ["powdery", "aromatic"]}, "Uomo Born in Roma Yellow Dream": {"s": 1, "x": ["fruity", "gourmand"]}, "Uomo Born in Roma Purple Melancholia": {"s": 2, "x": ["aromatic", "gourmand", "amber"]}, "Eros Najim Parfum": {"s": 2, "x": ["oud", "smoky", "resinous"]}, "Erba Pura Eau de Parfum": {"s": 3, "x": ["fruity", "musky", "powdery"]}, "La Nuit de L'Homme Eau de Toilette": {"s": 1, "x": ["aromatic"]}};
 PRODUCTS.forEach(p=>{const t=TAGS[p.name];if(t){p.str=t.s;p.x=t.x||[]}});
 const inStock=p=>!!p.sq&&!p.soon;
+const slugify=t=>t.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/&/g," and ").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+const pUrl=p=>"/fragrance/"+slugify(p.brand+" "+p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Eau de Toilette|Parfum)$/,""))+"/"; /* matches build.mjs */
 /* When each fragrance joined the collection (UTC), keyed by Square item id. Used by the "Recently added" sort. */
 const ADDED={"BABPMMILE54ZYB5JFIJY34IK":"2026-10-15T21:10","ZXPCML5QU6DKV5U2OFSVHC4Y":"2026-10-11T00:42","CPQZVESNT2M27ETVZCOK7U6U":"2026-10-11T00:42","R6RQ2KN46KOJNXXLIK3Y5UHT":"2026-10-11T00:42","JQWKMPNXK3MMHWNFVD3RZVTW":"2026-10-11T00:42","JUINXX3FUCEBNI3FGJQLAULG":"2026-10-11T00:42","2SLX3E67ZUQTY7XT2OI2PLNR":"2026-10-11T00:42","CENIOXSZE3IM2XDDFTHGCQBE":"2026-10-11T00:42","E7TWUA2IZR65TXSYDMQKSHIL":"2026-10-11T00:42","WFC3PXWORS5A6XAMKWG7PGMJ":"2026-10-11T00:42","6IXPDR425PPISJBHT2OAGJZY":"2026-10-11T00:42","I2YT222LFWFYRAWUXOQSDZPB":"2026-10-11T00:42","AW3KVJLCAKI7SLNFDO6J7WPV":"2026-10-11T00:42","IEIPT6KIEZLX3W3U3CRDMOD6":"2026-10-11T00:42","LMHN6IFHQPUTAW4H22NTVQKY":"2026-10-11T00:42","7JWDJBC2YGFN577RB6D2AWJI":"2026-10-11T00:42","6RRUWMTR6HR57YISIVFICWM3":"2026-10-11T00:42","IGK65TSUCPCGLTA7O7OP7XMT":"2026-10-11T00:42","5QQ4SJTXANHQPQIU7ORYBAJB":"2026-10-11T00:42","4R5LGTZLZQUWDBINL746IB7P":"2026-10-11T00:42","ZWRPIQIHVK7HZA2GOFV7NRE2":"2026-10-11T00:42","Q6IFTTHV75EK3RJTB474ZTI5":"2026-10-11T00:42","KKI3DK26WYBVAERBJMRI2BVQ":"2026-10-11T00:42","HAQDGYJNCWMIHP5A5GJJSRHJ":"2026-10-11T00:42","XRZWTFEH4VB5LESUQKZ2ZWWU":"2026-10-11T00:42","GM25IFJLU2DGTU243KTOJQH7":"2026-10-11T05:12","PE33TD43HYRTTZC5A6JHU25A":"2026-10-11T18:54","H3H6KYWKL24KR6EEZM7B7MIR":"2026-10-13T18:47","KTKK4UIN7XJTUQTWUT5FKHOS":"2026-10-13T18:47","WC4P3J4BYGBICYUBCCPVGEOV":"2026-10-13T21:05","NIBHBS673EEIIPPGJSAEI7JY":"2026-10-13T21:22","RIDSP2UTX5Z3YD5AFG2WQ5LQ":"2026-10-13T21:22","OZ5Z33WF6IPMP7W6MNJWE47G":"2026-10-13T21:23","TC2TRWOK25KG3ZSUULU3PTSO":"2026-10-13T21:24","V55WG46EP3VHSPNRPSWAJKOV":"2026-10-13T21:24","VATMWQOVHP5T5Y6NATNYLUIA":"2026-10-13T21:47","BIOLOUFPWNNQQ2BOBZSMYZI5":"2026-10-13T22:03","XLJ4LPB4VDJPEJKLLWRUDVS5":"2026-10-14T17:42","LIIP3QVKFSAXBVJPFFAID37G":"2026-10-15T20:27"};
 const brands=["All brands",...[...new Set(PRODUCTS.map(p=>p.brand))].sort()];
@@ -1266,7 +1622,7 @@ function vdescHTML(v,z){return v==="classic"?"A traditional glass screw-top atom
 function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v],sp=isSpot(p);
  return `<article class="card${sp?" spot":""}" data-i="${i}">
    <div class="photo">${sp?`<div class="spot-rib"><span>&#10022;</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?`<img class="shot" loading="lazy" width="720" height="720" src="${st.v==="luxe"&&p.imgL?p.imgL:st.v==="roll"&&p.imgR?p.imgR:p.img}" alt="${p.rep?`${p.brand} ${p.name}: bottle photo coming soon, shown with`:`${p.brand} ${p.name} bottle beside`} ${st.v==="luxe"?"luxury decant vials":st.v==="roll"?"decant vials and a roll-on":"classic decant vials"} on a wooden table" decoding="async">`:bottleArt(p,i)}</div>
-   <div class="body"><div class="brand">${p.brand}<span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name">${p.name}</div>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
+   <div class="body"><div class="brand">${p.brand}<span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name">${p.name}</div><a class="pp-link" href="${pUrl(p)}">Full page &rarr;</a>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
    <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}${k==="luxe"?'<span class="vup">+$3</span>':k==="roll"?'<span class="vup">+$4</span>':""}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
    <div class="sizes">${V.sizes.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml<span class="pml-b">${pml(p,st.v,z)}</span></button>`).join("")}</div>
@@ -1370,7 +1726,7 @@ function collections(){
  const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
  document.getElementById("coll-pct").textContent=BUNDLES.pct+"%";
  box.innerHTML=BUNDLES.bundles.map((b,bi)=>{const ps=bItems(b),ready=bReady(b);
-  return `<article class="bundle" data-b="${bi}"><span class="house">${esc(b.house)} · ${ps.length} scents</span><h3>${esc(b.name)}</h3>
+  return `<article class="bundle" data-b="${bi}"><span class="house">${esc(b.house)} · ${ps.length} scents</span><h3>${esc(b.name)}</h3><a class="pp-link" href="/collections/${esc(b.id)}/">Full page &rarr;</a>
   <p class="blurb">${esc(b.blurb)}</p>
   <ul>${ps.map(p=>`<li><button type="button" data-jump="${PRODUCTS.indexOf(p)}">${esc(shortName(p))}${inStock(p)?"":` <span class="soon">· arriving soon</span>`}</button></li>`).join("")}</ul>
   <div class="buy"><div class="sizes" role="group" aria-label="Vial size">${BUNDLES.sizes.map((z,k)=>`<button type="button" data-z="${z}" class="${k?"":"on"}" aria-pressed="${!k}">${z} ml each</button>`).join("")}</div>
@@ -1434,7 +1790,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   citrus:/bergamot|mandarin|lemon|grapefruit|orange(?! blossom| flower)|lime|citrus|yuzu|litsea/i,spice:/cardamom|cinnamon|pepper|nutmeg|ginger|saffron|anise/i,
   woods:/cedar|sandalwood|vetiver|guaiac|oakmoss|\bmoss|fir|timberwood|clearwood|dry woods/i,floral:/rose|jasmine|tuberose|iris|orris|osmanthus|gardenia|neroli|orange blossom|orange flower|violet|orchid|magnolia|heliotrope/i,
   fruity:/pineapple|apple|peach|raspberry|fig|currant|coconut|plum|fruit/i,marine:/\bsea\b|marine|aquatic|ambergris|mint/i,oud:/\boud|agarwood/i,lavender:/lavender|lavandin/i};
- const LOVE_TXT={vanilla:"vanilla",boozy:"boozy rum or whisky",tobacco:"tobacco",leather:"leather",coffee:"coffee",citrus:"citrus",spice:"warm spice",woods:"woods",floral:"florals",fruity:"fruit",marine:"sea air and mint",oud:"oud",lavender:"lavender"};
+ const LOVE_TXT={vanilla:"vanilla",boozy:"boozy rum or whisky",tobacco:"tobacco",leather:"leather",coffee:"coffee",citrus:"citrus",spice:"warm spice",woods:"woods",floral:"florals",fruity:"fruit",marine:"marine notes and mint",oud:"oud",lavender:"lavender"};
  const OCC_TM={work:"d",date:"n",night:"n",special:"n",any:"b"};
  const famOf=p=>[p.cat,p.cat2].filter(Boolean);
  const wantsFloral=()=>(ans.fam||[]).includes("Floral")||(ans.love||[]).includes("floral");
@@ -1480,37 +1836,41 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  const list=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+" and "+a[a.length-1];
  const AV_TXT={floral:"strong florals",coffee:"coffee",smoke:"tobacco and smoke",leather:"leather",oud:"oud",lavender:"lavender",coconut:"coconut",sweet:"heavy sweetness"};
  const SEA_TXT={c:"Fall & winter",w:"Spring & summer",a:"All year"},TM_TXT={d:"Daytime",n:"Evenings",b:"Day or night"},STR_TXT={1:"Soft & close",2:"Noticeable",3:"Bold"};
- /* The write-up: this scent's own story line (SHERPA), one sentence on exactly how it fits the answers, then when to wear it. */
- function whyText(p,k){
-  const sh=SHERPA[p.name]||{vibe:p.notes,when:""};
-  const f=(ans.fam||[]).filter(v=>v!=="any");
-  const hits=[];
-  if(f.length){const prim=f.includes(p.cat),sec=p.cat2&&f.includes(p.cat2);
-   if(prim)hits.push(`it's ${(FAM_LABEL[p.cat]||p.cat).toLowerCase()} through and through`);
-   else if(sec)hits.push(`it's ${(FAM_LABEL[p.cat]||p.cat).toLowerCase()} with the ${(FAM_LABEL[p.cat2]||p.cat2).toLowerCase()} side you asked for`)}
-  const lh=(ans.love||[]).filter(a=>LOVE[a]&&LOVE[a].test(allNotes(p))).map(a=>LOVE_TXT[a]);
-  if(lh.length)hits.push(`it carries the ${list(lh)} you love`);
-  const lk=likeHits(p).map(a=>LIKE_TXT[a]);
-  if(lk.length)hits.push(`it's the closest thing here to ${list(lk)}`);
-  const se=ans.sea;if(se&&se!=="a"){if(p.sea===se)hits.push(`it's built for ${se==="c"?"fall and winter":"spring and summer"}`);else if(p.sea==="a")hits.push("it wears all year")}
-  const tm=OCC_TM[ans.occ||"any"];if(ans.occ&&ans.occ!=="any"){const o={work:"workdays",date:"a date",night:"a night out",special:"a big occasion"}[ans.occ];if(p.tm===tm)hits.push(`it's made for ${o}`);else if(p.tm==="b")hits.push(`it works for ${o} as easily as any other day`)}
-  if(ans.str&&ans.str!=="any"&&(p.str||2)===Number(ans.str))hits.push(ans.str==="1"?"it stays close to the skin":ans.str==="3"?"it fills a room":"it's present without taking over");
-  let fit="";
-  if(hits.length)fit=` Why it's on your trail: ${list(hits)}.`;
-  else if(hasAns())fit=" It fits everything you told me without needing a stretch.";
-  else fit=" With no filters set, it's one of the best places in the collection to start.";
-  let out=`${sh.vibe}${fit} ${sh.when}`;
-  if(se&&se!=="a"&&p.sea!==se&&p.sea!=="a")out+=` Heads up: it's happiest in ${p.sea==="c"?"fall and winter":"spring and summer"}.`;
+ /* The write-up: this scent's own story line (SHERPA.vibe), then up to three hand-written FIT sentences for the exact
+    reasons it matched (closest-to, family, loved notes, occasion, season, presence; most specific first), then when to wear it.
+    `used` holds the four-word runs already shown on earlier cards in this result, so no two cards share a phrase. */
+ const OCC_TXT={work:"work",date:"a date",night:"a night out",special:"a big occasion"};
+ const CAVEAT={c:["Built for the cold months, mind you.","One note: it's a cold-weather scent at heart.","Fair warning: it wants a chill in the air.","Worth knowing: it's happiest once the coats come out."],
+  w:["Built for warm weather, mind you.","One note: it's a warm-weather scent at heart.","Fair warning: it wants sunshine.","Worth knowing: it's happiest after the thaw."]};
+ /* Four-word runs per sentence; slot fills (the shopper's own answers, wrapped in U+2063) are skipped, since repeating "a big occasion" is not a repeated phrase. */
+ const runs=t=>{const o=[];for(const s of t.split(/[.;:!?]+|\u2063[^\u2063]*\u2063/)){const w=s.toLowerCase().replace(/[^a-z0-9' ]+/g," ").split(/\s+/).filter(Boolean);for(let i=0;i+4<=w.length;i++)o.push(w.slice(i,i+4).join(" "))}return o};
+ const slot=t=>"\u2063"+t+"\u2063";
+ const cap=t=>{const i=t.charAt(0)==="\u2063"?1:0;return t.slice(0,i)+t.charAt(i).toUpperCase()+t.slice(i+1)};
+ function whyText(p,k,used){
+  const sh=SHERPA[p.name]||{vibe:p.notes,when:""},ft=FIT[p.name]||{};
+  const f=(ans.fam||[]).filter(v=>v!=="any"),cands=[];
+  const lk=likeHits(p).map(a=>LIKE_TXT[a]);if(lk.length&&ft.like)cands.push(ft.like.replace("{s}",slot(list(lk))));
+  if(f.length){if(f.includes(p.cat)&&ft.fam)cands.push(ft.fam);else if(p.cat2&&f.includes(p.cat2)&&ft.fam2)cands.push(ft.fam2)}
+  const lh=(ans.love||[]).filter(a=>LOVE[a]&&LOVE[a].test(allNotes(p))).map(a=>LOVE_TXT[a]);if(lh.length&&ft.love)cands.push(ft.love.replace("{n}",slot(list(lh))));
+  if(ans.occ&&ans.occ!=="any"){const o=OCC_TXT[ans.occ],tm=OCC_TM[ans.occ];if(p.tm===tm&&ft.occ)cands.push(ft.occ.replace("{o}",slot(o)));else if(p.tm==="b"&&ft.occB)cands.push(ft.occB.replace("{o}",slot(o)))}
+  const se=ans.sea;if(se&&se!=="a"){if(p.sea===se&&ft.sea)cands.push(ft.sea);else if(p.sea==="a"&&ft.seaAll)cands.push(ft.seaAll)}
+  if(ans.str&&ans.str!=="any"&&(p.str||2)===Number(ans.str)&&ft.str)cands.push(ft.str);
+  const fit=[];for(const c of cands){if(fit.length>=3)break;if(used&&runs(c).some(r=>used.has(r)))continue;fit.push(cap(c))}
+  let out=[sh.vibe,...fit,sh.when].join(" ");
+  if(se&&se!=="a"&&p.sea!==se&&p.sea!=="a")out+=" "+CAVEAT[p.sea][k%4];
   const av=(ans.avoid||[]).filter(v=>v!=="any"&&AV_TXT[v]).map(v=>AV_TXT[v]);
   if(!k&&av.length)out+=` None of my picks lean on ${list(av)}.`;
   if(!inStock(p))out+=" It's arriving soon, so you can't order it today, but it's worth the wait.";
-  return esc(out.replace(/\s+/g," ").trim())}
+  out=out.replace(/\s+/g," ").trim();
+  if(used)runs(out).forEach(r=>used.add(r));
+  return esc(out.replace(/\u2063/g,""))}
  function resultsHTML(r){
   if(!r.length)return `<p class="qz-none">Nothing fits all of that yet. Try fewer "avoid" picks, or a different scent family or season.</p>`;
   const avail=r.filter(x=>inStock(x.p)),setPrice=avail.reduce((a,x)=>a+unit(x.p,"p",2),0);
+  const used=new Set();
   return `<div class="qz-res">${r.map((x,k)=>{const p=x.p,soon=!inStock(p);return `<div class="qz-r ${k||soon?"":"best"}${soon?" qz-soon":""}"><div class="tag">${soon?"Arriving soon · worth the wait":k?"Also on your trail":"The Sherpa’s top pick"}</div>
     <h4>${esc(p.brand)} ${esc(p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Eau de Toilette|Parfum)$/,""))}</h4>
-    <p class="why">${FAM_LABEL[p.cat]||p.cat}${p.cat2?" with "+(FAM_LABEL[p.cat2]||p.cat2).toLowerCase():""} · ${SEA_TXT[p.sea]} · ${TM_TXT[p.tm]} · ${STR_TXT[p.str||2]}</p><p class="n">${whyText(p,k)}</p>${ans.who==="her"&&p.herWhy?`<p class="n qz-her"><b>Why it works for her:</b> ${esc(p.herWhy)}</p>`:""}
+    <p class="why">${FAM_LABEL[p.cat]||p.cat}${p.cat2?" with "+(FAM_LABEL[p.cat2]||p.cat2).toLowerCase():""} · ${SEA_TXT[p.sea]} · ${TM_TXT[p.tm]} · ${STR_TXT[p.str||2]}</p><p class="n">${whyText(p,k,used)}</p>${ans.who==="her"&&p.herWhy?`<p class="n qz-her"><b>Why it works for her:</b> ${esc(p.herWhy)}</p>`:""}
     ${p.n?`<details class="qz-pyr"${openNotes.has(x.i)?" open":""} data-i="${x.i}"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.map(esc).join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.map(esc).join(", ")}</dd><dt>Base</dt><dd>${p.n.b.map(esc).join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.map(esc).join(", ")}</dd>`}</dl></details>`:""}
     <div class="row"><span class="from">From $${low(p)}${soon?`<span class="soon">${esc(p.limited||"Arriving soon")}</span>`:""}</span><button type="button" class="qz-view" data-i="${x.i}">View</button></div></div>`}).join("")}</div>
    ${avail.length>1?`<div class="qz-set">Can't decide? Try ${avail.length===r.length?"all "+avail.length:"the "+avail.length+" in stock"} as 2 ml samples for $${setPrice}.<button type="button" data-a="set">Add ${avail.length} samples to cart</button></div>`:""}`}
@@ -1569,7 +1929,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  showPill();
  ov.addEventListener("click",e=>{if(e.target===ov)close()});
  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!ov.hidden)close();trap(e)});
- window.VVSherpa={open:open,picks:picks,score:score,ranked:ranked,setAns:a=>{ans=a}};
+ window.VVSherpa={open:open,picks:picks,score:score,ranked:ranked,setAns:a=>{ans=a},resultsHTML:resultsHTML};
  if(location.hash==="#quiz")open();
 })();
 </script>

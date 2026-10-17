@@ -1,0 +1,268 @@
+// Static page generator for velvetvolute.ca. Runs at deploy time (netlify.toml build command) and
+// writes: /fragrance/<slug>/ (one page per scent), /houses/ + /houses/<slug>/ (fragrance houses),
+// /collections/ + /collections/<id>/ (special collections), /site.css (the homepage stylesheet,
+// extracted so every page shares one source of styling) and /sitemap.xml.
+// All content comes from index.html's data (PRODUCTS, MOOD, SHERPA, FIT, HER, TAGS), bundles.json and
+// content/houses.json, so stock, prices and copy stay in sync with the shop without a second edit.
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
+import { join } from "node:path";
+import vm from "node:vm";
+
+const ROOT = new URL(".", import.meta.url).pathname;
+const SITE = "https://velvetvolute.ca";
+const TODAY = new Date().toISOString().slice(0, 10);
+const html = readFileSync(join(ROOT, "index.html"), "utf8");
+
+/* ---------- data: evaluate the homepage's own constants in a sandbox ---------- */
+const grab = (name) => {
+  const m = html.match(new RegExp(`\\n(const ${name}=[\\s\\S]*?;)\\n`));
+  if (!m) throw new Error("missing const " + name);
+  return m[1];
+};
+const ctx = {};
+vm.createContext(ctx);
+for (const n of ["IMG", "IMG_L", "IMG_R", "PRODUCTS", "MOOD", "HER", "SHERPA", "FIT", "TAGS", "ADDED", "FAM_LABEL"]) vm.runInContext(grab(n).replace(/^const /, "var "), ctx);
+const { PRODUCTS, MOOD, HER, SHERPA, FIT, TAGS, FAM_LABEL } = ctx;
+const ROLL_EXTRA = 4;
+for (const p of PRODUCTS) {
+  if (MOOD[p.name]) p.mood = MOOD[p.name];
+  const h = HER[p.name]; if (h) { p.her = h[0]; p.herWhy = h[1]; }
+  const t = TAGS[p.name]; if (t) { p.str = t.s; p.x = t.x || []; }
+  p.r = { 5: p.p[5] + ROLL_EXTRA, 10: p.p[10] + ROLL_EXTRA };
+}
+const inStock = (p) => !!p.sq && !p.soon;
+const BUNDLES = JSON.parse(readFileSync(join(ROOT, "bundles.json"), "utf8"));
+const HOUSES = JSON.parse(readFileSync(join(ROOT, "content", "houses.json"), "utf8"));
+const bItems = (b) => b.sq.map((id) => PRODUCTS.find((p) => p.sq === id)).filter(Boolean);
+const bReady = (b) => bItems(b).length === b.sq.length && bItems(b).every(inStock);
+const bBase = (b, z) => bItems(b).reduce((a, p) => a + p.p[z], 0);
+const bPrice = (b, z) => Math.floor(bBase(b, z) * (100 - BUNDLES.pct) / 100);
+
+/* ---------- helpers ---------- */
+const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const attr = esc;
+const CONC = / (Extrait de Parfum|Eau de Parfum|Eau de Toilette|Parfum)$/;
+const slugify = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+const pSlug = (p) => slugify(p.brand + " " + p.name.replace(CONC, ""));
+const hSlug = (brand) => slugify(brand);
+const pUrl = (p) => `/fragrance/${pSlug(p)}/`;
+const hUrl = (brand) => `/houses/${hSlug(brand)}/`;
+const cUrl = (b) => `/collections/${b.id}/`;
+const shortName = (p) => p.name.replace(/^Uomo Born in Roma /, "").replace(/^Gentleman /, "").replace(/^Replica /, "").replace(CONC, "");
+const low = (p) => Math.min(...Object.values(p.p));
+const money = (n) => "$" + (Number.isInteger(n) ? n : n.toFixed(2));
+const SEA_TXT = { c: "Fall & winter", w: "Spring & summer", a: "All year" }, TM_TXT = { d: "Daytime", n: "Evenings", b: "Day or night" }, STR_TXT = { 1: "Soft & close", 2: "Noticeable", 3: "Bold" };
+const SPRAYS = { 2: 25, 3: 35, 5: 60, 10: 120 };
+const VIALS = { classic: { label: "Classic", key: "p", sizes: [2, 5, 10] }, luxe: { label: "Luxury", key: "l", sizes: [3, 5, 10] }, roll: { label: "Roll-on", key: "r", sizes: [5, 10] } };
+const noteList = (p) => p.n ? [...p.n.t, ...p.n.h, ...p.n.b] : p.notes.replace(/\.$/, "").split(/,| and | over | with /).map((s) => s.trim()).filter(Boolean);
+const noteKey = (s) => s.toLowerCase().replace(/\b(notes?|accord|absolute|bark|leaf|bean|wood)\b/g, "").replace(/[^a-z]+/g, " ").trim().split(" ")[0];
+
+/* similar scents: shared family, descriptors and notes; in-stock first */
+function similar(p, n = 8) {
+  const mine = new Set(noteList(p).map(noteKey));
+  const score = (q) => {
+    let s = 0;
+    if (q.cat === p.cat) s += 5; if (q.cat2 && q.cat2 === p.cat2) s += 2.5;
+    if (q.cat === p.cat2 || q.cat2 === p.cat) s += 2;
+    s += (q.x || []).filter((t) => (p.x || []).includes(t)).length * 2;
+    s += noteList(q).map(noteKey).filter((k) => k && mine.has(k)).length * 1.5;
+    if (q.sea === p.sea) s += 1; if (q.tm === p.tm) s += .5; if (q.brand === p.brand) s += .5;
+    return s;
+  };
+  const r = PRODUCTS.filter((q) => q !== p).map((q) => ({ q, s: score(q) })).sort((a, b) => b.s - a.s || a.q.name.localeCompare(b.q.name));
+  return [...r.filter((x) => inStock(x.q)), ...r.filter((x) => !inStock(x.q))].slice(0, n).map((x) => x.q);
+}
+
+/* ---------- shared chrome ---------- */
+const styleBlock = [...html.matchAll(/<style>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join("\n");
+const FONTS = html.match(/<link href="https:\/\/fonts\.googleapis\.com[^>]+>/)[0];
+function head({ title, desc, url, image, jsonld, current }) {
+  return `<!DOCTYPE html>
+<html lang="en" data-palette="camel-m" data-tiles="camel">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>${esc(title)}</title>
+<meta name="description" content="${attr(desc)}">
+<link rel="canonical" href="${SITE}${url}">
+<meta name="theme-color" content="#4a0e1e">
+<link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="${url.startsWith("/fragrance/") ? "product" : "website"}"><meta property="og:site_name" content="Velvet Volute"><meta property="og:title" content="${attr(title)}"><meta property="og:description" content="${attr(desc)}"><meta property="og:url" content="${SITE}${url}"><meta property="og:locale" content="en_CA">
+<meta property="og:image" content="${SITE}/${image || "img/og-velvetvolute-bb4b0b5447.jpg"}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${attr(title)}"><meta name="twitter:description" content="${attr(desc)}"><meta name="twitter:image" content="${SITE}/${image || "img/og-velvetvolute-bb4b0b5447.jpg"}">
+${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script>` : ""}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+${FONTS}
+<link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/pages.css">
+</head>
+<body>
+<div class="bar">Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
+<header><div class="wrap nav">
+  <a class="logo" href="/"><span class="mono">VV</span>Velvet <span>Volute</span></a>
+  <nav><a href="/#shop">Shop</a><a href="/houses/"${current === "houses" ? ' aria-current="page"' : ""}>Fragrance Houses</a><a href="/#collections"${current === "collections" ? ' aria-current="page"' : ""}>Special Collections</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="/#contact">Contact</a></nav><a class="cart-open" href="/#cart-page" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></a>
+</div></header>
+<main>`;
+}
+const crumbs = (items) => `<nav class="crumbs" aria-label="Breadcrumb"><div class="wrap">${items.map((c, i) => c.href && i < items.length - 1 ? `<a href="${c.href}">${esc(c.name)}</a>` : `<span aria-current="page">${esc(c.name)}</span>`).join('<span class="sep">›</span>')}</div></nav>`;
+const crumbLD = (items) => ({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: items.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, ...(c.href ? { item: SITE + c.href } : {}) })) });
+const FOOT = html.match(/<footer>[\s\S]*?<\/footer>/)[0];
+const tail = (extraScript = "") => `</main>
+${FOOT}
+<a class="sh-fab" href="/#quiz" aria-label="Ask the Scent Sherpa" title="Ask the Scent Sherpa"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="16" r="12.5"/><path d="M16 5.5v2.2M16 24.3v2.2M5.5 16h2.2M24.3 16h2.2"/><path d="M19.8 12.2l-2.2 5.4-5.4 2.2 2.2-5.4z" fill="currentColor" stroke="none"/></svg><span class="sh-lbl">Ask the Scent Sherpa</span></a>
+<script>
+/* Cart badge: the cart itself lives on the homepage; pages only read the same saved cart. */
+(function(){try{var s=JSON.parse(localStorage.getItem("vv-cart-v1")||"null"),n=s&&s.lines?s.lines.reduce(function(a,l){return a+(l.q||0)},0):0,b=document.getElementById("cart-count");if(b){b.textContent=n;b.hidden=!n}}catch(e){}})();
+${extraScript}
+</script>
+</body>
+</html>`;
+
+/* ---------- tiles ---------- */
+const houseArt = (brand) => ["svg", "png"].map((e) => `content/houses/${hSlug(brand)}.${e}`).find((f) => existsSync(join(ROOT, f)));
+const houseTile = (brand, meta, count, soon) => { const art = houseArt(brand); return `<a class="htile${soon ? " soon" : ""}" href="${hUrl(brand)}">${art ? `<img class="art" src="/${art}" alt="${attr(brand)}" width="200" height="80" loading="lazy">` : `${meta.pre ? `<span class="pre">${esc(meta.pre)}</span>` : ""}<span class="n${(meta.mark || brand).length > 10 ? " two" : ""}">${esc(meta.mark || brand)}</span>`}<span class="rule"></span><span class="o">${esc(meta.city || "")}</span><span class="cnt">${soon ? "arriving soon" : `${count} scent${count === 1 ? "" : "s"}`}</span></a>`; };
+const scentTile = (p) => `<a class="stile" href="${pUrl(p)}"><span class="ph"><img src="/${p.img}" width="720" height="720" alt="${attr(p.brand + " " + p.name)} bottle" loading="lazy" decoding="async"></span><span class="t"><span class="b">${esc(p.brand)}</span><span class="nm">${esc(p.name)}</span><span class="pr">${inStock(p) ? `From ${money(low(p))}` : `<em>${esc(p.limited || "Arriving soon")}</em>`}</span></span></a>`;
+
+/* ---------- product page ---------- */
+function productPage(p) {
+  const sh = SHERPA[p.name] || {}, meta = HOUSES[p.brand] || {};
+  const url = pUrl(p), title = `${p.brand} ${p.name} decant & sample | Velvet Volute`;
+  const desc = `${p.brand} ${p.name} hand-decanted from an authentic bottle: 2 to 10 ml sprays and roll-ons from ${money(low(p))} CAD. ${sh.vibe || p.notes} Ottawa pickup or shipping across Canada.`;
+  const sizes = Object.entries(VIALS).map(([k, v]) => v.sizes.map((z) => ({ k, z, price: p[v.key][z] }))).flat();
+  const ld = [{
+    "@context": "https://schema.org", "@type": "Product", name: `${p.brand} ${p.name} (decant)`, image: [`${SITE}/${p.img}`], description: desc, brand: { "@type": "Brand", name: p.brand }, sku: p.sq, url: SITE + url,
+    offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: Math.min(...sizes.map((s) => s.price)), highPrice: Math.max(...sizes.map((s) => s.price)), offerCount: sizes.length, availability: inStock(p) ? "https://schema.org/InStock" : "https://schema.org/PreOrder", url: SITE + url, seller: { "@type": "Organization", name: "Velvet Volute" } },
+  }, crumbLD([{ name: "Shop", href: "/" }, { name: p.brand, href: hUrl(p.brand) }, { name: p.name }])];
+  const sims = similar(p);
+  const pyramid = p.n ? (p.n.h.length || p.n.b.length ? `<dl class="pyr3"><div><dt>Top</dt><dd>${p.n.t.map(esc).join(", ")}</dd></div><div><dt>Heart</dt><dd>${p.n.h.map(esc).join(", ")}</dd></div><div><dt>Base</dt><dd>${p.n.b.map(esc).join(", ")}</dd></div></dl>` : `<dl class="pyr3 flat"><div><dt>Key notes</dt><dd>${p.n.t.map(esc).join(", ")}</dd></div></dl>`) : `<p>${esc(p.notes)}</p>`;
+  const data = { sq: p.sq, name: p.name, brand: p.brand, img: p.img, imgL: p.imgL, imgR: p.imgR, p: p.p, l: p.l, r: p.r, stock: inStock(p) };
+  return head({ title, desc, url, image: p.img, jsonld: ld }) + crumbs([{ name: "Shop", href: "/" }, { name: p.brand, href: hUrl(p.brand) }, { name: p.name }]) + `
+<article class="pp wrap">
+ <div class="pp-photo"><img id="pp-img" src="/${p.img}" width="720" height="720" alt="${attr(p.brand + " " + p.name)} bottle beside classic decant vials on a wooden table" decoding="async" fetchpriority="high"></div>
+ <div class="pp-info">
+  <a class="pp-brand" href="${hUrl(p.brand)}">${esc(p.brand)}<span>${p.g === "Men" ? "For him" : "Unisex"}</span></a>
+  <h1>${esc(p.name)}</h1>
+  ${p.limited ? `<div class="limited">${esc(p.limited)}</div>` : ""}
+  <ul class="chips"><li>${esc(FAM_LABEL[p.cat] || p.cat)}${p.cat2 ? ` with ${esc((FAM_LABEL[p.cat2] || p.cat2).toLowerCase())}` : ""}</li><li>${SEA_TXT[p.sea]}</li><li>${TM_TXT[p.tm]}</li><li>${STR_TXT[p.str || 2]}</li></ul>
+  ${sh.vibe ? `<p class="lede">${esc(sh.vibe)}</p>` : ""}
+  <section class="buy" id="buy">
+   <div class="vials" role="group" aria-label="Vial type">${Object.entries(VIALS).map(([k, o], i) => `<button type="button" class="vt${i ? "" : " on"}" data-v="${k}" aria-pressed="${!i}">${o.label}${k === "luxe" ? '<span class="vup">+$3</span>' : k === "roll" ? '<span class="vup">+$4</span>' : ""}</button>`).join("")}</div>
+   <p class="vdesc" id="vdesc"></p>
+   <div class="sizes" role="group" aria-label="Size" id="sizes"></div>
+   <div class="buyrow"><div class="price" id="price"></div>${inStock(p) ? `<button type="button" class="order add" id="add">Add to cart</button>` : `<span class="soon-tag">${esc(p.limited || "Arriving soon")} · not yet orderable</span>`}</div>
+   <p class="fine">Hand-decanted from an authentic bottle into a new vial. Free shipping in Canada over $85, or pick up in Ottawa.</p>
+  </section>
+ </div>
+ <div class="pp-story">
+  ${p.mood ? `<h2>The story</h2><p class="mood">${esc(p.mood)}</p>` : ""}
+  ${sh.when ? `<h2>When to wear it</h2><p>${esc(sh.when)}</p>` : ""}
+  ${p.herWhy ? `<h2>Why it works for her</h2><p>${esc(p.herWhy)}</p>` : ""}
+  <h2>Notes</h2>${pyramid}
+  ${meta.about ? `<h2>About ${esc(p.brand)}</h2><p>${esc(meta.about.split(/(?<=\.)\s/)[0])} <a href="${hUrl(p.brand)}">More about the house →</a></p>` : ""}
+ </div>
+</article>
+<section class="also"><div class="wrap"><h2>You may also like</h2><p class="sub">Picked by shared notes and families</p></div><div class="rail-wrap"><div class="rail wrap">${sims.map(scentTile).join("")}</div></div></section>
+` + tail(`
+(function(){var P=${JSON.stringify(data)},V=${JSON.stringify(VIALS)},SPR=${JSON.stringify(SPRAYS)},ROLL={5:"",10:""};
+var v="classic",z=2,$=function(i){return document.getElementById(i)};
+var VD={classic:"A clear glass vial with a fine-mist atomizer. Our everyday decant.",luxe:"A weighted glass bottle with a gold cap and a fine-mist atomizer. The gift-ready one.",roll:"A glass roll-on for the wrist and neck, no spray. Ideal for travel and the office."};
+function price(){var b=P[V[v].key][z];return b}
+function draw(){$("sizes").innerHTML=V[v].sizes.map(function(s){return '<button type="button" class="sz'+(s===z?" on":"")+'" data-s="'+s+'" aria-pressed="'+(s===z)+'">'+s+' ml<span class="pml-b">$'+(P[V[v].key][s]/s).toFixed(2)+'/ml</span></button>'}).join("");
+ $("price").innerHTML='$'+price()+'<small>CAD · '+z+' ml '+V[v].label.toLowerCase()+'</small><span class="sprays">'+(v==="roll"?"":"About "+SPR[z]+" sprays")+'</span>';
+ $("vdesc").textContent=VD[v];$("pp-img").src="/"+(v==="luxe"&&P.imgL?P.imgL:v==="roll"&&P.imgR?P.imgR:P.img);
+ document.querySelectorAll(".vt").forEach(function(b){b.classList.toggle("on",b.dataset.v===v);b.setAttribute("aria-pressed",b.dataset.v===v)});
+ document.querySelectorAll(".sz").forEach(function(b){b.onclick=function(){z=+b.dataset.s;draw()}})}
+document.querySelectorAll(".vt").forEach(function(b){b.onclick=function(){v=b.dataset.v;if(V[v].sizes.indexOf(z)<0)z=V[v].sizes[0];draw()}});
+var add=$("add");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.parse(localStorage.getItem(K)||"null")||{lines:[],ship:null,promo:null};s.lines=s.lines||[];var l=s.lines.find(function(x){return x.sq===P.sq&&x.v===v&&x.z===z});if(l)l.q=Math.min(10,l.q+1);else s.lines.push({sq:P.sq,v:v,z:z,q:1});localStorage.setItem(K,JSON.stringify(s));var n=s.lines.reduce(function(a,l){return a+l.q},0),c=$("cart-count");c.textContent=n;c.hidden=false}catch(e){}
+ add.textContent="Added ✓";add.classList.add("done");var t=document.createElement("div");t.className="cart-toast on";t.innerHTML='Added '+P.name.split(" Eau")[0].split(" Extrait")[0]+' · '+z+' ml '+V[v].label.toLowerCase()+' <a href="/#cart-page">View cart</a>';document.body.appendChild(t);setTimeout(function(){add.textContent="Add to cart";add.classList.remove("done")},1400);setTimeout(function(){t.remove()},3200)};
+draw()})();`);
+}
+
+/* ---------- house pages ---------- */
+function housePage(brand, items) {
+  const meta = HOUSES[brand] || {}, url = hUrl(brand), live = items.filter(inStock), soon = items.filter((p) => !inStock(p));
+  const title = `${brand} decants & samples | Velvet Volute`;
+  const desc = `${brand} fragrance decants and samples, hand-poured from authentic bottles in Ottawa: ${items.map((p) => p.name.replace(CONC, "")).slice(0, 4).join(", ")}${items.length > 4 ? " and more" : ""}. 2 to 10 ml from ${money(Math.min(...items.map(low)))} CAD.`;
+  const facts = [meta.founded ? ["Founded", meta.founded] : null, meta.city ? ["Home", meta.city] : null, meta.known ? ["Known for", meta.known] : null].filter(Boolean);
+  const ld = [crumbLD([{ name: "Shop", href: "/" }, { name: "Fragrance Houses", href: "/houses/" }, { name: brand }]), { "@context": "https://schema.org", "@type": "CollectionPage", name: `${brand} at Velvet Volute`, url: SITE + url, description: desc }];
+  return head({ title, desc, url, jsonld: ld, current: "houses" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Fragrance Houses", href: "/houses/" }, { name: brand }]) + `
+<section class="house wrap">
+ <div class="house-head">${houseTile(brand, meta, items.length, false).replace("<a ", '<div ').replace("</a>", "</div>").replace(/href="[^"]*"/, "")}
+  <div class="house-about"><div class="eyebrow">About the fragrance house</div><h1>${esc(brand)}</h1>
+   ${(meta.about || "").split(/\n+/).map((t) => `<p>${esc(t)}</p>`).join("")}
+   ${facts.length ? `<dl class="facts">${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
+   ${meta.source ? `<p class="src">Facts checked against the house's own site and independent references.</p>` : ""}
+  </div>
+ </div>
+ <h2 class="sec-h">${live.length ? `${live.length} ${brand} scent${live.length === 1 ? "" : "s"} in stock` : `${brand} at Velvet Volute`}</h2>
+ <div class="stiles">${live.map(scentTile).join("")}${soon.map(scentTile).join("")}</div>
+ ${soon.length && live.length ? `<p class="note">${soon.length === 1 ? "One is" : soon.length + " are"} arriving soon and can't be ordered yet.</p>` : ""}
+</section>` + tail();
+}
+
+function housesIndex(groups) {
+  const url = "/houses/", title = "Fragrance houses | Velvet Volute decants, Ottawa";
+  const desc = `Browse decants by fragrance house: ${groups.map(([b]) => b).join(", ")}. Hand-poured samples from authentic bottles, 2 to 10 ml, with Ottawa pickup or shipping across Canada.`;
+  /* every house sits in the one grid; "arriving soon" is shown on the scent tiles inside each house page */
+  return head({ title, desc, url, jsonld: crumbLD([{ name: "Shop", href: "/" }, { name: "Fragrance Houses" }]), current: "houses" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Fragrance Houses" }]) + `
+<section class="houses wrap">
+ <div class="eyebrow">Fragrance Houses</div><h1>Every house we pour from</h1>
+ <p class="lede">${groups.length} houses, ${PRODUCTS.length} scents, one standard: every decant comes from an authentic bottle we own. Pick a house to read its story and see what we carry.</p>
+ <div class="htiles">${groups.map(([b, items]) => houseTile(b, HOUSES[b] || {}, items.length, false)).join("")}</div>
+</section>` + tail();
+}
+
+/* ---------- collection pages ---------- */
+function collectionPage(b) {
+  const items = bItems(b), url = cUrl(b), ready = bReady(b);
+  const title = `${b.name} | ${b.house} decant set | Velvet Volute`;
+  const desc = `${b.blurb} ${items.length} scents as 2 ml or 5 ml decants, ${BUNDLES.pct}% off the set.`;
+  const ld = [crumbLD([{ name: "Shop", href: "/" }, { name: "Special Collections", href: "/collections/" }, { name: b.name }]), { "@context": "https://schema.org", "@type": "Product", name: b.name, description: desc, url: SITE + url, image: items.map((p) => `${SITE}/${p.img}`), brand: { "@type": "Brand", name: b.house }, offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: bPrice(b, BUNDLES.sizes[0]), highPrice: bPrice(b, BUNDLES.sizes[BUNDLES.sizes.length - 1]), offerCount: BUNDLES.sizes.length, availability: ready ? "https://schema.org/InStock" : "https://schema.org/PreOrder" } }];
+  return head({ title, desc, url, image: items[0]?.img, jsonld: ld, current: "collections" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Special Collections", href: "/collections/" }, { name: b.name }]) + `
+<section class="coll wrap">
+ <div class="eyebrow">${esc(b.house)} · ${items.length} scents · ${BUNDLES.pct}% off the set</div><h1>${esc(b.name)}</h1>
+ <p class="lede">${esc(b.blurb)}</p>
+ <div class="carousel" id="car"><div class="track">${items.map((p, i) => `<figure class="slide" id="s${i}"><a href="${pUrl(p)}"><img src="/${p.img}" width="720" height="720" alt="${attr(p.brand + " " + p.name)} bottle" loading="${i ? "lazy" : "eager"}" decoding="async"></a><figcaption><b>${esc(shortName(p))}</b><span>${esc(p.brand)} · ${inStock(p) ? `from ${money(low(p))}` : esc(p.limited || "arriving soon")}</span><a class="more" href="${pUrl(p)}">Full page →</a></figcaption></figure>`).join("")}</div>
+  <div class="dots" role="tablist" aria-label="Scents in this collection">${items.map((p, i) => `<button type="button" role="tab" data-i="${i}" aria-label="${attr(shortName(p))}"${i ? "" : ' aria-selected="true" class="on"'}></button>`).join("")}</div>
+ </div>
+ <div class="coll-buy">
+  <div class="sizes" role="group" aria-label="Vial size">${BUNDLES.sizes.map((z, k) => `<button type="button" class="sz${k ? "" : " on"}" data-z="${z}" aria-pressed="${!k}">${z} ml each</button>`).join("")}</div>
+  <div class="buyrow"><div class="price" id="cprice"></div>${ready ? `<button type="button" class="order add" id="cadd">Add the set</button>` : `<span class="soon-tag">Available once every scent in the set is in stock</span>`}</div>
+  <ul class="coll-list">${items.map((p) => `<li><a href="${pUrl(p)}">${esc(p.brand)} ${esc(p.name)}</a>${inStock(p) ? "" : ` <em>· ${esc(p.limited || "arriving soon")}</em>`}</li>`).join("")}</ul>
+ </div>
+</section>` + tail(`
+(function(){var B=${JSON.stringify({ id: b.id, name: b.name, base: Object.fromEntries(BUNDLES.sizes.map((z) => [z, bBase(b, z)])), price: Object.fromEntries(BUNDLES.sizes.map((z) => [z, bPrice(b, z)])), n: items.length })},z=${BUNDLES.sizes[0]},$=function(i){return document.getElementById(i)};
+function draw(){$("cprice").innerHTML='<s class="was">$'+B.base[z]+'</s>$'+B.price[z]+'<small>CAD · '+B.n+' × '+z+' ml classic · save $'+(B.base[z]-B.price[z])+'</small>';document.querySelectorAll(".coll-buy .sz").forEach(function(b){b.classList.toggle("on",+b.dataset.z===z);b.setAttribute("aria-pressed",+b.dataset.z===z)})}
+document.querySelectorAll(".coll-buy .sz").forEach(function(b){b.onclick=function(){z=+b.dataset.z;draw()}});
+var add=$("cadd");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.parse(localStorage.getItem(K)||"null")||{lines:[],ship:null,promo:null};s.lines=s.lines||[];var l=s.lines.find(function(x){return x.b===B.id&&x.z===z});if(l)l.q=Math.min(10,l.q+1);else s.lines.push({b:B.id,z:z,q:1});localStorage.setItem(K,JSON.stringify(s));var n=s.lines.reduce(function(a,l){return a+l.q},0),c=$("cart-count");c.textContent=n;c.hidden=false}catch(e){}
+ add.textContent="Added ✓";add.classList.add("done");var t=document.createElement("div");t.className="cart-toast on";t.innerHTML='Added '+B.name+' · '+z+' ml each <a href="/#cart-page">View cart</a>';document.body.appendChild(t);setTimeout(function(){add.textContent="Add the set";add.classList.remove("done")},1400);setTimeout(function(){t.remove()},3200)};
+/* carousel dots follow the scroll position; tapping a dot scrolls to that slide */
+var tr=document.querySelector("#car .track"),dots=document.querySelectorAll("#car .dots button");
+function sync(){var i=Math.round(tr.scrollLeft/tr.clientWidth);dots.forEach(function(d,k){d.classList.toggle("on",k===i);d.setAttribute("aria-selected",k===i)})}
+tr.addEventListener("scroll",function(){clearTimeout(tr._t);tr._t=setTimeout(sync,80)},{passive:true});
+dots.forEach(function(d){d.onclick=function(){tr.scrollTo({left:tr.clientWidth*(+d.dataset.i),behavior:"smooth"})}});
+draw()})();`);
+}
+function collectionsIndex() {
+  const url = "/collections/", title = "Special collections | Velvet Volute decant sets";
+  const desc = `Curated decant sets, ${BUNDLES.pct}% off: ${BUNDLES.bundles.map((b) => b.name.replace(/^The /, "").replace(/ Collection$/, "")).join(", ")}. Each scent as a 2 ml or 5 ml decant from an authentic bottle.`;
+  return head({ title, desc, url, jsonld: crumbLD([{ name: "Shop", href: "/" }, { name: "Special Collections" }]), current: "collections" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Special Collections" }]) + `
+<section class="colls wrap">
+ <div class="eyebrow">Special Collections</div><h1>Curated sets, ${BUNDLES.pct}% off</h1>
+ <p class="lede">Several scents from one house or one idea, poured as a matching set. Try the whole story, then go big on the one you love.</p>
+ <div class="ctiles">${BUNDLES.bundles.map((b) => { const items = bItems(b); return `<a class="ctile" href="${cUrl(b)}"><span class="ph">${items.slice(0, 4).map((p) => `<img src="/${p.img}" width="360" height="360" alt="" loading="lazy">`).join("")}</span><span class="t"><span class="b">${esc(b.house)} · ${items.length} scents</span><span class="nm">${esc(b.name)}</span><span class="pr">${bReady(b) ? `Set from ${money(bPrice(b, BUNDLES.sizes[0]))}` : "<em>Arriving soon</em>"}</span></span></a>`; }).join("")}</div>
+</section>` + tail();
+}
+
+/* ---------- write everything ---------- */
+const out = (rel, content) => { const f = join(ROOT, rel); mkdirSync(join(f, ".."), { recursive: true }); writeFileSync(f, content); };
+for (const d of ["fragrance", "houses", "collections"]) if (existsSync(join(ROOT, d))) rmSync(join(ROOT, d), { recursive: true });
+writeFileSync(join(ROOT, "site.css"), styleBlock);
+const urls = [["/", 1.0], ["/about", .6], ["/how-it-works", .6], ["/houses/", .8], ["/collections/", .8]];
+for (const p of PRODUCTS) { out(`fragrance/${pSlug(p)}/index.html`, productPage(p)); urls.push([pUrl(p), inStock(p) ? .8 : .5]); }
+const groups = Object.entries(PRODUCTS.reduce((m, p) => ((m[p.brand] = m[p.brand] || []).push(p), m), {})).sort((a, b) => a[0].localeCompare(b[0]));
+for (const [brand, items] of groups) { out(`houses/${hSlug(brand)}/index.html`, housePage(brand, items)); urls.push([hUrl(brand), .7]); }
+out("houses/index.html", housesIndex(groups));
+for (const b of BUNDLES.bundles) { out(`collections/${b.id}/index.html`, collectionPage(b)); urls.push([cUrl(b), .7]); }
+out("collections/index.html", collectionsIndex());
+writeFileSync(join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(([u, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod><priority>${pr}</priority></url>`).join("\n")}\n</urlset>\n`);
+const missing = groups.filter(([b]) => !HOUSES[b]).map(([b]) => b);
+console.log(`built ${PRODUCTS.length} scent pages, ${groups.length} houses, ${BUNDLES.bundles.length} collections, ${urls.length} sitemap urls${missing.length ? `; houses missing content: ${missing.join(", ")}` : ""}`);
