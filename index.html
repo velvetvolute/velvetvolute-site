@@ -1783,7 +1783,7 @@ fetch("zodiac.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
    Sets live in bundles.json (scent ids, % off, sizes). The checkout reads the same file,
    so the set price shown here is the price charged. A set can be bought once every scent in it is in stock. */
 let BUNDLES=null;
-const COLL_ART={"boozy": "img/coll-boozy-69dd4f12ff.jpg", "born-in-roma": "img/coll-born-in-roma-509954e346.jpg", "leather": "img/coll-leather-e1bd5acbf1.jpg", "nishane-x": "img/coll-nishane-x-a28cd8fd40.jpg", "tea-x-flames": "img/coll-tea-x-flames-3a30e2b4d5.jpg", "time-capsule": "img/coll-time-capsule-8cbf5a74c1.jpg", "tom-ford": "img/coll-tom-ford-fc3eb29cc7.jpg", "warm": "img/coll-warm-7eaa7d32fd.jpg"};
+const COLL_ART={"boozy": "img/coll-boozy-69dd4f12ff.jpg", "born-in-roma": "img/coll-born-in-roma-509954e346.jpg", "leather": "img/coll-leather-e1bd5acbf1.jpg", "nishane-x": "img/coll-nishane-x-fa3e31dc6e.jpg", "tea-x-flames": "img/coll-tea-x-flames-be528382f8.jpg", "time-capsule": "img/coll-time-capsule-8cbf5a74c1.jpg", "tom-ford": "img/coll-tom-ford-fc3eb29cc7.jpg", "warm": "img/coll-warm-7eaa7d32fd.jpg"};
 const bItems=b=>b.sq.map(id=>PRODUCTS.find(p=>p.sq===id)).filter(Boolean);
 const bReady=b=>bItems(b).length===b.sq.length&&bItems(b).every(inStock);
 const bBase=(b,z)=>bItems(b).reduce((a,p)=>a+p.p[z],0);
