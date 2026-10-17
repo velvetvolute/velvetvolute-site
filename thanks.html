@@ -78,7 +78,7 @@ a.btn:hover{background:rgba(181,148,106,.12)}
   var after=o.method==="pickup"?"<p>Once it arrives I'll hand-pour your decants for pickup at the Shoppers Drug Mart on Carling Ave. <a href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Book your pickup slot</a> (24 hours' notice).</p>"
    :o.method==="local"?"<p>Once it arrives I'll hand-pour your decants and bring them to your door myself. <a href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Pick your delivery window</a> (24 hours' notice).</p>"
    :"<p>Once it arrives I'll hand-pour your decants, ship them with Canada Post and email you when they're on the way.</p>";
-  $("next").innerHTML="<p>Send an Interac e-Transfer of <b>"+m(o.total)+"</b> to <b>"+esc(o.payTo)+"</b>.</p><p>In the e-Transfer message, write your order number <b>"+esc(o.no)+"</b>.</p><p>I'll email you as soon as it arrives.</p>"+after;
+  $("next").innerHTML="<p>Send an Interac e-Transfer of <b>"+m(o.total)+"</b> to <b>"+esc(o.payTo)+"</b>.</p><p>In the e-Transfer message / notes, enter your order ID <b>"+esc(o.no)+"</b> so I can match your payment to your order.</p><p>I'll email you as soon as it arrives.</p>"+after;
   return;
  }
  if(!id||!/^[A-Za-z0-9]{20,40}$/.test(id))return;
