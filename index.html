@@ -19,9 +19,9 @@
 <meta property="og:image:alt" content="Tom Ford Tuscan Leather bottle beside Velvet Volute decant vials, with the VV logo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Luxury fragrances, hand decanted · Samples from $10">
-<meta name="twitter:description" content="Try Tom Ford, Nishane, Margiela and more before you buy the bottle. 2 to 10 ml decants poured from authentic bottles, with Ottawa pickup or free Canada-wide shipping over $85.">
+<meta name="twitter:description" content="Try Tom Ford, Nishane, Margiela and more before you buy the bottle. 2 to 10 ml decants poured from authentic bottles, with Ottawa pickup, free local delivery over $65, or free Canada-wide shipping over $85.">
 <meta name="twitter:image" content="https://velvetvolute.ca/img/og-velvetvolute-bb4b0b5447.jpg">
-<meta property="og:description" content="Try Tom Ford, Nishane, Margiela and more before you buy the bottle. 2 to 10 ml decants poured from authentic bottles, with Ottawa pickup or free Canada-wide shipping over $85.">
+<meta property="og:description" content="Try Tom Ford, Nishane, Margiela and more before you buy the bottle. 2 to 10 ml decants poured from authentic bottles, with Ottawa pickup, free local delivery over $65, or free Canada-wide shipping over $85.">
 <meta property="og:url" content="https://velvetvolute.ca/">
 <meta property="og:locale" content="en_CA">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Store", "name": "Velvet Volute", "url": "https://velvetvolute.ca/", "email": "velvetvolute@gmail.com", "description": "Fragrance decants and samples in Ottawa. Try Tom Ford, Nishane, Givenchy, Maison Margiela, Valentino and more in 2 to 10 ml sprays or roll-ons, hand-poured from authentic bottles.", "areaServed": {"@type": "City", "name": "Ottawa"}, "sameAs": ["https://www.facebook.com/profile.php?id=61595247606137"], "priceRange": "$8–$114", "address": {"@type": "PostalAddress", "addressLocality": "Ottawa", "addressRegion": "ON", "addressCountry": "CA"}}</script>
@@ -274,6 +274,17 @@ nav a{white-space:nowrap}
 .ship-opts label b{margin-left:auto;font-weight:500}
 .ship-opts input{accent-color:#b5946a;width:16px;height:16px}
 .ship-opts label:has(input:checked){border-color:#b5946a;background:rgba(181,148,106,.1)}
+.ship-group{margin:0 0 10px}
+.ship-gh{display:block;margin:0 0 6px;font:600 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#cdb08a;opacity:.85}
+.ship-opts label{flex-wrap:wrap}
+.ship-opts label small{flex-basis:100%;order:3;margin:2px 0 0 26px;font:400 12.5px var(--sans);letter-spacing:.01em;opacity:.8}
+.ship-opts label.off{opacity:.55}
+.ship-pc{margin:-2px 0 8px;padding:10px 12px;border:1px dashed #7a2a3d;border-radius:6px}
+.ship-pc label{display:block;border:0;padding:0;margin:0 0 6px;font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#cdb08a}
+.ship-pc input{width:100%;box-sizing:border-box;background:transparent;border:1px solid #7a2a3d;border-radius:4px;padding:9px 11px;color:#e8d3b4;font:400 16px var(--sans);letter-spacing:.06em}
+.ship-pc input:focus{outline:1px solid #b5946a;border-color:#b5946a}
+.ship-pc-msg{display:block;margin-top:6px;font:400 13px var(--sans);color:#f0b8b8}
+.ship-pc-msg.ok{color:#cfe3c4}
 .cart-free{font:500 18px/1.35 var(--sans);color:#cfa3a9;margin:2px 0 10px}
 .cart-row{display:flex;justify-content:space-between;font:400 15.5px var(--sans);color:#e8d3b4;margin:4px 0}
 .cart-promo{margin:6px 0 10px}
@@ -610,6 +621,7 @@ footer p{max-width:none;margin:0 0 8px}
 .ship-opts label:has(input:checked){background:#4A0E1E;border-color:#4A0E1E;color:#E6D3BC}
 .ship-opts label:has(input:checked) input{accent-color:#CDB08A}
 .ship-opts label:has(input:focus-visible){outline:2px solid #3A0A17;outline-offset:2px}
+.ship-gh{color:#3A0A17}.ship-pc{border-color:rgba(74,14,30,.5)}.ship-pc label{color:#3A0A17}.ship-pc input{color:#3A0A17;border-color:rgba(74,14,30,.5)}.ship-pc-msg{color:#8a1f2e}.ship-pc-msg.ok{color:#2f5a3a}
 .cart-free{color:#4A0E1E;font-size:16px;font-weight:600}
 .cart-row{color:#3A0A17}
 .cart-row.total{color:#3A0A17;border-top-color:rgba(58,10,23,.4)}
@@ -757,8 +769,14 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
   <div class="cart-lines" id="cart-lines"></div>
   <div class="cart-foot" id="cart-foot">
    <fieldset class="ship-opts"><legend>Delivery</legend>
-    <label><input type="radio" name="ship" value="pickup">Ottawa pickup<b>Free</b></label>
-    <label><input type="radio" name="ship" value="canada">Ship anywhere in Canada<b data-ship="canada">$9</b></label>
+    <div class="ship-group"><span class="ship-gh">Local · Ottawa</span>
+     <label><input type="radio" name="ship" value="pickup">Pickup at Shoppers, Carling Ave<small>Book a 15-min slot · no minimum</small><b>Free</b></label>
+     <label id="ship-local-lbl"><input type="radio" name="ship" value="local">Delivery to your door<small>Orléans, Kanata &amp; Barrhaven included</small><b data-local>Free $65+</b></label>
+     <div class="ship-pc" id="ship-pc" hidden><label for="cart-pc">Delivery postal code</label><input id="cart-pc" inputmode="text" autocapitalize="characters" autocomplete="postal-code" maxlength="7" placeholder="K2B 1A1"><span class="ship-pc-msg" id="ship-pc-msg" hidden></span></div>
+    </div>
+    <div class="ship-group"><span class="ship-gh">Anywhere in Canada</span>
+     <label><input type="radio" name="ship" value="canada">Tracked shipping<small>Free on orders $85+</small><b data-ship="canada">$9</b></label>
+    </div>
    </fieldset>
    <p class="cart-free" id="cart-free"></p>
    <div class="cart-promo"><label for="cart-code">Promo code</label><div class="cart-promo-row"><input id="cart-code" maxlength="30" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="From our Facebook page?"><button type="button" id="cart-code-apply">Apply</button></div><p class="cart-promo-msg" id="cart-promo-msg" hidden></p></div>
@@ -777,7 +795,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 </div>
 <div class="qz-pill" id="qz-pill" hidden><button type="button" class="qz-pill-go">Back to your Sherpa picks</button><button type="button" class="qz-pill-x" aria-label="Hide">&times;</button></div>
 <div class="cart-toast" id="cart-toast" role="status" aria-live="polite"></div>
-<div class="bar">Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
+<div class="bar">Free Ottawa delivery over $65 · Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
   <button type="button" class="menu-open" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><a class="logo" href="#top"><span class="mono">VV</span>Velvet <span>Volute</span></a>
   <nav><a href="#shop" aria-current="page">Shop</a><a href="/houses/">Fragrance Houses</a><a href="/collections/">Curated Collections</a><a href="/fragrance-101">Fragrance 101</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="/contact">Contact</a></nav><div class="icons"><button type="button" class="search-open" id="search-open" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></button><button type="button" class="cart-open" id="cart-open" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></button></div>
@@ -799,7 +817,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 <div class="x-trust" aria-label="Why Velvet Volute"><ul class="wrap">
   <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg><div><b>100% authentic</b><span>Poured from genuine bottles</span></div></li>
   <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" aria-hidden="true"><path d="M10 3h4v4l3 3v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V10l3-3V3Z"/><path d="M7 14h10"/></svg><div><b>Try before you buy</b><span>2 to 10 ml, spray or roll-on</span></div></li>
-  <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg><div><b>Pickup or shipping</b><span>Ottawa meet-up, or shipped across Canada (free over $85)</span></div></li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg><div><b>Pickup, delivery or shipping</b><span>Free Ottawa pickup, free local delivery over $65, or shipped across Canada (free over $85)</span></div></li>
 </ul></div>
 
 <section class="x-spot" id="spotlight" aria-label="This month's picks" hidden><div class="wrap">
@@ -2007,12 +2025,12 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
 </script>
 <script>
 var Cart=(function(){
- var KEY="vv-cart-v1",FREE=85,SHIP={pickup:0,canada:9};
+ var KEY="vv-cart-v1",FREE=85,LOCAL_FREE=65,SHIP={pickup:0,local:0,canada:9},OTTAWA=/^K(1[A-Z]|2[A-Z]|4A)\s?\d[A-Z]\d$/i,pc="";
  var lines=[],ship=null,promo=null; /* promo = {code, pct, cents} once checked by /.netlify/functions/coupon */
- try{var s=JSON.parse(localStorage.getItem(KEY)||"null");if(s){lines=s.lines||[];ship=s.ship||null;promo=s.promo||null;if(ship==="onqc"||ship==="roc")ship="canada"}}catch(e){}
+ try{var s=JSON.parse(localStorage.getItem(KEY)||"null");if(s){lines=s.lines||[];ship=s.ship||null;promo=s.promo||null;pc=s.pc||"";if(ship==="onqc"||ship==="roc")ship="canada"}}catch(e){}
  var $=function(id){return document.getElementById(id)};
  var VN={classic:"Classic",luxe:"Luxury",roll:"Roll-on"};
- function save(){try{localStorage.setItem(KEY,JSON.stringify({lines:lines,ship:ship,promo:promo}))}catch(e){}}
+ function save(){try{localStorage.setItem(KEY,JSON.stringify({lines:lines,ship:ship,promo:promo,pc:pc}))}catch(e){}}
  function promoOff(){if(!promo)return 0;var s=subtotal();return promo.pct?Math.floor(s*promo.pct)/100:Math.min(s,(promo.cents||0)/100)}
  function money(n){return "$"+(Number.isInteger(n)?n:n.toFixed(2))}
  function priceOf(p,v,z){return unit(p,VIALS[v].key,z)}
@@ -2022,7 +2040,8 @@ var Cart=(function(){
  function keep(l){return l.b?(typeof BUNDLES==="undefined"||!BUNDLES||!!bun(l.b)):!!find(l.sq)}
  function count(){return lines.reduce(function(a,l){return a+l.q},0)}
  function subtotal(){return lines.reduce(function(a,l){return a+linePrice(l)*l.q},0)}
- function shipCost(){if(!ship)return null;var s=subtotal();return ship==="pickup"||s>=FREE?0:SHIP[ship]}
+ function shipCost(){if(!ship)return null;var s=subtotal();if(ship==="local")return s>=LOCAL_FREE?0:null;return ship==="pickup"||s>=FREE?0:SHIP[ship]}
+ function pcOk(){return OTTAWA.test((pc||"").trim())}
  function badge(){var c=count(),b=$("cart-count");b.textContent=c;b.hidden=!c}
  function toast(t){var el=$("cart-toast");el.innerHTML=t+' <button type="button">View cart</button>';el.querySelector("button").onclick=open;el.classList.add("on");clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove("on")},2600)}
  function add(p,v,z){var l=lines.find(function(x){return x.sq===p.sq&&x.v===v&&x.z===z});
@@ -2049,7 +2068,12 @@ var Cart=(function(){
   var s=subtotal(),sc=shipCost();
   document.querySelectorAll('input[name=ship]').forEach(function(r){r.checked=r.value===ship});
   document.querySelectorAll('[data-ship]').forEach(function(b){b.textContent=s>=FREE?"Free":money(SHIP[b.dataset.ship])});
-  $("cart-free").textContent=s>=FREE?"You've unlocked free shipping.":"Add "+money(FREE-s)+" more for free shipping anywhere in Canada.";
+  var ll=$("ship-local-lbl"),lr=ll.querySelector("input"),lb=ll.querySelector("[data-local]");
+  lr.disabled=s<LOCAL_FREE;ll.classList.toggle("off",s<LOCAL_FREE);lb.textContent=s>=LOCAL_FREE?"Free":"Free $65+";
+  if(ship==="local"&&s<LOCAL_FREE){ship=null;save()}
+  $("ship-pc").hidden=ship!=="local";$("cart-pc").value=pc;
+  var pm=$("ship-pc-msg");if(ship==="local"&&pc.trim()){pm.hidden=false;pm.className="ship-pc-msg"+(pcOk()?" ok":"");pm.textContent=pcOk()?"Ottawa address, you're set.":"That postal code is outside our delivery area. Choose pickup or shipping instead."}else pm.hidden=true;
+  $("cart-free").textContent=s>=FREE?"You've unlocked free shipping anywhere in Canada.":s>=LOCAL_FREE?"Free local delivery unlocked. Add "+money(FREE-s)+" more for free shipping anywhere in Canada.":"Add "+money(LOCAL_FREE-s)+" more for free Ottawa delivery, or "+money(FREE-s)+" for free shipping anywhere in Canada.";
   $("cart-sub").textContent=money(s);
   var po=promoOff();$("cart-promo-line").hidden=!po;if(po)$("cart-promo-amt").textContent="−"+money(Math.round(po*100)/100);
   $("cart-code").value=promo?promo.code:$("cart-code").value;
@@ -2068,10 +2092,12 @@ var Cart=(function(){
  function msg(t){var m=$("cart-msg");m.textContent=t;m.hidden=false}
  function checkout(){
   if(!lines.length)return;
-  if(!ship){msg("Please choose Ottawa pickup or shipping first.");return}
+  if(!ship){msg("Please choose pickup, local delivery or shipping first.");return}
+  if(ship==="local"&&subtotal()<LOCAL_FREE){msg("Local delivery is free on orders of $65 or more. Add a little more, or choose pickup or shipping.");return}
+  if(ship==="local"&&!pcOk()){msg("Please enter an Ottawa postal code for local delivery (Orléans, Kanata and Barrhaven included).");$("cart-pc").focus();return}
   var btn=$("cart-checkout");btn.disabled=true;btn.textContent="Opening secure checkout…";
   fetch("/.netlify/functions/checkout",{method:"POST",headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({ship:ship,coupon:promo?promo.code:"",items:lines.map(function(l){if(l.b){var b=bun(l.b);return {bundle:l.b,z:l.z,q:l.q,label:b?b.name:l.b}}var p=find(l.sq);return {sq:l.sq,v:VN[l.v]+", "+l.z+" ml",q:l.q,label:p.name+" "+l.z+" ml"}})})})
+   body:JSON.stringify({ship:ship,pc:ship==="local"?pc.trim().toUpperCase():"",coupon:promo?promo.code:"",items:lines.map(function(l){if(l.b){var b=bun(l.b);return {bundle:l.b,z:l.z,q:l.q,label:b?b.name:l.b}}var p=find(l.sq);return {sq:l.sq,v:VN[l.v]+", "+l.z+" ml",q:l.q,label:p.name+" "+l.z+" ml"}})})})
   .then(function(r){return r.json().then(function(d){if(!r.ok||!d.url)throw new Error(d.error||"Checkout failed");return d})})
   .then(function(d){location.href=d.url})
   .catch(function(e){msg((e&&e.message)||"Checkout couldn't be started. Please try again, or email velvetvolute@gmail.com.");btn.disabled=false;btn.textContent="Checkout"});
@@ -2082,7 +2108,8 @@ var Cart=(function(){
  else if(location.hash==="#cart-page"){open();setFull(true)}
  $("cart-ov").addEventListener("click",function(e){if(e.target===$("cart-ov"))close()});
  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("cart-ov").hidden)close()});
- document.querySelectorAll('input[name=ship]').forEach(function(r){r.onchange=function(){ship=r.value;save();draw()}});
+ document.querySelectorAll('input[name=ship]').forEach(function(r){r.onchange=function(){ship=r.value;save();draw();if(ship==="local"&&!pc)setTimeout(function(){$("cart-pc").focus()},50)}});
+ $("cart-pc").addEventListener("input",function(){pc=$("cart-pc").value.toUpperCase();save();var pm=$("ship-pc-msg");if(pc.replace(/\s/g,"").length>=6){pm.hidden=false;pm.className="ship-pc-msg"+(pcOk()?" ok":"");pm.textContent=pcOk()?"Ottawa address, you're set.":"That postal code is outside our delivery area. Choose pickup or shipping instead."}else pm.hidden=true});
  $("cart-checkout").onclick=checkout;
  function promoMsg(t,cls){var m=$("cart-promo-msg");m.textContent=t;m.className="cart-promo-msg"+(cls?" "+cls:"");m.hidden=!t}
  function applyPromo(){var code=($("cart-code").value||"").trim().toUpperCase().replace(/\s+/g,"");

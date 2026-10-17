@@ -22,7 +22,8 @@ export function orderNumber(order) {
 export function methodOf(order) {
   const ref = (order.reference_id || "").toUpperCase();
   if (ref.includes("PICKUP")) return "pickup";
-  if (ref.includes("ONQC") || ref.includes("ROC")) return "ship";
+  if (ref.includes("LOCAL")) return "local";
+  if (ref.includes("CANADA") || ref.includes("ONQC") || ref.includes("ROC")) return "ship";
   return "unknown";
 }
 
@@ -51,7 +52,7 @@ export function summarize(order) {
 async function notify(s) {
   const topic = process.env.NTFY_TOPIC;
   if (!topic) return false;
-  const how = s.method === "pickup" ? "Ottawa pickup" : s.method === "ship" ? "Shipping" : "";
+  const how = s.method === "pickup" ? "Ottawa pickup" : s.method === "local" ? "Local delivery" : s.method === "ship" ? "Shipping" : "";
   const lines = s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""}`);
   try {
     const r = await fetch("https://ntfy.sh/" + encodeURIComponent(topic), {

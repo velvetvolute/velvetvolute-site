@@ -47,7 +47,7 @@ a.btn:hover{background:rgba(181,148,106,.12)}
 <section class="card" id="items" hidden><h2>Your order</h2><div id="rows"></div></section>
 
 <section class="card next"><h2>What happens next</h2><div id="next">
- <p>I'll hand-pour your decants and email you with the details. Picking up in Ottawa? <a href="https://calendar.app.google/9Gg9gioRktiA5eocA" target="_blank" rel="noopener">Book your 15-minute slot</a> (24 hours' notice).</p>
+ <p>I'll hand-pour your decants and email you with the details. Picking up or getting local delivery in Ottawa? <a href="https://calendar.app.google/9Gg9gioRktiA5eocA" target="_blank" rel="noopener">Book your 15-minute slot</a> (24 hours' notice).</p>
 </div></section>
 
 <a class="btn" href="/">Back to the shop</a>
@@ -80,6 +80,7 @@ a.btn:hover{background:rgba(181,148,106,.12)}
   h+='<div class="row tot"><span>Total paid</span><span>'+m(o.total)+"</span></div>";
   $("rows").innerHTML=h;$("items").hidden=false;
   if(o.method==="pickup")$("next").innerHTML="<p>I'll hand-pour your decants for pickup at the Shoppers Drug Mart on Carling Ave.</p><p><a class=\"btn\" href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Book your pickup slot</a></p><p>15-minute slots, 24 hours' notice. I'll confirm by email.</p>";
+  else if(o.method==="local")$("next").innerHTML="<p>Your order qualifies for free local delivery. I'll hand-pour your decants and bring them to the address you gave at checkout.</p><p><a class=\"btn\" href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Pick your delivery window</a></p><p>24 hours' notice. I'll confirm by email.</p>";
   else if(o.method==="ship")$("next").innerHTML="<p>I'll hand-pour your decants and ship them with Canada Post. I'll email you once they're on the way.</p>";
  })
  .catch(function(){});

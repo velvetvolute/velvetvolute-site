@@ -13,6 +13,9 @@ Website for velvetvolute.ca, deployed by Netlify from this repo (one push to `ma
 - `netlify/functions/square-webhook.mjs` – runs when Square reports a completed payment: phone alert, one-time promo-code retirement, order-confirmation email
 - `netlify/lib/square.mjs` – shared Square helpers
 
+## Delivery options
+Cart → `ship` is `pickup` (free, no minimum), `local` (free local delivery across Ottawa incl. Orléans/Kanata/Barrhaven on orders $65+, Ottawa postal code K1x/K2x/K4A required, Square collects the address) or `canada` ($9, free $85+). `checkout.mjs` re-checks the threshold and postal code. Set `DELIVERY_BOOKING_URL` in Netlify to the "Local delivery" Google Calendar booking page; until then it falls back to the pickup booking page.
+
 ## Order numbers
 Every order gets a Velvet Volute number like `VV-K7Q4M2`, saved on the Square order (reference ID and payment note), so it can be searched in the Square dashboard.
 

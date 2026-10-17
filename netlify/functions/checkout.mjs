@@ -3,9 +3,13 @@
 import { sq, LOCATION_ID, findCoupon, normalizeCode } from "../lib/square.mjs";
 const SITE = process.env.SITE_URL || "https://velvetvolute.ca";
 const BOOKING_URL = "https://calendar.app.google/9Gg9gioRktiA5eocA";
+const DELIVERY_BOOKING_URL = process.env.DELIVERY_BOOKING_URL || "https://calendar.app.google/9Gg9gioRktiA5eocA";
 const FREE_SHIPPING_CENTS = 8500;
+const LOCAL_FREE_CENTS = 6500; // free local delivery (Ottawa incl. Orléans, Kanata, Barrhaven) at $65+
+const OTTAWA_PC = /^K(1[A-Z]|2[A-Z]|4A)\s?\d[A-Z]\d$/i;
 const SHIPPING = {
   pickup: { cents: 0, label: "Ottawa pickup" },
+  local: { cents: 0, label: "Local delivery (Ottawa)" },
   canada: { cents: 900, label: "Shipping (Canada-wide, tracked)" },
   // carts saved before the flat rate still send these; same flat $9
   onqc: { cents: 900, label: "Shipping (Canada-wide, tracked)" },
@@ -75,6 +79,8 @@ export default async (req) => {
   const items = Array.isArray(input.items) ? input.items.slice(0, 40) : [];
   const ship = SHIPPING[input.ship] ? input.ship : null;
   if (!items.length || !ship) return json(400, { error: "Your cart is empty or no delivery option was chosen." });
+  const pc = String(input.pc || "").trim().toUpperCase().replace(/\s+/g, " ");
+  if (ship === "local" && !OTTAWA_PC.test(pc)) return json(400, { error: "Local delivery needs an Ottawa postal code (Orléans, Kanata and Barrhaven included). Choose pickup or shipping instead." });
   const code = normalizeCode(input.coupon);
 
   try {
@@ -148,7 +154,8 @@ export default async (req) => {
     }
 
     // Free shipping is judged on the subtotal before the promo code, so a code never costs anyone free shipping.
-    const shipCents = ship === "pickup" || subtotal >= FREE_SHIPPING_CENTS ? 0 : SHIPPING[ship].cents;
+    if (ship === "local" && subtotal < LOCAL_FREE_CENTS) return json(400, { error: "Local delivery is free on orders of $65 or more. Add a little more, or choose pickup or shipping." });
+    const shipCents = ship === "pickup" || ship === "local" || subtotal >= FREE_SHIPPING_CENTS ? 0 : SHIPPING[ship].cents;
     if (coupon) discounts.push({ uid: "promo", catalog_object_id: coupon.id, scope: "ORDER" });
     const checkout_options = {
       ask_for_shipping_address: ship !== "pickup",
@@ -164,6 +171,8 @@ export default async (req) => {
     const note = `Order ${orderNo} · ` + (
       ship === "pickup"
         ? `Ottawa pickup at Shoppers Drug Mart, Carling Ave. Book your 15-min slot: ${BOOKING_URL}`
+        : ship === "local"
+          ? `Free local delivery to ${pc}. Pick your delivery window: ${DELIVERY_BOOKING_URL}`
         : shipCents === 0
           ? `${SHIPPING[ship].label}: free (order over $85)`
           : SHIPPING[ship].label);
@@ -175,7 +184,7 @@ export default async (req) => {
         line_items: lineItems,
         ...(discounts.length ? { discounts } : {}),
         pricing_options: { auto_apply_taxes: true },
-        reference_id: `${orderNo} ${ship === "pickup" ? "PICKUP" : ship.toUpperCase()}${coupon ? ` CODE:${coupon.name}` : ""}`,
+        reference_id: `${orderNo} ${ship === "pickup" ? "PICKUP" : ship === "local" ? `LOCAL ${pc.replace(" ", "")}` : ship.toUpperCase()}${coupon ? ` CODE:${coupon.name}` : ""}`,
       },
       checkout_options,
       payment_note: note,

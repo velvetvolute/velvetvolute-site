@@ -11,6 +11,7 @@ import { summarize } from "./order.mjs";
 
 const SITE = process.env.SITE_URL || "https://velvetvolute.ca";
 const BOOKING_URL = "https://calendar.app.google/9Gg9gioRktiA5eocA";
+const DELIVERY_BOOKING_URL = process.env.DELIVERY_BOOKING_URL || "https://calendar.app.google/9Gg9gioRktiA5eocA";
 const SHOP_EMAIL = "velvetvolute@gmail.com";
 const MAIL_FROM = process.env.ORDER_EMAIL_FROM || "Velvet Volute <orders@velvetvolute.ca>";
 const MAIL_COPY = process.env.ORDER_COPY_TO || SHOP_EMAIL;
@@ -45,7 +46,7 @@ async function notify(s) {
   await fetch("https://ntfy.sh/" + encodeURIComponent(topic), {
     method: "POST",
     headers: { Title: `New order ${s.no} · ${money(s.total)}`, Priority: "high", Tags: "shopping_bags" },
-    body: [s.method === "pickup" ? "Ottawa pickup" : s.method === "ship" ? "Shipping" : "", ...lines].filter(Boolean).join("\n"),
+    body: [s.method === "pickup" ? "Ottawa pickup" : s.method === "local" ? "LOCAL DELIVERY" : s.method === "ship" ? "Shipping" : "", ...lines].filter(Boolean).join("\n"),
   }).catch(() => {});
 }
 
@@ -63,6 +64,8 @@ function emailHTML(s, ref) {
   const charges = s.charges.map((c) => `<tr><td style="padding:6px 0">${esc(c.name)}</td><td style="padding:6px 0;text-align:right">${money(c.total)}</td></tr>`).join("");
   const next = s.method === "pickup"
     ? `<p>Pickup is at the Shoppers Drug Mart on Carling Ave, Ottawa. <a href="${BOOKING_URL}" style="color:#6e1a31">Book your 15-minute slot here</a> (24 hours' notice). I'll confirm by email.</p>`
+    : s.method === "local"
+      ? `<p>Your order qualifies for free local delivery. <a href="${DELIVERY_BOOKING_URL}" style="color:#6e1a31">Pick a delivery window here</a> (24 hours' notice) and I'll bring your decants to the address you gave at checkout. I'll confirm by email.</p>`
     : `<p>I'll hand-pour your decants and ship them with Canada Post, and email you once they're on the way.</p>`;
   return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#2c0610">
   <div style="background:#4a0e1e;color:#e8d3b4;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">ORDER CONFIRMATION</div></div>
