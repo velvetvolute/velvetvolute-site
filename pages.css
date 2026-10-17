@@ -137,7 +137,7 @@ html[data-tiles="camel"] .htile .rule{background:#330a14}
 .carousel{margin:4px 0 0;max-width:620px}
 .track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border:1px solid var(--line);box-shadow:0 22px 40px -18px rgba(0,0,0,.6);background:#2c0610}
 .track::-webkit-scrollbar{display:none}
-.slide{flex:0 0 100%;scroll-snap-align:center;margin:0;position:relative}
+.slide{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;margin:0;position:relative}
 .slide a{display:block}
 .slide img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover}
 .slide figcaption{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;background:linear-gradient(transparent,rgba(44,6,16,.92));color:#e8d3b4;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}

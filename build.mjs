@@ -183,7 +183,7 @@ function draw(){$("sizes").innerHTML=V[v].sizes.map(function(s){return '<button 
 var KEYS=Object.keys(V),tr=document.querySelector("#ppcar .track"),st,tw=tr.clientWidth,ZS={classic:2};
 /* size follows you between vial types: a size you tapped is remembered for that type; otherwise the current size carries over when the new type offers it, else its smallest */
 function setV(nv,scroll){if(nv!==v){v=nv;var S=V[v].sizes;z=S.indexOf(ZS[v])>=0?ZS[v]:S.indexOf(z)>=0?z:S[0];draw()}if(scroll!==false)tr.scrollTo({left:tr.clientWidth*KEYS.indexOf(v),behavior:"smooth"})}
-function settled(){clearTimeout(st);var i=Math.max(0,Math.min(KEYS.length-1,Math.round(tr.scrollLeft/tr.clientWidth)));if(Math.abs(tr.scrollLeft-i*tr.clientWidth)<2)setV(KEYS[i],false)}
+function settled(){clearTimeout(st);var i=Math.max(0,Math.min(KEYS.length-1,Math.round(tr.scrollLeft/tr.clientWidth)));if(Math.abs(tr.scrollLeft-i*tr.clientWidth)<8)setV(KEYS[i],false)}
 if("onscrollend" in tr)tr.addEventListener("scrollend",settled);
 tr.addEventListener("scroll",function(){clearTimeout(st);st=setTimeout(settled,120)},{passive:true});
 document.querySelectorAll(".vt,#ppcar .dots button").forEach(function(b){b.onclick=function(){setV(b.dataset.v)}});
