@@ -15,8 +15,11 @@ h1{font:500 clamp(30px,4.2vw,46px)/1.08 var(--serif);letter-spacing:.01em;color:
   border:1px solid #6e4a28;border-radius:4px;box-shadow:0 14px 34px rgba(0,0,0,.3)}
 
 /* ---- product page ---- */
-.pp{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding:18px 24px 10px}
-@media(min-width:900px){.pp{grid-template-columns:minmax(0,46%) minmax(0,1fr);column-gap:48px;padding-top:28px}.pp-photo{position:sticky;top:90px;align-self:start}.pp-story{grid-column:2}}
+/* photo and buy box stack in the left column; name, chips and story on the right. On phones: photo, name, buy box, story. */
+.pp{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;padding:18px 24px 10px}
+.pp-left,.pp-right{display:contents}
+.pp-photo{order:1}.pp-head{order:2}.pp-buy{order:3}.pp-story{order:4}
+@media(min-width:900px){.pp{grid-template-columns:minmax(0,46%) minmax(0,1fr);column-gap:48px;padding-top:28px;align-items:start}.pp-left,.pp-right{display:block}.pp-left{position:sticky;top:90px}.pp-buy{margin-top:22px}}
 .pp-photo img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border:1px solid var(--line);box-shadow:0 22px 40px -18px rgba(0,0,0,.6)}
 .pp-brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:600 12px var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
 .pp-brand span{font-weight:400;letter-spacing:.12em;color:var(--muted);border-left:1px solid var(--line);padding-left:10px}
@@ -25,13 +28,14 @@ h1{font:500 clamp(30px,4.2vw,46px)/1.08 var(--serif);letter-spacing:.01em;color:
 .chips{list-style:none;display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:14px 0 0}
 .chips li{font:400 11.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:#e8d3b4;border:1px solid var(--line);border-radius:30px;padding:5px 11px}
 .pp .lede{margin-top:16px}
-.buy{margin-top:22px;padding:18px 20px 16px}
+.buy{margin-top:0;padding:18px 20px 16px}
 .buy .vials{margin-top:0}
 .buy .order{display:block;padding:14px 8px;text-align:center;background:#4a0e1e;color:#e8d3b4;border:0;font:500 13px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;border-radius:2px;cursor:pointer;transition:.2s;flex:0 0 48%}
 .buy .order:hover{background:#2c0610}.buy .order.done{background:#2c0610}
 .soon-tag{font:500 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#451019;text-align:right;max-width:48%}
 .fine{margin:14px 0 0;font:300 12.5px/1.5 var(--sans);color:#451019}
-.pp-story{margin-top:6px;max-width:62ch}
+.pp-story{margin-top:8px;max-width:62ch}
+.pp-story h2:first-child{margin-top:20px}
 .pp-story h2{text-align:left;font:500 13px var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin:30px 0 8px}
 .pp-story p{font:300 16.5px/1.7 var(--sans);color:#e8d3b4;margin:0}
 .pp-story p.mood{font:400 18px/1.65 var(--serif)}

@@ -136,13 +136,9 @@ function productPage(p) {
   const data = { sq: p.sq, name: p.name, brand: p.brand, img: p.img, imgL: p.imgL, imgR: p.imgR, p: p.p, l: p.l, r: p.r, stock: inStock(p) };
   return head({ title, desc, url, image: p.img, jsonld: ld }) + crumbs([{ name: "Shop", href: "/" }, { name: p.brand, href: hUrl(p.brand) }, { name: p.name }]) + `
 <article class="pp wrap">
+ <div class="pp-left">
  <div class="pp-photo"><img id="pp-img" src="/${p.img}" width="720" height="720" alt="${attr(p.brand + " " + p.name)} bottle beside classic decant vials on a wooden table" decoding="async" fetchpriority="high"></div>
- <div class="pp-info">
-  <a class="pp-brand" href="${hUrl(p.brand)}">${esc(p.brand)}<span>${p.g === "Men" ? "For him" : "Unisex"}</span></a>
-  <h1>${esc(p.name)}</h1>
-  ${p.limited ? `<div class="limited">${esc(p.limited)}</div>` : ""}
-  <ul class="chips"><li>${esc(FAM_LABEL[p.cat] || p.cat)}${p.cat2 ? ` with ${esc((FAM_LABEL[p.cat2] || p.cat2).toLowerCase())}` : ""}</li><li>${SEA_TXT[p.sea]}</li><li>${TM_TXT[p.tm]}</li><li>${STR_TXT[p.str || 2]}</li></ul>
-  ${sh.vibe ? `<p class="lede">${esc(sh.vibe)}</p>` : ""}
+ <div class="pp-buy">
   <section class="buy" id="buy">
    <div class="vials" role="group" aria-label="Vial type">${Object.entries(VIALS).map(([k, o], i) => `<button type="button" class="vt${i ? "" : " on"}" data-v="${k}" aria-pressed="${!i}">${o.label}${k === "luxe" ? '<span class="vup">+$3</span>' : k === "roll" ? '<span class="vup">+$4</span>' : ""}</button>`).join("")}</div>
    <p class="vdesc" id="vdesc"></p>
@@ -151,12 +147,22 @@ function productPage(p) {
    <p class="fine">Hand-decanted from an authentic bottle into a new vial. Free shipping in Canada over $85, or pick up in Ottawa.</p>
   </section>
  </div>
+ </div>
+ <div class="pp-right">
+ <div class="pp-head">
+  <a class="pp-brand" href="${hUrl(p.brand)}">${esc(p.brand)}<span>${p.g === "Men" ? "For him" : "Unisex"}</span></a>
+  <h1>${esc(p.name)}</h1>
+  ${p.limited ? `<div class="limited">${esc(p.limited)}</div>` : ""}
+  <ul class="chips"><li>${esc(FAM_LABEL[p.cat] || p.cat)}${p.cat2 ? ` with ${esc((FAM_LABEL[p.cat2] || p.cat2).toLowerCase())}` : ""}</li><li>${SEA_TXT[p.sea]}</li><li>${TM_TXT[p.tm]}</li><li>${STR_TXT[p.str || 2]}</li></ul>
+  ${sh.vibe ? `<p class="lede">${esc(sh.vibe)}</p>` : ""}
+ </div>
  <div class="pp-story">
   ${p.mood ? `<h2>The story</h2><p class="mood">${esc(p.mood)}</p>` : ""}
   ${sh.when ? `<h2>When to wear it</h2><p>${esc(sh.when)}</p>` : ""}
   ${p.herWhy ? `<h2>Why it works for her</h2><p>${esc(p.herWhy)}</p>` : ""}
   <h2>Notes</h2>${pyramid}
   ${meta.about ? `<h2>About ${esc(p.brand)}</h2><p>${esc(meta.about.split(/(?<=\.)\s/)[0])} <a href="${hUrl(p.brand)}">More about the house →</a></p>` : ""}
+ </div>
  </div>
 </article>
 <section class="also"><div class="wrap"><h2>You may also like</h2><p class="sub">Picked by shared notes and families</p></div><div class="rail-wrap"><div class="rail wrap">${sims.map(scentTile).join("")}</div></div></section>
