@@ -94,7 +94,7 @@ h1{font:500 clamp(30px,4.2vw,46px)/1.08 var(--serif);letter-spacing:.01em;color:
 .htile .pre{font:500 12px var(--serif);letter-spacing:.34em;text-transform:uppercase;opacity:.85;margin-bottom:4px}
 .htile .rule{width:26px;height:1px;margin:11px auto 9px;background:var(--gold);opacity:.75}
 .htile .o{font:400 10.5px var(--sans);letter-spacing:.26em;text-transform:uppercase;opacity:.8;min-height:1.2em}
-.htile .cnt{position:absolute;bottom:10px;right:12px;font:italic 400 13px var(--serif);opacity:.7}
+.htile .cnt{position:absolute;bottom:10px;right:12px;font:italic 600 15px var(--serif);opacity:.95}
 .htile.soon{opacity:.72}
 .htile .art{max-width:78%;max-height:80px;width:auto;height:auto;object-fit:contain}
 /* camel variant, switched on by data-tiles="camel" on <html> */
