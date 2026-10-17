@@ -9,7 +9,7 @@ const LOCAL_FREE_CENTS = 6500; // free local delivery (Ottawa incl. Orléans, Ka
 const OTTAWA_PC = /^K(1[A-Z]|2[A-Z]|4A)\s?\d[A-Z]\d$/i;
 const SHIPPING = {
   pickup: { cents: 0, label: "Ottawa pickup" },
-  local: { cents: 0, label: "Local delivery (Ottawa)" },
+  local: { cents: 0, label: "Local hand delivery (Ottawa)" },
   canada: { cents: 900, label: "Shipping (Canada-wide, tracked)" },
   // carts saved before the flat rate still send these; same flat $9
   onqc: { cents: 900, label: "Shipping (Canada-wide, tracked)" },
@@ -80,7 +80,7 @@ export default async (req) => {
   const ship = SHIPPING[input.ship] ? input.ship : null;
   if (!items.length || !ship) return json(400, { error: "Your cart is empty or no delivery option was chosen." });
   const pc = String(input.pc || "").trim().toUpperCase().replace(/\s+/g, " ");
-  if (ship === "local" && !OTTAWA_PC.test(pc)) return json(400, { error: "Local delivery needs an Ottawa postal code (Orléans, Kanata and Barrhaven included). Choose pickup or shipping instead." });
+  if (ship === "local" && !OTTAWA_PC.test(pc)) return json(400, { error: "Local hand delivery needs an Ottawa postal code (Orléans, Kanata and Barrhaven included). Choose pickup or shipping instead." });
   const code = normalizeCode(input.coupon);
 
   try {
@@ -154,7 +154,7 @@ export default async (req) => {
     }
 
     // Free shipping is judged on the subtotal before the promo code, so a code never costs anyone free shipping.
-    if (ship === "local" && subtotal < LOCAL_FREE_CENTS) return json(400, { error: "Local delivery is free on orders of $65 or more. Add a little more, or choose pickup or shipping." });
+    if (ship === "local" && subtotal < LOCAL_FREE_CENTS) return json(400, { error: "Local hand delivery is free on orders of $65 or more. Add a little more, or choose pickup or shipping." });
     const shipCents = ship === "pickup" || ship === "local" || subtotal >= FREE_SHIPPING_CENTS ? 0 : SHIPPING[ship].cents;
     if (coupon) discounts.push({ uid: "promo", catalog_object_id: coupon.id, scope: "ORDER" });
     const checkout_options = {
@@ -172,7 +172,7 @@ export default async (req) => {
       ship === "pickup"
         ? `Ottawa pickup at Shoppers Drug Mart, Carling Ave. Book your 15-min slot: ${BOOKING_URL}`
         : ship === "local"
-          ? `Free local delivery to ${pc}. Pick your delivery window: ${DELIVERY_BOOKING_URL}`
+          ? `Free local hand delivery (by Izzi) to ${pc}. Pick your delivery window: ${DELIVERY_BOOKING_URL}`
         : shipCents === 0
           ? `${SHIPPING[ship].label}: free (order over $85)`
           : SHIPPING[ship].label);

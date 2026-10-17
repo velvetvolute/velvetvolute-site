@@ -95,7 +95,7 @@ ${FONTS}
 <link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/pages.css"><link rel="stylesheet" href="/nav.css"><script src="/nav.js" defer></script>
 </head>
 <body>
-<div class="bar">Free Ottawa delivery over $65 · Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
+<div class="bar">Free Ottawa hand delivery over $65 · Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
   <button type="button" class="menu-open" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><a class="logo" href="/"><span class="mono">VV</span>Velvet <span>Volute</span></a>
   <nav><a href="/#shop">Shop</a><a href="/houses/"${current === "houses" ? ' aria-current="page"' : ""}>Fragrance Houses</a><a href="/collections/"${current === "collections" ? ' aria-current="page"' : ""}>Curated Collections</a><a href="/fragrance-101">Fragrance 101</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="/contact">Contact</a></nav><div class="icons"><button type="button" class="search-open" id="search-open" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></button><a class="cart-open" href="/#cart-page" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></a></div>
@@ -163,7 +163,7 @@ const scentTile = (p) => `<a class="stile" href="${pUrl(p)}"><span class="ph"><i
 function productPage(p) {
   const sh = SHERPA[p.name] || {}, meta = HOUSES[p.brand] || {};
   const url = pUrl(p), title = `${p.brand} ${p.name} decant & sample | Velvet Volute`;
-  const desc = `${p.brand} ${p.name} hand-decanted from an authentic bottle: 2 to 10 ml sprays and roll-ons from ${money(low(p))} CAD. ${sh.vibe || p.notes} Ottawa pickup, free local delivery over $65, or shipping across Canada.`;
+  const desc = `${p.brand} ${p.name} hand-decanted from an authentic bottle: 2 to 10 ml sprays and roll-ons from ${money(low(p))} CAD. ${sh.vibe || p.notes} Ottawa pickup, free local hand delivery over $65, or shipping across Canada.`;
   const sizes = Object.entries(VIALS).map(([k, v]) => v.sizes.map((z) => ({ k, z, price: p[v.key][z] }))).flat();
   const ld = [{
     "@context": "https://schema.org", "@type": "Product", name: `${p.brand} ${p.name} (decant)`, image: [`${SITE}/${p.img}`], description: desc, brand: { "@type": "Brand", name: p.brand }, sku: p.sq, url: SITE + url,
@@ -254,7 +254,7 @@ function housePage(brand, items) {
 
 function housesIndex(groups) {
   const url = "/houses/", title = "Fragrance houses | Velvet Volute decants, Ottawa";
-  const desc = `Browse decants by fragrance house: ${groups.map(([b]) => b).join(", ")}. Hand-poured samples from authentic bottles, 2 to 10 ml, with Ottawa pickup, free local delivery over $65, or shipping across Canada.`;
+  const desc = `Browse decants by fragrance house: ${groups.map(([b]) => b).join(", ")}. Hand-poured samples from authentic bottles, 2 to 10 ml, with Ottawa pickup, free local hand delivery over $65, or shipping across Canada.`;
   /* every house sits in the one grid; "arriving soon" is shown on the scent tiles inside each house page */
   return head({ title, desc, url, jsonld: crumbLD([{ name: "Shop", href: "/" }, { name: "Fragrance Houses" }]), current: "houses" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Fragrance Houses" }]) + `
 <section class="houses wrap">
