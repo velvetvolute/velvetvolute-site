@@ -3,6 +3,8 @@
 Website for velvetvolute.ca, deployed by Netlify from this repo (one push to `main` = one production deploy).
 
 - `index.html` – the shop, cart and Scent Sherpa (products, stories and tags live at the top of the main script)
+- `about.html`, `how-it-works.html`, `fragrance-101.html`, `contact.html` – the other top-level pages (Contact is a Netlify form named `contact`, like the `suggestion` form on the homepage)
+- `nav.css` + `nav.js` – shared navigation: top links on desktop, hamburger + slide-out side menu below 1200px. The menu is built from each page's `<nav>`, so change the link order in the page headers (and in `build.mjs` for generated pages)
 - `bundles.json`, `spotlight.json`, `zodiac.json` – Special Collections, monthly Spotlight and Zodiac pick (the checkout reads the same files)
 - `thanks.html` – order confirmation shown after Square checkout (VV order number, items, next steps)
 - `netlify/functions/checkout.mjs` – builds the Square-hosted checkout (needs `SQUARE_ACCESS_TOKEN`)

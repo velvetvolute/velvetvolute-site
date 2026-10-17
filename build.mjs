@@ -92,13 +92,13 @@ function head({ title, desc, url, image, jsonld, current }) {
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script>` : ""}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 ${FONTS}
-<link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/pages.css">
+<link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/pages.css"><link rel="stylesheet" href="/nav.css"><script src="/nav.js" defer></script>
 </head>
 <body>
 <div class="bar">Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
   <a class="logo" href="/"><span class="mono">VV</span>Velvet <span>Volute</span></a>
-  <nav><a href="/#shop">Shop</a><a href="/houses/"${current === "houses" ? ' aria-current="page"' : ""}>Fragrance Houses</a><a href="/collections/"${current === "collections" ? ' aria-current="page"' : ""}>Curated Collections</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="/#contact">Contact</a></nav><a class="cart-open" href="/#cart-page" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></a>
+  <nav><a href="/#shop">Shop</a><a href="/houses/"${current === "houses" ? ' aria-current="page"' : ""}>Fragrance Houses</a><a href="/collections/"${current === "collections" ? ' aria-current="page"' : ""}>Curated Collections</a><a href="/fragrance-101">Fragrance 101</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="/contact">Contact</a></nav><a class="cart-open" href="/#cart-page" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></a><button type="button" class="menu-open" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </div></header>
 <main>`;
 }
@@ -315,7 +315,7 @@ function collectionsIndex() {
 const out = (rel, content) => { const f = join(ROOT, rel); mkdirSync(join(f, ".."), { recursive: true }); writeFileSync(f, content); };
 for (const d of ["fragrance", "houses", "collections"]) if (existsSync(join(ROOT, d))) rmSync(join(ROOT, d), { recursive: true });
 writeFileSync(join(ROOT, "site.css"), styleBlock);
-const urls = [["/", 1.0], ["/about", .6], ["/how-it-works", .6], ["/houses/", .8], ["/collections/", .8]];
+const urls = [["/", 1.0], ["/fragrance-101", .7], ["/about", .6], ["/how-it-works", .6], ["/contact", .5], ["/houses/", .8], ["/collections/", .8]];
 for (const p of PRODUCTS) { out(`fragrance/${pSlug(p)}/index.html`, productPage(p)); urls.push([pUrl(p), inStock(p) ? .8 : .5]); }
 const groups = Object.entries(PRODUCTS.reduce((m, p) => ((m[p.brand] = m[p.brand] || []).push(p), m), {})).sort((a, b) => a[0].localeCompare(b[0]));
 for (const [brand, items] of groups) { out(`houses/${hSlug(brand)}/index.html`, housePage(brand, items)); urls.push([hUrl(brand), .7]); }

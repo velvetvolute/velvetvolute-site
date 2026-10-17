@@ -1,0 +1,43 @@
+/* Site navigation: desktop keeps the top links; phones and tablets get a hamburger + slide-out side menu.
+   Loaded after each page's own styles so these rules win. */
+.menu-open{display:none}
+/* seven links need room: tighten the top bar on laptops, switch to the drawer below 1200px */
+@media(max-width:1560px){.nav nav a{margin-left:13px;font-size:11.5px;letter-spacing:.09em}.logo{font-size:22px}}
+@media(max-width:1400px){.nav nav a{margin-left:11px;letter-spacing:.07em}.cart-open .cart-lbl{display:none}.cart-open{padding:9px 13px}}
+@media(max-width:1200px){
+  .nav{flex-wrap:nowrap;height:64px;padding-top:0;padding-bottom:0;row-gap:0;gap:10px}
+  .nav nav{display:none}
+  .cart-open{margin-left:auto}
+  .menu-open{display:inline-flex;align-items:center;justify-content:center;flex:none;width:44px;height:44px;margin:0;padding:0;border:0;border-radius:50%;background:transparent;color:var(--ink,#b5946a);cursor:pointer}
+  .menu-open:hover,.menu-open:focus-visible{background:rgba(181,148,106,.14);outline:none}
+  .menu-open svg{display:block;width:26px;height:26px}
+}
+@media(max-width:560px){
+  .nav{gap:8px}
+  .cart-open .cart-lbl{display:none}
+  .cart-open{padding:8px 11px;margin-left:auto}
+  .logo{font-size:19px;gap:8px}
+}
+/* drawer */
+.mnav{position:fixed;inset:0;z-index:80;display:flex;justify-content:flex-end}
+.mnav[hidden]{display:none}
+.mnav-back{position:absolute;inset:0;background:rgba(10,3,5,.6);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);opacity:0;transition:opacity .25s}
+.mnav-panel{position:relative;width:min(320px,86vw);height:100%;display:flex;flex-direction:column;background:#2c0610;color:#e8d3b4;border-left:1px solid #7a2a3d;box-shadow:-24px 0 60px -20px rgba(0,0,0,.8);transform:translateX(100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);padding:calc(14px + env(safe-area-inset-top,0px)) 0 calc(18px + env(safe-area-inset-bottom,0px))}
+.mnav.on .mnav-back{opacity:1}
+.mnav.on .mnav-panel{transform:none}
+.mnav-head{display:flex;align-items:center;justify-content:space-between;padding:4px 14px 14px 24px;border-bottom:1px solid rgba(181,148,106,.3)}
+.mnav-head .mono{width:38px;height:38px;border:1px solid #b5946a;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font:italic 500 16px 'Cormorant Garamond',Georgia,serif;color:#b5946a}
+.mnav-x{width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#cdb08a;font-size:30px;line-height:1;cursor:pointer}
+.mnav-x:hover,.mnav-x:focus-visible{background:rgba(181,148,106,.14);outline:none;color:#e8d3b4}
+.mnav-links{display:flex;flex-direction:column;padding:10px 10px 0;overflow-y:auto;flex:1}
+.mnav-links a{display:flex;align-items:center;justify-content:flex-start;gap:12px;min-height:54px;margin:0;padding:0 14px;border-radius:6px;color:#e8d3b4;text-decoration:none;font:500 21px/1.2 'Cormorant Garamond',Georgia,serif;letter-spacing:.02em;text-transform:none;transition:background .15s}
+.mnav-links a::after{content:"›";margin-left:auto;font-size:22px;color:#b5946a;opacity:.7}
+.mnav-links a:hover,.mnav-links a:focus-visible{background:rgba(181,148,106,.12);outline:none}
+.mnav-links a[aria-current]{color:#e2c38f}
+.mnav-links a[aria-current]::before{content:"";flex:none;width:4px;height:22px;margin-right:2px;border-radius:2px;background:#b5946a}
+.mnav-foot{padding:14px 24px 0;border-top:1px solid rgba(181,148,106,.3);display:flex;flex-direction:column;gap:12px}
+.mnav-cta{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border-radius:30px;background:#b5946a;color:#2c0610;text-decoration:none;font:600 12.5px 'Jost',system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.mnav-cta.ghost{background:transparent;border:1px solid #b5946a;color:#e8d3b4}
+.mnav-mail{text-align:center;font:400 13px 'Jost',system-ui,sans-serif;color:#cdb08a;text-decoration:none}
+body.mnav-lock{overflow:hidden}
+@media(prefers-reduced-motion:reduce){.mnav-back,.mnav-panel{transition:none}}
