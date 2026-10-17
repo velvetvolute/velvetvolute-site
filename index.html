@@ -709,8 +709,9 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .bundle .shots img{width:72px;height:72px;object-fit:cover;border-radius:50%;background:#8a6640}
 .bundle .blurb{font:italic 400 16.5px/1.6 var(--x-italic);margin:0 0 16px;color:#2a0610}
 .bundle ul{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px}
-.bundle li button{background:rgba(74,14,30,.1);border:0;border-radius:999px;padding:6px 12px;font:500 13px/1.2 var(--sans);color:#330a14;cursor:pointer}
-.bundle li button:hover{background:rgba(74,14,30,.2)}
+.bundle li a{display:inline-block;background:rgba(74,14,30,.1);border:0;border-radius:999px;padding:6px 12px;font:500 13px/1.2 var(--sans);color:#330a14;text-decoration:none;cursor:pointer}
+.bundle li a:hover{background:rgba(74,14,30,.2)}
+.bundle .bshot-link{display:block}
 .bundle li .soon{font-weight:600;color:#6a1020}
 .bundle .buy{margin-top:auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:14px 18px}
 .bundle .sizes{display:inline-flex;border-radius:999px;background:rgba(74,14,30,.12);padding:3px}
@@ -1791,9 +1792,9 @@ function collections(){
  const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
  document.getElementById("coll-pct").textContent=BUNDLES.pct+"%";
  box.innerHTML=BUNDLES.bundles.map((b,bi)=>{const ps=bItems(b),ready=bReady(b);
-  return `<article class="bundle" data-b="${bi}">${COLL_ART[b.id]?`<img class="bshot" src="${COLL_ART[b.id]}" alt="${esc(b.name)} bottles side by side" width="1200" height="1200" loading="lazy" decoding="async">`:""}<span class="house">${esc(b.house)} · ${ps.length} scents</span><h3>${esc(b.name)}</h3><a class="pp-link" href="/collections/${esc(b.id)}/">See the full page &rarr;</a>
+  return `<article class="bundle" data-b="${bi}">${COLL_ART[b.id]?`<a class="bshot-link" href="/collections/${esc(b.id)}/" aria-label="See the ${esc(b.name)}"><img class="bshot" src="${COLL_ART[b.id]}" alt="${esc(b.name)} bottles side by side" width="1200" height="1200" loading="lazy" decoding="async"></a>`:""}<span class="house">${esc(b.house)} · ${ps.length} scents</span><h3>${esc(b.name)}</h3><a class="pp-link" href="/collections/${esc(b.id)}/">See the full page &rarr;</a>
   <p class="blurb">${esc(b.blurb)}</p>
-  <ul>${ps.map(p=>`<li><button type="button" data-jump="${PRODUCTS.indexOf(p)}">${esc(shortName(p))}${inStock(p)?"":` <span class="soon">· arriving soon</span>`}</button></li>`).join("")}</ul>
+  <ul>${ps.map(p=>`<li><a href="${pUrl(p)}">${esc(shortName(p))}${inStock(p)?"":` <span class="soon">· arriving soon</span>`}</a></li>`).join("")}</ul>
   <div class="buy"><div class="sizes" role="group" aria-label="Vial size">${BUNDLES.sizes.map((z,k)=>`<button type="button" data-z="${z}" class="${k?"":"on"}" aria-pressed="${!k}">${z} ml each</button>`).join("")}</div>
   <div class="price"></div>
   <button type="button" class="add" ${ready?"":"disabled"}>${ready?"Add the collection":"Arriving soon"}</button></div></article>`}).join("");
