@@ -656,6 +656,23 @@ footer p{max-width:none;margin:0 0 8px}
 .cart-pay .cart-row.total{margin-top:0}
 .cart-pay .cart-checkout{margin-top:10px}
 .cart-pay .cart-secure{margin-top:8px;font-size:12.5px}
+/* pay by Interac e-Transfer: second way to pay, no card fee */
+.cart-or{display:flex;align-items:center;gap:10px;margin:10px 0 0;font:500 11px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:#3A0A17;opacity:.75}
+.cart-or::before,.cart-or::after{content:"";flex:1;height:1px;background:rgba(58,10,23,.35)}
+.cart-et-btn{width:100%;margin-top:10px;padding:13px 0;border:1px solid #4A0E1E;border-radius:2px;background:transparent;color:#3A0A17;font:600 12.5px var(--sans);letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s}
+.cart-et-btn:hover:not(:disabled){background:#4A0E1E;color:#E6D3BC}
+.cart-et-btn:disabled{opacity:.55;cursor:default}
+.cart-et{margin:12px 0 0;padding:14px;border:1px solid rgba(74,14,30,.5);border-radius:6px}
+.cart-et[hidden]{display:none}
+.cart-et p{margin:0 0 10px;font:400 13.5px/1.45 var(--sans);color:#3A0A17}
+.cart-et label{display:block;margin:0 0 8px;font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#3A0A17}
+.cart-et input,.cart-et select{display:block;width:100%;box-sizing:border-box;margin-top:4px;background:rgba(255,255,255,.18);border:1px solid rgba(74,14,30,.5);border-radius:4px;padding:9px 11px;color:#2C0610;font:400 16px var(--sans);letter-spacing:normal;text-transform:none}
+.cart-et input:focus,.cart-et select:focus{outline:2px solid #3A0A17;outline-offset:1px}
+.cart-et .et-two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cart-et .et-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.cart-et [data-addr][hidden]{display:none}
+.cart-et-wrap{padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.cart-et .cart-msg{margin-top:10px}
 
 /* full-page cart */
 .cart-ov.full{background:var(--bg)}
@@ -786,8 +803,29 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
    <div class="cart-pay">
     <div class="cart-row total"><span>Total</span><span id="cart-total">$0</span></div>
     <button type="button" class="cart-checkout" id="cart-checkout">Checkout</button>
+    <p class="cart-secure">Card, Apple Pay or Google Pay, secured by Square. Any applicable tax is shown at checkout.</p>
     <p class="cart-msg" id="cart-msg" hidden></p>
-    <p class="cart-secure">Secure payment by Square. Any applicable tax is shown at checkout.</p>
+   </div>
+   <div class="cart-et-wrap">
+    <div class="cart-or">or</div>
+    <button type="button" class="cart-et-btn" id="cart-et-btn" aria-expanded="false" aria-controls="cart-et">Pay by Interac e-Transfer</button>
+    <form class="cart-et" id="cart-et" hidden novalidate>
+     <p>Place your order here and I'll email you the e-Transfer details. I'll start on your decants as soon as it arrives.</p>
+     <label>Name<input id="et-name" autocomplete="name" maxlength="80" required></label>
+     <label>Email<input id="et-email" type="email" autocomplete="email" maxlength="254" required></label>
+     <label>Phone (optional)<input id="et-phone" type="tel" autocomplete="tel" maxlength="30"></label>
+     <div data-addr hidden>
+      <label>Street address<input id="et-street" autocomplete="street-address" maxlength="120"></label>
+      <label>City<input id="et-city" autocomplete="address-level2" maxlength="60"></label>
+      <div class="et-two">
+       <label>Province<select id="et-prov" autocomplete="address-level1"><option value="">Choose</option><option>AB</option><option>BC</option><option>MB</option><option>NB</option><option>NL</option><option>NS</option><option>NT</option><option>NU</option><option selected>ON</option><option>PE</option><option>QC</option><option>SK</option><option>YT</option></select></label>
+       <label>Postal code<input id="et-postal" autocomplete="postal-code" autocapitalize="characters" maxlength="7"></label>
+      </div>
+     </div>
+     <div class="et-hp" aria-hidden="true"><label>Website<input id="et-website" tabindex="-1" autocomplete="off"></label></div>
+     <button type="submit" class="cart-checkout" id="et-submit">Place order</button>
+     <p class="cart-msg" id="et-msg" hidden></p>
+    </form>
    </div>
   </div>
   </div>
@@ -2091,24 +2129,49 @@ var Cart=(function(){
  addEventListener("popstate",function(){if(location.hash!=="#cart-page"&&!$("cart-ov").hidden&&$("cart-ov").classList.contains("full")){pushed=false;hide()}});
  function msg(t){var m=$("cart-msg");m.textContent=t;m.hidden=false}
  function checkout(){
-  if(!lines.length)return;
-  if(!ship){msg("Please choose pickup, hand delivery or shipping first.");return}
-  if(ship==="local"&&subtotal()<LOCAL_FREE){msg("Local hand delivery is free on orders of $65 or more. Add a little more, or choose pickup or shipping.");return}
-  if(ship==="local"&&!pcOk()){msg("Please enter an Ottawa postal code for hand delivery (Orléans, Kanata and Barrhaven included).");$("cart-pc").focus();return}
+  $("cart-msg").hidden=true;
+  if(!ready())return;
   var btn=$("cart-checkout");btn.disabled=true;btn.textContent="Opening secure checkout…";
   fetch("/.netlify/functions/checkout",{method:"POST",headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({ship:ship,pc:ship==="local"?pc.trim().toUpperCase():"",coupon:promo?promo.code:"",items:lines.map(function(l){if(l.b){var b=bun(l.b);return {bundle:l.b,z:l.z,q:l.q,label:b?b.name:l.b}}var p=find(l.sq);return {sq:l.sq,v:VN[l.v]+", "+l.z+" ml",q:l.q,label:p.name+" "+l.z+" ml"}})})})
+   body:JSON.stringify({ship:ship,pc:ship==="local"?pc.trim().toUpperCase():"",coupon:promo?promo.code:"",items:items()})})
   .then(function(r){return r.json().then(function(d){if(!r.ok||!d.url)throw new Error(d.error||"Checkout failed");return d})})
   .then(function(d){location.href=d.url})
   .catch(function(e){msg((e&&e.message)||"Checkout couldn't be started. Please try again, or email velvetvolute@gmail.com.");btn.disabled=false;btn.textContent="Checkout"});
  }
+ function items(){return lines.map(function(l){if(l.b){var b=bun(l.b);return {bundle:l.b,z:l.z,q:l.q,label:b?b.name:l.b}}var p=find(l.sq);return {sq:l.sq,v:VN[l.v]+", "+l.z+" ml",q:l.q,label:p.name+" "+l.z+" ml"}})}
+ function ready(say){say=say||msg;
+  if(!lines.length)return false;
+  if(!ship){say("Please choose pickup, hand delivery or shipping first.");return false}
+  if(ship==="local"&&subtotal()<LOCAL_FREE){say("Local hand delivery is free on orders of $65 or more. Add a little more, or choose pickup or shipping.");return false}
+  if(ship==="local"&&!pcOk()){say("Please enter an Ottawa postal code for hand delivery (Orléans, Kanata and Barrhaven included).");$("cart-pc").focus();return false}
+  return true}
+ /* Interac e-Transfer: the order is emailed to the customer and the shop; nothing is charged online */
+ function etAddr(){var f=$("cart-et"),need=ship&&ship!=="pickup";f.querySelector("[data-addr]").hidden=!need;if(ship==="local"&&!$("et-postal").value&&pc)$("et-postal").value=pc.trim().toUpperCase();return need}
+ function etToggle(){var f=$("cart-et"),b=$("cart-et-btn"),on=f.hidden;f.hidden=!on;b.setAttribute("aria-expanded",on);if(on){etAddr();setTimeout(function(){$("et-name").focus()},30)}}
+ function etSubmit(e){
+  e.preventDefault();$("cart-msg").hidden=true;$("et-msg").hidden=true;
+  var msg=function(t){var m=$("et-msg");m.textContent=t;m.hidden=false};
+  if(!ready(msg))return;
+  var v=function(id){return ($(id).value||"").trim()},need=etAddr();
+  if(v("et-name").length<2){msg("Please enter your name.");$("et-name").focus();return}
+  if(!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v("et-email"))){msg("Please enter a valid email address, so I can send you the e-Transfer details.");$("et-email").focus();return}
+  if(need&&(v("et-street").length<4||v("et-city").length<2||!v("et-prov")||!/^[A-Z]\d[A-Z]\s?\d[A-Z]\d$/i.test(v("et-postal")))){msg("Please fill in your full address with a valid postal code.");return}
+  var btn=$("et-submit");btn.disabled=true;btn.textContent="Sending your order…";
+  fetch("/.netlify/functions/etransfer",{method:"POST",headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({ship:ship,pc:ship==="local"?pc.trim().toUpperCase():"",coupon:promo?promo.code:"",items:items(),website:v("et-website"),
+    contact:{name:v("et-name"),email:v("et-email"),phone:v("et-phone"),street:need?v("et-street"):"",city:need?v("et-city"):"",prov:need?v("et-prov"):"",postal:need?v("et-postal"):""}})})
+  .then(function(r){return r.json().then(function(d){if(!r.ok||!d.ok)throw new Error(d.error||"Order failed");return d})})
+  .then(function(d){try{sessionStorage.setItem("vv-et",JSON.stringify(d))}catch(x){}lines=[];promo=null;save();badge();location.href="/thanks.html?et=1"})
+  .catch(function(x){msg((x&&x.message)||"Your order couldn't be sent. Please try again, or email velvetvolute@gmail.com.");btn.disabled=false;btn.textContent="Place order"});
+ }
+ $("cart-et-btn").onclick=etToggle;$("cart-et").addEventListener("submit",etSubmit);
  document.addEventListener("DOMContentLoaded",function(){});
  $("cart-open").onclick=open;$("cart-x").onclick=close;$("cart-back").onclick=close;$("cart-full").onclick=openFull;
  if(location.hash==="#cart"){history.replaceState(null,"",location.pathname);open();}
  else if(location.hash==="#cart-page"){open();setFull(true)}
  $("cart-ov").addEventListener("click",function(e){if(e.target===$("cart-ov"))close()});
  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("cart-ov").hidden)close()});
- document.querySelectorAll('input[name=ship]').forEach(function(r){r.onchange=function(){ship=r.value;save();draw();if(ship==="local"&&!pc)setTimeout(function(){$("cart-pc").focus()},50)}});
+ document.querySelectorAll('input[name=ship]').forEach(function(r){r.onchange=function(){ship=r.value;save();draw();etAddr();if(ship==="local"&&!pc)setTimeout(function(){$("cart-pc").focus()},50)}});
  $("cart-pc").addEventListener("input",function(){pc=$("cart-pc").value.toUpperCase();save();var pm=$("ship-pc-msg");if(pc.replace(/\s/g,"").length>=6){pm.hidden=false;pm.className="ship-pc-msg"+(pcOk()?" ok":"");pm.textContent=pcOk()?"Ottawa address, you're set.":"That postal code is outside our delivery area. Choose pickup or shipping instead."}else pm.hidden=true});
  $("cart-checkout").onclick=checkout;
  function promoMsg(t,cls){var m=$("cart-promo-msg");m.textContent=t;m.className="cart-promo-msg"+(cls?" "+cls:"");m.hidden=!t}
@@ -2123,7 +2186,7 @@ var Cart=(function(){
   .then(function(){b.disabled=false;b.textContent="Apply"})}
  $("cart-code-apply").onclick=applyPromo;$("cart-code").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();applyPromo()}});
  $("cart-code").addEventListener("input",function(){if(promo&&$("cart-code").value.trim().toUpperCase()!==promo.code){promo=null;save();draw();promoMsg("")}});
- addEventListener("pageshow",function(){var b=$("cart-checkout");b.disabled=false;b.textContent="Checkout"});
+ addEventListener("pageshow",function(){var b=$("cart-checkout");b.disabled=false;b.textContent="Checkout";var e=$("et-submit");e.disabled=false;e.textContent="Place order"});
  badge();
  return {add:add,addBundle:addBundle,open:open,refresh:function(){draw();badge()}};
 })();

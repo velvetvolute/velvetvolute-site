@@ -57,10 +57,31 @@ a.btn:hover{background:rgba(181,148,106,.12)}
 (function(){
  try{localStorage.removeItem("vv-cart-v1")}catch(e){}
  var q=new URLSearchParams(location.search),id=q.get("orderId");
- if(!id||!/^[A-Za-z0-9]{20,40}$/.test(id))return;
  var $=function(i){return document.getElementById(i)};
  var m=function(c){return "$"+(c/100).toFixed(2)};
  var esc=function(t){var d=document.createElement("div");d.textContent=t;return d.innerHTML};
+ /* Interac e-Transfer order: details saved by the cart, nothing paid yet */
+ if(q.get("et")==="1"){
+  var o=null;try{o=JSON.parse(sessionStorage.getItem("vv-et")||"null")}catch(e){}
+  if(!o||!o.no)return;
+  document.title="Order "+o.no+" received | Velvet Volute";
+  $("lede").textContent="Your order is in. One last step: send the e-Transfer below. I've emailed you these details too.";
+  $("no-val").textContent=o.no;$("no").hidden=false;$("help-no").textContent=" and include "+o.no+".";
+  var h="";
+  o.items.forEach(function(i){h+='<div class="row"><span>'+(i.qty>1?i.qty+"× ":"")+esc(i.name)+(i.variation?"<em>"+esc(i.variation)+"</em>":"")+"</span><span>"+m(i.total)+"</span></div>"});
+  o.charges.forEach(function(c){h+='<div class="row"><span>'+esc(c.name)+"</span><span>"+m(c.total)+"</span></div>"});
+  if(o.method==="ship"&&!o.charges.length)h+='<div class="row"><span>Shipping</span><span>Free</span></div>';
+  if(o.discount)h+='<div class="row"><span>Discounts</span><span>−'+m(o.discount)+"</span></div>";
+  if(o.tax)h+='<div class="row"><span>Tax</span><span>'+m(o.tax)+"</span></div>";
+  h+='<div class="row tot"><span>Total to send</span><span>'+m(o.total)+"</span></div>";
+  $("rows").innerHTML=h;$("items").hidden=false;
+  var after=o.method==="pickup"?"<p>Once it arrives I'll hand-pour your decants for pickup at the Shoppers Drug Mart on Carling Ave. <a href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Book your pickup slot</a> (24 hours' notice).</p>"
+   :o.method==="local"?"<p>Once it arrives I'll hand-pour your decants and bring them to your door myself. <a href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Pick your delivery window</a> (24 hours' notice).</p>"
+   :"<p>Once it arrives I'll hand-pour your decants, ship them with Canada Post and email you when they're on the way.</p>";
+  $("next").innerHTML="<p>Send an Interac e-Transfer of <b>"+m(o.total)+"</b> to <b>"+esc(o.payTo)+"</b>.</p><p>In the e-Transfer message, write your order number <b>"+esc(o.no)+"</b>.</p><p>I'll email you as soon as it arrives.</p>"+after;
+  return;
+ }
+ if(!id||!/^[A-Za-z0-9]{20,40}$/.test(id))return;
  // ask the server to alert the shop only once per order from this browser
  var key="vv-notified-"+id,first=true;
  try{first=!localStorage.getItem(key)}catch(e){}
