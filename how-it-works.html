@@ -495,7 +495,27 @@ a.cart-open{text-decoration:none}
 .f101-notes li::before{content:"";position:absolute;left:0;top:.72em;width:9px;height:9px;border-radius:50%;background:var(--gold)}
 .f101-notes li:last-child{margin-bottom:0}
 .f101-notes b{font-weight:500;color:var(--ink)}
-@media(max-width:1000px){.tiers{grid-template-columns:repeat(2,1fr)}}
+/* crash course */
+.crash{margin-top:84px}
+.crash .eyebrow{margin:0}
+.crash h2{margin:10px 0 14px;text-wrap:balance}
+.crash .lede{margin-bottom:36px}
+.lessons{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;text-align:left}
+.lessons li{display:flex;flex-direction:column;padding:26px 24px 24px;background:#a07b52;border-radius:4px;color:#2a0610}
+.lessons .l-n{font:600 15px var(--serif);letter-spacing:.14em;color:#451019;font-variant-numeric:lining-nums}
+.lessons h3{margin:8px 0 12px;font:500 25px/1.15 var(--serif);color:#2a0610;text-wrap:balance}
+.lessons p{margin:0 0 14px;color:#3a1018;font-size:15px;line-height:1.65}
+.lessons p b{font-weight:500;color:#2a0610}
+.lessons .l-tip{margin:auto 0 0;padding:12px 0 0;border-top:1px solid rgba(42,6,16,.3);font:italic 500 15px/1.5 var(--serif);color:#2a0610}
+.lessons .l-tip a{color:#2a0610;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(42,6,16,.6)}
+.glossary{max-width:860px;margin:40px auto 0;padding:30px 32px;text-align:left;border:1px solid rgba(181,148,106,.5);border-radius:4px}
+.glossary h3{margin:0 0 18px;font:500 26px/1.15 var(--serif);color:var(--ink);text-align:center}
+.glossary dl{display:grid;grid-template-columns:1fr 1fr;gap:14px 36px;margin:0}
+.glossary dt{font:500 12px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.glossary dd{margin:3px 0 0;color:var(--muted);font-size:15px;line-height:1.55}
+.glossary .gi{display:flex;flex-direction:column}
+@media(max-width:1000px){.tiers{grid-template-columns:repeat(2,1fr)}.lessons{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.crash{margin-top:60px}.lessons{grid-template-columns:1fr;gap:14px}.lessons li{padding:22px 20px 20px}.glossary{padding:24px 20px}.glossary dl{grid-template-columns:1fr;gap:14px}}
 @media(max-width:560px){.f101{margin-top:60px}.tiers{grid-template-columns:1fr;gap:14px}.tiers li{padding:22px 20px 18px}.f101-notes{padding:24px 20px}}
 </style>
 <style>
@@ -577,6 +597,65 @@ header{border-bottom:0}
         <li><b>Houses keep the exact number secret.</b> The percentages above are industry ranges, not a promise on the label.</li>
         <li><b>Why it matters for decants.</b> A 5 ml Extrait at two sprays a day lasts about as long as a 10 ml EDT at four. Factor that in when comparing prices.</li>
       </ul>
+    </div>
+
+    <div class="crash" id="crash-course">
+      <p class="eyebrow">The crash course</p>
+      <h2>Everything else a beginner should know</h2>
+      <p class="lede">New to this? Here's the rest of what I wish someone had told me at the start. Six short lessons, no gatekeeping.</p>
+      <ul class="lessons">
+        <li>
+          <span class="l-n">01</span>
+          <h3>A scent is a story in three acts</h3>
+          <p>Every fragrance is built as a pyramid. <b>Top notes</b> are the first 15 minutes: citrus, pepper, bright and loud. <b>Heart notes</b> take over for the next few hours: florals, spices, tea, the character of the scent. <b>Base notes</b> are the dry-down: woods, amber, musk, leather, vanilla. That's what people actually smell on you most of the day.</p>
+          <p class="l-tip">Never judge a fragrance by the first spray. Give it an hour. The dry-down is the real scent.</p>
+        </li>
+        <li>
+          <span class="l-n">02</span>
+          <h3>Know your families</h3>
+          <p>Fragrances group into families by their dominant character. The collection is sorted by six: <b>Sweet</b> (vanilla, tonka, coffee: Coffee Break, Fan Your Flames), <b>Fresh</b> (citrus, tea, green: Le Piano, Wulong Cha), <b>Spicy</b> (cardamom, saffron, pepper: La Nuit de L'Homme, Nefs), <b>Woody</b> (cedar, fir, sandalwood: Papilefiko), <b>Leather</b> (smoky, suede: Tuscan Leather, Kredo) and <b>Floral</b> (orchid, iris, rose: Black Orchid, Tempfluo).</p>
+          <p class="l-tip">Found one you love? Filter the shop by its family. Its cousins are the safest next step.</p>
+        </li>
+        <li>
+          <span class="l-n">03</span>
+          <h3>How to wear it</h3>
+          <p>Spray on clean, moisturized skin where you're warm: neck, chest, inside the wrists. Two sprays for an Extrait, three or four for an EDP, more for an EDT. Don't rub your wrists together; let it settle. Skin gives you the full story; a spray on a scarf or sweater lasts for days but skips the dry-down.</p>
+          <p class="l-tip">Store bottles and vials somewhere cool and dark, cap on. Not the bathroom: heat and steam are what age a fragrance.</p>
+        </li>
+        <li>
+          <span class="l-n">04</span>
+          <h3>Match the moment</h3>
+          <p>Heat amplifies a fragrance; cold mutes it. Sweet, spicy, leather and amber scents bloom in cooler weather and after dark. Fresh, citrus, tea and green scents are built for daytime, summer and the office, where you want to be noticed, not announced.</p>
+          <p class="l-tip">The shop filters by Warm weather / Cold weather and Day / Night, so you can build a rotation, not a one-scent wardrobe.</p>
+        </li>
+        <li>
+          <span class="l-n">05</span>
+          <h3>Designer vs. niche</h3>
+          <p><b>Designer</b> fragrances come from fashion houses (YSL, Valentino, Versace, Givenchy, Jean Paul Gaultier): widely available, crowd-pleasing, easier on the wallet. <b>Niche</b> houses do nothing but perfume (Nishane, Xerjoff, Maison Francis Kurkdjian, Parfums de Marly, Claude Marsal): more distinctive, better materials, often $200 to $600+ a bottle. Tom Ford sits in between.</p>
+          <p class="l-tip">Niche is where decants shine. Ten millilitres of a $400 bottle lets you live with it for a month before you ever commit.</p>
+        </li>
+        <li>
+          <span class="l-n">06</span>
+          <h3>Find your scent the smart way</h3>
+          <p>Fragrance smells different on every person, so a blind full-bottle buy is a gamble. Instead: start with 2 ml samples, wear each one for a full day, two or three times, in the setting you'd actually wear it. Notice what you reach for again. A 10 ml decant is roughly 100 sprays, a month of daily wear, before a 100 ml bottle (a year or more) is worth it.</p>
+          <p class="l-tip">Not sure where to start? Take the <a href="/#quiz">Scent Sherpa</a>'s quiz. It asks who's wearing it and what you like, then explains why each pick fits.</p>
+        </li>
+      </ul>
+
+      <div class="glossary">
+        <h3>Words you'll hear</h3>
+        <dl>
+          <div class="gi"><dt>Longevity</dt><dd>How many hours a scent lasts on your skin.</dd></div>
+          <div class="gi"><dt>Projection</dt><dd>How far it radiates off you. Loud or close to the skin.</dd></div>
+          <div class="gi"><dt>Sillage</dt><dd>The trail you leave behind when you walk past. Pronounced see-yazh.</dd></div>
+          <div class="gi"><dt>Dry-down</dt><dd>The final stage, hours in, when only the base notes remain.</dd></div>
+          <div class="gi"><dt>Flanker</dt><dd>A new version of an existing scent (Intense, Elixir, Parfum, "X"). Same name, different juice.</dd></div>
+          <div class="gi"><dt>Accord</dt><dd>Several notes blended to read as one, like a chord. "Oud accord" means the smell of oud, built from other materials.</dd></div>
+          <div class="gi"><dt>Decant</dt><dd>Fragrance transferred from an authentic bottle into a smaller vial. What you're buying here.</dd></div>
+          <div class="gi"><dt>Batch code</dt><dd>The small code on a bottle that dates its production. Proof the juice is genuine and recent.</dd></div>
+          <div class="gi"><dt>Skin chemistry</dt><dd>Why the same scent smells different on two people: skin pH, warmth, diet and what you moisturize with.</dd></div>
+        </dl>
+      </div>
     </div>
   </div>
 
