@@ -122,7 +122,7 @@ html[data-tiles="camel"] .htile .rule{background:#330a14}
 .coll{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
 .coll-left,.coll-right{display:contents}
 .coll-head{order:1}.carousel{order:2}.coll-buy{order:3}
-@media(min-width:900px){.coll{grid-template-columns:minmax(0,1fr) minmax(0,46%);column-gap:48px;align-items:start}.coll-left,.coll-right{display:block}.coll-left-2{grid-column:1}.coll-right{grid-column:2;grid-row:1 / span 2;position:sticky;top:90px}.carousel{margin-top:0}}
+@media(min-width:900px){.coll{grid-template-columns:minmax(0,46%) minmax(0,1fr);column-gap:48px;align-items:start}.coll-left,.coll-right{display:block}.coll-left,.coll-left-2{grid-column:2}.coll-right{grid-column:1;grid-row:1 / span 2;position:sticky;top:90px}.carousel{margin-top:0}}
 .carousel{margin:4px 0 0;max-width:620px}
 .track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border:1px solid var(--line);box-shadow:0 22px 40px -18px rgba(0,0,0,.6);background:#2c0610}
 .track::-webkit-scrollbar{display:none}
