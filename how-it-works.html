@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>How It Works | Velvet Volute</title>
-<meta name="description" content="How to order fragrance decants from Velvet Volute: pick your scents, pay by card through Square, then Ottawa pickup or Canada-wide shipping (free over $85).">
+<meta name="description" content="How to order fragrance decants from Velvet Volute: pick your scents, pay by card through Square, then Ottawa pickup or Canada-wide shipping (free over $85). Plus our policies on returns, damaged arrivals and lost parcels.">
 <link rel="canonical" href="https://velvetvolute.ca/how-it-works">
 <meta name="theme-color" content="#4a0e1e">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
@@ -475,6 +475,30 @@ a.cart-open{text-decoration:none}
 .how-page .how-more{max-width:620px;margin:40px auto 0;color:var(--muted);font-size:15.5px}
 .how-more a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--gold)}
 .how-more a:hover{color:var(--gold)}
+/* policies */
+.pol{max-width:760px;margin:84px auto 0;text-align:left}
+.pol .eyebrow,.pol h2,.pol .lede{text-align:center}
+.pol .eyebrow{margin:0}
+.pol h2{margin:10px 0 14px;text-wrap:balance}
+.pol .lede{margin-bottom:28px}
+.pol-item{border:1px solid rgba(181,148,106,.45);border-radius:6px;margin:0 0 10px;background:rgba(44,6,16,.35)}
+.pol-item summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:4px 14px;padding:18px 20px}
+.pol-item summary::-webkit-details-marker{display:none}
+.pol-item summary::after{content:"+";grid-column:2;grid-row:1/span 2;align-self:center;width:28px;height:28px;border-radius:50%;border:1px solid var(--gold);display:inline-flex;align-items:center;justify-content:center;color:var(--gold);font:500 18px/1 var(--sans)}
+.pol-item[open] summary::after{content:"\2212"}
+.pol-item summary:hover .pol-t,.pol-item summary:focus-visible .pol-t{color:var(--gold)}
+.pol-item summary:focus-visible{outline:2px solid var(--gold);outline-offset:-2px;border-radius:6px}
+.pol-t{display:block;grid-column:1;font:500 22px/1.15 var(--serif);color:var(--ink);text-wrap:balance}
+.pol-s{display:block;grid-column:1;margin-top:0;font:400 13px var(--sans);letter-spacing:.02em;color:var(--muted)}
+.pol-b{padding:0 20px 20px;color:var(--muted);font-size:15.5px;line-height:1.7}
+.pol-b p{margin:0 0 12px}.pol-b p:last-child{margin:0}
+.pol-b b{font-weight:500;color:var(--ink)}
+.pol-b a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--gold)}
+.pol-b a:hover{color:var(--gold)}
+.pol-b ul{margin:0 0 12px;padding-left:20px}.pol-b li{margin:0 0 4px}
+.pol-foot{margin:22px auto 0;text-align:center;color:var(--muted);font-size:14px;max-width:560px}
+.pol-foot a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--gold)}
+@media(max-width:560px){.pol{margin-top:60px}.pol-item summary{padding:15px 16px}.pol-t{font-size:20px}.pol-b{padding:0 16px 16px;font-size:15px}}
 </style>
 <style>
 /* Design pass, Oct 2026: shared footer, flat pill, filled buttons, no hairlines */
@@ -506,7 +530,7 @@ header{border-bottom:0}
 </div></header>
 
 <main><section class="about how-page" id="how"><div class="wrap">
-  <h1>Ordering is simple</h1>
+  <h1 id="top-how">Ordering is simple</h1>
   <p class="lede">Order online in a few taps, no account needed. Every order is hand-poured into a fresh vial, from a 2 ml sample up to larger sizes.</p>
   <ol class="how-steps">
     <li><h3>Pick your scents</h3><p>Curate your own playlist: look through the notes, sort through the filters, or take the <a href="/#quiz">Scent Sherpa</a>'s quiz to guide you to new finds you might not have known you'd like. Then choose your size and style.</p></li>
@@ -516,17 +540,69 @@ header{border-bottom:0}
 
   <p class="how-more">New to fragrance? Start with <a href="/fragrance-101">Fragrance 101</a>: what EDT, EDP, Extrait and Parfum mean, plus a beginner's crash course.</p>
 
+  <div class="pol" id="policies">
+    <p class="eyebrow">Policies</p>
+    <h2>The fine print, in plain English</h2>
+    <p class="lede">Every vial is poured to order from an authentic bottle, so a few rules keep things fair for everyone. Here's exactly what happens if something goes sideways.</p>
+
+    <details class="pol-item" id="pol-returns">
+      <summary><span class="pol-t">Returns &amp; exchanges</span><span class="pol-s">All sales are final once your order is processed</span></summary>
+      <div class="pol-b">
+        <p>Decants are hand-poured for you and can't be resold once they leave here, so <b>I don't accept returns or exchanges</b>, including for scent preference or skin chemistry. This is standard across Canadian decant shops, and it's how I guarantee every vial you receive is fresh and untouched.</p>
+        <p>Not sure a scent is for you? That's what the 2 ml size and the <a href="/#quiz">Scent Sherpa</a> are for: try before you commit to a bigger vial.</p>
+        <p><b>Changed your mind before it ships?</b> Email me right away with your order number. If your vials haven't been poured yet, I'll cancel and refund in full. Once poured or shipped, the order is final.</p>
+      </div>
+    </details>
+
+    <details class="pol-item" id="pol-damage">
+      <summary><span class="pol-t">Arrived damaged, leaking or wrong</span><span class="pol-s">Tell me within 24 hours of delivery</span></summary>
+      <div class="pol-b">
+        <p>Every parcel is packed to protect glass in transit, but couriers are couriers. If a vial arrives cracked, leaking, or isn't what you ordered, <b>email me within 24 hours of the delivery scan</b> at <a href="mailto:velvetvolute@gmail.com?subject=Damaged%20order">velvetvolute@gmail.com</a> with:</p>
+        <ul>
+          <li>your order number (VV-XXXXXX),</li>
+          <li>clear photos of the vial(s), the inside of the box and the outer packaging,</li>
+          <li>a line or two on what's wrong.</li>
+        </ul>
+        <p>Keep the box and packing material until it's sorted; the courier may ask to see them. Once confirmed, I'll <b>replace the affected vial(s)</b> at no charge, or refund them if the bottle is out of stock. The carrier claim is my job, not yours.</p>
+        <p>Damage reported after 24 hours, or after a vial has been used, can't be claimed with the courier and isn't covered.</p>
+      </div>
+    </details>
+
+    <details class="pol-item" id="pol-lost">
+      <summary><span class="pol-t">Lost, late or "delivered" but not there</span><span class="pol-s">Tracked shipping, and I open the investigation</span></summary>
+      <div class="pol-b">
+        <p>Every shipped order goes out <b>tracked and insured</b>, and you get the tracking number by email. Canada-wide delivery usually takes 2 to 8 business days.</p>
+        <p><b>Running late?</b> Weather and volume happen. If tracking hasn't moved for more than 10 business days past the estimated date, email me and I'll open a trace with the carrier.</p>
+        <p><b>Lost?</b> If the carrier confirms the parcel is lost, or it hasn't arrived 15 business days after the estimated date, I'll <b>re-pour and reship your order</b>, or refund it in full if a scent is no longer available. You don't wait on the carrier's claim; that's between them and me.</p>
+        <p><b>Tracking says delivered, but nothing's there?</b> Check with household members, neighbours, your building's mailroom and any safe-drop spot, then email me <b>within 48 hours</b> of the delivery scan. I'll open an investigation with the carrier; its outcome decides whether a replacement or refund is issued.</p>
+        <p>One thing I can't cover: an address typed incorrectly at checkout. Double-check it before you pay, and if the parcel comes back to me, I'll reship for the cost of postage.</p>
+      </div>
+    </details>
+
+    <details class="pol-item" id="pol-pickup">
+      <summary><span class="pol-t">Ottawa pickup</span><span class="pol-s">Booked slots, held for 14 days</span></summary>
+      <div class="pol-b">
+        <p>Pickup is at the Shoppers Drug Mart on Carling Avenue, by appointment through the <a href="https://calendar.app.google/9Gg9gioRktiA5eocA" target="_blank" rel="noopener">booking page</a> (15-minute slots, 24 hours' notice). Life gets busy, so just rebook if you need to. Orders not collected within 14 days of being ready can be shipped to you for the flat shipping rate, or refunded minus the cost of the poured vials.</p>
+      </div>
+    </details>
+
+    <p class="pol-foot">Questions about any of this? <a href="/contact">Get in touch</a> before you order. Nothing here limits your rights under Ontario consumer protection law.</p>
+  </div>
+
   <p class="how-cta"><a class="btn" href="/#shop">Shop the collection</a><a class="btn" href="/#quiz">or ask the Scent Sherpa</a></p>
  </div></section></main>
 
 <footer><div class="wrap">
-  <div><div class="logo"><span class="mono">VV</span>Velvet Volute</div><p>© 2026 Velvet Volute</p><a class="fb-link" href="https://www.facebook.com/profile.php?id=61595247606137" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v2.9h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>Like us on Facebook for 10% off</a><span class="fb-note">Like the Page, then send us a message for your one-time code on your first order.</span></div>
+  <div><div class="logo"><span class="mono">VV</span>Velvet Volute</div><p>© 2026 Velvet Volute · <a class="pol-link" href="/how-it-works#policies">Policies</a></p><a class="fb-link" href="https://www.facebook.com/profile.php?id=61595247606137" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v2.9h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>Like us on Facebook for 10% off</a><span class="fb-note">Like the Page, then send us a message for your one-time code on your first order.</span></div>
   <div>
     <p>All decants are hand-decanted from authentic original bottles and repackaged in new containers. The original manufacturer's bottle and packaging are not included.</p>
     <p>Not affiliated with, endorsed by, or associated with any fragrance brand or designer. All trademarks belong to their respective owners and are used only to identify the authentic products from which each decant is prepared.</p>
   </div>
 </div></footer>
 <style>
+/* Policies link in the footer */
+.pol-link{color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(205,163,169,.6)}
+.pol-link:hover{color:#e8d3b4}
 /* Facebook link */
 .fb-link{display:inline-flex;align-items:center;gap:9px;margin:14px 0 4px;padding:9px 16px;border:1px solid #b5946a;border-radius:30px;background:#4a0e1e;color:#e8d3b4;text-decoration:none;font:500 12px var(--sans,system-ui);letter-spacing:.12em;text-transform:uppercase;transition:background .2s,color .2s}
 .fb-link:hover{background:#b5946a;color:#2c0610}

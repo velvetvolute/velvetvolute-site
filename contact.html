@@ -488,6 +488,7 @@ a.ct-way:hover{background:#ad885e}
 .ct-form{padding:30px 28px 26px;border:1px solid rgba(181,148,106,.5);border-radius:4px}
 .ct-form h2{font-size:clamp(26px,3.4vw,34px);margin:0 0 6px;text-align:left}
 .ct-form .ct-sub{margin:0 0 20px;color:var(--muted);font-size:15px}
+.ct-sub a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--gold)}
 #ct-form{display:flex;flex-direction:column;gap:16px}
 .ct-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .sg-field select{font:400 15px var(--sans);letter-spacing:.01em;text-transform:none;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:10px 12px;width:100%}
@@ -553,7 +554,7 @@ header{border-bottom:0}
     <div class="ct-form">
       <div id="ct-body">
         <h2>Send a note</h2>
-        <p class="ct-sub">A question, a request, or a fragrance suggestion. I'll reply to the email you leave.</p>
+        <p class="ct-sub">A question, a request, or a fragrance suggestion. I'll reply to the email you leave. Damaged or missing order? See the <a href="/how-it-works#policies">policies</a> for what to send me.</p>
         <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="ct-form" action="/contact?sent=1">
           <input type="hidden" name="form-name" value="contact">
           <p class="sg-hp"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
@@ -604,13 +605,16 @@ header{border-bottom:0}
 </script>
 
 <footer><div class="wrap">
-  <div><div class="logo"><span class="mono">VV</span>Velvet Volute</div><p>© 2026 Velvet Volute</p><a class="fb-link" href="https://www.facebook.com/profile.php?id=61595247606137" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v2.9h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>Like us on Facebook for 10% off</a><span class="fb-note">Like the Page, then send us a message for your one-time code on your first order.</span></div>
+  <div><div class="logo"><span class="mono">VV</span>Velvet Volute</div><p>© 2026 Velvet Volute · <a class="pol-link" href="/how-it-works#policies">Policies</a></p><a class="fb-link" href="https://www.facebook.com/profile.php?id=61595247606137" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v2.9h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>Like us on Facebook for 10% off</a><span class="fb-note">Like the Page, then send us a message for your one-time code on your first order.</span></div>
   <div>
     <p>All decants are hand-decanted from authentic original bottles and repackaged in new containers. The original manufacturer's bottle and packaging are not included.</p>
     <p>Not affiliated with, endorsed by, or associated with any fragrance brand or designer. All trademarks belong to their respective owners and are used only to identify the authentic products from which each decant is prepared.</p>
   </div>
 </div></footer>
 <style>
+/* Policies link in the footer */
+.pol-link{color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(205,163,169,.6)}
+.pol-link:hover{color:#e8d3b4}
 /* Facebook link */
 .fb-link{display:inline-flex;align-items:center;gap:9px;margin:14px 0 4px;padding:9px 16px;border:1px solid #b5946a;border-radius:30px;background:#4a0e1e;color:#e8d3b4;text-decoration:none;font:500 12px var(--sans,system-ui);letter-spacing:.12em;text-transform:uppercase;transition:background .2s,color .2s}
 .fb-link:hover{background:#b5946a;color:#2c0610}
