@@ -187,12 +187,16 @@ function place(off,anim){SL.forEach(function(s){s.style.transition=anim?"":"none
 function setV(nv){if(nv!==v){v=nv;var S=V[v].sizes;z=S.indexOf(ZS[v])>=0?ZS[v]:S.indexOf(z)>=0?z:S[0];draw()}idx=KEYS.indexOf(v);place(0,true)}
 function step(d){setV(KEYS[Math.max(0,Math.min(KEYS.length-1,idx+d))])}
 var sx=null,sy=0,dx=0,drag=null,pid=null;
-tr.addEventListener("pointerdown",function(e){if(e.pointerType==="mouse"&&e.button!==0)return;sx=e.clientX;sy=e.clientY;dx=0;drag=null;pid=e.pointerId});
+tr.addEventListener("pointerdown",function(e){if(e.pointerType==="mouse"&&e.button!==0)return;sx=e.clientX;sy=e.clientY;dx=0;drag=null;pid=e.pointerId;try{tr.setPointerCapture(pid)}catch(x){}});
 tr.addEventListener("pointermove",function(e){if(sx===null||e.pointerId!==pid)return;var mx=e.clientX-sx,my=e.clientY-sy;
- if(drag===null){if(Math.abs(mx)<6&&Math.abs(my)<6)return;drag=Math.abs(mx)>Math.abs(my);if(drag){try{tr.setPointerCapture(pid)}catch(x){}tr.classList.add("drag")}}
+ if(drag===null){if(Math.hypot(mx,my)<8)return;drag=Math.abs(mx)>=Math.abs(my)*.8;if(drag)tr.classList.add("drag")}
  if(!drag)return;dx=mx;if((idx===0&&dx>0)||(idx===KEYS.length-1&&dx<0))dx*=.3;place(dx,false);e.preventDefault()});
-function end(e){if(e.pointerId!==pid)return;if(drag){tr.classList.remove("drag");var th=Math.min(50,tr.clientWidth*.12);if(Math.abs(dx)>th)step(dx<0?1:-1);else place(0,true)}sx=null;drag=null;pid=null}
+/* a quick flick may deliver only a couple of move events, so the decision is made from where the finger lifted, not just the last move */
+function end(e){if(sx===null||e.pointerId!==pid)return;var fx=e.type==="pointercancel"?dx:e.clientX-sx,fy=e.type==="pointercancel"?0:e.clientY-sy;
+ if(drag===null&&Math.abs(fx)>=8&&Math.abs(fx)>=Math.abs(fy)*.8)drag=true;
+ if(drag){tr.classList.remove("drag");var th=Math.min(40,tr.clientWidth*.1);if(Math.abs(fx)>th)step(fx<0?1:-1);else place(0,true)}sx=null;drag=null;pid=null}
 tr.addEventListener("pointerup",end);tr.addEventListener("pointercancel",end);
+tr.addEventListener("lostpointercapture",function(e){if(sx!==null&&e.pointerId===pid)end({type:"pointercancel",pointerId:pid})});
 tr.addEventListener("dragstart",function(e){e.preventDefault()});
 /* trackpad / horizontal mouse wheel: one step per gesture */
 var wacc=0,wt=0,wdone=false;
