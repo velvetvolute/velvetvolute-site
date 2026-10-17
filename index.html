@@ -163,6 +163,11 @@ footer .logo{justify-content:center}
 .photo{position:relative}
 .rep{position:absolute;top:10px;left:10px;z-index:1;padding:3px 9px;border-radius:20px;background:rgba(18,10,12,.62);color:#e9dcc6;font:400 10px var(--sans);letter-spacing:.14em;text-transform:uppercase;backdrop-filter:blur(2px)}
 .card .photo{height:auto;aspect-ratio:1/1}
+.card .photo .track{display:flex;width:100%;height:100%;overflow:hidden;touch-action:pan-y pinch-zoom;cursor:grab;user-select:none;-webkit-user-select:none}
+.card .photo .track.drag{cursor:grabbing}
+.card .photo .slide{flex:0 0 100%;height:100%;margin:0;position:relative;transition:transform .34s cubic-bezier(.22,.7,.2,1);will-change:transform}
+.card .photo .slide img.shot{pointer-events:none;-webkit-user-drag:none}
+.card .photo .slide figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px 12px 9px;text-align:center;background:linear-gradient(transparent,rgba(44,6,16,.85));color:#e8d3b4;font:500 10.5px var(--sans);letter-spacing:.2em;text-transform:uppercase;pointer-events:none}
 
 /* step numbers: lining figures in a ring so the 1 never reads as an I */
 .steps .n{display:flex;align-items:center;justify-content:center;width:68px;height:68px;margin:0 auto 6px;border:1.5px solid var(--gold);border-radius:50%;font-size:38px;font-weight:600;font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1;line-height:1}
@@ -1619,9 +1624,36 @@ function bottleArt(p,i){
 </svg>`}
 const STORE="https://velvet-volute.square.site/?location=LQAEH3F1YK86M";
 function vdescHTML(v,z){return v==="classic"?"A traditional glass screw-top atomizer.":v==="luxe"?`A thick-glass, pressurized atomizer, crimp-sealed for a fine, even mist.${z===5?" (The 5 ml adds a shatterproof resin shell over the glass.)":""}`:"A thick, clear glass bottle with a stainless steel rollerball and a walnut cap, for a precise dab on the go."}
+const VKEYS=Object.keys(VIALS),VCAP={classic:["classic decant vials","Classic vials"],luxe:["luxury decant bottles","Luxury bottles"],roll:["roll-on vials","Roll-ons"]};
+/* the card photo is a swipeable strip: classic, luxury, roll-on (the same photo repeats when a vial type has no shot of its own).
+   A copy of the last slide sits before the first and a copy of the first after the last so it wraps around. */
+function photoStrip(p,st){const src=k=>k==="luxe"&&p.imgL?p.imgL:k==="roll"&&p.imgR?p.imgR:p.img;
+ const fig=(k,clone)=>`<figure class="slide" data-v="${k}"${clone?' aria-hidden="true"':''}><img class="shot" loading="lazy" width="720" height="720" src="${src(k)}" alt="${p.rep?`${p.brand} ${p.name}: bottle photo coming soon, shown with`:`${p.brand} ${p.name} bottle beside`} ${VCAP[k][0]} on a wooden table" decoding="async"><figcaption>${VCAP[k][1]}</figcaption></figure>`;
+ const vi=VKEYS.indexOf(st.v),tf=`transform:translateX(${-(vi+1)*100}%)`;
+ return `<div class="track" aria-label="Vial type photos, swipe to change">${[fig("roll",1),...VKEYS.map(k=>fig(k)),fig("classic",1)].join("").replace(/<figure /g,`<figure style="${tf}" `)}</div>`}
+/* one swipe moves exactly one slide, however hard the flick; wraps at both ends. onIdx(i) fires when a swipe lands on slide i. */
+function strip(track,N,onIdx,onTap){const SL=[...track.children];let vi=+track.dataset.vi||0,settle,sx=null,sy=0,dx=0,drag=null,pid=null;
+ const place=(off,anim)=>SL.forEach(s=>{s.style.transition=anim?"":"none";s.style.transform=`translateX(calc(${-(vi+1)*100}% + ${off}px))`});
+ const norm=()=>{clearTimeout(settle);if(vi<0||vi>=N){vi=(vi+N)%N;place(0,false)}};
+ const go=at=>{vi=at;place(0,true);clearTimeout(settle);if(vi<0||vi>=N)settle=setTimeout(norm,380)};
+ const step=d=>{const ni=vi+d;onIdx((ni+N)%N);go(ni)};
+ track.addEventListener("pointerdown",e=>{if(e.pointerType==="mouse"&&e.button!==0)return;norm();sx=e.clientX;sy=e.clientY;dx=0;drag=null;pid=e.pointerId;try{track.setPointerCapture(pid)}catch(x){}});
+ track.addEventListener("pointermove",e=>{if(sx===null||e.pointerId!==pid)return;const mx=e.clientX-sx,my=e.clientY-sy;
+  if(drag===null){if(Math.hypot(mx,my)<8)return;drag=Math.abs(mx)>=Math.abs(my)*.8;if(drag)track.classList.add("drag")}
+  if(!drag)return;dx=mx;place(dx,false);e.preventDefault()});
+ const end=e=>{if(sx===null||e.pointerId!==pid)return;const fx=e.type==="pointercancel"?dx:e.clientX-sx,fy=e.type==="pointercancel"?0:e.clientY-sy;
+  if(drag===null&&Math.abs(fx)>=8&&Math.abs(fx)>=Math.abs(fy)*.8)drag=true;
+  if(drag){track.classList.remove("drag");const th=Math.min(40,track.clientWidth*.1);if(Math.abs(fx)>th)step(fx<0?1:-1);else place(0,true)}
+  else if(drag===null&&e.type==="pointerup"&&onTap)onTap();sx=null;drag=null;pid=null};
+ track.addEventListener("pointerup",end);track.addEventListener("pointercancel",end);
+ track.addEventListener("lostpointercapture",e=>{if(sx!==null&&e.pointerId===pid)end({type:"pointercancel",pointerId:pid})});
+ track.addEventListener("dragstart",e=>e.preventDefault());
+ let wacc=0,wt=0,wdone=false;
+ track.addEventListener("wheel",e=>{if(Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;e.preventDefault();const now=Date.now();if(now-wt>200){wacc=0;wdone=false}wt=now;wacc+=e.deltaX;if(!wdone&&Math.abs(wacc)>40){wdone=true;step(wacc>0?1:-1)}},{passive:false});
+ return {go:i=>{if(i!==((vi%N)+N)%N)go(i)}}}
 function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v],sp=isSpot(p);
  return `<article class="card${sp?" spot":""}" data-i="${i}">
-   <div class="photo">${sp?`<div class="spot-rib"><span>&#10022;</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?`<img class="shot" loading="lazy" width="720" height="720" src="${st.v==="luxe"&&p.imgL?p.imgL:st.v==="roll"&&p.imgR?p.imgR:p.img}" alt="${p.rep?`${p.brand} ${p.name}: bottle photo coming soon, shown with`:`${p.brand} ${p.name} bottle beside`} ${st.v==="luxe"?"luxury decant vials":st.v==="roll"?"decant vials and a roll-on":"classic decant vials"} on a wooden table" decoding="async">`:bottleArt(p,i)}</div>
+   <div class="photo">${sp?`<div class="spot-rib"><span>&#10022;</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?photoStrip(p,st):bottleArt(p,i)}</div>
    <div class="body"><div class="brand">${p.brand}<span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name">${p.name}</div><a class="pp-link" href="${pUrl(p)}">Full page &rarr;</a>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
    <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}${k==="luxe"?'<span class="vup">+$3</span>':k==="roll"?'<span class="vup">+$4</span>':""}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
@@ -1630,11 +1662,19 @@ function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"clas
 function bind(card){const i=+card.dataset.i,p=PRODUCTS[i],st=state[i];
  const sm=card.querySelector(".story-more"),mp=card.querySelector(".mood");
  if(sm&&mp){if(mp.scrollHeight<=mp.clientHeight+2)sm.hidden=true;sm.onclick=()=>{const open=mp.classList.toggle("clamp")===false;sm.textContent=open?"Show less":"Read the story";sm.setAttribute("aria-expanded",open);card.style.minHeight="";equalize()}}
- card.querySelectorAll(".vt").forEach(b=>b.onclick=()=>{st.v=b.dataset.v;if(!VIALS[st.v].sizes.includes(st.z))st.z=VIALS[st.v].sizes[0];
-  const n=document.createElement("div");n.innerHTML=cardHTML(p);const c=n.firstElementChild;c.style.minHeight=card.style.minHeight;card.replaceWith(c);bind(c)});
+ /* changing the vial type (tab or swipe) updates the card in place; a size you tapped is remembered per type, otherwise the current size carries over when offered */
+ st.zs=st.zs||{classic:2};const tk=card.querySelector(".photo .track");let S=null;
+ const applyV=(nv,fromSwipe)=>{if(nv!==st.v){st.v=nv;const Z=VIALS[nv].sizes;st.z=Z.includes(st.zs[nv])?st.zs[nv]:Z.includes(st.z)?st.z:Z[0];
+   card.querySelectorAll(".vt").forEach(b=>b.classList.toggle("on",b.dataset.v===nv));card.querySelector(".vdesc").innerHTML=vdescHTML(st.v,st.z);
+   card.querySelector(".sizes").innerHTML=Z.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml<span class="pml-b">${pml(p,st.v,z)}</span></button>`).join("");bindSizes();
+   card.querySelector(".price").innerHTML=priceHTML(p,st.v,st.z)}
+  if(S&&!fromSwipe)S.go(VKEYS.indexOf(st.v))};
+ if(tk){tk.dataset.vi=VKEYS.indexOf(st.v);S=strip(tk,VKEYS.length,i=>applyV(VKEYS[i],true),()=>{location.href=pUrl(p)});tk.setAttribute("role","link");tk.title="Open the full page"}
+ card.querySelectorAll(".vt").forEach(b=>b.onclick=()=>applyV(b.dataset.v));
  const ab=card.querySelector(".add");if(ab)ab.onclick=()=>{Cart.add(p,st.v,st.z);ab.textContent="Added ✓";ab.classList.add("done");clearTimeout(ab._t);ab._t=setTimeout(()=>{ab.textContent="Add to cart";ab.classList.remove("done")},1400)};
- card.querySelectorAll(".sz").forEach(b=>b.onclick=()=>{st.z=+b.dataset.s;
+ function bindSizes(){card.querySelectorAll(".sz").forEach(b=>b.onclick=()=>{st.z=+b.dataset.s;st.zs[st.v]=st.z;
   card.querySelectorAll(".sz").forEach(x=>x.classList.toggle("on",x===b));card.querySelector(".price").innerHTML=priceHTML(p,st.v,st.z);card.querySelector(".vdesc").innerHTML=vdescHTML(st.v,st.z)})}
+ bindSizes()}
 function equalize(){const cs=[...g.querySelectorAll(".card")];
  if(cs.length&&new Set(cs.map(c=>c.offsetLeft)).size<2){cs.forEach(c=>c.style.minHeight="");return}
  cs.forEach(c=>{c.style.minHeight="";c._open=c.querySelector(".pyr")?.open;const d=c.querySelector(".pyr");if(d)d.open=false});
