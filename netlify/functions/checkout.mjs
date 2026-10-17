@@ -6,8 +6,10 @@ const BOOKING_URL = "https://calendar.app.google/9Gg9gioRktiA5eocA";
 const FREE_SHIPPING_CENTS = 8500;
 const SHIPPING = {
   pickup: { cents: 0, label: "Ottawa pickup" },
-  onqc: { cents: 1800, label: "Shipping (Ontario & Quebec)" },
-  roc: { cents: 2300, label: "Shipping (rest of Canada)" },
+  canada: { cents: 900, label: "Shipping (Canada-wide, tracked)" },
+  // carts saved before the flat rate still send these; same flat $9
+  onqc: { cents: 900, label: "Shipping (Canada-wide, tracked)" },
+  roc: { cents: 900, label: "Shipping (Canada-wide, tracked)" },
 };
 
 // Monthly spotlight: same spotlight.json the site shows, read from this deploy, so the
