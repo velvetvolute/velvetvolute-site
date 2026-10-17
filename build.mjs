@@ -111,6 +111,36 @@ ${FOOT}
 <script>
 /* Cart badge: the cart itself lives on the homepage; pages only read the same saved cart. */
 (function(){try{var s=JSON.parse(localStorage.getItem("vv-cart-v1")||"null"),n=s&&s.lines?s.lines.reduce(function(a,l){return a+(l.q||0)},0):0,b=document.getElementById("cart-count");if(b){b.textContent=n;b.hidden=!n}}catch(e){}})();
+/* vvStrip(track, N, onIdx, onTap): a photo strip moved by hand, not by native scrolling, so one swipe (hard or soft) always moves exactly one slide, and it wraps:
+   a copy of the last slide sits before the first and a copy of the first after the last; after sliding onto a copy we jump (unanimated) to the real one.
+   onIdx(i) fires when a swipe or step lands on slide i; onTap(i) fires on a tap (not a swipe) while slide i is showing. */
+function vvStrip(tr,N,onIdx,onTap){var SL=[].slice.call(tr.children),vi=0,settle,swiped=false;
+ var cL=SL[N-1].cloneNode(true),cF=SL[0].cloneNode(true);cL.setAttribute("aria-hidden","true");cF.setAttribute("aria-hidden","true");tr.insertBefore(cL,SL[0]);tr.appendChild(cF);SL=[cL].concat(SL,[cF]);
+ function place(off,anim){SL.forEach(function(s){s.style.transition=anim?"":"none";s.style.transform="translateX(calc("+(-(vi+1)*100)+"% + "+off+"px))"})}
+ function norm(){clearTimeout(settle);if(vi<0||vi>=N){vi=(vi+N)%N;place(0,false)}}
+ function cur(){return ((vi%N)+N)%N}
+ function go(at){vi=at;place(0,true);clearTimeout(settle);if(vi<0||vi>=N)settle=setTimeout(norm,380)}
+ function step(d){var ni=vi+d;if(onIdx)onIdx((ni+N)%N);go(ni)}
+ place(0,false);
+ var sx=null,sy=0,dx=0,drag=null,pid=null;
+ tr.addEventListener("pointerdown",function(e){if(e.pointerType==="mouse"&&e.button!==0)return;norm();sx=e.clientX;sy=e.clientY;dx=0;drag=null;pid=e.pointerId;try{tr.setPointerCapture(pid)}catch(x){}});
+ tr.addEventListener("pointermove",function(e){if(sx===null||e.pointerId!==pid)return;var mx=e.clientX-sx,my=e.clientY-sy;
+  if(drag===null){if(Math.hypot(mx,my)<8)return;drag=Math.abs(mx)>=Math.abs(my)*.8;if(drag)tr.classList.add("drag")}
+  if(!drag)return;dx=mx;place(dx,false);e.preventDefault()});
+ /* a quick flick may deliver only a couple of move events, so the decision is made from where the finger lifted, not just the last move */
+ function end(e){if(sx===null||e.pointerId!==pid)return;var fx=e.type==="pointercancel"?dx:e.clientX-sx,fy=e.type==="pointercancel"?0:e.clientY-sy;
+  if(drag===null&&Math.abs(fx)>=8&&Math.abs(fx)>=Math.abs(fy)*.8)drag=true;
+  if(drag){tr.classList.remove("drag");swiped=true;var th=Math.min(40,tr.clientWidth*.1);if(Math.abs(fx)>th)step(fx<0?1:-1);else place(0,true)}
+  else if(drag===null&&e.type==="pointerup"&&onTap&&!(e.target.closest&&e.target.closest("a,button")))onTap(cur());sx=null;drag=null;pid=null}
+ tr.addEventListener("pointerup",end);tr.addEventListener("pointercancel",end);
+ tr.addEventListener("lostpointercapture",function(e){if(sx!==null&&e.pointerId===pid)end({type:"pointercancel",pointerId:pid})});
+ tr.addEventListener("dragstart",function(e){e.preventDefault()});
+ /* a swipe that started on a link must not also follow the link */
+ tr.addEventListener("click",function(e){if(swiped){e.preventDefault();e.stopPropagation()}swiped=false},true);
+ /* trackpad / horizontal mouse wheel: one step per gesture */
+ var wacc=0,wt=0,wdone=false;
+ tr.addEventListener("wheel",function(e){if(Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;e.preventDefault();var now=Date.now();if(now-wt>200){wacc=0;wdone=false}wt=now;wacc+=e.deltaX;if(!wdone&&Math.abs(wacc)>40){wdone=true;step(wacc>0?1:-1)}},{passive:false});
+ return {go:function(i){if(i!==cur())go(i)},step:step,index:cur}}
 ${extraScript}
 </script>
 </body>
@@ -183,35 +213,15 @@ function draw(){$("sizes").innerHTML=V[v].sizes.map(function(s){return '<button 
  $("vdesc").textContent=VD[v];
  document.querySelectorAll(".vt,#ppcar .dots button").forEach(function(b){var on=b.dataset.v===v;b.classList.toggle("on",on);b.setAttribute(b.classList.contains("vt")?"aria-pressed":"aria-selected",on)});
  document.querySelectorAll(".sz").forEach(function(b){b.onclick=function(){z=+b.dataset.s;ZS[v]=z;draw()}})}
-/* the photo is a swipeable strip: classic, luxury, roll-on. Swiping it changes the vial type; the vial tabs and dots scroll it. */
-var KEYS=Object.keys(V),N=KEYS.length,tr=document.querySelector("#ppcar .track"),SL=[].slice.call(tr.children),ZS={classic:2},vi=0,settle;
-/* The strip is moved by hand, not by native scrolling, so one swipe (hard or soft) always moves exactly one slide, and it wraps:
-   a copy of the last slide sits before the first and a copy of the first after the last; after sliding onto a copy we jump (unanimated) to the real one. */
-var cL=SL[N-1].cloneNode(true),cF=SL[0].cloneNode(true);cL.setAttribute("aria-hidden","true");cF.setAttribute("aria-hidden","true");tr.insertBefore(cL,SL[0]);tr.appendChild(cF);SL=[cL].concat(SL,[cF]);
-function place(off,anim){SL.forEach(function(s){s.style.transition=anim?"":"none";s.style.transform="translateX(calc("+(-(vi+1)*100)+"% + "+off+"px))"})}
-function norm(){clearTimeout(settle);if(vi<0||vi>=N){vi=(vi+N)%N;place(0,false)}}
+/* the photo is a swipeable strip: classic, luxury, roll-on. Swiping it changes the vial type; the vial tabs, dots and arrows step it. */
+var KEYS=Object.keys(V),tr=document.querySelector("#ppcar .track"),ZS={classic:2};
 /* size follows you between vial types: a size you tapped is remembered for that type; otherwise the current size carries over when the new type offers it, else its smallest */
-function setV(nv,at){if(nv!==v){v=nv;var S=V[v].sizes;z=S.indexOf(ZS[v])>=0?ZS[v]:S.indexOf(z)>=0?z:S[0];draw()}vi=at===undefined?KEYS.indexOf(v):at;place(0,true);clearTimeout(settle);if(vi<0||vi>=N)settle=setTimeout(norm,380)}
-function step(d){var ni=vi+d;setV(KEYS[(ni+N)%N],ni)}
-var sx=null,sy=0,dx=0,drag=null,pid=null;
-tr.addEventListener("pointerdown",function(e){if(e.pointerType==="mouse"&&e.button!==0)return;norm();sx=e.clientX;sy=e.clientY;dx=0;drag=null;pid=e.pointerId;try{tr.setPointerCapture(pid)}catch(x){}});
-tr.addEventListener("pointermove",function(e){if(sx===null||e.pointerId!==pid)return;var mx=e.clientX-sx,my=e.clientY-sy;
- if(drag===null){if(Math.hypot(mx,my)<8)return;drag=Math.abs(mx)>=Math.abs(my)*.8;if(drag)tr.classList.add("drag")}
- if(!drag)return;dx=mx;place(dx,false);e.preventDefault()});
-/* a quick flick may deliver only a couple of move events, so the decision is made from where the finger lifted, not just the last move */
-function end(e){if(sx===null||e.pointerId!==pid)return;var fx=e.type==="pointercancel"?dx:e.clientX-sx,fy=e.type==="pointercancel"?0:e.clientY-sy;
- if(drag===null&&Math.abs(fx)>=8&&Math.abs(fx)>=Math.abs(fy)*.8)drag=true;
- if(drag){tr.classList.remove("drag");var th=Math.min(40,tr.clientWidth*.1);if(Math.abs(fx)>th)step(fx<0?1:-1);else place(0,true)}sx=null;drag=null;pid=null}
-tr.addEventListener("pointerup",end);tr.addEventListener("pointercancel",end);
-tr.addEventListener("lostpointercapture",function(e){if(sx!==null&&e.pointerId===pid)end({type:"pointercancel",pointerId:pid})});
-tr.addEventListener("dragstart",function(e){e.preventDefault()});
-/* trackpad / horizontal mouse wheel: one step per gesture */
-var wacc=0,wt=0,wdone=false;
-tr.addEventListener("wheel",function(e){if(Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;e.preventDefault();var now=Date.now();if(now-wt>200){wacc=0;wdone=false}wt=now;wacc+=e.deltaX;if(!wdone&&Math.abs(wacc)>40){wdone=true;step(wacc>0?1:-1)}},{passive:false});
+function setV(nv,fromSwipe){if(nv!==v){v=nv;var S0=V[v].sizes;z=S0.indexOf(ZS[v])>=0?ZS[v]:S0.indexOf(z)>=0?z:S0[0];draw()}if(!fromSwipe)S.go(KEYS.indexOf(v))}
+var S=vvStrip(tr,KEYS.length,function(i){setV(KEYS[i],true)},null);
 document.querySelectorAll(".vt,#ppcar .dots button").forEach(function(b){b.onclick=function(){setV(b.dataset.v)}});
-document.querySelector("#ppcar .prev").onclick=function(){step(-1)};
-document.querySelector("#ppcar .next").onclick=function(){step(1)};
-tr.tabIndex=0;tr.addEventListener("keydown",function(e){if(e.key==="ArrowLeft"){step(-1);e.preventDefault()}if(e.key==="ArrowRight"){step(1);e.preventDefault()}});
+document.querySelector("#ppcar .prev").onclick=function(){S.step(-1)};
+document.querySelector("#ppcar .next").onclick=function(){S.step(1)};
+tr.tabIndex=0;tr.addEventListener("keydown",function(e){if(e.key==="ArrowLeft"){S.step(-1);e.preventDefault()}if(e.key==="ArrowRight"){S.step(1);e.preventDefault()}});
 var add=$("add");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.parse(localStorage.getItem(K)||"null")||{lines:[],ship:null,promo:null};s.lines=s.lines||[];var l=s.lines.find(function(x){return x.sq===P.sq&&x.v===v&&x.z===z});if(l)l.q=Math.min(10,l.q+1);else s.lines.push({sq:P.sq,v:v,z:z,q:1});localStorage.setItem(K,JSON.stringify(s));var n=s.lines.reduce(function(a,l){return a+l.q},0),c=$("cart-count");c.textContent=n;c.hidden=false}catch(e){}
  add.textContent="Added ✓";add.classList.add("done");var t=document.createElement("div");t.className="cart-toast on";t.innerHTML='Added '+P.name.split(" Eau")[0].split(" Extrait")[0]+' · '+z+' ml '+V[v].label.toLowerCase()+' <a href="/#cart-page">View cart</a>';document.body.appendChild(t);setTimeout(function(){add.textContent="Add to cart";add.classList.remove("done")},1400);setTimeout(function(){t.remove()},3200)};
 draw()})();`);
@@ -264,7 +274,8 @@ function collectionPage(b) {
  <p class="lede">${esc(b.blurb)}</p></div>
  </div>
  <div class="coll-right">
- <div class="carousel" id="car"><div class="track">${items.map((p, i) => `<figure class="slide" id="s${i}"><a href="${pUrl(p)}"><img src="/${p.img}" width="720" height="720" alt="${attr(p.brand + " " + p.name)} bottle" loading="${i ? "lazy" : "eager"}" decoding="async"></a><figcaption><b>${esc(shortName(p))}</b><span>${esc(p.brand)} · ${inStock(p) ? `from ${money(low(p))}` : esc(p.limited || "arriving soon")}</span><a class="more" href="${pUrl(p)}">Full page →</a></figcaption></figure>`).join("")}</div>
+ <div class="carousel" id="car"><div class="track" role="link" title="Open the full page" aria-label="Scents in this collection, swipe to change">${items.map((p, i) => `<figure class="slide" id="s${i}" data-href="${pUrl(p)}"><img src="/${p.img}" width="720" height="720" alt="${attr(p.brand + " " + p.name)} bottle" loading="${i ? "lazy" : "eager"}" decoding="async"><figcaption><b>${esc(shortName(p))}</b><span>${esc(p.brand)} · ${inStock(p) ? `from ${money(low(p))}` : esc(p.limited || "arriving soon")}</span><a class="more" href="${pUrl(p)}">Full page →</a></figcaption></figure>`).join("")}</div>
+  <button type="button" class="car-btn prev" aria-label="Previous scent">‹</button><button type="button" class="car-btn next" aria-label="Next scent">›</button>
   <div class="dots" role="tablist" aria-label="Scents in this collection">${items.map((p, i) => `<button type="button" role="tab" data-i="${i}" aria-label="${attr(shortName(p))}"${i ? "" : ' aria-selected="true" class="on"'}></button>`).join("")}</div>
  </div>
  </div>
@@ -281,11 +292,12 @@ function draw(){$("cprice").innerHTML='<s class="was">$'+B.base[z]+'</s>$'+B.pri
 document.querySelectorAll(".coll-buy .sz").forEach(function(b){b.onclick=function(){z=+b.dataset.z;draw()}});
 var add=$("cadd");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.parse(localStorage.getItem(K)||"null")||{lines:[],ship:null,promo:null};s.lines=s.lines||[];var l=s.lines.find(function(x){return x.b===B.id&&x.z===z});if(l)l.q=Math.min(10,l.q+1);else s.lines.push({b:B.id,z:z,q:1});localStorage.setItem(K,JSON.stringify(s));var n=s.lines.reduce(function(a,l){return a+l.q},0),c=$("cart-count");c.textContent=n;c.hidden=false}catch(e){}
  add.textContent="Added ✓";add.classList.add("done");var t=document.createElement("div");t.className="cart-toast on";t.innerHTML='Added '+B.name+' · '+z+' ml each <a href="/#cart-page">View cart</a>';document.body.appendChild(t);setTimeout(function(){add.textContent="Add the set";add.classList.remove("done")},1400);setTimeout(function(){t.remove()},3200)};
-/* carousel dots follow the scroll position; tapping a dot scrolls to that slide */
-var tr=document.querySelector("#car .track"),dots=document.querySelectorAll("#car .dots button");
-function sync(){var i=Math.round(tr.scrollLeft/tr.clientWidth);dots.forEach(function(d,k){d.classList.toggle("on",k===i);d.setAttribute("aria-selected",k===i)})}
-tr.addEventListener("scroll",function(){clearTimeout(tr._t);tr._t=setTimeout(sync,80)},{passive:true});
-dots.forEach(function(d){d.onclick=function(){tr.scrollTo({left:tr.clientWidth*(+d.dataset.i),behavior:"smooth"})}});
+/* the photos are a swipeable strip: one swipe moves one slide, it wraps around, the dots and arrows step it, a tap opens that scent's page */
+var tr=document.querySelector("#car .track"),dots=document.querySelectorAll("#car .dots button"),HREF=[].slice.call(tr.children).map(function(f){return f.dataset.href});
+var S=vvStrip(tr,HREF.length,function(i){dots.forEach(function(d,k){d.classList.toggle("on",k===i);d.setAttribute("aria-selected",k===i)})},function(i){location.href=HREF[i]});
+dots.forEach(function(d){d.onclick=function(){S.go(+d.dataset.i)}});
+document.querySelector("#car .prev").onclick=function(){S.step(-1)};document.querySelector("#car .next").onclick=function(){S.step(1)};
+tr.tabIndex=0;tr.addEventListener("keydown",function(e){if(e.key==="ArrowLeft"){S.step(-1);e.preventDefault()}if(e.key==="ArrowRight"){S.step(1);e.preventDefault()}});
 draw()})();`);
 }
 function collectionsIndex() {

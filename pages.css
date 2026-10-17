@@ -21,12 +21,13 @@ h1{font:500 clamp(30px,4.2vw,46px)/1.08 var(--serif);letter-spacing:.01em;color:
 .pp-photo{order:1}.pp-head{order:2}.pp-buy{order:3}.pp-story{order:4}
 @media(min-width:900px){.pp{grid-template-columns:minmax(0,46%) minmax(0,1fr);column-gap:48px;padding-top:28px;align-items:start}.pp-left,.pp-right{display:block}.pp-left{position:sticky;top:90px}.pp-buy{margin-top:22px}}
 /* product photo: a swipeable strip of classic / luxury / roll-on. Same photo repeats when a vial type has no shot of its own. */
-.pp-photo.carousel{max-width:none;margin:0;position:relative}
-.pp-photo .track{outline:none;overflow:hidden;scroll-snap-type:none;touch-action:pan-y pinch-zoom;cursor:grab;user-select:none;-webkit-user-select:none}
-.pp-photo .track.drag{cursor:grabbing}
-.pp-photo .slide{scroll-snap-align:none;transition:transform .34s cubic-bezier(.22,.7,.2,1);will-change:transform}
-.pp-photo .slide img{pointer-events:none;-webkit-user-drag:none}
-.pp-photo .track:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.pp-photo.carousel{max-width:none;margin:0}
+.carousel{position:relative}
+.pp-photo .track,#car .track{outline:none;overflow:hidden;scroll-snap-type:none;touch-action:pan-y pinch-zoom;cursor:grab;user-select:none;-webkit-user-select:none}
+.pp-photo .track.drag,#car .track.drag{cursor:grabbing}
+.pp-photo .slide,#car .slide{scroll-snap-align:none;transition:transform .34s cubic-bezier(.22,.7,.2,1);will-change:transform}
+.pp-photo .slide img,#car .slide img{pointer-events:none;-webkit-user-drag:none}
+.pp-photo .track:focus-visible,#car .track:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .pp-photo .slide figcaption{padding:10px 14px;justify-content:center}
 .pp-photo .slide figcaption b{font:500 13px var(--sans);letter-spacing:.08em;text-transform:none;color:#e8d3b4}
 .car-btn{position:absolute;top:calc(50% - 10px);transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(44,6,16,.75);color:#e8d3b4;font:300 26px/1 var(--serif);cursor:pointer;display:none;align-items:center;justify-content:center;padding:0 0 3px;opacity:.75;transition:opacity .15s}
