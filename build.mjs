@@ -224,15 +224,21 @@ function collectionPage(b) {
   const ld = [crumbLD([{ name: "Shop", href: "/" }, { name: "Special Collections", href: "/collections/" }, { name: b.name }]), { "@context": "https://schema.org", "@type": "Product", name: b.name, description: desc, url: SITE + url, image: items.map((p) => `${SITE}/${p.img}`), brand: { "@type": "Brand", name: b.house }, offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: bPrice(b, BUNDLES.sizes[0]), highPrice: bPrice(b, BUNDLES.sizes[BUNDLES.sizes.length - 1]), offerCount: BUNDLES.sizes.length, availability: ready ? "https://schema.org/InStock" : "https://schema.org/PreOrder" } }];
   return head({ title, desc, url, image: items[0]?.img, jsonld: ld, current: "collections" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Special Collections", href: "/collections/" }, { name: b.name }]) + `
 <section class="coll wrap">
- <div class="eyebrow">${esc(b.house)} · ${items.length} scents · ${BUNDLES.pct}% off the set</div><h1>${esc(b.name)}</h1>
- <p class="lede">${esc(b.blurb)}</p>
+ <div class="coll-left">
+ <div class="coll-head"><div class="eyebrow">${esc(b.house)} · ${items.length} scents · ${BUNDLES.pct}% off the set</div><h1>${esc(b.name)}</h1>
+ <p class="lede">${esc(b.blurb)}</p></div>
+ </div>
+ <div class="coll-right">
  <div class="carousel" id="car"><div class="track">${items.map((p, i) => `<figure class="slide" id="s${i}"><a href="${pUrl(p)}"><img src="/${p.img}" width="720" height="720" alt="${attr(p.brand + " " + p.name)} bottle" loading="${i ? "lazy" : "eager"}" decoding="async"></a><figcaption><b>${esc(shortName(p))}</b><span>${esc(p.brand)} · ${inStock(p) ? `from ${money(low(p))}` : esc(p.limited || "arriving soon")}</span><a class="more" href="${pUrl(p)}">Full page →</a></figcaption></figure>`).join("")}</div>
   <div class="dots" role="tablist" aria-label="Scents in this collection">${items.map((p, i) => `<button type="button" role="tab" data-i="${i}" aria-label="${attr(shortName(p))}"${i ? "" : ' aria-selected="true" class="on"'}></button>`).join("")}</div>
  </div>
+ </div>
+ <div class="coll-left coll-left-2">
  <div class="coll-buy">
   <div class="sizes" role="group" aria-label="Vial size">${BUNDLES.sizes.map((z, k) => `<button type="button" class="sz${k ? "" : " on"}" data-z="${z}" aria-pressed="${!k}">${z} ml each</button>`).join("")}</div>
   <div class="buyrow"><div class="price" id="cprice"></div>${ready ? `<button type="button" class="order add" id="cadd">Add the set</button>` : `<span class="soon-tag">Available once every scent in the set is in stock</span>`}</div>
   <ul class="coll-list">${items.map((p) => `<li><a href="${pUrl(p)}">${esc(p.brand)} ${esc(p.name)}</a>${inStock(p) ? "" : ` <em>· ${esc(p.limited || "arriving soon")}</em>`}</li>`).join("")}</ul>
+ </div>
  </div>
 </section>` + tail(`
 (function(){var B=${JSON.stringify({ id: b.id, name: b.name, base: Object.fromEntries(BUNDLES.sizes.map((z) => [z, bBase(b, z)])), price: Object.fromEntries(BUNDLES.sizes.map((z) => [z, bPrice(b, z)])), n: items.length })},z=${BUNDLES.sizes[0]},$=function(i){return document.getElementById(i)};
