@@ -16,9 +16,9 @@ for b in B["bundles"]:
     for f in srcs:
         im = Image.open(f).convert("RGB")
         if im.size != (1000, 1000): im = im.resize((1000, 1000))
-        crops.append(im.crop((60, 120, 540, 940)))          # bottle + its backdrop; table at y≈710 of 820
+        crops.append(im.crop((60, 0, 540, 940)))            # bottle + the full backdrop above it; table at y≈830 of 940
     stride = 0.82
-    w = int(S / (1 + (n - 1) * stride)); scale = w / 480; hgt = int(820 * scale); base = int(710 * scale)
+    w = int(S / (1 + (n - 1) * stride)); scale = w / 480; hgt = int(940 * scale); base = int(830 * scale)
     top = TABLE_Y - base
     canvas = Image.new("RGB", (S, S), (74, 14, 30))
     # feathered side edges so neighbouring backdrops melt into each other
