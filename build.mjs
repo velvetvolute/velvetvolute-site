@@ -4,7 +4,7 @@
 // extracted so every page shares one source of styling) and /sitemap.xml.
 // All content comes from index.html's data (PRODUCTS, MOOD, SHERPA, FIT, HER, TAGS), bundles.json and
 // content/houses.json, so stock, prices and copy stay in sync with the shop without a second edit.
-import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import vm from "node:vm";
 
@@ -117,6 +117,7 @@ ${extraScript}
 </html>`;
 
 /* ---------- tiles ---------- */
+const collArt = (b) => { const f = readdirSync(join(ROOT, "img")).find((n) => n.startsWith(`coll-${b.id}-`) && n.endsWith(".jpg")); return f ? "img/" + f : null; };
 const houseArt = (brand) => ["svg", "png"].map((e) => `content/houses/${hSlug(brand)}.${e}`).find((f) => existsSync(join(ROOT, f)));
 const houseTile = (brand, meta, count, soon) => { const art = houseArt(brand); return `<a class="htile${soon ? " soon" : ""}" href="${hUrl(brand)}">${art ? `<img class="art" src="/${art}" alt="${attr(brand)}" width="200" height="80" loading="lazy">` : `${meta.pre ? `<span class="pre">${esc(meta.pre)}</span>` : ""}<span class="n${(meta.mark || brand).length > 10 ? " two" : ""}">${esc(meta.mark || brand)}</span>`}<span class="rule"></span><span class="o">${esc(meta.city || "")}</span><span class="cnt">${soon ? "arriving soon" : `${count} scent${count === 1 ? "" : "s"}`}</span></a>`; };
 const scentTile = (p) => `<a class="stile" href="${pUrl(p)}"><span class="ph"><img src="/${p.img}" width="720" height="720" alt="${attr(p.brand + " " + p.name)} bottle" loading="lazy" decoding="async"></span><span class="t"><span class="b">${esc(p.brand)}</span><span class="nm">${esc(p.name)}</span><span class="pr">${inStock(p) ? `From ${money(low(p))}` : `<em>${esc(p.limited || "Arriving soon")}</em>`}</span></span></a>`;
@@ -222,7 +223,7 @@ function collectionPage(b) {
   const title = `${b.name} | ${b.house} decant set | Velvet Volute`;
   const desc = `${b.blurb} ${items.length} scents as 2 ml or 5 ml decants, ${BUNDLES.pct}% off the set.`;
   const ld = [crumbLD([{ name: "Shop", href: "/" }, { name: "Special Collections", href: "/collections/" }, { name: b.name }]), { "@context": "https://schema.org", "@type": "Product", name: b.name, description: desc, url: SITE + url, image: items.map((p) => `${SITE}/${p.img}`), brand: { "@type": "Brand", name: b.house }, offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: bPrice(b, BUNDLES.sizes[0]), highPrice: bPrice(b, BUNDLES.sizes[BUNDLES.sizes.length - 1]), offerCount: BUNDLES.sizes.length, availability: ready ? "https://schema.org/InStock" : "https://schema.org/PreOrder" } }];
-  return head({ title, desc, url, image: items[0]?.img, jsonld: ld, current: "collections" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Special Collections", href: "/collections/" }, { name: b.name }]) + `
+  return head({ title, desc, url, image: collArt(b) || items[0]?.img, jsonld: ld, current: "collections" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Special Collections", href: "/collections/" }, { name: b.name }]) + `
 <section class="coll wrap">
  <div class="coll-left">
  <div class="coll-head"><div class="eyebrow">${esc(b.house)} · ${items.length} scents · ${BUNDLES.pct}% off the set</div><h1>${esc(b.name)}</h1>
@@ -260,7 +261,7 @@ function collectionsIndex() {
 <section class="colls wrap">
  <div class="eyebrow">Special Collections</div><h1>Curated sets, ${BUNDLES.pct}% off</h1>
  <p class="lede">Several scents from one house or one idea, poured as a matching set. Try the whole story, then go big on the one you love.</p>
- <div class="ctiles">${BUNDLES.bundles.map((b) => { const items = bItems(b); return `<a class="ctile" href="${cUrl(b)}"><span class="ph">${items.slice(0, 4).map((p) => `<img src="/${p.img}" width="360" height="360" alt="" loading="lazy">`).join("")}</span><span class="t"><span class="b">${esc(b.house)} · ${items.length} scents</span><span class="nm">${esc(b.name)}</span><span class="pr">${bReady(b) ? `Set from ${money(bPrice(b, BUNDLES.sizes[0]))}` : "<em>Arriving soon</em>"}</span></span></a>`; }).join("")}</div>
+ <div class="ctiles">${BUNDLES.bundles.map((b) => { const items = bItems(b); return `<a class="ctile" href="${cUrl(b)}"><span class="ph${collArt(b) ? " one" : ""}">${collArt(b) ? `<img src="/${collArt(b)}" width="1200" height="1200" alt="${attr(b.name)}: ${attr(items.map(shortName).join(", "))}" loading="lazy">` : items.slice(0, 4).map((p) => `<img src="/${p.img}" width="360" height="360" alt="" loading="lazy">`).join("")}</span><span class="t"><span class="b">${esc(b.house)} · ${items.length} scents</span><span class="nm">${esc(b.name)}</span><span class="pr">${bReady(b) ? `Set from ${money(bPrice(b, BUNDLES.sizes[0]))}` : "<em>Arriving soon</em>"}</span></span></a>`; }).join("")}</div>
 </section>` + tail();
 }
 

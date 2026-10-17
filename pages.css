@@ -112,6 +112,8 @@ html[data-tiles="camel"] .htile .rule{background:#330a14}
 .ctile{display:flex;flex-direction:column;text-decoration:none;color:#330a14;background:#a07b52;border:1px solid #6e4a28;border-radius:4px;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.28);transition:transform .2s}
 .ctile:hover{transform:translateY(-3px)}
 .ctile .ph{display:grid;grid-template-columns:1fr 1fr;background:#2c0610}
+.ctile .ph.one{display:block}
+.ctile .ph.one img{aspect-ratio:1/1;width:100%;height:auto;object-fit:cover}
 .ctile .ph img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover}
 .ctile .t{display:flex;flex-direction:column;gap:3px;padding:14px 15px 15px}
 .ctile .b{font:600 10.5px var(--sans);letter-spacing:.2em;text-transform:uppercase;color:#4a1a1f}
