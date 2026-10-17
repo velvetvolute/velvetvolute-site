@@ -159,7 +159,7 @@ function productPage(p) {
  <div class="pp-story">
   ${p.mood ? `<h2>The story</h2><p class="mood">${esc(p.mood)}</p>` : ""}
   ${sh.when ? `<h2>When to wear it</h2><p>${esc(sh.when)}</p>` : ""}
-  ${p.herWhy ? `<h2>Why it works for her</h2><p>${esc(p.herWhy)}</p>` : ""}
+  ${p.herWhy ? `<h2>Why it <em>also</em> works for her</h2><p>${esc(p.herWhy)}</p>` : ""}
   <h2>Notes</h2>${pyramid}
   ${meta.about ? `<h2>About ${esc(p.brand)}</h2><p>${esc(meta.about.split(/(?<=\.)\s/)[0])} <a href="${hUrl(p.brand)}">More about the house →</a></p>` : ""}
  </div>

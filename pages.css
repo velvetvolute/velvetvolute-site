@@ -36,6 +36,7 @@ h1{font:500 clamp(30px,4.2vw,46px)/1.08 var(--serif);letter-spacing:.01em;color:
 .fine{margin:14px 0 0;font:300 12.5px/1.5 var(--sans);color:#451019}
 .pp-story{margin-top:8px;max-width:62ch}
 .pp-story h2:first-child{margin-top:20px}
+.pp-story h2 em{font-style:italic;text-transform:none;letter-spacing:.12em;font-family:var(--serif);font-size:15px}
 .pp-story h2{text-align:left;font:500 13px var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin:30px 0 8px}
 .pp-story p{font:300 16.5px/1.7 var(--sans);color:#e8d3b4;margin:0}
 .pp-story p.mood{font:400 18px/1.65 var(--serif)}
