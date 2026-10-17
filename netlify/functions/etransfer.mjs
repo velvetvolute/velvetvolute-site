@@ -83,8 +83,10 @@ function emailHTML(s, c, ship) {
    <p style="margin:0 0 18px">Order number <b style="letter-spacing:.06em">${esc(s.no)}</b></p>
    <div style="border:1px solid #b5946a;padding:14px 16px;margin:0 0 20px;background:#fff">
     <div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin-bottom:8px">How to pay</div>
-    <p style="margin:0 0 6px">Send an Interac e-Transfer of <b>${money(s.total)}</b> to <b>${esc(PAY_TO)}</b></p>
-    <p style="margin:0">In the e-Transfer message, write your order number: <b>${esc(s.no)}</b></p>
+    <p style="margin:0 0 8px"><b>1.</b> Send an Interac e-Transfer of <b>${money(s.total)}</b> to <b>${esc(PAY_TO)}</b></p>
+    <p style="margin:0 0 8px"><b>2.</b> In the e-Transfer <b>message / notes</b> box, enter your order ID:</p>
+    <p style="margin:0 0 8px;text-align:center"><span style="display:inline-block;padding:8px 16px;border:1px dashed #6e1a31;font-size:22px;letter-spacing:.08em;font-weight:bold">${esc(s.no)}</span></p>
+    <p style="margin:0;font-size:13px;color:#8a6d4b">This is how I match your payment to your order, so please don't skip it.</p>
    </div>
    <table style="width:100%;border-collapse:collapse;font-size:15px">${rows}${charges}${s.method === "ship" && !s.charges.length ? `<tr><td style="padding:6px 0">Shipping</td><td style="padding:6px 0;text-align:right">Free</td></tr>` : ""}${s.discount ? `<tr><td style="padding:6px 0">Discounts</td><td style="padding:6px 0;text-align:right">−${money(s.discount)}</td></tr>` : ""}${s.tax ? `<tr><td style="padding:6px 0">Tax</td><td style="padding:6px 0;text-align:right">${money(s.tax)}</td></tr>` : ""}<tr><td style="padding:10px 0;border-top:1px solid #b5946a;font-weight:bold">Total to send</td><td style="padding:10px 0;border-top:1px solid #b5946a;text-align:right;font-weight:bold">${money(s.total)}</td></tr></table>
    <h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:22px 0 6px">What happens next</h3>
@@ -101,7 +103,7 @@ async function sendEmail(s, c, ship) {
   if (!key) throw new Error("RESEND_API_KEY missing");
   const text = [
     `Thank you for your order. Order number ${s.no}.`,
-    `To pay: send an Interac e-Transfer of ${money(s.total)} to ${PAY_TO} and write ${s.no} in the message.`,
+    `To pay: 1) Send an Interac e-Transfer of ${money(s.total)} to ${PAY_TO}. 2) In the e-Transfer message / notes, enter your order ID ${s.no} so I can match your payment to your order.`,
     ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""} ${money(i.total)}`),
     `Total to send ${money(s.total)}`,
     "I'll email you as soon as your e-Transfer arrives.",
