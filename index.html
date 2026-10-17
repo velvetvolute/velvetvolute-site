@@ -641,6 +641,11 @@ footer p{max-width:none;margin:0 0 8px}
 .cart-foot{flex:none;padding:14px 22px 0}
 .cl{grid-template-columns:56px minmax(0,1fr) auto;grid-template-rows:auto auto;gap:2px 14px;padding:12px 0;align-items:start}
 .cl-img{grid-row:1/3;width:56px;height:56px;border-radius:4px;object-fit:cover;background:rgba(58,10,23,.12)}
+.cl-pic{grid-row:1/3;display:block;width:56px;height:56px;border-radius:4px;overflow:hidden}
+.cl-pic .cl-img{display:block}
+.cl-pic:hover .cl-img{opacity:.85}
+.cl-link{color:inherit;text-decoration:none}
+.cl-link:hover,.cl-link:focus-visible{text-decoration:underline;text-underline-offset:3px}
 .cl-name{grid-row:1/3;font-size:15px}
 .cl-name small{font-size:13px}
 .cl-qty{margin-top:8px}
@@ -696,7 +701,7 @@ footer p{max-width:none;margin:0 0 8px}
 .cart-ov.full .cart-body{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:48px;align-content:start;width:100%;max-width:1100px;margin:0 auto;padding:8px 24px 48px}
 .cart-ov.full .cart-lines{padding:0}
 .cart-ov.full .cl{grid-template-columns:96px minmax(0,1fr) auto;gap:4px 20px;padding:18px 0}
-.cart-ov.full .cl-img{width:96px;height:96px}
+.cart-ov.full .cl-img,.cart-ov.full .cl-pic{width:96px;height:96px}
 .cart-ov.full .cl-name{font-size:17px}
 .cart-ov.full .cart-foot{position:sticky;top:0;align-self:start;border:0;border-radius:6px;background:var(--bar-bg);padding:22px 22px 0}
 .cart-ov.full .cart-pay{position:static;margin:6px -22px 0;background:transparent;box-shadow:none;padding-bottom:22px}
@@ -705,7 +710,7 @@ footer p{max-width:none;margin:0 0 8px}
   .cart-ov.full .cart-foot{position:static;border-radius:0;margin:0 -24px;padding:18px 24px 0}
   .cart-ov.full .cart-pay{position:sticky;bottom:0;margin:6px -24px 0;padding:8px 24px calc(16px + env(safe-area-inset-bottom,0px));background:var(--bar-bg);box-shadow:0 -10px 16px -14px rgba(42,6,16,.45)}
   .cart-ov.full .cl{grid-template-columns:72px minmax(0,1fr) auto}
-  .cart-ov.full .cl-img{width:72px;height:72px}
+  .cart-ov.full .cl-img,.cart-ov.full .cl-pic{width:72px;height:72px}
 }
 @media (prefers-reduced-motion:reduce){.x-btn,.x-tlink{transition:none}}
 @media (max-width:1024px){
@@ -2093,12 +2098,14 @@ var Cart=(function(){
   foot.hidden=false;
   box.innerHTML=lines.map(function(l,i){
    if(l.b){var b=bun(l.b);if(!b)return "";var ps=bItems(b),ub=bPrice(b,l.z),im=ps[0]&&ps[0].img;
-    return '<div class="cl">'+(im?'<img class="cl-img" src="'+im+'" width="120" height="120" alt="" loading="lazy">':'<span class="cl-img"></span>')+'<div class="cl-name">'+b.name+'<small>'+ps.length+' × '+l.z+' ml classic · '+money(ub)+' per set</small><span class="cl-sub">'+ps.map(shortName).join(", ")+'</span>'+
+    var bu="/collections/"+encodeURIComponent(b.id)+"/";
+    return '<div class="cl"><a class="cl-pic" href="'+bu+'" aria-label="View '+b.name+'" tabindex="-1">'+(im?'<img class="cl-img" src="'+im+'" width="120" height="120" alt="" loading="lazy">':'<span class="cl-img"></span>')+'</a><div class="cl-name"><a class="cl-link" href="'+bu+'">'+b.name+'</a><small>'+ps.length+' × '+l.z+' ml classic · '+money(ub)+' per set</small><span class="cl-sub">'+ps.map(shortName).join(", ")+'</span>'+
     '<div class="cl-qty"><button type="button" data-i="'+i+'" data-d="-1" aria-label="One fewer">−</button><span>'+l.q+'</span><button type="button" data-i="'+i+'" data-d="1" aria-label="One more">+</button></div></div>'+
     '<div class="cl-price">'+money(ub*l.q)+'</div><button type="button" class="cl-rm" data-rm="'+i+'">Remove</button></div>'}
    var p=find(l.sq),u=priceOf(p,l.v,l.z);
    var img=l.v==="luxe"&&p.imgL?p.imgL:l.v==="roll"&&p.imgR?p.imgR:p.img;
-   return '<div class="cl">'+(img?'<img class="cl-img" src="'+img+'" width="120" height="120" alt="" loading="lazy">':'<span class="cl-img"></span>')+'<div class="cl-name">'+p.brand+' '+p.name+'<small>'+VN[l.v]+' · '+l.z+' ml · '+money(u)+' each</small>'+
+   var pu=pUrl(p);
+   return '<div class="cl"><a class="cl-pic" href="'+pu+'" aria-label="View '+p.brand+' '+p.name+'" tabindex="-1">'+(img?'<img class="cl-img" src="'+img+'" width="120" height="120" alt="" loading="lazy">':'<span class="cl-img"></span>')+'</a><div class="cl-name"><a class="cl-link" href="'+pu+'">'+p.brand+' '+p.name+'</a><small>'+VN[l.v]+' · '+l.z+' ml · '+money(u)+' each</small>'+
    '<div class="cl-qty"><button type="button" data-i="'+i+'" data-d="-1" aria-label="One fewer">−</button><span>'+l.q+'</span><button type="button" data-i="'+i+'" data-d="1" aria-label="One more">+</button></div></div>'+
    '<div class="cl-price">'+money(u*l.q)+'</div><button type="button" class="cl-rm" data-rm="'+i+'">Remove</button></div>'}).join("");
   box.querySelectorAll("[data-d]").forEach(function(b){b.onclick=function(){var l=lines[+b.dataset.i];l.q=Math.max(1,Math.min(10,l.q+(+b.dataset.d)));save();draw();badge()}});
