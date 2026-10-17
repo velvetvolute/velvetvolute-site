@@ -110,6 +110,9 @@ ${FOOT}
 <a class="sh-fab" href="/#quiz" aria-label="Ask the Scent Sherpa" title="Ask the Scent Sherpa"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="16" r="12.5"/><path d="M16 5.5v2.2M16 24.3v2.2M5.5 16h2.2M24.3 16h2.2"/><path d="M19.8 12.2l-2.2 5.4-5.4 2.2 2.2-5.4z" fill="currentColor" stroke="none"/></svg><span class="sh-lbl">Ask the Scent Sherpa</span></a>
 <script>
 /* Cart badge: the cart itself lives on the homepage; pages only read the same saved cart. */
+/* Scent Sherpa pill: shrinks to the compass while scrolling down, grows back on scroll-up or near the top (same as the static pages). */
+(function(){var fab=document.querySelector(".sh-fab");if(!fab)return;var lastY=scrollY;function pill(){var y=scrollY;if(y<160)fab.classList.remove("compact");else if(y>lastY+6)fab.classList.add("compact");else if(y<lastY-6)fab.classList.remove("compact");lastY=y}
+ addEventListener("scroll",pill,{passive:true});addEventListener("pageshow",function(){lastY=scrollY;fab.classList.toggle("compact",scrollY>320)});pill()})();
 (function(){try{var s=JSON.parse(localStorage.getItem("vv-cart-v1")||"null"),n=s&&s.lines?s.lines.reduce(function(a,l){return a+(l.q||0)},0):0,b=document.getElementById("cart-count");if(b){b.textContent=n;b.hidden=!n}}catch(e){}})();
 /* vvStrip(track, N, onIdx, onTap): a photo strip moved by hand, not by native scrolling, so one swipe (hard or soft) always moves exactly one slide, and it wraps:
    a copy of the last slide sits before the first and a copy of the first after the last; after sliding onto a copy we jump (unanimated) to the real one.
