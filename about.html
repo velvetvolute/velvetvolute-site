@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_CA">
 <script>document.documentElement.setAttribute("data-palette","camel-m")</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;--sans:'Jost',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
@@ -133,7 +133,8 @@ h2,.about h1{font-family:var(--serif);font-weight:500;font-size:clamp(32px,5vw,4
 footer{background:var(--bar-bg);color:var(--foot,#b9ae9a);padding:46px 0 34px;font-size:12.5px;text-align:center}
 footer .logo{color:var(--bar-ink);display:inline-block;margin-bottom:14px}
 footer p{max-width:760px;margin:10px auto}
-@media(max-width:1400px){nav a{margin-left:16px;font-size:12px;letter-spacing:.1em}}
+@media(max-width:1560px){nav a{margin-left:16px;font-size:12px;letter-spacing:.1em}}
+@media(max-width:1180px){nav a{margin-left:12px;font-size:11.5px;letter-spacing:.06em}}
 @media(max-width:720px){nav a{margin-left:16px}.trust .wrap,.steps{grid-template-columns:1fr}section{padding:60px 0}.hero{padding:80px 0}}
 .vial{border-color:var(--cap)}
 .vial::before{background:var(--cap)}
@@ -203,7 +204,7 @@ footer .logo{justify-content:center}
 .suggest-sub{color:var(--muted);margin:0 auto 22px;max-width:46ch}
 .suggest-open{color:var(--ink);border-color:var(--gold)}
 .sg-overlay{position:fixed;inset:0;z-index:50;background:rgba(20,4,8,.72);display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:max(24px,env(safe-area-inset-top,0px)) 16px max(24px,env(safe-area-inset-bottom,0px))}
-.sg-card{position:relative;width:100%;max-width:480px;margin:auto 0;background:var(--bar-bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:30px 26px 26px;box-shadow:0 30px 60px -20px rgba(0,0,0,.7)}
+.sg-card{position:relative;width:100%;max-width:480px;margin:0 auto;background:var(--bar-bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:30px 26px 26px;box-shadow:0 30px 60px -20px rgba(0,0,0,.7)}
 .sg-card h3{font-family:var(--serif);font-weight:500;font-size:30px;margin:4px 0 18px;line-height:1.1}
 .sg-close{position:absolute;top:10px;right:12px;background:none;border:0;color:var(--muted);font-size:28px;line-height:1;cursor:pointer;padding:4px 8px}
 .sg-close:hover,.sg-close:focus-visible{color:var(--ink)}
@@ -359,15 +360,14 @@ nav a{white-space:nowrap}
 .sherpa-link{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em;text-decoration-color:var(--gold);cursor:pointer}
 .sherpa-link:hover{color:var(--gold)}
 .vv-rule{display:flex;align-items:center;justify-content:center;gap:14px;margin:46px auto 30px;max-width:220px;color:var(--gold)}
-.vv-rule::before,.vv-rule::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
-.vv-rule::after{background:linear-gradient(90deg,var(--gold),transparent)}
-.vv-rule span{font-size:11px;line-height:1;opacity:.85}
+.vv-rule::before,.vv-rule::after{content:none}
+.vv-rule .vv-mark{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid var(--gold);border-radius:50%;font:600 12px/1 var(--serif);letter-spacing:.04em;color:var(--gold)}
 .about-page{padding-top:56px}
 .letter{position:relative;max-width:660px;margin:18px auto 0;padding:58px 56px 50px;text-align:left;color:#2a0610;
  background:
   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .16 0 0 0 0 .08 0 0 0 0 .03 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
   radial-gradient(120% 90% at 50% 0%,#ad885e 0%,#a07b52 55%,#93704a 100%);
- box-shadow:0 34px 60px -28px rgba(0,0,0,.75),0 0 0 1px rgba(255,236,200,.18) inset}
+ }
 .letter::before,.letter::after{content:"";position:absolute;pointer-events:none;border:1px solid rgba(42,6,16,.42)}
 .letter::before{inset:14px}
 .letter::after{inset:19px;border-color:rgba(42,6,16,.2)}
@@ -383,9 +383,9 @@ nav a{white-space:nowrap}
 .about-cta{text-align:center;margin-top:40px}
 .nav nav a[aria-current]{color:var(--gold)}
 a.cart-open{text-decoration:none}
-@media(max-width:340px){.cart-lbl{display:none}.nav nav a{font-size:9.5px;margin-left:6px}}
-@media(max-width:430px){.nav nav a{margin-left:11px;font-size:10.5px;letter-spacing:.05em}}
-@media(max-width:375px){.logo{font-size:17px;gap:7px}.mono{width:28px;height:28px;font-size:12px}.cart-open{padding:7px 10px;margin-left:8px}.nav nav a{margin-left:8px;font-size:10px;letter-spacing:.03em}}
+@media(max-width:340px){.cart-lbl{display:none}}
+@media(max-width:560px){.nav nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;justify-content:flex-start;gap:0;margin:0 -16px;padding:0 16px;-webkit-overflow-scrolling:touch}.nav nav::-webkit-scrollbar{display:none}.nav nav a{margin:0 14px 0 0;padding:9px 2px;font-size:12px;letter-spacing:.06em}.nav nav a:first-child{margin-left:0}}
+@media(max-width:375px){.logo{font-size:17px;gap:7px}.mono{width:28px;height:28px;font-size:12px}.cart-open{padding:7px 10px;margin-left:8px}}
 /* spotlight cards */
 .pml-b{display:block;margin-top:2px;font:400 11px var(--sans);letter-spacing:.02em;opacity:.75;font-variant-numeric:lining-nums tabular-nums}
 .was{font-weight:400;font-size:.62em;opacity:.65;margin-right:8px;vertical-align:.2em}
@@ -397,7 +397,7 @@ a.cart-open{text-decoration:none}
 @keyframes spotsheen{0%,55%{background-position:120% 0}100%{background-position:-120% 0}}
 .spot-rib{position:absolute;top:12px;right:12px;z-index:2;padding:5px 12px;border-radius:20px;background:linear-gradient(135deg,#f3dcaa,#c9a066);color:#2c0610;font:600 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;box-shadow:0 4px 14px rgba(0,0,0,.35)}
 .spot-rib span{font-size:11px}
-.spot-why{margin:6px 0 10px;padding-left:12px;border-left:1.5px solid rgba(42,6,16,.45);font:italic 500 15px/1.6 'Lora',Georgia,serif;color:#2a0610;letter-spacing:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-wrap:pretty}
+.spot-why{margin:6px 0 10px;padding-left:12px;border-left:1.5px solid rgba(42,6,16,.45);font:italic 500 15px/1.6 var(--serif);color:#2a0610;letter-spacing:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-wrap:pretty}
 @media(prefers-reduced-motion:reduce){.card.spot .photo::after{animation:none}}
 /* zodiac season pick */
 .zod-tag{align-self:flex-start;margin:2px 0 4px;padding:3px 11px;border-radius:30px;background:#3a0a17;color:#e8d3b4;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
@@ -457,16 +457,34 @@ a.cart-open{text-decoration:none}
 .qz-pill-x{background:none;border:0;color:#cdb08a;font-size:20px;line-height:1;padding:8px 14px 8px 8px;cursor:pointer}
 .qz-jump{position:sticky;bottom:0;display:block;width:100%;margin-top:14px;padding:12px 0;border:0;border-radius:30px;background:#b5946a;color:#2c0610;font:600 12.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;box-shadow:0 -8px 18px rgba(20,4,8,.6)}
 </style>
+<style>
+/* Design pass, Oct 2026: shared footer, flat pill, filled buttons, no hairlines */
+footer{background:#22050C;color:#CFA3A9;padding:48px 0;text-align:left;font-size:12.5px;line-height:1.7}
+footer .wrap{display:grid;grid-template-columns:1fr 2fr;gap:48px}
+footer .logo{display:flex;align-items:center;gap:12px;color:#CDB08A;justify-content:flex-start;margin:0 0 10px;font-size:20px}
+footer p{max-width:none;margin:0 0 8px}
+footer .fb-note{margin:8px 0 0;max-width:340px}
+@media(max-width:860px){footer .wrap{grid-template-columns:1fr;gap:28px}}
+header{border-bottom:0}
+.sh-fab{background:#e2c38f;box-shadow:0 10px 28px rgba(10,2,4,.55)}
+.sh-fab:hover{box-shadow:0 14px 32px rgba(10,2,4,.6)}
+@media (max-width:600px){.sh-fab.compact{width:50px;padding:0;justify-content:center}.sh-fab.compact .sh-lbl{display:none}}
+.btn{border:0;background:rgba(181,148,106,.16);color:#e2c38f}
+.btn:hover{background:#b5946a;color:#2c0610}
+.btn.primary,.about-cta .btn,.how-cta .btn:first-child{background:#b5946a;color:#2c0610;font-weight:500}
+.btn.primary:hover,.about-cta .btn:hover,.how-cta .btn:first-child:hover{background:#e2c38f}
+.sz{border:0;background:rgba(44,6,16,.10)}
+.pyr summary:focus-visible,.qz-m:focus-visible{outline:2px solid var(--gold)}
+</style>
 </head>
 <body>
 <div class="bar">Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
   <a class="logo" href="/"><span class="mono">VV</span>Velvet <span>Volute</span></a>
-  <nav><a href="/#shop">Shop</a><a href="/houses/">Fragrance Houses</a><a href="/collections/">Special Collections</a><a href="/about" aria-current="page">About the Brand</a><a href="/how-it-works">How It Works</a><a href="/#contact">Contact</a></nav><a class="cart-open" href="/#cart" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span></a>
+  <nav><a href="/#shop">Shop</a><a href="/houses/">Fragrance Houses</a><a href="/collections/">Curated Collections</a><a href="/about" aria-current="page">About the Brand</a><a href="/how-it-works">How It Works</a><a href="/#contact">Contact</a></nav><a class="cart-open" href="/#cart" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span></a>
 </div></header>
 
 <main><section class="about about-page" id="about"><div class="wrap">
-  <div class="eyebrow">About the Brand</div>
   <article class="letter">
    <div class="letter-mono" aria-hidden="true">VV</div>
   <h1>Fragrance, curated</h1>
@@ -477,8 +495,7 @@ a.cart-open{text-decoration:none}
    <p class="ps">Press play on something new.</p>
    <p class="signoff">Peace &amp; Love,<span>Izzi</span></p>
   </article>
-  <div class="vv-rule" aria-hidden="true"><span>&#10022;</span></div>
-  <div class="eyebrow">The Name</div>
+  <div class="vv-rule" aria-hidden="true"><span class="vv-mark">VV</span></div>
   <h2>Why Velvet Volute?</h2>
   <p>Like a volute, a great fragrance doesn't sit still; it drifts, curls, dances and lingers long after you've passed by. Velvet is for the feel of it: smooth, rich and a little indulgent.</p>
   <p>Velvet Volute exists so you can try those fragrances without committing to a full bottle. Every decant is poured by hand from an authentic bottle, so you get the real thing, just in a size that lets you find what you love.</p>
@@ -487,11 +504,11 @@ a.cart-open{text-decoration:none}
  </div></section></main>
 
 <footer><div class="wrap">
-  <div class="logo"><span class="mono">VV</span>Velvet Volute</div>
-  <div><a class="fb-link" href="https://www.facebook.com/profile.php?id=61595247606137" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v2.9h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>Like us on Facebook for 10% off</a><span class="fb-note">Like the Page, then send us a message for your one-time code on your first order.</span></div>
-  <p>All decants are hand-decanted from authentic original bottles and repackaged in new containers. The original manufacturer's bottle and packaging are not included.</p>
-  <p>Not affiliated with, endorsed by, or associated with any fragrance brand or designer. All trademarks belong to their respective owners and are used only to identify the authentic products from which each decant is prepared.</p>
-  <p>© 2026 Velvet Volute</p>
+  <div><div class="logo"><span class="mono">VV</span>Velvet Volute</div><p>© 2026 Velvet Volute</p><a class="fb-link" href="https://www.facebook.com/profile.php?id=61595247606137" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v2.9h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>Like us on Facebook for 10% off</a><span class="fb-note">Like the Page, then send us a message for your one-time code on your first order.</span></div>
+  <div>
+    <p>All decants are hand-decanted from authentic original bottles and repackaged in new containers. The original manufacturer's bottle and packaging are not included.</p>
+    <p>Not affiliated with, endorsed by, or associated with any fragrance brand or designer. All trademarks belong to their respective owners and are used only to identify the authentic products from which each decant is prepared.</p>
+  </div>
 </div></footer>
 <style>
 /* Facebook link */
@@ -544,6 +561,7 @@ body.sh-hide .sh-fab,body.sh-hide .sh-bub{display:none}
  function go(){hide();set(K,"1");
   if(window.VVSherpa&&window.VVSherpa.open)window.VVSherpa.open();else location.href="/#quiz"}
  fab.onclick=go;document.getElementById("sh-go").onclick=go;
+ addEventListener("scroll",function(){fab.classList.toggle("compact",scrollY>320)},{passive:true});
  document.getElementById("sh-x").onclick=function(){hide();set(K,"1")};
  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&bub.classList.contains("on"))hide()});
  function refresh(){var p=hasPicks();document.getElementById("sh-dot").hidden=!p;var t=p?"See your Scent Sherpa picks":"Ask the Scent Sherpa";fab.setAttribute("aria-label",t);fab.title=t;document.getElementById("sh-lbl").textContent=p?"Your picks":"Ask the Scent Sherpa"}

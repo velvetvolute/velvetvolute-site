@@ -8,7 +8,7 @@ h = open("index.html", encoding="utf-8").read()
 IMG = json.loads(re.search(r"const IMG=(\{.*?\});\n", h).group(1))
 img_of = {sq: IMG[k] for sq, k in re.findall(r'sq:"([A-Z0-9]+)".*?img:IMG\["([^"]+)"\]', h)}
 B = json.load(open("bundles.json"))
-S, TABLE_Y = 1200, 1000
+S, TABLE_Y = 1200, 1060
 lerp = lambda a, b, t: tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
 for b in B["bundles"]:
     srcs = [img_of[s] for s in b["sq"] if s in img_of]; n = len(srcs)
@@ -16,9 +16,9 @@ for b in B["bundles"]:
     for f in srcs:
         im = Image.open(f).convert("RGB")
         if im.size != (1000, 1000): im = im.resize((1000, 1000))
-        crops.append(im.crop((60, 0, 540, 940)))            # bottle + the full backdrop above it; table at y≈830 of 940
+        crops.append(im.crop((100, 0, 500, 940)))           # bottle + the full backdrop above it; table at y≈830 of 940 (400 px wide: bottles read 20% larger)
     stride = 0.82
-    w = int(S / (1 + (n - 1) * stride)); scale = w / 480; hgt = int(940 * scale); base = int(830 * scale)
+    w = int(S / (1 + (n - 1) * stride)); scale = w / 400; hgt = int(940 * scale); base = int(830 * scale)
     top = TABLE_Y - base
     canvas = Image.new("RGB", (S, S), (74, 14, 30))
     # feathered side edges so neighbouring backdrops melt into each other
@@ -47,3 +47,7 @@ for b in B["bundles"]:
     hh = hashlib.sha1(open(tmp, "rb").read()).hexdigest()[:10]
     for old in [f for f in os.listdir("img") if f.startswith(f"coll-{b['id']}-")]: os.remove("img/" + old)
     dest = f"img/coll-{b['id']}-{hh}.jpg"; os.replace(tmp, dest); print(dest, os.path.getsize(dest) // 1024, "KB", n, "bottles")
+# index.html keeps a COLL_ART map (home-page collection cards) pointing at the current files
+art = {re.match(r"coll-(.+)-[0-9a-f]{10}\.jpg", f).group(1): "img/" + f for f in sorted(os.listdir("img")) if f.startswith("coll-")}
+h2 = re.sub(r"const COLL_ART=\{.*?\};", "const COLL_ART=" + json.dumps(art, sort_keys=True) + ";", h, count=1)
+open("index.html", "w", encoding="utf-8").write(h2)

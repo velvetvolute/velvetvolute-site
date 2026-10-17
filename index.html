@@ -27,7 +27,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Store", "name": "Velvet Volute", "url": "https://velvetvolute.ca/", "email": "velvetvolute@gmail.com", "description": "Fragrance decants and samples in Ottawa. Try Tom Ford, Nishane, Givenchy, Maison Margiela, Valentino and more in 2 to 10 ml sprays or roll-ons, hand-poured from authentic bottles.", "areaServed": {"@type": "City", "name": "Ottawa"}, "sameAs": ["https://www.facebook.com/profile.php?id=61595247606137"], "priceRange": "$10–$113", "address": {"@type": "PostalAddress", "addressLocality": "Ottawa", "addressRegion": "ON", "addressCountry": "CA"}}</script>
 <script>document.documentElement.setAttribute("data-palette","camel-m")</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;--sans:'Jost',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
@@ -100,7 +100,7 @@ h2{font-family:var(--serif);font-weight:500;font-size:clamp(32px,5vw,48px);margi
 .pyr summary::-webkit-details-marker{display:none}
 .pyr summary::after{content:"+";font-size:14px;letter-spacing:0}
 .pyr[open] summary::after{content:"\2212"}
-.pyr summary:focus-visible{outline:1px solid var(--gold);outline-offset:3px}
+.pyr summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .pyr dl{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:10px 0 2px;padding-top:10px;border-top:1px solid var(--line)}
 .pyr dt{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);padding-top:2px}
 .pyr dd{margin:0;color:var(--muted);line-height:1.5;min-width:0}
@@ -117,8 +117,8 @@ h2{font-family:var(--serif);font-weight:500;font-size:clamp(32px,5vw,48px);margi
 .gender{margin-top:3px;font:500 11.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .vsub{display:block;margin-top:2px;font-size:12.5px;letter-spacing:.06em;opacity:.8}
 .vdesc{margin:12px 0 2px;padding:2px 0 2px 12px;border-left:2px solid var(--gold);font:400 14px/1.45 var(--sans);color:var(--ink);min-height:2.9em}
-.sz{flex:1;border:1px solid var(--line);background:transparent;color:var(--ink);padding:7px 0;font:400 13px var(--sans);cursor:pointer}
-.sz.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.sz{flex:1;border:0;background:rgba(44,6,16,.10);color:var(--ink);padding:8px 0;font:400 13px var(--sans);cursor:pointer}
+.sz.on{background:var(--ink);color:var(--bg)}
 .price{font-family:var(--sans);font-weight:500;font-size:26px;letter-spacing:.01em;font-variant-numeric:lining-nums tabular-nums;margin-top:12px;line-height:1.2}
 .price small{font:400 12px var(--sans);color:var(--muted);margin-left:6px;letter-spacing:.08em}
 .upg{display:inline-block;vertical-align:middle;margin-left:8px;padding:2px 9px;border:1px solid currentColor;border-radius:20px;font:500 11px/1.5 var(--sans);letter-spacing:.06em;color:var(--muted);white-space:nowrap}
@@ -134,7 +134,8 @@ h2{font-family:var(--serif);font-weight:500;font-size:clamp(32px,5vw,48px);margi
 footer{background:var(--bar-bg);color:var(--foot,#b9ae9a);padding:46px 0 34px;font-size:12.5px;text-align:center}
 footer .logo{color:var(--bar-ink);display:inline-block;margin-bottom:14px}
 footer p{max-width:760px;margin:10px auto}
-@media(max-width:1400px){nav a{margin-left:16px;font-size:12px;letter-spacing:.1em}}
+@media(max-width:1560px){nav a{margin-left:16px;font-size:12px;letter-spacing:.1em}}
+@media(max-width:1180px){nav a{margin-left:12px;font-size:11.5px;letter-spacing:.06em}}
 @media(max-width:720px){nav a{margin-left:16px}.trust .wrap,.steps{grid-template-columns:1fr}section{padding:60px 0}.hero{padding:80px 0}}
 .vial{border-color:var(--cap)}
 .vial::before{background:var(--cap)}
@@ -167,12 +168,12 @@ footer .logo{justify-content:center}
 .card .photo .track.drag{cursor:grabbing}
 .card .photo .slide{flex:0 0 100%;height:100%;margin:0;position:relative;transition:transform .34s cubic-bezier(.22,.7,.2,1);will-change:transform}
 .card .photo .slide img.shot{pointer-events:none;-webkit-user-drag:none}
-.card .photo .slide figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px 12px 9px;text-align:center;background:linear-gradient(transparent,rgba(44,6,16,.85));color:#e8d3b4;font:500 10.5px var(--sans);letter-spacing:.2em;text-transform:uppercase;pointer-events:none}
+.card .photo .slide figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px 12px 9px;text-align:center;background:linear-gradient(transparent,rgba(44,6,16,.85));color:#e8d3b4;font:500 12px var(--sans);letter-spacing:.08em;text-transform:none;pointer-events:none}
 
 /* step numbers: lining figures in a ring so the 1 never reads as an I */
 .steps .n{display:flex;align-items:center;justify-content:center;width:68px;height:68px;margin:0 auto 6px;border:1.5px solid var(--gold);border-radius:50%;font-size:38px;font-weight:600;font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1;line-height:1}
 /* bolder brand names on cards */
-.card .brand{font-weight:600;font-size:11.5px}
+.card .brand{font:500 13.5px var(--sans);letter-spacing:.02em;text-transform:none}
 /* divider between the two un-selected vial options */
 .vt{position:relative}
 .vt+.vt::before{content:"";position:absolute;left:0;top:28%;bottom:28%;width:1px;background:var(--line)}
@@ -204,12 +205,12 @@ footer .logo{justify-content:center}
 
 /* suggestion box under the fragrance grid */
 [hidden]{display:none!important}
-.suggest{margin:56px auto 0;max-width:620px;text-align:center;padding:34px 24px;border:1px solid var(--line);border-radius:4px}
+.suggest{margin:56px auto 0;max-width:620px;text-align:center;padding:34px 24px;border:0;background:#3a0a17;border-radius:4px}
 .suggest-q{font-family:var(--serif);font-size:clamp(24px,3.4vw,30px);line-height:1.2;color:var(--ink);margin:0 0 8px;text-wrap:balance}
 .suggest-sub{color:var(--muted);margin:0 auto 22px;max-width:46ch}
 .suggest-open{color:var(--ink);border-color:var(--gold)}
 .sg-overlay{position:fixed;inset:0;z-index:50;background:rgba(20,4,8,.72);display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:max(24px,env(safe-area-inset-top,0px)) 16px max(24px,env(safe-area-inset-bottom,0px))}
-.sg-card{position:relative;width:100%;max-width:480px;margin:auto 0;background:var(--bar-bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:30px 26px 26px;box-shadow:0 30px 60px -20px rgba(0,0,0,.7)}
+.sg-card{position:relative;width:100%;max-width:480px;margin:0 auto;background:var(--bar-bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:30px 26px 26px;box-shadow:0 30px 60px -20px rgba(0,0,0,.7)}
 .sg-card h3{font-family:var(--serif);font-weight:500;font-size:30px;margin:4px 0 18px;line-height:1.1}
 .sg-close{position:absolute;top:10px;right:12px;background:none;border:0;color:var(--muted);font-size:28px;line-height:1;cursor:pointer;padding:4px 8px}
 .sg-close:hover,.sg-close:focus-visible{color:var(--ink)}
@@ -249,7 +250,7 @@ nav a{white-space:nowrap}
 @media(max-width:560px){.cart-open{padding:8px 12px;letter-spacing:.1em}.nav nav a{margin-left:14px;font-size:11px;letter-spacing:.08em}}
 .cart-count{position:absolute;top:-8px;right:-8px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--gold);color:var(--on-gold);font:600 11px/18px var(--sans);letter-spacing:0;text-align:center}
 .card .order.add{width:100%;border:0;cursor:pointer}
-.card .order.add.done{background:#2f5a3a;color:#e8f0e2}
+.card .order.add.done{background:#2c0610;color:#e2c38f}
 .cart-ov{position:fixed;inset:0;z-index:60;background:rgba(10,3,5,.55);display:flex;justify-content:flex-end}
 .cart-ov[hidden]{display:none}
 .cart-panel{width:100%;max-width:430px;height:100%;background:var(--bar-bg);color:#e8d3b4;display:flex;flex-direction:column;box-shadow:-20px 0 50px -20px rgba(0,0,0,.7);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -307,17 +308,23 @@ nav a{white-space:nowrap}
 .qz-q{font-family:var(--serif);font-weight:500;font-size:clamp(26px,5vw,32px);line-height:1.15;margin:0 0 6px;color:#e8d3b4}
 .qz-hint{margin:0 0 16px;color:var(--muted);font-size:14px}
 .qz-opts{display:flex;flex-direction:column;gap:9px}
+.qz-opts.dense{display:grid;grid-template-columns:1fr 1fr;gap:8px}.qz-opts.dense .qz-opt{padding:11px 12px;font-size:15px}
+@media(max-width:400px){.qz-opts.dense{grid-template-columns:1fr}}
 .qz-opt{display:flex;align-items:center;gap:12px;text-align:left;width:100%;padding:13px 16px;border:1px solid var(--line);border-radius:6px;background:transparent;color:#e8d3b4;font:400 16px var(--sans);cursor:pointer;transition:.15s}
 .qz-opt small{display:block;color:var(--muted);font-size:13px;margin-top:1px}
 .qz-opt:hover,.qz-opt:focus-visible{border-color:var(--gold);outline:none}
-.qz-opt.on{border-color:var(--gold);background:rgba(181,148,106,.16)}
-.qz-opt .dot{flex:none;width:12px;height:12px;border-radius:50%;background:var(--c,#b5946a)}
-.qz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:12px}
+.qz-opt.on{border-color:transparent;background:#4a0e1e;color:#e8d3b4}
+.qz-opt .dot{display:none}
+.qz-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;bottom:-26px;margin:18px -26px -26px;padding:14px 26px 22px;background:var(--bar-bg)}
+@media(max-width:560px){.qz-nav{bottom:-22px;margin:18px -18px -22px;padding:12px 18px 18px}}
 .qz-back{background:none;border:0;color:var(--muted);font:500 14px var(--sans);cursor:pointer;padding:6px 0;text-decoration:underline}
 .qz-next{color:#e8d3b4}
 .qz-next[disabled]{opacity:.45;cursor:default}
 .qz-res{display:flex;flex-direction:column;gap:12px;margin-top:6px}
-.qz-r{border:1px solid var(--line);border-radius:6px;padding:14px 16px;background:rgba(181,148,106,.06)}
+.qz-r{border:1px solid var(--line);border-radius:6px;padding:14px 16px;background:rgba(181,148,106,.06);display:grid;grid-template-columns:72px minmax(0,1fr);column-gap:14px}
+.qz-r>*{grid-column:2}.qz-r .qz-thumb{grid-column:1;grid-row:1/span 3;width:72px;height:72px;object-fit:cover;border-radius:4px;background:#2c0610}
+.qz-r p.n:not(.qz-her){display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+@media(max-width:560px){.qz-r p.n:not(.qz-her){-webkit-line-clamp:3}}
 .qz-r.best{border-color:var(--gold)}
 .qz-r.qz-soon{border-style:dashed;opacity:.9}
 .qz-g.qz-first{padding:10px 12px;border:1px dashed var(--gold);border-radius:6px}
@@ -332,7 +339,7 @@ nav a{white-space:nowrap}
 .qz-r .soon{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-left:6px}
 .qz-view{background:transparent;border:1px solid var(--gold);color:#e8d3b4;border-radius:30px;padding:7px 16px;font:500 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
 .qz-view:hover{background:var(--gold);color:#2c0610}
-.qz-set{margin-top:16px;padding:14px 16px;border:1px dashed var(--gold);border-radius:6px;text-align:center;color:#e8d3b4;font-size:14.5px}
+.qz-set{margin-top:16px;padding:16px 16px 14px;border:0;background:rgba(44,6,16,.38);border-radius:6px;text-align:center;color:#e8d3b4;font-size:14.5px}
 .qz-set button{display:block;width:100%;margin-top:10px;padding:13px 0;border:0;border-radius:2px;background:#b5946a;color:#2c0610;font:600 12.5px var(--sans);letter-spacing:.18em;text-transform:uppercase;cursor:pointer}
 .qz-links{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-top:16px}
 .qz-links button{background:none;border:0;padding:4px 0;color:var(--muted);font:500 14px var(--sans);text-decoration:underline;cursor:pointer}
@@ -342,7 +349,7 @@ nav a{white-space:nowrap}
 .qz-mode{display:flex;border:1px solid var(--line);border-radius:30px;padding:3px;margin:0 36px 18px 0}
 .qz-m{flex:1;border:0;border-radius:30px;background:transparent;color:var(--muted);padding:8px 0;font:500 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
 .qz-m.on{background:var(--gold);color:#2c0610}
-.qz-m:focus-visible{outline:1px solid var(--gold);outline-offset:2px}
+.qz-m:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .qz-groups{display:flex;flex-direction:column;gap:14px;margin:4px 0 18px}
 .qz-gl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
 .qz-gl span{letter-spacing:.04em;text-transform:none;color:var(--muted)}
@@ -402,21 +409,22 @@ nav a{white-space:nowrap}
 .vv-rule::after{background:linear-gradient(90deg,var(--gold),transparent)}
 .vv-rule span{font-size:11px;line-height:1;opacity:.85}
 a.cart-open{text-decoration:none}
-@media(max-width:340px){.cart-lbl{display:none}.nav nav a{font-size:9.5px;margin-left:6px}}
-@media(max-width:430px){.nav nav a{margin-left:11px;font-size:10.5px;letter-spacing:.05em}}
-@media(max-width:375px){.logo{font-size:17px;gap:7px}.mono{width:28px;height:28px;font-size:12px}.cart-open{padding:7px 10px;margin-left:8px}.nav nav a{margin-left:8px;font-size:10px;letter-spacing:.03em}}
+@media(max-width:340px){.cart-lbl{display:none}}
+@media(max-width:560px){.nav nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;justify-content:flex-start;gap:0;margin:0 -16px;padding:0 16px;-webkit-overflow-scrolling:touch}.nav nav::-webkit-scrollbar{display:none}.nav nav a{margin:0 14px 0 0;padding:9px 2px;font-size:12px;letter-spacing:.06em}.nav nav a:first-child{margin-left:0}}
+@media(max-width:375px){.logo{font-size:17px;gap:7px}.mono{width:28px;height:28px;font-size:12px}.cart-open{padding:7px 10px;margin-left:8px}}
 /* spotlight cards */
 .pml-b{display:block;margin-top:2px;font:400 11px var(--sans);letter-spacing:.02em;opacity:.75;font-variant-numeric:lining-nums tabular-nums}
 .was{font-weight:400;font-size:.62em;opacity:.65;margin-right:8px;vertical-align:.2em}
 :root[data-palette="camel-m"] article.card.spot{border:1px solid #e9cf9a;
  background:radial-gradient(120% 70% at 50% 0%,rgba(255,236,190,.38),transparent 60%),radial-gradient(60% 40% at 18% 22%,rgba(92,52,24,.22),transparent 70%),#b08a5a;
- box-shadow:0 0 0 1px rgba(233,207,154,.55),0 0 34px rgba(233,200,130,.42),0 22px 44px -18px rgba(0,0,0,.7)}
+ box-shadow:none;outline:2px solid #e9cf9a;outline-offset:-1px}
 .card.spot .photo{position:relative}
 .card.spot .photo::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,240,205,.32) 48%,transparent 60%);background-size:250% 100%;animation:spotsheen 5.5s ease-in-out infinite}
 @keyframes spotsheen{0%,55%{background-position:120% 0}100%{background-position:-120% 0}}
-.spot-rib{position:absolute;top:12px;left:12px;z-index:2;padding:5px 12px;border-radius:20px;background:linear-gradient(135deg,#f3dcaa,#c9a066);color:#2c0610;font:600 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.spot-rib{position:absolute;top:12px;left:12px;z-index:2;padding:5px 12px;border-radius:20px;background:linear-gradient(135deg,#f3dcaa,#c9a066);color:#2c0610;font:600 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.rib-vv{display:inline-block;font:600 9.5px/1 var(--serif);letter-spacing:.04em;color:#4a0e1e;border:1.2px solid #4a0e1e;border-radius:50%;width:16px;height:16px;line-height:14px;text-align:center;margin-right:3px;vertical-align:-3px}
 .spot-rib span{font-size:11px}
-.spot-why{margin:6px 0 10px;padding-left:12px;border-left:1.5px solid rgba(42,6,16,.45);font:italic 500 15px/1.6 'Lora',Georgia,serif;color:#2a0610;letter-spacing:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-wrap:pretty}
+.spot-why{margin:6px 0 10px;padding-left:0;border-left:0;font:italic 500 16.5px/1.55 var(--serif);color:#2a0610;letter-spacing:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-wrap:pretty}
 @media(prefers-reduced-motion:reduce){.card.spot .photo::after{animation:none}}
 /* zodiac season pick */
 .zod-tag{align-self:flex-start;margin:2px 0 4px;padding:3px 11px;border-radius:30px;background:#3a0a17;color:#e8d3b4;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
@@ -434,7 +442,7 @@ a.cart-open{text-decoration:none}
 /* breathing room between the chip rows and the dropdowns (desktop) */
 @media(min-width:721px){
  .genbar{margin:4px 0 0}
- .tools{max-width:820px;margin:26px auto 40px;padding-top:24px;border-top:1px solid rgba(181,148,106,.28)}
+ .tools{max-width:820px;margin:34px auto 40px;padding-top:0;border-top:0}
 }
 /* brand chips: compact, one swipeable row on phones */
 .brandbar{gap:7px;margin-bottom:16px}
@@ -467,7 +475,7 @@ a.cart-open{text-decoration:none}
 .qz-pyr summary::-webkit-details-marker{display:none}
 .qz-pyr summary::before{content:"+";display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--gold);color:#2c0610;font-size:14px;font-weight:600;line-height:1}
 .qz-pyr[open] summary::before{content:"\2212"}
-.qz-pyr summary:focus-visible{outline:1px solid var(--gold);outline-offset:3px}
+.qz-pyr summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .qz-pyr dl{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;margin:8px 0 0;padding-top:8px;border-top:1px solid var(--line)}
 .qz-pyr dt{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);padding-top:2px}
 .qz-pyr dd{margin:0;color:#e8d3b4;line-height:1.45;min-width:0}
@@ -475,17 +483,17 @@ a.cart-open{text-decoration:none}
 .qz-pill-go{background:none;border:0;color:#e8d3b4;font:500 13px var(--sans);letter-spacing:.06em;padding:11px 6px 11px 18px;cursor:pointer}
 .qz-pill-x{background:none;border:0;color:#cdb08a;font-size:20px;line-height:1;padding:8px 14px 8px 8px;cursor:pointer}
 .qz-jump{position:sticky;bottom:0;display:block;width:100%;margin-top:14px;padding:12px 0;border:0;border-radius:30px;background:#b5946a;color:#2c0610;font:600 12.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;box-shadow:0 -8px 18px rgba(20,4,8,.6)}
-.mood{margin:6px 0 10px;font:italic 400 14.5px/1.65 'Lora',Georgia,serif;color:#2a0610;letter-spacing:0;text-wrap:pretty;flex:0 0 auto;-webkit-font-smoothing:antialiased}
+.mood{margin:6px 0 10px;font:italic 400 16.5px/1.5 var(--serif);color:#2a0610;letter-spacing:0;text-wrap:pretty;flex:0 0 auto;-webkit-font-smoothing:antialiased}
 .story{flex:0 0 auto}
 .mood.clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
-.pp-link{display:inline-block;align-self:flex-start;margin:2px 0 8px;font:600 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#4a0e1e;text-decoration:none;border-bottom:1px solid currentColor}
+.pp-link{display:inline-block;align-self:flex-start;margin:2px 0 8px;font:400 13.5px var(--sans);letter-spacing:0;text-transform:none;color:#4a0e1e;text-decoration:none;border-bottom:1px solid currentColor}
 .pp-link:hover{opacity:.75}
-.story-more{display:inline-flex;align-items:center;gap:6px;margin:-4px 0 10px;padding:0;border:0;background:none;color:#4a0e1e;font:600 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.story-more{display:inline-flex;align-items:center;gap:6px;margin:-4px 0 10px;padding:0;border:0;background:none;color:#4a0e1e;font:400 13.5px var(--sans);letter-spacing:0;text-transform:none;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .story-more:hover{color:#6e1a31}
 /* ===== 2026 REDESIGN (UI UX Pro Max draft + Taste critique) =====
    Sections prefixed x- are the new homepage layout. Shop cards, filters, cart and quiz keep their styles above. */
 :root{--x-wine:#4A0E1E;--x-deep:#2C0610;--x-deeper:#22050C;--x-glow:#6E1A31;--x-surface:#5A1527;--x-gold:#CDB08A;--x-gold2:#B5946A;--x-text:#E6D3BC;--x-soft:#CFA3A9;
-  --x-s1:24px;--x-s2:48px;--x-s3:72px;--x-s4:104px;--x-italic:"Lora",Georgia,serif}
+  --x-s1:24px;--x-s2:48px;--x-s3:72px;--x-s4:104px;--x-italic:var(--serif)}
 body{font-size:16px;line-height:1.65}
 header{background:var(--x-deep);border-bottom:0}
 nav a{color:var(--x-text)}
@@ -537,7 +545,7 @@ section.x-spot{padding:var(--x-s4) 0;color:var(--x-text);
 .x-pick img{display:block;width:100%;height:auto;border-radius:3px}
 .x-pick .house{display:block;font:500 14px/1 var(--sans);color:var(--x-gold2)}
 .x-pick h3{font:500 30px/1.1 var(--serif);color:var(--x-gold);margin:10px 0 12px}
-.x-pick p{font:italic 400 15px/1.75 var(--x-italic);color:var(--x-text);margin:0}
+.x-pick p{font:italic 400 17px/1.6 var(--x-italic);color:var(--x-text);margin:0}
 .x-pick .from{display:block;margin-top:16px;font:500 15px/1 var(--sans);color:var(--x-gold2)}
 .x-pick .from s{opacity:.7;margin-right:4px}
 .x-pick .x-tlink{margin-top:6px}
@@ -548,7 +556,7 @@ section.x-spot{padding:var(--x-s4) 0;color:var(--x-text);
 #spotlight .zodiac .zoff{display:inline-block;margin:10px 10px 0 0;padding:6px 12px;border-radius:999px;background:var(--x-gold);color:var(--x-deep);font:500 13px/1 var(--sans);letter-spacing:0}
 #spotlight .zodiac .ze span{display:inline-block;margin-top:10px;font:400 14px/1 var(--sans);letter-spacing:0;color:var(--x-soft)}
 #spotlight .zodiac h3{font:500 28px/1.1 var(--serif);color:var(--x-gold);margin:12px 0 10px}
-#spotlight .zodiac p{font:italic 400 15px/1.75 var(--x-italic);color:var(--x-text);max-width:640px}
+#spotlight .zodiac p{font:italic 400 17px/1.6 var(--x-italic);color:var(--x-text);max-width:640px}
 
 /* shop heading */
 .x-shop-head{max-width:640px;margin:0 auto 32px;text-align:center}
@@ -635,16 +643,30 @@ footer p{max-width:none;margin:0 0 8px}
 .cart-pay .cart-secure{margin-top:8px;font-size:12.5px}
 
 /* full-page cart */
-.cart-ov.full{background:var(--bar-bg)}
+.cart-ov.full{background:var(--bg)}
+.cart-logo,.cart-back{display:none}
+.cart-ov.full .cart-logo{display:inline-flex;margin-right:auto}
+.cart-ov.full .cart-head h2{display:none}
+.cart-ov.full .cart-back{display:inline-block;margin-right:18px;background:none;border:0;color:#e8d3b4;font:400 14px var(--sans);cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.cart-ov.full .cart-panel{background:var(--bg)}
+.cart-ov.full .cart-body::before{content:"Your cart";grid-column:1/-1;font:500 clamp(30px,4vw,42px)/1.1 var(--serif);color:#e8d3b4;margin:6px 0 2px}
+.cart-ov.full .cl{border-bottom-color:rgba(181,148,106,.25)}
+.cart-ov.full .cl-name,.cart-ov.full .cl-price,.cart-ov.full .cl-qty span,.cart-ov.full .cart-empty{color:#e8d3b4}
+.cart-ov.full .cl-name small,.cart-ov.full .cl-sub{color:#cdb08a}
+.cart-ov.full .cl-qty button{border-color:#b5946a;color:#e8d3b4}
+.cart-ov.full .cl-qty button:hover{background:#b5946a;color:#2c0610}
+.cart-ov.full .cl-rm{color:#e2c2c6}
+.cart-ov.full .cart-x{color:#e8d3b4}
+.cart-ov.full .cart-head .cart-full{display:none}
 .cart-ov.full .cart-panel{max-width:none;box-shadow:none}
-.cart-ov.full .cart-head{width:100%;max-width:1100px;margin:0 auto;padding:28px 24px 18px}
+.cart-ov.full .cart-head{width:100%;max-width:1100px;margin:0 auto;padding:22px 24px 10px;border-bottom:0}
 .cart-ov.full .cart-head h2{font-size:clamp(30px,4vw,42px)}
 .cart-ov.full .cart-body{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:48px;align-content:start;width:100%;max-width:1100px;margin:0 auto;padding:8px 24px 48px}
 .cart-ov.full .cart-lines{padding:0}
 .cart-ov.full .cl{grid-template-columns:96px minmax(0,1fr) auto;gap:4px 20px;padding:18px 0}
 .cart-ov.full .cl-img{width:96px;height:96px}
 .cart-ov.full .cl-name{font-size:17px}
-.cart-ov.full .cart-foot{position:sticky;top:0;align-self:start;border:0;border-radius:6px;background:rgba(58,10,23,.08);padding:22px 22px 0}
+.cart-ov.full .cart-foot{position:sticky;top:0;align-self:start;border:0;border-radius:6px;background:var(--bar-bg);padding:22px 22px 0}
 .cart-ov.full .cart-pay{position:static;margin:6px -22px 0;background:transparent;box-shadow:none;padding-bottom:22px}
 @media (max-width:820px){
   .cart-ov.full .cart-body{grid-template-columns:1fr;gap:24px;padding-bottom:0}
@@ -669,7 +691,7 @@ footer p{max-width:none;margin:0 0 8px}
   #spotlight .zodiac{grid-template-columns:auto 1fr;gap:18px;padding:24px}
   #spotlight .zodiac button{grid-column:1/-1;justify-self:start}
 }
-@media (max-width:480px){.x-pick{grid-template-columns:1fr}.x-pick img{max-width:220px}}
+@media (max-width:480px){.x-pick{grid-template-columns:1fr}.x-pick img{max-width:none}.x-spot-head{gap:10px;margin-bottom:24px}}
 
 /* special collections */
 section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradient(50% 70% at 85% 20%,rgba(110,26,49,.65),transparent 70%),var(--x-deep)} /* taste-skill-ignore: brand glow */
@@ -679,11 +701,13 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .x-colls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
 .bundle{display:flex;flex-direction:column;padding:28px;border-radius:4px;color:#330a14;
   background:radial-gradient(60% 40% at 18% 22%,rgba(92,52,24,.30),transparent 70%),radial-gradient(45% 35% at 82% 58%,rgba(70,38,16,.26),transparent 72%),#a07b52} /* taste-skill-ignore: camel card texture, matches shop cards */
-.bundle .house{font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#4a1a1f}
+.bundle .house{font:500 13px/1 var(--sans);letter-spacing:.02em;text-transform:none;color:#2c0610}
+.bundle .bshot{display:block;width:calc(100% + 56px);height:auto;margin:-28px -28px 20px;aspect-ratio:16/9;object-fit:cover;object-position:50% 88%;border-radius:4px 4px 0 0}
+@media (max-width:768px){.bundle .bshot{width:calc(100% + 44px);margin:-22px -22px 16px}}
 .bundle h3{font:500 clamp(26px,2.6vw,32px)/1.1 var(--serif);color:#2c0610;margin:10px 0 14px}
 .bundle .shots{display:flex;gap:10px;margin:0 0 16px}
 .bundle .shots img{width:72px;height:72px;object-fit:cover;border-radius:50%;background:#8a6640}
-.bundle .blurb{font:italic 400 15px/1.7 var(--x-italic);margin:0 0 16px;color:#2a0610}
+.bundle .blurb{font:italic 400 16.5px/1.6 var(--x-italic);margin:0 0 16px;color:#2a0610}
 .bundle ul{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px}
 .bundle li button{background:rgba(74,14,30,.1);border:0;border-radius:999px;padding:6px 12px;font:500 13px/1.2 var(--sans);color:#330a14;cursor:pointer}
 .bundle li button:hover{background:rgba(74,14,30,.2)}
@@ -705,7 +729,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 
 /* compact card */
 .card .brand{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.card .brand .gender{margin:0;font-size:10.5px}
+.card .brand .gender{margin:0;font:400 12.5px var(--sans);letter-spacing:.02em;text-transform:none}
 .card .vdesc{min-height:0;margin:8px 0 0;font-size:13px;line-height:1.4}
 .card .vials{margin-top:10px}
 .card .mood{margin:4px 0 6px}
@@ -722,7 +746,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 
 <div class="cart-ov" id="cart-ov" hidden>
  <aside class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title">
-  <div class="cart-head"><h2 id="cart-title">Your cart</h2><button type="button" class="cart-full" id="cart-full">View full cart</button><button type="button" class="cart-x" id="cart-x" aria-label="Close cart">&times;</button></div>
+  <div class="cart-head"><a class="logo cart-logo" href="/"><span class="mono">VV</span>Velvet Volute</a><h2 id="cart-title">Your cart</h2><button type="button" class="cart-back" id="cart-back">&larr; Continue shopping</button><button type="button" class="cart-full" id="cart-full">View full cart</button><button type="button" class="cart-x" id="cart-x" aria-label="Close cart">&times;</button></div>
   <div class="cart-body" id="cart-body">
   <div class="cart-lines" id="cart-lines"></div>
   <div class="cart-foot" id="cart-foot">
@@ -751,7 +775,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 <div class="bar">Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
   <a class="logo" href="#top"><span class="mono">VV</span>Velvet <span>Volute</span></a>
-  <nav><a href="#shop">Shop</a><a href="/houses/">Fragrance Houses</a><a href="/collections/">Special Collections</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="#contact">Contact</a></nav><button type="button" class="cart-open" id="cart-open" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></button>
+  <nav><a href="#shop" aria-current="page">Shop</a><a href="/houses/">Fragrance Houses</a><a href="/collections/">Curated Collections</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="#contact">Contact</a></nav><button type="button" class="cart-open" id="cart-open" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></button>
 </div></header>
 
 <div class="x-hero" id="top"><div class="wrap">
@@ -855,7 +879,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 
 <section class="x-coll" id="collections" aria-labelledby="coll-h" hidden><div class="wrap">
   <div class="x-coll-head">
-    <div><span class="x-label">Curated sets</span><h2 id="coll-h">Special Collections</h2><p>Hand-picked sets of scents that belong together, like a playlist built around one mood. Take the whole set and save <span id="coll-pct">10%</span>.</p></div>
+    <div><h2 id="coll-h">Curated Collections</h2><p>Hand-picked sets of scents that belong together, like a playlist built around one mood. Take the whole set and save <span id="coll-pct">10%</span>.</p></div>
   </div>
   <div class="x-colls" id="colls"></div>
 </div></section>
@@ -957,7 +981,7 @@ const MOOD={
 "Deziro Extrait de Parfum": "Deziro means desire in Esperanto, and this one pulls toward the sea. Alberto Morillas, the master perfumer behind CK One and Kenzo Flower, built it as an aquatic fougère: mandarin and ambergris drift over mint, star anise and geranium, with a faint, skin-like twist from carrot seed, then sandalwood, vetiver and clean musk. Fresh and easy, like the first morning of a long trip.",
 "Tempfluo Extrait de Parfum": "Tempfluo means the flow of time in Esperanto, and Nishane built it around one idea: we live once, so seize the day. Anne Flipo, the IFF master perfumer who co-created YSL Libre, opens it with mandarin, bergamot and a thread of saffron, then lets jasmine sambac, orange flower and praline melt into cashmere wood and vanilla. Sweet, golden and brighter than its notes suggest. Easy to lose track of time in.",
 "Hundred Silent Ways X Extrait de Parfum": "Its name comes from Rumi: “I closed my mouth and spoke to you in a hundred silent ways.” Nishane's original is one of its five best-sellers worldwide; for the tenth-anniversary X collection, Anne Flipo kept the tuberose, gardenia and iris blooming over peach and mandarin, added heliotrope, and swapped the soft woods for leather and patchouli. More elegant and more evening than the original, for when you'd rather let your presence do the talking.",
-"Wulong Cha X Extrait de Parfum": "For its tenth anniversary Nishane handed Wūlóng Chá to Julien Rasquinet with one brief: soften the sharp edges and let florals in. The oolong steps aside for green tea and magnolia; bergamot, yuzu and mandarin sparkle on top, a touch of thyme keeps it herbal, and creamy fig and soft musk settle it. Calm, polished and effortlessly fresh, like a slow morning in a garden at dawn.",
+"Wulong Cha X Extrait de Parfum": "For its tenth anniversary Nishane handed Wūlóng Chá to Julien Rasquinet with one brief: soften the sharp edges and let florals in. The oolong steps aside for green tea and magnolia; bergamot, yuzu and mandarin sparkle on top, a touch of thyme keeps it herbal, and creamy fig and soft musk settle it. Calm, polished and quietly fresh, like a slow morning in a garden at dawn.",
 "Nefs Extrait de Parfum": "Nefs is an old Ottoman Turkish word for the soul, and Nishane calls this its flagship oriental, written with One Thousand and One Nights in mind. Chris Maurice opens it with honey, saffron and fig, lets rose and osmanthus take the heart, then pours oud, whiskey, leather and amber underneath. Rich and boozy, like a palace banquet that runs until dawn.",
 "Suède et Safran Extrait de Parfum": "The name is simply French for suede and saffron, and Nishane describes it as a tailored leather jacket spiced with saffron from Iran and ambrette seed from India. Jorge Lee lets the saffron and ambrette glow over soft suede and ginger, then dries it down to leather and musk. Understated and tactile, like a jacket you've worn for years. If you love Tuscan Leather, this is its quieter cousin.",
 "Wulong Cha Extrait de Parfum": "Wūlóng chá is Mandarin for oolong tea, literally “black dragon tea”, and Nishane calls this one of the strongest fresh scents on the market. Bergamot, orange and mandarin sparkle over a cup of oolong with a pinch of nutmeg, then settle into Mediterranean fig and clean musk. Composed by Jorge Lee in 2015. Calm and bright, like the first cup of a slow morning.",
@@ -965,7 +989,7 @@ const MOOD={
 "Althaïr Eau de Parfum": "Althaïr is Parfums de Marly's vanilla, and the house describes it as majestic, subtle and surprisingly fresh: a Bourbon vanilla the way 18th-century Europe first fell for it, as a rare luxury. Bergamot, mandarin and elemi open bright, orange blossom, cinnamon and cardamom warm the heart, then vanilla, guaiac wood and praline settle in without ever turning sugary. Elegant rather than sweet, for cool evenings when you'd rather be noticed than loud.",
 "Black Orchid Eau de Parfum": "Black Orchid was the first fragrance Tom Ford ever put his name on, in 2006, built around a flower he called perfect and could barely find. Black truffle and ylang-ylang open rich and a little mysterious, rum-soaked black plum surrounds the orchid at the heart, and patchouli and creamy vanilla wrap it in warmth. Dark and opulent, for nights when you want to be remembered.",
 "Noir Eau de Parfum": "Tom Ford called Noir “perhaps my most personal fragrance yet”, and built it in two parts: the polished gentleman everyone meets, and the one underneath the suit. Bergamot, violet and pink pepper open clean and sharp, iris, rose and nutmeg hold the middle, then vanilla, amber and leather reveal themselves slowly. Composed by Olivier Gillotin in 2012. Classic evening elegance with a sensual side.",
-"Ombre Leather Eau de Parfum": "“Dust on wind, skin on skin” is how Tom Ford describes it: a leather born of the American West, the desert country Ford grew up around in Texas and Santa Fe. Cardamom and jasmine sambac drift over a black leather accord, patchouli and white moss, rugged but never rough, with amber like heat off rock and sand. Composed by Sonia Constant. Smooth and effortless, for the confident type who doesn't need to say much.",
+"Ombre Leather Eau de Parfum": "“Dust on wind, skin on skin” is how Tom Ford describes it: a leather born of the American West, the desert country Ford grew up around in Texas and Santa Fe. Cardamom and jasmine sambac drift over a black leather accord, patchouli and white moss, rugged but never rough, with amber like heat off rock and sand. Composed by Sonia Constant. Smooth and unhurried, for the confident type who doesn't need to say much.",
 "Tuscan Leather Eau de Parfum": "One of the original twelve Private Blend fragrances from 2007, the line Tom Ford calls his own scent laboratory, and still one of the boldest. Raspberry and saffron cut through rich, smoky leather like a glass of red in a leather armchair, with olibanum and night-blooming jasmine keeping it from ever going flat. Luxurious and unapologetic, for when you want to own the room.",
 "Uomo Born in Roma Coral Fantasy": "Valentino built Coral Fantasy around Rome at sunset, the coral-lit hour when the whole city glows. Nicolas Beaulieu and Jean-Christophe Hérault keep it simple: a juicy red apple on top, clary sage at the heart, and a soft, sweet tobacco underneath that lasts into the night. Smooth and easy to love, for evening plans that start with the sunset.",
 "Uomo Born in Roma Green Stravaganza": "Green Stravaganza takes you through Rome's gardens at sunrise, while the air is still cool. Nathalie Lorson and Olivier Cresp, the nose behind Mugler Angel, keep it to three ideas: Calabrian bergamot opens green and zesty, a coffee accord adds the dark, grounded twist, and Haitian vetiver carries it. Crisp enough for daytime, with just enough edge to carry into the night.",
@@ -987,7 +1011,7 @@ const HER={
 "Erba Pura Eau de Parfum":[1,"Juicy citrus and ripe fruit over vanilla and white musk. Bright, sweet and easy to love, it wears beautifully on women."],
 "Ani Extrait de Parfum":[1,"A cult favourite vanilla. Blackcurrant and Turkish rose give it a soft, romantic side, and the drydown stays close and warm."],
 "Replica Coffee Break":[1,"Creamy coffee and milky foam with orange blossom and lavender. Cozy and sweet, and a favourite with women who love a gourmand."],
-"Petit Matin Eau de Parfum":[1,"Lemon, orange blossom and hawthorn over soft musks. Clean, luminous and effortlessly elegant for daytime."],
+"Petit Matin Eau de Parfum":[1,"Lemon, orange blossom and hawthorn over soft musks. Clean, luminous and quietly elegant for daytime."],
 "Wulong Cha Extrait de Parfum":[1,"Bright citrus and oolong tea over creamy fig and musk. Fresh, soft and truly unisex, perfect for spring and summer."],
 "Wulong Cha X Extrait de Parfum":[1,"Magnolia and green tea over soft fig and musk. Fresh, floral and graceful, it wears beautifully on her."],
 "Tero Extrait de Parfum":[2,"Salted caramel and warm cinnamon soften the pepper and vetiver. Earthy, cozy and confident on anyone."],
@@ -999,7 +1023,7 @@ const HER={
 "Kredo Extrait de Parfum":[2,"A floral heart of osmanthus over sandalwood and soft suede. Refined and warm, with a quiet elegance."],
 "Su\u00e8de et Safran Extrait de Parfum":[2,"Buttery suede, saffron and musk. Soft rather than rugged, like a favourite suede jacket."],
 "Tuscan Leather Eau de Parfum":[2,"Raspberry and jasmine soften its rich leather. Bold and luxurious, for the woman who loves a statement leather."],
-"Ombre Leather Eau de Parfum":[2,"Jasmine and cardamom keep the leather smooth rather than heavy. Sleek, confident and effortlessly cool."],
+"Ombre Leather Eau de Parfum":[2,"Jasmine and cardamom keep the leather smooth rather than heavy. Sleek, confident and cool without trying."],
 "Hacivat Extrait de Parfum":[2,"Juicy pineapple and grapefruit over earthy woods. Bright, fresh and confident, easy to wear anywhere."],
 "Uomo Born in Roma Coral Fantasy":[2,"Sold as a men's scent, but its sweet red apple and soft tobacco give it a real unisex charm."],
 "Replica Jazz Club":[2,"Rum, vanilla and tobacco leaf on a woman read warm and a little mysterious rather than masculine. An evening scent with real presence."],
@@ -1056,7 +1080,7 @@ const SHERPA={
 },
 "Petit Matin Eau de Parfum": {
 "vibe": "Paris at dawn: lemon and litsea cubeba over lavandin, orange blossom and hawthorn, settling into clean musks.",
-"when": "Early light from May to September; bright, clean and effortless before noon."
+"when": "Early light from May to September; bright, clean and easy before noon."
 },
 "Ani Extrait de Parfum": {
 "vibe": "Blue ginger and bergamot that warm into Turkish rose, blackcurrant and a vanilla-benzoin drydown that stays close and warm.",
@@ -1653,8 +1677,8 @@ function strip(track,N,onIdx,onTap){const SL=[...track.children];let vi=+track.d
  return {go:i=>{if(i!==((vi%N)+N)%N)go(i)}}}
 function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v],sp=isSpot(p);
  return `<article class="card${sp?" spot":""}" data-i="${i}">
-   <div class="photo">${sp?`<div class="spot-rib"><span>&#10022;</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?photoStrip(p,st):bottleArt(p,i)}</div>
-   <div class="body"><div class="brand">${p.brand}<span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name">${p.name}</div><a class="pp-link" href="${pUrl(p)}">Full page &rarr;</a>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
+   <div class="photo">${sp?`<div class="spot-rib"><span class="rib-vv">VV</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?photoStrip(p,st):bottleArt(p,i)}</div>
+   <div class="body"><div class="brand">${p.brand}<span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name">${p.name}</div><a class="pp-link" href="${pUrl(p)}">See the full page &rarr;</a>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
    <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}${k==="luxe"?'<span class="vup">+$3</span>':k==="roll"?'<span class="vup">+$4</span>':""}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
    <div class="sizes">${V.sizes.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml<span class="pml-b">${pml(p,st.v,z)}</span></button>`).join("")}</div>
@@ -1671,11 +1695,11 @@ function bind(card){const i=+card.dataset.i,p=PRODUCTS[i],st=state[i];
   if(S&&!fromSwipe)S.go(VKEYS.indexOf(st.v))};
  if(tk){tk.dataset.vi=VKEYS.indexOf(st.v);S=strip(tk,VKEYS.length,i=>applyV(VKEYS[i],true),()=>{location.href=pUrl(p)});tk.setAttribute("role","link");tk.title="Open the full page"}
  card.querySelectorAll(".vt").forEach(b=>b.onclick=()=>applyV(b.dataset.v));
- const ab=card.querySelector(".add");if(ab)ab.onclick=()=>{Cart.add(p,st.v,st.z);ab.textContent="Added ✓";ab.classList.add("done");clearTimeout(ab._t);ab._t=setTimeout(()=>{ab.textContent="Add to cart";ab.classList.remove("done")},1400)};
+ const ab=card.querySelector(".add");if(ab)ab.onclick=()=>{Cart.add(p,st.v,st.z);ab.textContent="Added";ab.classList.add("done");clearTimeout(ab._t);ab._t=setTimeout(()=>{ab.textContent="Add to cart";ab.classList.remove("done")},1400)};
  function bindSizes(){card.querySelectorAll(".sz").forEach(b=>b.onclick=()=>{st.z=+b.dataset.s;st.zs[st.v]=st.z;
   card.querySelectorAll(".sz").forEach(x=>x.classList.toggle("on",x===b));card.querySelector(".price").innerHTML=priceHTML(p,st.v,st.z);card.querySelector(".vdesc").innerHTML=vdescHTML(st.v,st.z)})}
  bindSizes()}
-function equalize(){const cs=[...g.querySelectorAll(".card")];
+function equalize(){return;const cs=[...g.querySelectorAll(".card")];
  if(cs.length&&new Set(cs.map(c=>c.offsetLeft)).size<2){cs.forEach(c=>c.style.minHeight="");return}
  cs.forEach(c=>{c.style.minHeight="";c._open=c.querySelector(".pyr")?.open;const d=c.querySelector(".pyr");if(d)d.open=false});
  const rows={};cs.forEach(c=>(rows[c.offsetTop]=rows[c.offsetTop]||[]).push(c));
@@ -1755,6 +1779,7 @@ fetch("zodiac.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
    Sets live in bundles.json (scent ids, % off, sizes). The checkout reads the same file,
    so the set price shown here is the price charged. A set can be bought once every scent in it is in stock. */
 let BUNDLES=null;
+const COLL_ART={"boozy": "img/coll-boozy-69dd4f12ff.jpg", "born-in-roma": "img/coll-born-in-roma-509954e346.jpg", "leather": "img/coll-leather-e1bd5acbf1.jpg", "nishane-x": "img/coll-nishane-x-a28cd8fd40.jpg", "tea-x-flames": "img/coll-tea-x-flames-3a30e2b4d5.jpg", "time-capsule": "img/coll-time-capsule-8cbf5a74c1.jpg", "tom-ford": "img/coll-tom-ford-fc3eb29cc7.jpg", "warm": "img/coll-warm-7eaa7d32fd.jpg"};
 const bItems=b=>b.sq.map(id=>PRODUCTS.find(p=>p.sq===id)).filter(Boolean);
 const bReady=b=>bItems(b).length===b.sq.length&&bItems(b).every(inStock);
 const bBase=(b,z)=>bItems(b).reduce((a,p)=>a+p.p[z],0);
@@ -1766,7 +1791,7 @@ function collections(){
  const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
  document.getElementById("coll-pct").textContent=BUNDLES.pct+"%";
  box.innerHTML=BUNDLES.bundles.map((b,bi)=>{const ps=bItems(b),ready=bReady(b);
-  return `<article class="bundle" data-b="${bi}"><span class="house">${esc(b.house)} · ${ps.length} scents</span><h3>${esc(b.name)}</h3><a class="pp-link" href="/collections/${esc(b.id)}/">Full page &rarr;</a>
+  return `<article class="bundle" data-b="${bi}">${COLL_ART[b.id]?`<img class="bshot" src="${COLL_ART[b.id]}" alt="${esc(b.name)} bottles side by side" width="1200" height="1200" loading="lazy" decoding="async">`:""}<span class="house">${esc(b.house)} · ${ps.length} scents</span><h3>${esc(b.name)}</h3><a class="pp-link" href="/collections/${esc(b.id)}/">See the full page &rarr;</a>
   <p class="blurb">${esc(b.blurb)}</p>
   <ul>${ps.map(p=>`<li><button type="button" data-jump="${PRODUCTS.indexOf(p)}">${esc(shortName(p))}${inStock(p)?"":` <span class="soon">· arriving soon</span>`}</button></li>`).join("")}</ul>
   <div class="buy"><div class="sizes" role="group" aria-label="Vial size">${BUNDLES.sizes.map((z,k)=>`<button type="button" data-z="${z}" class="${k?"":"on"}" aria-pressed="${!k}">${z} ml each</button>`).join("")}</div>
@@ -1908,7 +1933,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   if(!r.length)return `<p class="qz-none">Nothing fits all of that yet. Try fewer "avoid" picks, or a different scent family or season.</p>`;
   const avail=r.filter(x=>inStock(x.p)),setPrice=avail.reduce((a,x)=>a+unit(x.p,"p",2),0);
   const used=new Set();
-  return `<div class="qz-res">${r.map((x,k)=>{const p=x.p,soon=!inStock(p);return `<div class="qz-r ${k||soon?"":"best"}${soon?" qz-soon":""}"><div class="tag">${soon?"Arriving soon · worth the wait":k?"Also on your trail":"The Sherpa’s top pick"}</div>
+  return `<div class="qz-res">${r.map((x,k)=>{const p=x.p,soon=!inStock(p);return `<div class="qz-r ${k||soon?"":"best"}${soon?" qz-soon":""}"><img class="qz-thumb" src="${p.img}" alt="" width="72" height="72" loading="lazy"><div class="tag">${soon?"Arriving soon · worth the wait":k?"Also on your trail":"The Sherpa’s top pick"}</div>
     <h4>${esc(p.brand)} ${esc(p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Eau de Toilette|Parfum)$/,""))}</h4>
     <p class="why">${FAM_LABEL[p.cat]||p.cat}${p.cat2?" with "+(FAM_LABEL[p.cat2]||p.cat2).toLowerCase():""} · ${SEA_TXT[p.sea]} · ${TM_TXT[p.tm]} · ${STR_TXT[p.str||2]}</p><p class="n">${whyText(p,k,used)}</p>${ans.who==="her"&&p.herWhy?`<p class="n qz-her"><b>Why it <em>also</em> works for her:</b> ${esc(p.herWhy)}</p>`:""}
     ${p.n?`<details class="qz-pyr"${openNotes.has(x.i)?" open":""} data-i="${x.i}"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.map(esc).join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.map(esc).join(", ")}</dd><dt>Base</dt><dd>${p.n.b.map(esc).join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.map(esc).join(", ")}</dd>`}</dl></details>`:""}
@@ -1918,7 +1943,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  function famInfo(q){const sel=(ans.fam||[]).filter(v=>v!=="any");if(!sel.length)return "";
   return `<div class="qz-fam">${sel.map(c=>{const o=q.o.find(x=>x[0]===c),nm=p=>{const n=short(p.name);return n.split(" ").length>2?n:p.brand+" "+n},names=PRODUCTS.filter(p=>p.cat===c).map(nm),also=PRODUCTS.filter(p=>p.cat2===c).map(nm);
    return `<p><span class="dot" style="--c:${DOT[c]}"></span><b>${o[1]}</b> notes like ${o[2].toLowerCase()}. <span class="ex">In the collection: ${esc(list(names))}.${also.length?` With a ${o[1].toLowerCase()} side: ${esc(list(also))}.`:""}</span></p>`}).join("")}</div>`}
- function draw(){saveQ();if(mode==="quick")return quick();if(step>=Q.length)return results();steps()}
+ function draw(){saveQ();const ov=document.getElementById("qz-ov");if(ov)ov.scrollTop=0;if(mode==="quick")return quick();if(step>=Q.length)return results();steps()}
  function quick(){
   const who=!!ans.who,any=hasAns();
   box.innerHTML=toggleHTML()+`<div class="qz-step">Scent Sherpa</div><h3 class="qz-q" id="qz-title">Let’s find your scent</h3><p class="qz-hint">${who?"Tell me what you like and I’ll point the way. Your picks update as you tap.":"Start with who’s wearing it, then tell me what you like. Your picks update as you tap."}</p>
@@ -1934,7 +1959,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   const q=Q[step],sel=ans[q.k],multi=!!q.multi,chosen=multi?(sel||[]):[sel];
   box.innerHTML=toggleHTML()+`<div class="qz-step">Question ${step+1} of ${Q.length}</div><div class="qz-bar"><i style="width:${(step/Q.length)*100}%"></i></div>
    <h3 class="qz-q" id="qz-title">${q.q}</h3>${q.hint?`<p class="qz-hint">${q.hint}</p>`:""}
-   <div class="qz-opts">${q.o.map(([v,l,sub])=>`<button type="button" class="qz-opt ${chosen.includes(v)?"on":""}" data-v="${v}" aria-pressed="${chosen.includes(v)}">${q.k==="fam"&&DOT[v]?`<span class="dot" style="--c:${DOT[v]}"></span>`:""}<span>${l}${sub?`<small>${sub}</small>`:""}</span></button>`).join("")}</div>
+   <div class="qz-opts${q.o.length>8?" dense":""}">${q.o.map(([v,l,sub])=>`<button type="button" class="qz-opt ${chosen.includes(v)?"on":""}" data-v="${v}" aria-pressed="${chosen.includes(v)}">${q.k==="fam"&&DOT[v]?`<span class="dot" style="--c:${DOT[v]}"></span>`:""}<span>${l}${sub?`<small>${sub}</small>`:""}</span></button>`).join("")}</div>
    <div class="qz-nav">${step?`<button type="button" class="qz-back">Back</button>`:"<span></span>"}${multi?`<button type="button" class="btn qz-next" ${chosen.length?"":"disabled"}>Next</button>`:""}</div>`;
   box.querySelectorAll(".qz-opt").forEach(b=>b.onclick=()=>{pick(q,b.dataset.v,false);if(multi)draw();else{step++;draw()}});
   const bk=box.querySelector(".qz-back");if(bk)bk.onclick=()=>{step--;draw()};
@@ -1961,8 +1986,8 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  function showPill(){pill.hidden=!(hasAns()&&(mode==="quick"||step>=Q.length))}
  /* keep keyboard focus inside the dialog while it is open */
  function trap(e){if(ov.hidden||e.key!=="Tab")return;const f=[...ov.querySelectorAll("button,[href],input,select,textarea,summary,[tabindex]:not([tabindex='-1'])")].filter(el=>!el.disabled&&el.offsetParent!==null);if(!f.length)return;const first=f[0],lastEl=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();lastEl.focus()}else if(!e.shiftKey&&document.activeElement===lastEl){e.preventDefault();first.focus()}}
- function open(){last=document.activeElement;pill.hidden=true;if(mode==="steps"&&step<Q.length&&!hasAns())step=0;draw();ov.hidden=false;document.body.style.overflow="hidden";setTimeout(()=>{const t=box.querySelector(".qz-m.on");if(t)t.focus({preventScroll:true})},30)}
- function close(){ov.hidden=true;document.body.style.overflow="";showPill();if(window.VVSherpaRefresh)window.VVSherpaRefresh();if(last&&last.focus)last.focus({preventScroll:true})}
+ function open(){last=document.activeElement;pill.hidden=true;if(mode==="steps"&&step<Q.length&&!hasAns())step=0;draw();ov.hidden=false;document.body.style.overflow="hidden";document.body.classList.add("qz-open");setTimeout(()=>{const t=box.querySelector(".qz-m.on");if(t)t.focus({preventScroll:true})},30)}
+ function close(){ov.hidden=true;document.body.style.overflow="";document.body.classList.remove("qz-open");showPill();if(window.VVSherpaRefresh)window.VVSherpaRefresh();if(last&&last.focus)last.focus({preventScroll:true})}
  document.querySelectorAll("[data-quiz]").forEach(b=>b.onclick=open);
  document.getElementById("qz-x").onclick=close;
  pill.querySelector(".qz-pill-go").onclick=open;pill.querySelector(".qz-pill-x").onclick=()=>{pill.hidden=true};
@@ -2045,7 +2070,7 @@ var Cart=(function(){
   .catch(function(e){msg((e&&e.message)||"Checkout couldn't be started. Please try again, or email velvetvolute@gmail.com.");btn.disabled=false;btn.textContent="Checkout"});
  }
  document.addEventListener("DOMContentLoaded",function(){});
- $("cart-open").onclick=open;$("cart-x").onclick=close;$("cart-full").onclick=openFull;
+ $("cart-open").onclick=open;$("cart-x").onclick=close;$("cart-back").onclick=close;$("cart-full").onclick=openFull;
  if(location.hash==="#cart"){history.replaceState(null,"",location.pathname);open();}
  else if(location.hash==="#cart-page"){open();setFull(true)}
  $("cart-ov").addEventListener("click",function(e){if(e.target===$("cart-ov"))close()});
@@ -2121,7 +2146,11 @@ var Cart=(function(){
 .sh-bub .sh-x:hover{background:rgba(181,148,106,.15)}
 .qz-pill{display:none!important}
 @media (prefers-reduced-motion:reduce){.sh-bub,.sh-fab{transition:none}.sh-fab::after{animation:none}}
-@media (max-width:600px){.sh-fab{height:50px;padding:0 16px 0 12px;font-size:12px}.sh-fab svg{width:24px;height:24px}.sh-bub{bottom:calc(80px + env(safe-area-inset-bottom,0px))}}
+@media (max-width:600px){.sh-fab{height:50px;padding:0 16px 0 12px;font-size:12px}.sh-fab svg{width:24px;height:24px}.sh-bub{bottom:calc(80px + env(safe-area-inset-bottom,0px))}
+ .sh-fab.compact{width:50px;padding:0;justify-content:center}.sh-fab.compact .sh-lbl{display:none}}
+.sh-fab{background:#e2c38f;box-shadow:0 10px 28px rgba(10,2,4,.55)}
+.sh-fab:hover{box-shadow:0 14px 32px rgba(10,2,4,.6)}
+body.qz-open .sh-bub{opacity:0;pointer-events:none}
 body.sh-hide .sh-fab,body.sh-hide .sh-bub{display:none}
 </style>
 <button type="button" class="sh-fab" id="sh-fab" aria-label="Ask the Scent Sherpa" title="Ask the Scent Sherpa">
@@ -2147,6 +2176,7 @@ body.sh-hide .sh-fab,body.sh-hide .sh-bub{display:none}
  function go(){hide();set(K,"1");
   if(window.VVSherpa&&window.VVSherpa.open)window.VVSherpa.open();else location.href="/#quiz"}
  fab.onclick=go;document.getElementById("sh-go").onclick=go;
+ addEventListener("scroll",function(){fab.classList.toggle("compact",scrollY>320)},{passive:true});
  document.getElementById("sh-x").onclick=function(){hide();set(K,"1")};
  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&bub.classList.contains("on"))hide()});
  function refresh(){var p=hasPicks();document.getElementById("sh-dot").hidden=!p;var t=p?"See your Scent Sherpa picks":"Ask the Scent Sherpa";fab.setAttribute("aria-label",t);fab.title=t;document.getElementById("sh-lbl").textContent=p?"Your picks":"Ask the Scent Sherpa"}

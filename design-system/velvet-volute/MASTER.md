@@ -1,233 +1,50 @@
-# Design System Master File
+# Velvet Volute — design system (master)
 
-> **LOGIC:** When building a specific page, first check `design-system/pages/[page-name].md`.
-> If that file exists, its rules **override** this Master file.
-> If not, strictly follow the rules below.
+> Source of truth for velvetvolute.ca. When a page needs an exception, say so in that page's own stylesheet; there are no page override files.
+> Rewritten 2026-10-17 after the Task 3 design review. The earlier generated version (light ground, Montserrat, "Liquid Glass") never matched the site and was retired.
 
----
+## Identity in one line
+Deep wine and gold, dark ground, editorial layout, real product photography on a merlot table. Never a light background.
 
-**Project:** Velvet Volute
-**Generated:** 2026-10-13 19:37:25
-**Category:** E-commerce Luxury
-**Design Dials:** Variance 5/10 (Balanced / Modern) | Motion 3/10 (Subtle) | Density 3/10 (Spacious)
+## Colour
 
----
+| Role | Hex | Where |
+| --- | --- | --- |
+| Ground (merlot) | `#4A0E1E` | page background |
+| Deep merlot | `#2C0610` | header, footer bands, full-width dark sections, selected states on camel |
+| Deeper | `#22050C` | footer |
+| Glow | `#6E1A31` | hero radial only |
+| Camel | `#A07B52` | cards, panels, tiles, dialogs (the only light surface) |
+| Gold | `#B5946A` | text on merlot, rules, icons |
+| Gold light | `#E2C38F` / `#CDB08A` | primary buttons, headings on merlot |
+| Ink on merlot | `#E8D3B4` | body text on dark ground |
+| Ink on camel | `#330A14` (muted `#330A14` at 90%) | text on camel; `#2C0610` for labels |
 
-## Global Rules
+Contrast floors: 4.5:1 for all text. Pale gold on camel is not allowed (1.9:1). Brand labels on camel use `#2C0610` (5.8:1).
 
-### Color Palette
+## Type
+- Headings and story copy: **Cormorant Garamond** (400/500/600, italic 400/500).
+- Interface and body: **Jost** (300/400/500/600).
+- Two families only. No Lora, no monospace.
+- Scale: 16–17 px body (1.5–1.75), 12.5–14 px small labels, 24–32 px section headings, 46 px page titles, hero up to 100 px. Sentence case for labels; caps only on buttons and the top bar.
 
-| Role | Hex | CSS Variable |
-|------|-----|--------------|
-| Primary | `#1C1917` | `--color-primary` |
-| On Primary | `#FFFFFF` | `--color-on-primary` |
-| Secondary | `#44403C` | `--color-secondary` |
-| On Secondary | `#FFFFFF` | `--color-on-secondary` |
-| Accent/CTA | `#A16207` | `--color-accent` |
-| On Accent/CTA | `#FFFFFF` | `--color-on-accent` |
-| Background | `#FAFAF9` | `--color-background` |
-| Foreground | `#0C0A09` | `--color-foreground` |
-| Card | `#FFFFFF` | `--color-card` |
-| Card Foreground | `#0C0A09` | `--color-card-foreground` |
-| Muted | `#E8ECF0` | `--color-muted` |
-| Muted Foreground | `#475569` | `--color-muted-foreground` |
-| Border | `#D6D3D1` | `--color-border` |
-| Destructive | `#DC2626` | `--color-destructive` |
-| On Destructive | `#FFFFFF` | `--color-on-destructive` |
-| Ring | `#1C1917` | `--color-ring` |
+## Surfaces and lines
+- Surfaces are flat colour, separated by a tone step. No gradients (the hero glow and the photo scrim are the exceptions), no shadows on anything at rest. Shadows only on the cart drawer, the Sherpa dialog and the floating pill.
+- No hairline dividers, no 1 px outlined boxes. Buttons and chips are filled (`rgba(44,6,16,.10)` on camel; `#4A0E1E` when selected).
+- Corners: 4 px on panels and tiles, fully round on pills and chips.
 
-**Color Notes:** Premium dark + gold accent [Accent adjusted from #CA8A04]
+## Banned (tells)
+Eyebrow/kicker labels above headings (the zodiac block's spaced-caps heading is a heading, not an eyebrow); 01/02/03 step numbers; tiny tracked-caps labels; emoji or ✦ as ornament (use the VV monogram); icon-topped feature cards; glass/blur panels; green or any colour outside the palette for states.
 
-### Typography
-
-- **Heading Font:** Cormorant
-- **Body Font:** Montserrat
-- **Mood:** luxury, high-end, fashion, elegant, refined, premium
-- **Google Fonts:** [Cormorant + Montserrat](https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap)
-
-**CSS Import:**
-```css
-@import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
-```
-
-### Spacing Variables
-
-*Density: 3/10 — Spacious*
-
-| Token | Value | Usage |
-|-------|-------|-------|
-| `--space-xs` | `4px` / `0.25rem` | Tight gaps |
-| `--space-sm` | `8px` / `0.5rem` | Icon gaps, inline spacing |
-| `--space-md` | `24px` / `1.5rem` | Standard padding |
-| `--space-lg` | `32px` / `2rem` | Section padding |
-| `--space-xl` | `48px` / `3rem` | Large gaps |
-| `--space-2xl` | `64px` / `4rem` | Section margins |
-| `--space-3xl` | `96px` / `6rem` | Hero padding |
-
-### Shadow Depths
-
-| Level | Value | Usage |
-|-------|-------|-------|
-| `--shadow-sm` | `0 1px 2px rgba(0,0,0,0.05)` | Subtle lift |
-| `--shadow-md` | `0 4px 6px rgba(0,0,0,0.1)` | Cards, buttons |
-| `--shadow-lg` | `0 10px 15px rgba(0,0,0,0.1)` | Modals, dropdowns |
-| `--shadow-xl` | `0 20px 25px rgba(0,0,0,0.15)` | Hero images, featured cards |
-
----
-
-## Component Specs
-
-### Buttons
-
-```css
-/* Primary Button */
-.btn-primary {
-  background: #A16207;
-  color: #FFFFFF;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 200ms ease;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
-/* Secondary Button */
-.btn-secondary {
-  background: transparent;
-  color: #1C1917;
-  border: 2px solid #1C1917;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 200ms ease;
-  cursor: pointer;
-}
-```
-
-### Cards
-
-```css
-.card {
-  background: #FAFAF9;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: var(--shadow-md);
-  transition: all 200ms ease;
-  cursor: pointer;
-}
-
-.card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-}
-```
-
-### Inputs
-
-```css
-.input {
-  padding: 12px 16px;
-  border: 1px solid #E2E8F0;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 200ms ease;
-}
-
-.input:focus {
-  border-color: #1C1917;
-  outline: none;
-  box-shadow: 0 0 0 3px #1C191720;
-}
-```
-
-### Modals
-
-```css
-.modal-overlay {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-}
-
-.modal {
-  background: white;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: var(--shadow-xl);
-  max-width: 500px;
-  width: 90%;
-}
-```
-
----
-
-## Style Guidelines
-
-**Style:** Liquid Glass
-
-**Keywords:** dynamic material, optical glass, translucency, lensing, refraction, fluid morphing, system navigation
-
-**Best For:** Apple-platform navigation, controls, and system-aligned app chrome
-
-**Key Effects:** Lensing and refraction, adaptive translucency, and fluid morph transitions aligned to Apple platform behavior
-
-### Page Pattern
-
-**Pattern Name:** Feature-Rich Showcase
-
-- **Conversion Strategy:** Clear feature hierarchy. One key message per card. Strong CTA repetition.
-- **CTA Placement:** Hero (sticky) + After features + Bottom
-- **Section Order:** Hero (value prop) > Feature grid/cards (4-6) > Use cases or benefits > Social proof or logos > CTA
-
----
+## Components
+- Product card: photo strip (classic / luxury / roll-on, swipe), brand · for him/unisex in sentence case, name, story in Cormorant italic, "Read the story", vial tabs, filled size buttons, price + merlot ADD TO CART ("Added" in deep merlot). Cards take their natural height.
+- Tiles (houses, scents, collections): camel, flat, photo on top where one exists, name band below.
+- Navigation: wordmark, six links, cart pill; compact under 1560 px; one scrollable row on phones. Links stay visible on phones.
+- Scent Sherpa: floating gold pill (collapses to the compass on phones after the hero), camel dialog that fits the viewport with Back/Next kept in view, picks shown with a 72 px photo.
+- Footer: deep merlot, two columns, identical on every page.
 
 ## Motion
+Subtle: 150–350 ms ease-out; transforms and opacity only; `prefers-reduced-motion` honoured.
 
-**Scroll Reveal** (Subtle) — Trigger: scroll (viewport enter) | Duration: 300-400ms | Easing: `power1.out`
-
-```js
-gsap.from(el, { opacity: 0, y: 12, duration: 0.35, ease: 'power1.out', scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none reverse' } });
-```
-
-**Framework notes:** Requires the ScrollTrigger plugin registered once via gsap.registerPlugin(ScrollTrigger); Use matchMedia('(prefers-reduced-motion: reduce)') to skip non-essential motion and render the final state immediately
-
-- ✅ Keep the y offset small (8-16px) so it reads as a fade, not a slide
-- ❌ Don't reveal below-the-fold content needed for SEO/crawlers as invisible-by-default without a no-JS fallback
-- ⚡ toggleActions 'play none none reverse' avoids re-triggering on every scroll direction change
-
----
-
-## Anti-Patterns (Do NOT Use)
-
-- ❌ Vibrant & Block-based
-- ❌ Playful colors
-
-### Additional Forbidden Patterns
-
-- ❌ **Emojis as icons** — Use SVG icons (Heroicons, Lucide, Simple Icons)
-- ❌ **Missing cursor:pointer** — All clickable elements must have cursor:pointer
-- ❌ **Layout-shifting hovers** — Avoid scale transforms that shift layout
-- ❌ **Low contrast text** — Maintain 4.5:1 minimum contrast ratio
-- ❌ **Instant state changes** — Always use transitions (150-300ms)
-- ❌ **Invisible focus states** — Focus states must be visible for a11y
-
----
-
-## Pre-Delivery Checklist
-
-Before delivering any UI code, verify:
-
-- [ ] No emojis used as icons (use SVG instead)
-- [ ] All icons from consistent icon set (Heroicons/Lucide)
-- [ ] `cursor-pointer` on all clickable elements
-- [ ] Hover states with smooth transitions (150-300ms)
-- [ ] Light mode: text contrast 4.5:1 minimum
-- [ ] Focus states visible for keyboard navigation
-- [ ] `prefers-reduced-motion` respected
-- [ ] Responsive: 375px, 768px, 1024px, 1440px
-- [ ] No content hidden behind fixed navbars
-- [ ] No horizontal scroll on mobile
+## Checks before any deploy
+`node .claude/skills/design-taste-frontend/scripts/lint.mjs index.html about.html how-it-works.html pages.css` and `inspect.mjs` on the home, a product page and /houses/; contrast 4.5:1; no horizontal scroll at 1440 and 390; Sherpa and cart flows in headless Chromium.

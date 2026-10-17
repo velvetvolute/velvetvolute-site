@@ -98,7 +98,7 @@ ${FONTS}
 <div class="bar">Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
   <a class="logo" href="/"><span class="mono">VV</span>Velvet <span>Volute</span></a>
-  <nav><a href="/#shop">Shop</a><a href="/houses/"${current === "houses" ? ' aria-current="page"' : ""}>Fragrance Houses</a><a href="/collections/"${current === "collections" ? ' aria-current="page"' : ""}>Special Collections</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="/#contact">Contact</a></nav><a class="cart-open" href="/#cart-page" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></a>
+  <nav><a href="/#shop">Shop</a><a href="/houses/"${current === "houses" ? ' aria-current="page"' : ""}>Fragrance Houses</a><a href="/collections/"${current === "collections" ? ' aria-current="page"' : ""}>Curated Collections</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="/#contact">Contact</a></nav><a class="cart-open" href="/#cart-page" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></a>
 </div></header>
 <main>`;
 }
@@ -119,7 +119,11 @@ ${extraScript}
 /* ---------- tiles ---------- */
 const collArt = (b) => { const f = readdirSync(join(ROOT, "img")).find((n) => n.startsWith(`coll-${b.id}-`) && n.endsWith(".jpg")); return f ? "img/" + f : null; };
 const houseArt = (brand) => ["svg", "png"].map((e) => `content/houses/${hSlug(brand)}.${e}`).find((f) => existsSync(join(ROOT, f)));
-const houseTile = (brand, meta, count, soon) => { const art = houseArt(brand); return `<a class="htile${soon ? " soon" : ""}" href="${hUrl(brand)}">${art ? `<img class="art" src="/${art}" alt="${attr(brand)}" width="200" height="80" loading="lazy">` : `${meta.pre ? `<span class="pre">${esc(meta.pre)}</span>` : ""}<span class="n${(meta.mark || brand).length > 10 ? " two" : ""}">${esc(meta.mark || brand)}</span>`}<span class="rule"></span><span class="o">${esc(meta.city || "")}</span><span class="cnt">${soon ? "arriving soon" : `${count} scent${count === 1 ? "" : "s"}`}</span></a>`; };
+// Bottle shown on each house tile: Justin's pick per house (first entry that has a real photo), else the first scent with a real photo, else none.
+const HOUSE_BOTTLE = { "Armani": ["I Will"], "Claude Marsal": ["Or Noir"], "Ferragamo": ["Uomo Signature"], "Gabriella Antosh": ["Zoltan"], "Givenchy": ["Gentleman"], "Maison Francis Kurkdjian": ["Baccarat Rouge"], "Maison Margiela": ["Jazz Club"], "Nishane": ["Hacivat"], "Tom Ford": ["Black Orchid"], "Valentino": ["Coral Fantasy"], "Xerjoff": ["Erba Pura"], "Yves Saint Laurent": ["La Nuit"] };
+const realPhoto = (p) => p.img && !/coming-soon/.test(p.img);
+const houseBottle = (brand) => { const own = PRODUCTS.filter((p) => p.brand === brand && realPhoto(p)); const want = (HOUSE_BOTTLE[brand] || []).map((k) => own.find((p) => p.name.includes(k))).find(Boolean); return (want || own[0] || {}).img; };
+const houseTile = (brand, meta, count, soon) => { const art = houseArt(brand), bottle = art ? null : houseBottle(brand); return `<a class="htile${soon ? " soon" : ""}${bottle ? " has-bottle" : ""}" href="${hUrl(brand)}">${bottle ? `<img class="bottle" src="/${bottle}" alt="" width="400" height="240" loading="lazy" decoding="async">` : ""}${art ? `<img class="art" src="/${art}" alt="${attr(brand)}" width="200" height="80" loading="lazy">` : `${meta.pre ? `<span class="pre">${esc(meta.pre)}</span>` : ""}<span class="n${(meta.mark || brand).length > 10 ? " two" : ""}">${esc(meta.mark || brand)}</span>`}<span class="rule"></span><span class="o">${esc(meta.city || "")}</span><span class="cnt">${soon ? "arriving soon" : `${count} scent${count === 1 ? "" : "s"}`}</span></a>`; };
 const scentTile = (p) => `<a class="stile" href="${pUrl(p)}"><span class="ph"><img src="/${p.img}" width="720" height="720" alt="${attr(p.brand + " " + p.name)} bottle" loading="lazy" decoding="async"></span><span class="t"><span class="b">${esc(p.brand)}</span><span class="nm">${esc(p.name)}</span><span class="pr">${inStock(p) ? `From ${money(low(p))}` : `<em>${esc(p.limited || "Arriving soon")}</em>`}</span></span></a>`;
 
 /* ---------- product page ---------- */
@@ -223,7 +227,7 @@ function housePage(brand, items) {
   return head({ title, desc, url, jsonld: ld, current: "houses" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Fragrance Houses", href: "/houses/" }, { name: brand }]) + `
 <section class="house wrap">
  <div class="house-head">${houseTile(brand, meta, items.length, false).replace("<a ", '<div ').replace("</a>", "</div>").replace(/href="[^"]*"/, "")}
-  <div class="house-about"><div class="eyebrow">About the fragrance house</div><h1>${esc(brand)}</h1>
+  <div class="house-about"><h1>${esc(brand)}</h1>
    ${(meta.about || "").split(/\n+/).map((t) => `<p>${esc(t)}</p>`).join("")}
    ${facts.length ? `<dl class="facts">${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
    ${meta.source ? `<p class="src">Facts checked against the house's own site and independent references.</p>` : ""}
@@ -241,7 +245,7 @@ function housesIndex(groups) {
   /* every house sits in the one grid; "arriving soon" is shown on the scent tiles inside each house page */
   return head({ title, desc, url, jsonld: crumbLD([{ name: "Shop", href: "/" }, { name: "Fragrance Houses" }]), current: "houses" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Fragrance Houses" }]) + `
 <section class="houses wrap">
- <div class="eyebrow">Fragrance Houses</div><h1>Every house we pour from</h1>
+ <h1>Every house we pour from</h1>
  <p class="lede">${groups.length} houses, ${PRODUCTS.length} scents, one standard: every decant comes from an authentic bottle we own. Pick a house to read its story and see what we carry.</p>
  <div class="htiles">${groups.map(([b, items]) => houseTile(b, HOUSES[b] || {}, items.length, false)).join("")}</div>
 </section>` + tail();
@@ -252,8 +256,8 @@ function collectionPage(b) {
   const items = bItems(b), url = cUrl(b), ready = bReady(b);
   const title = `${b.name} | ${b.house} decant set | Velvet Volute`;
   const desc = `${b.blurb} ${items.length} scents as 2 ml or 5 ml decants, ${BUNDLES.pct}% off the set.`;
-  const ld = [crumbLD([{ name: "Shop", href: "/" }, { name: "Special Collections", href: "/collections/" }, { name: b.name }]), { "@context": "https://schema.org", "@type": "Product", name: b.name, description: desc, url: SITE + url, image: items.map((p) => `${SITE}/${p.img}`), brand: { "@type": "Brand", name: b.house }, offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: bPrice(b, BUNDLES.sizes[0]), highPrice: bPrice(b, BUNDLES.sizes[BUNDLES.sizes.length - 1]), offerCount: BUNDLES.sizes.length, availability: ready ? "https://schema.org/InStock" : "https://schema.org/PreOrder" } }];
-  return head({ title, desc, url, image: collArt(b) || items[0]?.img, jsonld: ld, current: "collections" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Special Collections", href: "/collections/" }, { name: b.name }]) + `
+  const ld = [crumbLD([{ name: "Shop", href: "/" }, { name: "Curated Collections", href: "/collections/" }, { name: b.name }]), { "@context": "https://schema.org", "@type": "Product", name: b.name, description: desc, url: SITE + url, image: items.map((p) => `${SITE}/${p.img}`), brand: { "@type": "Brand", name: b.house }, offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: bPrice(b, BUNDLES.sizes[0]), highPrice: bPrice(b, BUNDLES.sizes[BUNDLES.sizes.length - 1]), offerCount: BUNDLES.sizes.length, availability: ready ? "https://schema.org/InStock" : "https://schema.org/PreOrder" } }];
+  return head({ title, desc, url, image: collArt(b) || items[0]?.img, jsonld: ld, current: "collections" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Curated Collections", href: "/collections/" }, { name: b.name }]) + `
 <section class="coll wrap">
  <div class="coll-left">
  <div class="coll-head"><div class="eyebrow">${esc(b.house)} · ${items.length} scents · ${BUNDLES.pct}% off the set</div><h1>${esc(b.name)}</h1>
@@ -285,12 +289,12 @@ dots.forEach(function(d){d.onclick=function(){tr.scrollTo({left:tr.clientWidth*(
 draw()})();`);
 }
 function collectionsIndex() {
-  const url = "/collections/", title = "Special collections | Velvet Volute decant sets";
+  const url = "/collections/", title = "Curated Collections | Velvet Volute decant sets";
   const desc = `Curated decant sets, ${BUNDLES.pct}% off: ${BUNDLES.bundles.map((b) => b.name.replace(/^The /, "").replace(/ Collection$/, "")).join(", ")}. Each scent as a 2 ml or 5 ml decant from an authentic bottle.`;
-  return head({ title, desc, url, jsonld: crumbLD([{ name: "Shop", href: "/" }, { name: "Special Collections" }]), current: "collections" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Special Collections" }]) + `
+  return head({ title, desc, url, jsonld: crumbLD([{ name: "Shop", href: "/" }, { name: "Curated Collections" }]), current: "collections" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Curated Collections" }]) + `
 <section class="colls wrap">
- <div class="eyebrow">Special Collections</div><h1>Curated sets, ${BUNDLES.pct}% off</h1>
- <p class="lede">Several scents from one house or one idea, poured as a matching set. Try the whole story, then go big on the one you love.</p>
+ <h1>Curated Collections</h1>
+ <p class="lede">Several scents from one house or one idea, poured as a matching set and ${BUNDLES.pct}% off together. Try the whole story, then go big on the one you love.</p>
  <div class="ctiles">${BUNDLES.bundles.map((b) => { const items = bItems(b); return `<a class="ctile" href="${cUrl(b)}"><span class="ph${collArt(b) ? " one" : ""}">${collArt(b) ? `<img src="/${collArt(b)}" width="1200" height="1200" alt="${attr(b.name)}: ${attr(items.map(shortName).join(", "))}" loading="lazy">` : items.slice(0, 4).map((p) => `<img src="/${p.img}" width="360" height="360" alt="" loading="lazy">`).join("")}</span><span class="t"><span class="b">${esc(b.house)} · ${items.length} scents</span><span class="nm">${esc(b.name)}</span><span class="pr">${bReady(b) ? `Set from ${money(bPrice(b, BUNDLES.sizes[0]))}` : "<em>Arriving soon</em>"}</span></span></a>`; }).join("")}</div>
 </section>` + tail();
 }
