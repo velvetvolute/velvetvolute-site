@@ -6,8 +6,8 @@
       "id": "time-capsule",
       "name": "The Time Capsule Collection",
       "house": "Nishane",
-      "blurb": "Four extraits from one Nishane collection, each with its own mood: Kredo's quiet conviction, Tempfluo's slow golden afternoon, Papilefiko's deep balsam and moss by the legendary Dominique Ropion, and Deziro's fresh sea air. Find your favourite, then go big on a 10 ml.",
-      "sq": ["AW3KVJLCAKI7SLNFDO6J7WPV", "6RRUWMTR6HR57YISIVFICWM3", "HAQDGYJNCWMIHP5A5GJJSRHJ", "NIBHBS673EEIIPPGJSAEI7JY"]
+      "blurb": "Five extraits from one Nishane collection, each with its own mood: Kredo's quiet conviction, Tempfluo's slow golden afternoon, Papilefiko's deep balsam and moss by the legendary Dominique Ropion, Deziro's fresh sea air and Tero's salted caramel over warm earth. Find your favourite, then go big on a 10 ml.",
+      "sq": ["AW3KVJLCAKI7SLNFDO6J7WPV", "6RRUWMTR6HR57YISIVFICWM3", "HAQDGYJNCWMIHP5A5GJJSRHJ", "NIBHBS673EEIIPPGJSAEI7JY", "LIIP3QVKFSAXBVJPFFAID37G"]
     },
     {
       "id": "born-in-roma",
@@ -36,6 +36,13 @@
       "house": "Nishane",
       "blurb": "Nishane's X line reimagines three of its classics. Fan Your Flames X adds thyme and mastic to the coconut-and-rum original, Hundred Silent Ways X turns its white florals toward vanilla and leather after dark, and Wulong Cha X softens the oolong-tea original with magnolia, green tea and creamy fig.",
       "sq": ["PE33TD43HYRTTZC5A6JHU25A", "RIDSP2UTX5Z3YD5AFG2WQ5LQ", "BABPMMILE54ZYB5JFIJY34IK"]
+    },
+    {
+      "id": "tea-x-flames",
+      "name": "The Tea \"X\" Flames Collection",
+      "house": "Nishane",
+      "blurb": "Two Nishane icons and their X remixes, side by side. Fan Your Flames' coconut, rum and tobacco smoke, then Fan Your Flames X turned down to a softer, more tropical glow; Wulong Cha's bright oolong tea, then Wulong Cha X with magnolia, green tea and creamy fig. Hear the originals, then the remix.",
+      "sq": ["ZXPCML5QU6DKV5U2OFSVHC4Y", "PE33TD43HYRTTZC5A6JHU25A", "V55WG46EP3VHSPNRPSWAJKOV", "BABPMMILE54ZYB5JFIJY34IK"]
     },
     {
       "id": "boozy",

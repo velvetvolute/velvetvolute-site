@@ -1,9 +1,8 @@
 // Creates a Square-hosted checkout for the cart on velvetvolute.ca.
 // Prices always come from the Square catalogue, never from the browser.
-const SQUARE = "https://connect.squareup.com/v2";
-const VERSION = "2024-10-17";
-const LOCATION_ID = process.env.SQUARE_LOCATION_ID || "LQAEH3F1YK86M";
+import { sq, LOCATION_ID, findCoupon, normalizeCode } from "../lib/square.mjs";
 const SITE = process.env.SITE_URL || "https://velvetvolute.ca";
+const BOOKING_URL = "https://calendar.app.google/9Gg9gioRktiA5eocA";
 const FREE_SHIPPING_CENTS = 8500;
 const SHIPPING = {
   pickup: { cents: 0, label: "Ottawa pickup" },
@@ -64,17 +63,6 @@ function newOrderNumber() {
 const json = (status, body) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
 
-async function sq(path, token, body) {
-  const r = await fetch(SQUARE + path, {
-    method: body ? "POST" : "GET",
-    headers: { Authorization: `Bearer ${token}`, "Square-Version": VERSION, "Content-Type": "application/json" },
-    body: body ? JSON.stringify(body) : undefined,
-  });
-  const data = await r.json().catch(() => ({}));
-  if (!r.ok) throw new Error(`Square ${path} ${r.status}: ${JSON.stringify(data.errors || data).slice(0, 400)}`);
-  return data;
-}
-
 export default async (req) => {
   if (req.method !== "POST") return json(405, { error: "Method not allowed" });
   const token = process.env.SQUARE_ACCESS_TOKEN;
@@ -85,8 +73,16 @@ export default async (req) => {
   const items = Array.isArray(input.items) ? input.items.slice(0, 40) : [];
   const ship = SHIPPING[input.ship] ? input.ship : null;
   if (!items.length || !ship) return json(400, { error: "Your cart is empty or no delivery option was chosen." });
+  const code = normalizeCode(input.coupon);
 
   try {
+    // Promo code: a Square catalog Discount named after the code (see netlify/lib/square.mjs).
+    // It stacks with Spotlight / Zodiac / Collection prices, as Justin prefers.
+    let coupon = null;
+    if (code) {
+      coupon = await findCoupon(code, token);
+      if (!coupon) return json(400, { error: "That promo code isn't valid or has already been used. Remove it to continue." });
+    }
     const bundles = items.some((i) => i.bundle) ? await loadBundles(req) : null;
     const setOf = (it) => (bundles ? bundles.list.find((b) => b.id === String(it.bundle)) : null);
     for (const it of items) {
@@ -149,12 +145,15 @@ export default async (req) => {
       }
     }
 
+    // Free shipping is judged on the subtotal before the promo code, so a code never costs anyone free shipping.
     const shipCents = ship === "pickup" || subtotal >= FREE_SHIPPING_CENTS ? 0 : SHIPPING[ship].cents;
+    if (coupon) discounts.push({ uid: "promo", catalog_object_id: coupon.id, scope: "ORDER" });
     const checkout_options = {
       ask_for_shipping_address: ship !== "pickup",
       redirect_url: `${SITE}/thanks.html`,
       merchant_support_email: "velvetvolute@gmail.com",
       allow_tipping: false,
+      enable_coupon: true, // Square Online coupons can also be entered on the payment page
       accepted_payment_methods: { apple_pay: true, google_pay: true },
     };
     if (shipCents > 0) checkout_options.shipping_fee = { name: SHIPPING[ship].label, charge: { amount: shipCents, currency: "CAD" } };
@@ -162,7 +161,7 @@ export default async (req) => {
     const orderNo = newOrderNumber();
     const note = `Order ${orderNo} · ` + (
       ship === "pickup"
-        ? "Ottawa pickup: I'll email you to set a time."
+        ? `Ottawa pickup at Shoppers Drug Mart, Carling Ave. Book your 15-min slot: ${BOOKING_URL}`
         : shipCents === 0
           ? `${SHIPPING[ship].label}: free (order over $85)`
           : SHIPPING[ship].label);
@@ -174,7 +173,7 @@ export default async (req) => {
         line_items: lineItems,
         ...(discounts.length ? { discounts } : {}),
         pricing_options: { auto_apply_taxes: true },
-        reference_id: `${orderNo} ${ship === "pickup" ? "PICKUP" : ship.toUpperCase()}`,
+        reference_id: `${orderNo} ${ship === "pickup" ? "PICKUP" : ship.toUpperCase()}${coupon ? ` CODE:${coupon.name}` : ""}`,
       },
       checkout_options,
       payment_note: note,

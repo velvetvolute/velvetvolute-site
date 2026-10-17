@@ -24,8 +24,9 @@
 <meta property="og:description" content="Try Tom Ford, Nishane, Margiela and more before you buy the bottle. 2 to 10 ml decants poured from authentic bottles, with Ottawa pickup or free Canada-wide shipping over $85.">
 <meta property="og:url" content="https://velvetvolute.ca/">
 <meta property="og:locale" content="en_CA">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Store", "name": "Velvet Volute", "url": "https://velvetvolute.ca/", "email": "velvetvolute@gmail.com", "description": "Fragrance decants and samples in Ottawa. Try Tom Ford, Nishane, Givenchy, Maison Margiela, Valentino and more in 2 to 10 ml sprays or roll-ons, hand-poured from authentic bottles.", "areaServed": {"@type": "City", "name": "Ottawa"}, "address": {"@type": "PostalAddress", "addressLocality": "Ottawa", "addressRegion": "ON", "addressCountry": "CA"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Store", "name": "Velvet Volute", "url": "https://velvetvolute.ca/", "email": "velvetvolute@gmail.com", "description": "Fragrance decants and samples in Ottawa. Try Tom Ford, Nishane, Givenchy, Maison Margiela, Valentino and more in 2 to 10 ml sprays or roll-ons, hand-poured from authentic bottles.", "areaServed": {"@type": "City", "name": "Ottawa"}, "sameAs": ["https://www.facebook.com/profile.php?id=61595247606137"], "priceRange": "$10–$113", "address": {"@type": "PostalAddress", "addressLocality": "Ottawa", "addressRegion": "ON", "addressCountry": "CA"}}</script>
 <script>document.documentElement.setAttribute("data-palette","camel-m")</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -268,6 +269,16 @@ nav a{white-space:nowrap}
 .ship-opts label:has(input:checked){border-color:#b5946a;background:rgba(181,148,106,.1)}
 .cart-free{font:500 18px/1.35 var(--sans);color:#cfa3a9;margin:2px 0 10px}
 .cart-row{display:flex;justify-content:space-between;font:400 15.5px var(--sans);color:#e8d3b4;margin:4px 0}
+.cart-promo{margin:6px 0 10px}
+.cart-promo label{display:block;font:500 11px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:#cfa3a9;margin-bottom:6px}
+.cart-promo-row{display:flex;gap:8px}
+.cart-promo-row input{flex:1;min-width:0;padding:10px 12px;border:1px solid rgba(181,148,106,.5);border-radius:3px;background:rgba(0,0,0,.18);color:#e8d3b4;font:400 15px var(--sans);text-transform:uppercase}
+.cart-promo-row input::placeholder{text-transform:none;color:#a98a8f}
+.cart-promo-row button{padding:0 16px;border:1px solid #b5946a;border-radius:3px;background:transparent;color:#e8d3b4;font:600 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.cart-promo-row button:hover{background:rgba(181,148,106,.15)}
+.cart-promo-msg{font:400 13.5px/1.4 var(--sans);color:#cfa3a9;margin:6px 0 0}
+.cart-promo-msg.ok{color:#d9c39a}
+.cart-promo-msg.err{color:#f0b8b8}
 .cart-row.total{font:600 19px var(--sans);margin-top:8px;padding-top:8px;border-top:1px solid rgba(122,42,61,.8)}
 .cart-checkout{width:100%;margin-top:14px;padding:15px 0;border:0;border-radius:2px;background:#b5946a;color:#2c0610;font:600 13px var(--sans);letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
 .cart-checkout:disabled{opacity:.55;cursor:default}
@@ -302,6 +313,8 @@ nav a{white-space:nowrap}
 .qz-res{display:flex;flex-direction:column;gap:12px;margin-top:6px}
 .qz-r{border:1px solid var(--line);border-radius:6px;padding:14px 16px;background:rgba(181,148,106,.06)}
 .qz-r.best{border-color:var(--gold)}
+.qz-r.qz-soon{border-style:dashed;opacity:.9}
+.qz-g.qz-first{padding:10px 12px;border:1px dashed var(--gold);border-radius:6px}
 .qz-r .tag{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
 .qz-r h4{margin:2px 0 2px;font-family:var(--serif);font-weight:500;font-size:23px;line-height:1.15;color:#e8d3b4}
 .qz-r .why{margin:0;color:var(--muted);font-size:13.5px}
@@ -457,6 +470,10 @@ a.cart-open{text-decoration:none}
 .qz-pill-x{background:none;border:0;color:#cdb08a;font-size:20px;line-height:1;padding:8px 14px 8px 8px;cursor:pointer}
 .qz-jump{position:sticky;bottom:0;display:block;width:100%;margin-top:14px;padding:12px 0;border:0;border-radius:30px;background:#b5946a;color:#2c0610;font:600 12.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;box-shadow:0 -8px 18px rgba(20,4,8,.6)}
 .mood{margin:6px 0 10px;font:italic 400 14.5px/1.65 'Lora',Georgia,serif;color:#2a0610;letter-spacing:0;text-wrap:pretty;flex:0 0 auto;-webkit-font-smoothing:antialiased}
+.story{flex:0 0 auto}
+.mood.clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.story-more{display:inline-flex;align-items:center;gap:6px;margin:-4px 0 10px;padding:0;border:0;background:none;color:#4a0e1e;font:600 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.story-more:hover{color:#6e1a31}
 /* ===== 2026 REDESIGN (UI UX Pro Max draft + Taste critique) =====
    Sections prefixed x- are the new homepage layout. Shop cards, filters, cart and quiz keep their styles above. */
 :root{--x-wine:#4A0E1E;--x-deep:#2C0610;--x-deeper:#22050C;--x-glow:#6E1A31;--x-surface:#5A1527;--x-gold:#CDB08A;--x-gold2:#B5946A;--x-text:#E6D3BC;--x-soft:#CFA3A9;
@@ -707,7 +724,9 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
     <label><input type="radio" name="ship" value="roc">Ship to the rest of Canada<b data-ship="roc">$23</b></label>
    </fieldset>
    <p class="cart-free" id="cart-free"></p>
+   <div class="cart-promo"><label for="cart-code">Promo code</label><div class="cart-promo-row"><input id="cart-code" maxlength="30" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="From our Facebook page?"><button type="button" id="cart-code-apply">Apply</button></div><p class="cart-promo-msg" id="cart-promo-msg" hidden></p></div>
    <div class="cart-row"><span>Subtotal</span><span id="cart-sub">$0</span></div>
+   <div class="cart-row" id="cart-promo-line" hidden><span>Promo code</span><span id="cart-promo-amt"></span></div>
    <div class="cart-row"><span>Delivery</span><span id="cart-ship">Choose an option</span></div>
    <div class="cart-pay">
     <div class="cart-row total"><span>Total</span><span id="cart-total">$0</span></div>
@@ -756,7 +775,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 </div></section>
 
 <section id="shop"><div class="wrap">
-  <div class="x-shop-head"><h2>Our fragrances</h2><p>Every fragrance is thoughtfully chosen, with at least one new addition every month. Curate your own playlist by notes, season and mood.</p><p class="x-sherpa">Not sure where to start? <button type="button" data-quiz>Let the Scent Sherpa guide you</button></p></div>
+  <div class="x-shop-head"><h2>Our fragrances</h2><p>Every fragrance is thoughtfully chosen, with at least one new addition every month, and every scent has a story. Curate your own playlist by notes, season and mood.</p><p class="x-sherpa">Not sure where to start? <button type="button" data-quiz>Let the Scent Sherpa guide you</button></p></div>
   <div class="brandbar" id="brands"></div>
   <div class="genbar" id="genbar" role="group" aria-label="Who it's for"><span>For</span><button type="button" class="gchip on" data-g="all">Everyone</button><button type="button" class="gchip" data-g="Men">Him</button><button type="button" class="gchip" data-g="Unisex">Unisex</button><button type="button" class="gchip" data-g="Women">Her</button></div>
   <div class="fbar"><button type="button" class="fbtn" id="fbtn" aria-controls="tools" aria-expanded="false"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Filters &amp; sort<span class="fcount" id="fcount" hidden></span></button><span class="count" id="count2"></span></div>
@@ -866,99 +885,99 @@ const IMG={"nishane-ani.jpg":"img/nishane-ani-4e1ede980d.jpg","nishane-hacivat.j
 const IMG_L={"nishane-ani.jpg":"img/lux-nishane-ani-760a6e7b45.jpg","nishane-hacivat.jpg":"img/lux-nishane-hacivat-f3e4e6623d.jpg","givenchy-gentleman-rp.jpg":"img/lux-givenchy-gentleman-rp-074093fa29.jpg","tf-black-orchid.jpg":"img/lux-tf-black-orchid-d6d5ce9ec0.jpg","tf-ombre-leather.jpg":"img/lux-tf-ombre-leather-79eebec6e8.jpg","tf-tuscan-leather.jpg":"img/lux-tf-tuscan-leather-4e10f3006b.jpg","u-coffee.jpg":"img/lux-u-coffee-b0d825f79a.jpg","u-coral.jpg":"img/lux-u-coral-938f00b134.jpg","u-ferragamo.jpg":"img/lux-u-ferragamo-09f29a68c8.jpg","u-fyf.jpg":"img/lux-u-fyf-7729add2b5.jpg","u-fyfx.jpg":"img/lux-u-fyfx-cb8304f925.jpg","u-green.jpg":"img/lux-u-green-9b31767f50.jpg","u-iwill.jpg":"img/lux-u-iwill-d94c432935.jpg","u-jazz.jpg":"img/lux-u-jazz-701022d35b.jpg","u-kredo.jpg":"img/lux-u-kredo-6c2b5712e1.jpg","u-nefs.jpg":"img/lux-coming-soon-b4c72492f5.jpg","u-suede.jpg":"img/lux-u-suede-1df14d9124.jpg","u-hswx.jpg":"img/lux-coming-soon-b4c72492f5.jpg","u-deziro.jpg":"img/lux-u-deziro-f538e0381c.jpg","u-wulong.jpg":"img/lux-coming-soon-b4c72492f5.jpg","u-lanuit.jpg":"img/lux-u-lanuit-0132c0853f.jpg","u-melodie.jpg":"img/lux-u-melodie-b46b03fe17.jpg","u-ornoir.jpg":"img/lux-u-ornoir-6904ff3c74.jpg","u-papilefiko.jpg":"img/lux-u-papilefiko-1ab18fbf1c.jpg","u-piano.jpg":"img/lux-u-piano-466336a049.jpg","u-purple.jpg":"img/lux-u-purple-124b537695.jpg","u-tempfluo.jpg":"img/lux-u-tempfluo-2eb0c7c05c.jpg","u-tfnoir.jpg":"img/lux-u-tfnoir-e9975aedda.jpg","u-uomo.jpg":"img/lux-u-uomo-93eac3f336.jpg","u-yellow.jpg":"img/lux-u-yellow-b1450f5ed7.jpg","u-zoltan.jpg":"img/lux-u-zoltan-6f3c9fa487.jpg","u-erbapura.jpg":"img/lux-u-erbapura-427a0d4c2a.jpg","u-najim.jpg":"img/lux-coming-soon-b4c72492f5.jpg","u-althair.jpg":"img/lux-coming-soon-b4c72492f5.jpg","mfk-br540.jpg":"img/lux-mfk-br540-a508034f48.jpg","u-pmatin.jpg":"img/lux-coming-soon-b4c72492f5.jpg","u-tero.jpg":"img/lux-u-tero-50d212bb27.jpg","u-wulongx.jpg":"img/lux-u-wulongx-6e50cc3ebc.jpg"};
 const IMG_R={"nishane-ani.jpg":"img/roll-nishane-ani-88e02b3fd8.jpg","nishane-hacivat.jpg":"img/roll-nishane-hacivat-2026fe3099.jpg","givenchy-gentleman-rp.jpg":"img/roll-givenchy-gentleman-rp-49e48cbbcd.jpg","tf-black-orchid.jpg":"img/roll-tf-black-orchid-750eff88ed.jpg","tf-ombre-leather.jpg":"img/roll-tf-ombre-leather-660e8faa8d.jpg","tf-tuscan-leather.jpg":"img/roll-tf-tuscan-leather-8e3b8464cb.jpg","u-coffee.jpg":"img/roll-u-coffee-2b3773b2b7.jpg","u-coral.jpg":"img/roll-u-coral-d46903820d.jpg","u-ferragamo.jpg":"img/roll-u-ferragamo-b9ea6c56c6.jpg","u-fyf.jpg":"img/roll-u-fyf-67345b832a.jpg","u-fyfx.jpg":"img/roll-u-fyfx-0bc5901f6a.jpg","u-green.jpg":"img/roll-u-green-0748db3dcd.jpg","u-iwill.jpg":"img/roll-u-iwill-d2afd2213d.jpg","u-jazz.jpg":"img/roll-u-jazz-cbf92f9074.jpg","u-kredo.jpg":"img/roll-u-kredo-807dedcfde.jpg","u-nefs.jpg":"img/roll-coming-soon-c3cad0d18d.jpg","u-suede.jpg":"img/roll-u-suede-945bf0f1ff.jpg","u-hswx.jpg":"img/roll-coming-soon-c3cad0d18d.jpg","u-deziro.jpg":"img/roll-u-deziro-c2aba47d25.jpg","u-wulong.jpg":"img/roll-coming-soon-c3cad0d18d.jpg","u-lanuit.jpg":"img/roll-u-lanuit-f5805366f6.jpg","u-melodie.jpg":"img/roll-u-melodie-f05d44854d.jpg","u-ornoir.jpg":"img/roll-u-ornoir-5d936e06e5.jpg","u-papilefiko.jpg":"img/roll-u-papilefiko-c9c81cb392.jpg","u-piano.jpg":"img/roll-u-piano-ee5e57709d.jpg","u-purple.jpg":"img/roll-u-purple-fa6c701f9b.jpg","u-tempfluo.jpg":"img/roll-u-tempfluo-5e3a6f5663.jpg","u-tfnoir.jpg":"img/roll-u-tfnoir-feb5007e8e.jpg","u-uomo.jpg":"img/roll-u-uomo-342ac41023.jpg","u-yellow.jpg":"img/roll-u-yellow-a3d6be4f78.jpg","u-zoltan.jpg":"img/roll-u-zoltan-e0260f42fc.jpg","u-erbapura.jpg":"img/roll-u-erbapura-d02eda4ea5.jpg","u-najim.jpg":"img/roll-coming-soon-c3cad0d18d.jpg","u-althair.jpg":"img/roll-coming-soon-c3cad0d18d.jpg","mfk-br540.jpg":"img/roll-mfk-br540-794d239870.jpg","u-pmatin.jpg":"img/roll-coming-soon-c3cad0d18d.jpg","u-tero.jpg":"img/roll-u-tero-c7003b3b02.jpg","u-wulongx.jpg":"img/roll-u-wulongx-b907feb14c.jpg"};
 const PRODUCTS=[
- {brand:"Claude Marsal",name:"La Melodie Maximal Parfum",g:"Men",sq:"7JWDJBC2YGFN577RB6D2AWJI",img:IMG["u-melodie.jpg"],imgL:IMG_L["u-melodie.jpg"],imgR:IMG_R["u-melodie.jpg"],sea:"a",tm:"b",cat:"Woody",notes:"Mandarin, grapefruit and sea notes over jasmine, bay leaf, oakmoss, guaiac wood and whiskey.",p:{2:10,5:22,10:40},l:{3:18,5:25,10:43},color:"#b08a4a",n:{t:["Mandarin", "Grapefruit", "Sea notes"],h:["Jasmine", "Bay leaf"],b:["Oakmoss", "Guaiac wood", "Ambergris", "Patchouli", "Whisky"]}},
- {brand:"Claude Marsal",name:"Or Noir Caf\u00e9 Parfum",g:"Men",sq:"IGK65TSUCPCGLTA7O7OP7XMT",img:IMG["u-ornoir.jpg"],imgL:IMG_L["u-ornoir.jpg"],imgR:IMG_R["u-ornoir.jpg"],sea:"c",tm:"n",cat:"Sweet",cat2:"Spicy",notes:"Pink pepper and lavender over toffee, cinnamon, coffee, amber, tonka and vanilla.",p:{2:10,5:22,10:40},l:{3:18,5:25,10:43},color:"#5a3220",n:{t:["Pink pepper", "Juniper", "Violet"],h:["Lavender", "Sage", "Toffee", "Cinnamon"],b:["Coffee", "Amber", "Tonka bean", "Vanilla", "Suede"]}},
+ {brand:"Claude Marsal",name:"La Mélodie Maximal Parfum",g:"Men",sq:"7JWDJBC2YGFN577RB6D2AWJI",img:IMG["u-melodie.jpg"],imgL:IMG_L["u-melodie.jpg"],imgR:IMG_R["u-melodie.jpg"],sea:"a",tm:"b",cat:"Woody",cat2:"Fresh",notes:"Mandarin, grapefruit and sea notes over jasmine, bay leaf, oakmoss, guaiac wood and whiskey.",p:{2:10,5:22,10:40},l:{3:18,5:25,10:43},color:"#b08a4a",n:{t:["Mandarin", "Grapefruit", "Sea notes"],h:["Jasmine", "Bay leaf"],b:["Oakmoss", "Guaiac wood", "Ambergris", "Patchouli", "Whisky"]}},
+ {brand:"Claude Marsal",name:"Or Noir Caf\u00e9 Parfum",g:"Men",sq:"IGK65TSUCPCGLTA7O7OP7XMT",img:IMG["u-ornoir.jpg"],imgL:IMG_L["u-ornoir.jpg"],imgR:IMG_R["u-ornoir.jpg"],sea:"c",tm:"n",cat:"Sweet",cat2:"Spicy",notes:"Pink pepper and lavender over toffee and cinnamon, with coffee, amber, tonka, vanilla and suede.",p:{2:10,5:22,10:40},l:{3:18,5:25,10:43},color:"#5a3220",n:{t:["Pink pepper", "Juniper", "Violet"],h:["Lavender", "Sage", "Toffee", "Cinnamon"],b:["Coffee", "Amber", "Tonka bean", "Vanilla", "Suede"]}},
  {brand:"Claude Marsal",name:"Le Piano Eau de Parfum",g:"Men",sq:"JUINXX3FUCEBNI3FGJQLAULG",img:IMG["u-piano.jpg"],imgL:IMG_L["u-piano.jpg"],imgR:IMG_R["u-piano.jpg"],sea:"w",tm:"d",cat:"Fresh",cat2:"Floral",notes:"Citrus and neroli over airy florals and sea notes, drying down to musk, amber and cedar.",p:{2:10,5:22,10:40},l:{3:18,5:25,10:43},color:"#9cc0c8",n:{t:["Lime", "Orange", "Lemon", "Mandarin", "Neroli", "Bergamot", "Jasmine"],h:["Freesia", "Cyclamen", "Hyacinth", "Rose", "Violet", "Peach", "Rosemary", "Nutmeg", "Coriander", "Calone", "Mignonette", "Sea notes"],b:["White musk", "Amber", "Cedar", "Patchouli", "Oakmoss"]}},
- {brand:"Gabriella Antosh",name:"Zoltan Extrait de Parfum",g:"Men",sq:"KKI3DK26WYBVAERBJMRI2BVQ",img:IMG["u-zoltan.jpg"],imgL:IMG_L["u-zoltan.jpg"],imgR:IMG_R["u-zoltan.jpg"],sea:"a",tm:"b",cat:"Spicy",notes:"Icy mint and grapefruit over cinnamon and rose, with leather, tonka and amber in the base.",p:{2:10,5:22,10:40},l:{3:18,5:25,10:43},color:"#a04a2a",n:{t:["Mint", "Peppermint", "Grapefruit", "Blood mandarin", "Ice"],h:["Cinnamon", "Red rose", "Musk"],b:["Leather", "Tonka bean", "Indian patchouli", "Amber"]}},
- {brand:"Armani",name:"I Will Eau de Parfum",g:"Men",sq:"2SLX3E67ZUQTY7XT2OI2PLNR",img:IMG["u-iwill.jpg"],imgL:IMG_L["u-iwill.jpg"],imgR:IMG_R["u-iwill.jpg"],rep:1,sea:"c",tm:"n",cat:"Sweet",cat2:"Spicy",notes:"Madagascar vanilla and lavender, lifted by cardamom and bergamot, over a soft woody leather.",p:{2:12,5:22,10:40},l:{3:21,5:25,10:43},color:"#9a6a3a",n:{t:["Cardamom", "Calabrian bergamot"],h:["Lavender", "Violet leaf", "Sage"],b:["Madagascar vanilla", "Woody leather", "Patchouli"]}},
- {brand:"Ferragamo",name:"Uomo Signature Eau de Parfum",g:"Men",sq:"CENIOXSZE3IM2XDDFTHGCQBE",img:IMG["u-ferragamo.jpg"],imgL:IMG_L["u-ferragamo.jpg"],imgR:IMG_R["u-ferragamo.jpg"],rep:1,sea:"c",tm:"n",cat:"Spicy",cat2:"Sweet",notes:"Mandarin and pink pepper open into cinnamon and cardamom, over leather with a soft touch of coffee and tonka.",p:{2:10,5:17,10:28},l:{3:18,5:20,10:31},color:"#7a4a2a",n:{t:["Italian mandarin", "Pink pepper", "Grapefruit"],h:["Cinnamon", "Cardamom", "Cypress"],b:["Tonka bean", "Leather", "Roasted coffee beans", "Patchouli"]}},
- {brand:"Givenchy",name:"Gentleman R\u00e9serve Priv\u00e9e Eau de Parfum",g:"Men",sq:"CPQZVESNT2M27ETVZCOK7U6U",img:IMG["givenchy-gentleman-rp.jpg"],imgL:IMG_L["givenchy-gentleman-rp.jpg"],imgR:IMG_R["givenchy-gentleman-rp.jpg"],sea:"c",tm:"n",cat:"Woody",cat2:"Floral",notes:"Iris, whisky and chestnut. Polished and a little boozy.",p:{2:10,5:20,10:30},l:{3:18,5:23,10:33},color:"#b07a36",n:{t:["Bergamot"],h:["Iris", "Chestnut"],b:["Whisky", "Woody notes", "Amber"]}},
- {brand:"Jean Paul Gaultier",name:"Le Male Elixir Parfum",g:"Men",sq:"XLJ4LPB4VDJPEJKLLWRUDVS5",soon:1,limited:"Arriving soon",img:IMG["u-najim.jpg"],imgL:IMG_L["u-najim.jpg"],imgR:IMG_R["u-najim.jpg"],rep:1,sea:"c",tm:"n",cat:"Sweet",cat2:"Spicy",notes:"Lavender and mint over vanilla, benzoin and honey, drying down to tonka and tobacco. Sweet, warm and made for cold nights.",p:{2:10,5:20,10:35},l:{3:18,5:23,10:38},color:"#c08a3a",n:{t:["Lavender","Mint"],h:["Vanilla","Benzoin"],b:["Honey","Tonka bean","Tobacco"]}},
- {brand:"Maison Margiela",name:"Replica Coffee Break",g:"Unisex",sq:"R6RQ2KN46KOJNXXLIK3Y5UHT",img:IMG["u-coffee.jpg"],imgL:IMG_L["u-coffee.jpg"],imgR:IMG_R["u-coffee.jpg"],sea:"c",tm:"d",cat:"Sweet",cat2:"Woody",notes:"Coffee, steamed milk and lavender. Cozy caf\u00e9 comfort.",p:{2:12,5:25,10:40},l:{3:21,5:28,10:43},color:"#8a5a3c",n:{t:["Coffee accord", "Red apple", "Lemon"],h:["Lavender", "Spearmint", "Orange blossom"],b:["Milk mousse accord", "Sandalwood", "Cedarwood"]}},
- {brand:"Maison Margiela",name:"Replica Jazz Club",g:"Unisex",sq:"JQWKMPNXK3MMHWNFVD3RZVTW",img:IMG["u-jazz.jpg"],imgL:IMG_L["u-jazz.jpg"],imgR:IMG_R["u-jazz.jpg"],sea:"c",tm:"n",cat:"Sweet",cat2:"Leather",notes:"Rum, tobacco leaf and vanilla. A smoky, boozy lounge.",p:{2:12,5:25,10:40},l:{3:21,5:28,10:43},color:"#9a5a2a",n:{t:["Pink pepper", "Neroli", "Lemon"],h:["Rum", "Java vetiver", "Clary sage"],b:["Tobacco leaf", "Vanilla bean", "Styrax"]}},
- {brand:"Maison Francis Kurkdjian",name:"Baccarat Rouge 540 Eau de Parfum",g:"Unisex",sq:"H3H6KYWKL24KR6EEZM7B7MIR",soon:1,img:IMG["mfk-br540.jpg"],imgL:IMG_L["mfk-br540.jpg"],imgR:IMG_R["mfk-br540.jpg"],sea:"a",tm:"b",cat:"Sweet",cat2:"Woody",limited:"Arriving soon",notes:"Saffron and jasmine over airy amberwood and ambergris, with fir resin and cedar. Glowing, sweet and instantly recognizable.",p:{2:20,5:42,10:75},l:{3:33,5:45,10:78},color:"#b8332e",n:{t:["Saffron", "Jasmine"],h:["Amberwood", "Ambergris"],b:["Fir resin", "Cedar"]}},
- {brand:"Maison Francis Kurkdjian",name:"Petit Matin Eau de Parfum",g:"Unisex",sq:"KTKK4UIN7XJTUQTWUT5FKHOS",soon:1,img:IMG["u-pmatin.jpg"],imgL:IMG_L["u-pmatin.jpg"],imgR:IMG_R["u-pmatin.jpg"],rep:1,sea:"w",tm:"d",cat:"Fresh",cat2:"Floral",limited:"Arriving soon",notes:"Lemon and litsea cubeba over lavandin, orange blossom and hawthorn, settling into musk and ambroxan. Bright, clean and airy.",p:{2:20,5:42,10:75},l:{3:33,5:45,10:78},color:"#d9cf8a",n:{t:["Calabrian lemon", "Litsea cubeba"],h:["Lavandin", "Orange blossom", "Hawthorn"],b:["Musk", "Ambroxan"]}},
- {brand:"Nishane",name:"Ani Extrait de Parfum",g:"Unisex",sq:"5QQ4SJTXANHQPQIU7ORYBAJB",img:IMG["nishane-ani.jpg"],imgL:IMG_L["nishane-ani.jpg"],imgR:IMG_R["nishane-ani.jpg"],sea:"c",tm:"b",cat:"Sweet",cat2:"Spicy",notes:"Ginger and bergamot over cardamom and rose, with vanilla, sandalwood and benzoin.",p:{2:15,5:35,10:65},l:{3:26,5:38,10:68},color:"#d9b27a",n:{t:["Ginger", "Bergamot", "Pink pepper", "Green notes"],h:["Cardamom", "Black currant", "Turkish rose"],b:["Vanilla", "Benzoin", "Sandalwood", "Cedar", "Patchouli", "Ambergris", "Musk"]}},
- {brand:"Nishane",name:"Fan Your Flames Extrait de Parfum",g:"Unisex",sq:"ZXPCML5QU6DKV5U2OFSVHC4Y",img:IMG["u-fyf.jpg"],imgL:IMG_L["u-fyf.jpg"],imgR:IMG_R["u-fyf.jpg"],sea:"c",tm:"n",cat:"Sweet",cat2:"Woody",notes:"Coconut, tobacco, rum and tonka. Warm and addictive.",p:{2:15,5:35,10:65},l:{3:26,5:38,10:68},color:"#c9873a",n:{t:["Coconut", "Rum"],h:["Tobacco", "Tonka bean"],b:["Chinese cedar", "Oakmoss"]}},
-{brand:"Nishane",name:"Fan Your Flames X Extrait de Parfum",g:"Unisex",sq:"PE33TD43HYRTTZC5A6JHU25A",img:IMG["u-fyfx.jpg"],imgL:IMG_L["u-fyfx.jpg"],imgR:IMG_R["u-fyfx.jpg"],sea:"c",tm:"n",cat:"Sweet",cat2:"Woody",notes:"Coconut, rum and tobacco with thyme and mastic, over tonka, cedar and patchouli. A woodier, more herbal take on Fan Your Flames.",p:{2:18,5:40,10:70},l:{3:30,5:43,10:73},color:"#d9a24a",n:{t:["Coconut", "Rum", "Mastic"],h:["Tobacco", "Tonka bean", "Thyme", "Carrot"],b:["Cedar", "Oakmoss", "Patchouli"]}},
- {brand:"Nishane",name:"Hacivat Extrait de Parfum",g:"Unisex",sq:"ZWRPIQIHVK7HZA2GOFV7NRE2",img:IMG["nishane-hacivat.jpg"],imgL:IMG_L["nishane-hacivat.jpg"],imgR:IMG_R["nishane-hacivat.jpg"],sea:"w",tm:"d",cat:"Fresh",cat2:"Woody",notes:"Pineapple, grapefruit and bergamot over a dry base of oakmoss, patchouli and woods. Bright up front, earthy underneath.",p:{2:15,5:35,10:65},l:{3:26,5:38,10:68},color:"#a8b860",n:{t:["Pineapple", "Grapefruit", "Bergamot"],h:["Cedar", "Patchouli", "Jasmine"],b:["Oakmoss", "Woody notes"]}},
+ {brand:"Gabriella Antosh",name:"Zoltan Extrait de Parfum",g:"Men",sq:"KKI3DK26WYBVAERBJMRI2BVQ",img:IMG["u-zoltan.jpg"],imgL:IMG_L["u-zoltan.jpg"],imgR:IMG_R["u-zoltan.jpg"],sea:"c",tm:"b",cat:"Spicy",cat2:"Leather",notes:"Icy mint and grapefruit over cinnamon and rose, with leather, tonka and amber in the base.",p:{2:10,5:22,10:40},l:{3:18,5:25,10:43},color:"#a04a2a",n:{t:["Mint", "Peppermint", "Grapefruit", "Blood mandarin", "Ice"],h:["Cinnamon", "Red rose", "Musk"],b:["Leather", "Tonka bean", "Indian patchouli", "Amber"]}},
+ {brand:"Armani",name:"I Will Eau de Parfum",g:"Men",sq:"2SLX3E67ZUQTY7XT2OI2PLNR",img:IMG["u-iwill.jpg"],imgL:IMG_L["u-iwill.jpg"],imgR:IMG_R["u-iwill.jpg"],rep:1,sea:"c",tm:"b",cat:"Sweet",cat2:"Spicy",notes:"Madagascar vanilla and lavender, lifted by Calabrian bergamot, over a soft wood-and-leather accord.",p:{2:12,5:22,10:40},l:{3:21,5:25,10:43},color:"#9a6a3a",n:{t:["Calabrian bergamot"],h:["Lavender", "Sage", "Violet leaves"],b:["Madagascar vanilla absolute", "Woodleather accord", "Patchouli"]}},
+ {brand:"Ferragamo",name:"Uomo Signature Eau de Parfum",g:"Men",sq:"CENIOXSZE3IM2XDDFTHGCQBE",img:IMG["u-ferragamo.jpg"],imgL:IMG_L["u-ferragamo.jpg"],imgR:IMG_R["u-ferragamo.jpg"],rep:1,sea:"c",tm:"n",cat:"Spicy",cat2:"Leather",notes:"Mandarin and pink pepper open into cinnamon and cardamom, over leather with a soft touch of coffee and tonka.",p:{2:10,5:17,10:28},l:{3:18,5:20,10:31},color:"#7a4a2a",n:{t:["Italian mandarin", "Pink pepper", "Grapefruit"],h:["Cinnamon", "Cardamom", "Cypress"],b:["Tonka bean", "Leather", "Roasted coffee beans", "Patchouli"]}},
+ {brand:"Givenchy",name:"Gentleman R\u00e9serve Priv\u00e9e Eau de Parfum",g:"Men",sq:"CPQZVESNT2M27ETVZCOK7U6U",img:IMG["givenchy-gentleman-rp.jpg"],imgL:IMG_L["givenchy-gentleman-rp.jpg"],imgR:IMG_R["givenchy-gentleman-rp.jpg"],sea:"c",tm:"n",cat:"Woody",cat2:"Floral",notes:"Whisky absolute and bergamot over iris and chestnut, drying down to cedar, vetiver and patchouli. Polished and a little boozy.",p:{2:10,5:20,10:30},l:{3:18,5:23,10:33},color:"#b07a36",n:{t:["Bergamot", "Whisky absolute"],h:["Chestnut", "Iris", "Benzoin"],b:["Cedarwood", "Vetiver", "Patchouli"]}},
+ {brand:"Jean Paul Gaultier",name:"Le Male Elixir Parfum",g:"Men",sq:"XLJ4LPB4VDJPEJKLLWRUDVS5",soon:1,limited:"Arriving soon",img:IMG["u-najim.jpg"],imgL:IMG_L["u-najim.jpg"],imgR:IMG_R["u-najim.jpg"],rep:1,sea:"c",tm:"n",cat:"Sweet",cat2:"Leather",notes:"Lavender, tonka bean and benzoin: a cool, minty opening that melts into honeyed vanilla with a touch of tobacco. Sweet, warm and made for cold nights.",p:{2:10,5:20,10:35},l:{3:18,5:23,10:38},color:"#c08a3a",n:{t:["Lavender", "Tonka bean", "Benzoin"],h:[],b:[]}},
+ {brand:"Maison Margiela",name:"Replica Coffee Break",g:"Unisex",sq:"R6RQ2KN46KOJNXXLIK3Y5UHT",img:IMG["u-coffee.jpg"],imgL:IMG_L["u-coffee.jpg"],imgR:IMG_R["u-coffee.jpg"],sea:"c",tm:"d",cat:"Sweet",cat2:"Spicy",notes:"Coffee, steamed milk and lavender. Cozy caf\u00e9 comfort.",p:{2:12,5:25,10:40},l:{3:21,5:28,10:43},color:"#8a5a3c",n:{t:["Coffee accord", "Red apple", "Lemon"],h:["Lavender", "Spearmint", "Orange blossom"],b:["Milk mousse accord", "Sandalwood", "Cedarwood"]}},
+ {brand:"Maison Margiela",name:"Replica Jazz Club",g:"Unisex",sq:"JQWKMPNXK3MMHWNFVD3RZVTW",img:IMG["u-jazz.jpg"],imgL:IMG_L["u-jazz.jpg"],imgR:IMG_R["u-jazz.jpg"],sea:"c",tm:"n",cat:"Leather",cat2:"Sweet",notes:"Rum, tobacco leaf and vanilla. A smoky, boozy lounge.",p:{2:12,5:25,10:40},l:{3:21,5:28,10:43},color:"#9a5a2a",n:{t:["Pink pepper", "Neroli", "Lemon"],h:["Rum", "Java vetiver", "Clary sage"],b:["Tobacco leaf", "Vanilla bean", "Styrax"]}},
+ {brand:"Maison Francis Kurkdjian",name:"Baccarat Rouge 540 Eau de Parfum",g:"Unisex",sq:"H3H6KYWKL24KR6EEZM7B7MIR",soon:1,img:IMG["mfk-br540.jpg"],imgL:IMG_L["mfk-br540.jpg"],imgR:IMG_R["mfk-br540.jpg"],sea:"a",tm:"b",cat:"Sweet",cat2:"Woody",limited:"Arriving soon",notes:"Jasmine and saffron over an airy ambergris-and-dry-woods accord, with a sugared, glowing finish. Luminous and instantly recognizable.",p:{2:20,5:42,10:75},l:{3:33,5:45,10:78},color:"#b8332e",n:{t:["Jasmine", "Saffron", "Ambergris", "Dry woods", "Ethyl maltol"],h:[],b:[]}},
+ {brand:"Maison Francis Kurkdjian",name:"Petit Matin Eau de Parfum",g:"Unisex",sq:"KTKK4UIN7XJTUQTWUT5FKHOS",soon:1,img:IMG["u-pmatin.jpg"],imgL:IMG_L["u-pmatin.jpg"],imgR:IMG_R["u-pmatin.jpg"],rep:1,sea:"w",tm:"d",cat:"Fresh",cat2:"Floral",limited:"Arriving soon",notes:"Lemon and litsea cubeba over lavandin, orange blossom and hawthorn, settling into soft musks. Bright, clean and airy.",p:{2:20,5:42,10:75},l:{3:33,5:45,10:78},color:"#d9cf8a",n:{t:["Litsea cubeba", "Lemon", "Lavandin", "Orange blossom", "Hawthorn", "Musks"],h:[],b:[]}},
+ {brand:"Nishane",name:"Ani Extrait de Parfum",g:"Unisex",sq:"5QQ4SJTXANHQPQIU7ORYBAJB",img:IMG["nishane-ani.jpg"],imgL:IMG_L["nishane-ani.jpg"],imgR:IMG_R["nishane-ani.jpg"],sea:"c",tm:"b",cat:"Sweet",cat2:"Spicy",notes:"Blue ginger and bergamot over cardamom, blackcurrant and Turkish rose, with vanilla, benzoin and sandalwood.",p:{2:15,5:35,10:65},l:{3:26,5:38,10:68},color:"#d9b27a",n:{t:["Bergamot", "Green notes", "Blue ginger", "Pink pepper"],h:["Blackcurrant", "Turkish rose", "Cardamom"],b:["Patchouli", "Cedarwood", "Vanilla", "Benzoin", "Ambergris", "Musk", "Sandalwood"]}},
+ {brand:"Nishane",name:"Fan Your Flames Extrait de Parfum",g:"Unisex",sq:"ZXPCML5QU6DKV5U2OFSVHC4Y",img:IMG["u-fyf.jpg"],imgL:IMG_L["u-fyf.jpg"],imgR:IMG_R["u-fyf.jpg"],sea:"c",tm:"n",cat:"Sweet",cat2:"Leather",notes:"Coconut, tobacco, rum and tonka. Warm and addictive.",p:{2:15,5:35,10:65},l:{3:26,5:38,10:68},color:"#c9873a",n:{t:["Coconut", "Rum"],h:["Tobacco", "Tonka bean"],b:["Chinese cedar", "Oakmoss"]}},
+{brand:"Nishane",name:"Fan Your Flames X Extrait de Parfum",g:"Unisex",sq:"PE33TD43HYRTTZC5A6JHU25A",img:IMG["u-fyfx.jpg"],imgL:IMG_L["u-fyfx.jpg"],imgR:IMG_R["u-fyfx.jpg"],sea:"c",tm:"b",cat:"Sweet",cat2:"Woody",notes:"Coconut, rum and tobacco with thyme and mastic, over tonka, cedar and patchouli. A woodier, more herbal take on Fan Your Flames.",p:{2:18,5:40,10:70},l:{3:30,5:43,10:73},color:"#d9a24a",n:{t:["Coconut", "Rum", "Mastic"],h:["Tobacco", "Tonka bean", "Thyme", "Carrot"],b:["Cedar", "Oakmoss", "Patchouli"]}},
+ {brand:"Nishane",name:"Hacivat Extrait de Parfum",g:"Unisex",sq:"ZWRPIQIHVK7HZA2GOFV7NRE2",img:IMG["nishane-hacivat.jpg"],imgL:IMG_L["nishane-hacivat.jpg"],imgR:IMG_R["nishane-hacivat.jpg"],sea:"w",tm:"d",cat:"Fresh",cat2:"Woody",notes:"Pineapple, grapefruit and bergamot over a dry base of oakmoss, patchouli and woods. Bright up front, earthy underneath.",p:{2:15,5:35,10:65},l:{3:26,5:38,10:68},color:"#a8b860",n:{t:["Bergamot", "Pineapple", "Grapefruit"],h:["Jasmine", "Patchouli", "Cedarwood"],b:["Clearwood", "Oakmoss", "Dry timberwood"]}},
  {brand:"Nishane",name:"Kredo Extrait de Parfum",g:"Unisex",sq:"AW3KVJLCAKI7SLNFDO6J7WPV",img:IMG["u-kredo.jpg"],imgL:IMG_L["u-kredo.jpg"],imgR:IMG_R["u-kredo.jpg"],rep:1,sea:"c",tm:"b",cat:"Leather",cat2:"Spicy",notes:"Pink pepper, cardamom and osmanthus over oud, sandalwood and suede.",p:{2:20,5:40,10:75},l:{3:33,5:43,10:78},color:"#a0603a",n:{t:["Pink pepper", "Cardamom"],h:["Osmanthus"],b:["Oud accord", "Sandalwood", "Suede"]}},
- {brand:"Nishane",name:"Papilefiko Extrait de Parfum",g:"Unisex",sq:"HAQDGYJNCWMIHP5A5GJJSRHJ",img:IMG["u-papilefiko.jpg"],imgL:IMG_L["u-papilefiko.jpg"],imgR:IMG_R["u-papilefiko.jpg"],rep:1,sea:"a",tm:"b",cat:"Woody",notes:"Cardamom, lavender and jasmine over fir balsam, styrax and moss.",p:{2:20,5:40,10:75},l:{3:33,5:43,10:78},color:"#6a7a4a",n:{t:["Cardamom", "Coriander", "Citrus"],h:["Lavender", "Artemisia", "Jasmine"],b:["Balsam fir", "Styrax", "Moss"]}},
- {brand:"Nishane",name:"Deziro Extrait de Parfum",g:"Unisex",sq:"NIBHBS673EEIIPPGJSAEI7JY",img:IMG["u-deziro.jpg"],imgL:IMG_L["u-deziro.jpg"],imgR:IMG_R["u-deziro.jpg"],sea:"w",tm:"d",cat:"Fresh",notes:"Mandarin, ambergris and sea notes over mint, star anise and geranium, drying down to sandalwood, vetiver and musk. Fresh, clean and easy to wear.",p:{2:20,5:40,10:75},l:{3:33,5:43,10:78},color:"#7aaec0",n:{t:["Mandarin", "Ambergris", "Marine accord"],h:["Star anise", "Mint", "Carrot seed", "Cypriol", "Geranium"],b:["Sandalwood", "Haitian vetiver", "Ambrettolide", "Musk"]}},
- {brand:"Nishane",name:"Tempfluo Extrait de Parfum",g:"Unisex",sq:"6RRUWMTR6HR57YISIVFICWM3",img:IMG["u-tempfluo.jpg"],imgL:IMG_L["u-tempfluo.jpg"],imgR:IMG_R["u-tempfluo.jpg"],rep:1,sea:"a",tm:"b",cat:"Fresh",cat2:"Floral",notes:"Bright mandarin, bergamot and orange blossom with a thread of saffron, softening into praline, cashmere wood and vanilla. Brighter than its notes suggest.",p:{2:20,5:40,10:75},l:{3:33,5:43,10:78},color:"#d99a5a",n:{t:["Saffron", "Mandarin", "Bergamot"],h:["Orange blossom", "Praline", "Jasmine"],b:["Cashmere wood", "Cedar", "Vanilla"]}},
+ {brand:"Nishane",name:"Papilefiko Extrait de Parfum",g:"Unisex",sq:"HAQDGYJNCWMIHP5A5GJJSRHJ",img:IMG["u-papilefiko.jpg"],imgL:IMG_L["u-papilefiko.jpg"],imgR:IMG_R["u-papilefiko.jpg"],rep:1,sea:"a",tm:"b",cat:"Woody",cat2:"Fresh",notes:"Cardamom, lavandin and jasmine over fir balsam, styrax and moss.",p:{2:20,5:40,10:75},l:{3:33,5:43,10:78},color:"#6a7a4a",n:{t:["Cardamom", "Coriander", "Citrus"],h:["Lavandin", "Artemisia", "Jasmine"],b:["Fir balsam", "Moss", "Styrax"]}},
+ {brand:"Nishane",name:"Deziro Extrait de Parfum",g:"Unisex",sq:"NIBHBS673EEIIPPGJSAEI7JY",img:IMG["u-deziro.jpg"],imgL:IMG_L["u-deziro.jpg"],imgR:IMG_R["u-deziro.jpg"],sea:"w",tm:"d",cat:"Fresh",cat2:"Woody",notes:"Mandarin, ambergris and sea notes over mint, star anise and geranium, drying down to sandalwood, vetiver and musk. Fresh, clean and easy to wear.",p:{2:20,5:40,10:75},l:{3:33,5:43,10:78},color:"#7aaec0",n:{t:["Mandarin", "Ambergris", "Marine accord"],h:["Star anise", "Mint", "Carrot seed", "Cypriol", "Geranium"],b:["Sandalwood", "Haitian vetiver", "Ambrettolide", "Musk"]}},
+ {brand:"Nishane",name:"Tempfluo Extrait de Parfum",g:"Unisex",sq:"6RRUWMTR6HR57YISIVFICWM3",img:IMG["u-tempfluo.jpg"],imgL:IMG_L["u-tempfluo.jpg"],imgR:IMG_R["u-tempfluo.jpg"],rep:1,sea:"a",tm:"b",cat:"Floral",cat2:"Sweet",notes:"Mandarin, bergamot and a thread of saffron, softening into jasmine sambac, orange flower and praline over cashmere wood and vanilla. Brighter than its notes suggest.",p:{2:20,5:40,10:75},l:{3:33,5:43,10:78},color:"#d99a5a",n:{t:["Bergamot", "Mandarin", "Saffron"],h:["Jasmine sambac absolute", "Orange flower", "Praline"],b:["Cashmere wood", "Cedarwood", "Vanilla"]}},
  {brand:"Nishane",name:"Hundred Silent Ways X Extrait de Parfum",g:"Unisex",sq:"RIDSP2UTX5Z3YD5AFG2WQ5LQ",soon:1,img:IMG["u-hswx.jpg"],imgL:IMG_L["u-hswx.jpg"],imgR:IMG_R["u-hswx.jpg"],rep:1,sea:"c",tm:"b",cat:"Floral",cat2:"Sweet",limited:"Arriving soon",notes:"A rich white floral: tuberose, gardenia and iris over peach and mandarin, warmed with vanilla, leather and patchouli. A darker take on Hundred Silent Ways.",p:{2:18,5:40,10:70},l:{3:30,5:43,10:73},color:"#d9a090",n:{t:["Tuberose", "Mandarin", "Peach"],h:["Gardenia", "Orris", "Jasmine", "Heliotrope"],b:["Vanilla", "Leather", "Patchouli"]}},
- {brand:"Nishane",name:"Wulong Cha X Extrait de Parfum",g:"Unisex",sq:"BABPMMILE54ZYB5JFIJY34IK",soon:1,limited:"Arriving soon",img:IMG["u-wulongx.jpg"],imgL:IMG_L["u-wulongx.jpg"],imgR:IMG_R["u-wulongx.jpg"],rep:1,sea:"w",tm:"d",cat:"Fresh",cat2:"Floral",notes:"Bergamot, yuzu and mandarin over green tea, magnolia and thyme, settling into fig and soft musk. Bright, calm and refined.",p:{2:18,5:40,10:70},l:{3:30,5:43,10:73},color:"#b9a35a",n:{t:["Bergamot", "Yuzu", "Litsea cubeba", "Mandarin"],h:["Green tea", "Magnolia", "Thyme"],b:["Fig", "Musk"]}},
- {brand:"Nishane",name:"Nefs Extrait de Parfum",g:"Unisex",sq:"OZ5Z33WF6IPMP7W6MNJWE47G",soon:1,img:IMG["u-nefs.jpg"],imgL:IMG_L["u-nefs.jpg"],imgR:IMG_R["u-nefs.jpg"],rep:1,sea:"c",tm:"n",cat:"Floral",cat2:"Spicy",limited:"Arriving soon",notes:"Rose and honey with saffron and fig, over oud, whiskey, leather and amber. Rich, boozy and opulent.",p:{2:28,5:60,10:110},l:{3:45,5:63,10:113},color:"#b8822e",n:{t:["Honey", "Saffron", "Fig", "Violet", "Sage"],h:["Rose", "Osmanthus", "Nutmeg", "Jasmine", "Geranium"],b:["Oud", "Whiskey", "Vanilla", "Leather", "Amber", "Cinnamon", "Gurjan balsam", "Cedar"]}},
- {brand:"Nishane",name:"Su\u00e8de et Safran Extrait de Parfum",g:"Unisex",sq:"TC2TRWOK25KG3ZSUULU3PTSO",img:IMG["u-suede.jpg"],imgL:IMG_L["u-suede.jpg"],imgR:IMG_R["u-suede.jpg"],sea:"c",tm:"b",cat:"Leather",cat2:"Spicy",notes:"Saffron and ambrette over soft suede and ginger, drying down to leather and musk.",p:{2:20,5:45,10:75},l:{3:33,5:48,10:78},color:"#8a5a3a",n:{t:["Saffron", "Ambrette"],h:["Suede", "Ginger"],b:["Leather", "Musk"]}},
- {brand:"Nishane",name:"Wulong Cha Extrait de Parfum",g:"Unisex",sq:"V55WG46EP3VHSPNRPSWAJKOV",soon:1,img:IMG["u-wulong.jpg"],imgL:IMG_L["u-wulong.jpg"],imgR:IMG_R["u-wulong.jpg"],rep:1,sea:"w",tm:"d",cat:"Fresh",limited:"Arriving soon",notes:"Bergamot, orange and mandarin over oolong tea and nutmeg, settling into fig and musk. Clean and bright.",p:{2:15,5:35,10:65},l:{3:26,5:38,10:68},color:"#9ab070",n:{t:["Bergamot", "Orange", "Mandarin", "Litsea cubeba"],h:["Oolong tea", "Nutmeg"],b:["Fig", "Musk"]}},
- {brand:"Nishane",name:"Tero Extrait de Parfum",g:"Unisex",sq:"LIIP3QVKFSAXBVJPFFAID37G",soon:1,limited:"Arriving soon",img:IMG["u-tero.jpg"],imgL:IMG_L["u-tero.jpg"],imgR:IMG_R["u-tero.jpg"],rep:1,sea:"c",tm:"n",cat:"Spicy",cat2:"Woody",notes:"Salted caramel and two peppers over patchouli and cinnamon bark, settling into vetiver, amber and oak. Earthy, warm and confident.",p:{2:20,5:40,10:75},l:{3:33,5:43,10:78},color:"#6f7f3c",n:{t:["Salted caramel", "Black pepper", "Sichuan pepper"],h:["Patchouli", "Cinnamon bark"],b:["Haitian vetiver", "Amber", "Oak"]}},
- {brand:"Parfums de Marly",name:"Altha\u00efr Eau de Parfum",g:"Men",sq:"BIOLOUFPWNNQQ2BOBZSMYZI5",soon:1,limited:"Arriving soon",img:IMG["u-althair.jpg"],imgL:IMG_L["u-althair.jpg"],imgR:IMG_R["u-althair.jpg"],rep:1,sea:"c",tm:"b",cat:"Sweet",cat2:"Spicy",notes:"Bergamot, orange blossom, cinnamon and cardamom over Bourbon vanilla and elemi, drying down to praline, guaiac wood, ambroxan and musk. A fresh, elegant vanilla.",p:{2:15,5:32,10:55},l:{3:26,5:35,10:58},color:"#c8873a",n:{t:["Bergamot","Orange blossom","Cinnamon","Cardamom"],h:["Bourbon vanilla","Elemi"],b:["Praline","Guaiac wood","Ambroxan","Musk"]}},
- {brand:"Tom Ford",name:"Black Orchid Eau de Parfum",g:"Unisex",sq:"6IXPDR425PPISJBHT2OAGJZY",img:IMG["tf-black-orchid.jpg"],imgL:IMG_L["tf-black-orchid.jpg"],imgR:IMG_R["tf-black-orchid.jpg"],sea:"c",tm:"n",cat:"Floral",cat2:"Woody",notes:"Black truffle, dark orchid, patchouli and chocolate. Dark and opulent.",p:{2:15,5:30,10:55},l:{3:26,5:33,10:58},color:"#3a1a2a",n:{t:["Black truffle", "Gardenia", "Black currant", "Ylang-ylang", "Jasmine", "Bergamot", "Mandarin", "Lemon"],h:["Orchid", "Spices", "Fruity notes", "Lotus"],b:["Chocolate", "Patchouli", "Vanilla", "Incense", "Amber", "Sandalwood", "Vetiver", "White musk"]}},
+ {brand:"Nishane",name:"Wulong Cha X Extrait de Parfum",g:"Unisex",sq:"BABPMMILE54ZYB5JFIJY34IK",img:IMG["u-wulongx.jpg"],imgL:IMG_L["u-wulongx.jpg"],imgR:IMG_R["u-wulongx.jpg"],rep:1,sea:"w",tm:"d",cat:"Fresh",cat2:"Floral",notes:"Bergamot, yuzu and mandarin over green tea, magnolia and thyme, settling into fig and soft musk. Bright, calm and refined.",p:{2:18,5:40,10:70},l:{3:30,5:43,10:73},color:"#b9a35a",n:{t:["Bergamot", "Yuzu", "Litsea cubeba", "Mandarin"],h:["Green tea", "Magnolia", "Thyme"],b:["Fig", "Musk"]}},
+ {brand:"Nishane",name:"Nefs Extrait de Parfum",g:"Unisex",sq:"OZ5Z33WF6IPMP7W6MNJWE47G",soon:1,img:IMG["u-nefs.jpg"],imgL:IMG_L["u-nefs.jpg"],imgR:IMG_R["u-nefs.jpg"],rep:1,sea:"c",tm:"n",cat:"Spicy",cat2:"Floral",limited:"Arriving soon",notes:"Rose and honey with saffron and fig, over oud, whiskey, leather and amber. Rich, boozy and opulent.",p:{2:28,5:60,10:110},l:{3:45,5:63,10:113},color:"#b8822e",n:{t:["Honey", "Saffron", "Fig", "Violet", "Sage"],h:["Rose", "Osmanthus", "Nutmeg", "Jasmine", "Geranium"],b:["Oud", "Whiskey", "Vanilla", "Leather", "Amber", "Cinnamon", "Gurjan balsam", "Cedar"]}},
+ {brand:"Nishane",name:"Su\u00e8de et Safran Extrait de Parfum",g:"Unisex",sq:"TC2TRWOK25KG3ZSUULU3PTSO",img:IMG["u-suede.jpg"],imgL:IMG_L["u-suede.jpg"],imgR:IMG_R["u-suede.jpg"],sea:"c",tm:"n",cat:"Leather",cat2:"Spicy",notes:"Saffron and ambrette over soft suede and ginger, drying down to leather and musk.",p:{2:20,5:45,10:75},l:{3:33,5:48,10:78},color:"#8a5a3a",n:{t:["Saffron", "Ambrette"],h:["Suede", "Ginger"],b:["Leather", "Musk"]}},
+ {brand:"Nishane",name:"Wulong Cha Extrait de Parfum",g:"Unisex",sq:"V55WG46EP3VHSPNRPSWAJKOV",soon:1,img:IMG["u-wulong.jpg"],imgL:IMG_L["u-wulong.jpg"],imgR:IMG_R["u-wulong.jpg"],rep:1,sea:"w",tm:"d",cat:"Fresh",cat2:"Sweet",limited:"Arriving soon",notes:"Bergamot, orange and mandarin over oolong tea and nutmeg, settling into fig and musk. Clean and bright.",p:{2:15,5:35,10:65},l:{3:26,5:38,10:68},color:"#9ab070",n:{t:["Bergamot", "Orange", "Mandarin", "Litsea cubeba"],h:["Oolong tea", "Nutmeg"],b:["Fig", "Musk"]}},
+ {brand:"Nishane",name:"Tero Extrait de Parfum",g:"Unisex",sq:"LIIP3QVKFSAXBVJPFFAID37G",img:IMG["u-tero.jpg"],imgL:IMG_L["u-tero.jpg"],imgR:IMG_R["u-tero.jpg"],rep:1,sea:"c",tm:"b",cat:"Spicy",cat2:"Sweet",notes:"Salted caramel and two peppers over patchouli and cinnamon bark, settling into vetiver, amber and oak. Earthy, warm and confident.",p:{2:20,5:40,10:75},l:{3:33,5:43,10:78},color:"#6f7f3c",n:{t:["Salted caramel", "Black pepper", "Sichuan pepper"],h:["Patchouli", "Cinnamon bark"],b:["Haitian vetiver", "Amber", "Oak"]}},
+ {brand:"Parfums de Marly",name:"Altha\u00efr Eau de Parfum",g:"Men",sq:"BIOLOUFPWNNQQ2BOBZSMYZI5",soon:1,limited:"Arriving soon",img:IMG["u-althair.jpg"],imgL:IMG_L["u-althair.jpg"],imgR:IMG_R["u-althair.jpg"],rep:1,sea:"c",tm:"n",cat:"Sweet",cat2:"Spicy",notes:"Bergamot, mandarin and elemi over orange blossom, cinnamon and cardamom, settling into Bourbon vanilla, guaiac wood and praline. A fresh, elegant vanilla.",p:{2:15,5:32,10:55},l:{3:26,5:35,10:58},color:"#c8873a",n:{t:["Bergamot", "Mandarin", "Elemi"],h:["Orange blossom", "Cinnamon", "Cardamom"],b:["Bourbon vanilla", "Guaiac wood", "Praline"]}},
+ {brand:"Tom Ford",name:"Black Orchid Eau de Parfum",g:"Unisex",sq:"6IXPDR425PPISJBHT2OAGJZY",img:IMG["tf-black-orchid.jpg"],imgL:IMG_L["tf-black-orchid.jpg"],imgR:IMG_R["tf-black-orchid.jpg"],sea:"c",tm:"n",cat:"Floral",cat2:"Spicy",notes:"Black truffle and ylang-ylang over black orchid, rum-soaked plum and patchouli. Dark and opulent.",p:{2:15,5:30,10:55},l:{3:26,5:33,10:58},color:"#3a1a2a",n:{t:["Black truffle", "Ylang-ylang", "Black orchid", "Black plum", "Rum absolute", "Patchouli"],h:[],b:[]}},
  {brand:"Tom Ford",name:"Noir Eau de Parfum",g:"Men",sq:"IEIPT6KIEZLX3W3U3CRDMOD6",img:IMG["u-tfnoir.jpg"],imgL:IMG_L["u-tfnoir.jpg"],imgR:IMG_R["u-tfnoir.jpg"],sea:"c",tm:"n",cat:"Floral",cat2:"Spicy",notes:"Bergamot, violet and pink pepper over iris, nutmeg and rose, with vanilla, amber, leather and patchouli. The original Noir eau de parfum.",p:{2:15,5:30,10:50},l:{3:26,5:33,10:53},color:"#2a1a1a",limited:"Limited · about 30 ml left",n:{t:["Violet", "Pink pepper", "Caraway", "Bergamot", "Verbena"],h:["Tuscan iris", "Bulgarian rose", "Black pepper", "Nutmeg", "Geranium", "Clary sage"],b:["Patchouli", "Amber", "Vanilla", "Civet", "Leather", "Opoponax", "Benzoin", "Vetiver", "Styrax"]}},
- {brand:"Tom Ford",name:"Ombre Leather Eau de Parfum",g:"Unisex",sq:"LMHN6IFHQPUTAW4H22NTVQKY",img:IMG["tf-ombre-leather.jpg"],imgL:IMG_L["tf-ombre-leather.jpg"],imgR:IMG_R["tf-ombre-leather.jpg"],sea:"c",tm:"b",cat:"Leather",notes:"Cardamom and jasmine over soft leather and patchouli.",p:{2:15,5:30,10:50},l:{3:26,5:33,10:53},color:"#5a3a2a",n:{t:["Cardamom"],h:["Leather", "Jasmine sambac"],b:["Amber", "Moss", "Patchouli"]}},
- {brand:"Tom Ford",name:"Tuscan Leather Eau de Parfum",g:"Unisex",sq:"Q6IFTTHV75EK3RJTB474ZTI5",img:IMG["tf-tuscan-leather.jpg"],imgL:IMG_L["tf-tuscan-leather.jpg"],imgR:IMG_R["tf-tuscan-leather.jpg"],sea:"c",tm:"n",cat:"Leather",notes:"Raspberry, saffron and rich leather. Bold and luxurious.",p:{2:20,5:45,10:75},l:{3:33,5:48,10:78},color:"#7a2a1a",n:{t:["Saffron", "Raspberry", "Thyme"],h:["Olibanum", "Jasmine"],b:["Leather", "Suede", "Amber", "Woody notes"]}},
- {brand:"Valentino",name:"Uomo Born in Roma Coral Fantasy",g:"Men",sq:"WFC3PXWORS5A6XAMKWG7PGMJ",img:IMG["u-coral.jpg"],imgL:IMG_L["u-coral.jpg"],imgR:IMG_R["u-coral.jpg"],rep:1,sea:"a",tm:"b",cat:"Sweet",cat2:"Woody",notes:"Red apple and cardamom over lavender and sweet tobacco, with patchouli and vetiver.",p:{2:12,5:25,10:40},l:{3:21,5:28,10:43},color:"#d9705a",n:{t:["Red apple", "Cardamom", "Bergamot"],h:["Lavender", "Geranium", "Clary sage"],b:["Tobacco leaf", "Patchouli", "Vetiver"]}},
- {brand:"Valentino",name:"Uomo Born in Roma Green Stravaganza",g:"Men",sq:"E7TWUA2IZR65TXSYDMQKSHIL",img:IMG["u-green.jpg"],imgL:IMG_L["u-green.jpg"],imgR:IMG_R["u-green.jpg"],sea:"w",tm:"d",cat:"Fresh",cat2:"Woody",notes:"Bergamot, coffee and vetiver. Fresh with a dark twist.",p:{2:12,5:25,10:40},l:{3:21,5:28,10:43},color:"#6a9a5a",n:{t:["Bergamot"],h:["Coffee"],b:["Vetiver"]}},
- {brand:"Valentino",name:"Uomo (2021)",g:"Men",sq:"GM25IFJLU2DGTU243KTOJQH7",img:IMG["u-uomo.jpg"],imgL:IMG_L["u-uomo.jpg"],imgR:IMG_R["u-uomo.jpg"],sea:"a",tm:"b",cat:"Floral",cat2:"Woody",notes:"Bergamot and lemon over powdery iris and vetiver, finished with cardamom and black pepper. Clean and refined.",p:{2:10,5:20,10:30},l:{3:18,5:23,10:33},color:"#8a9aa8",n:{t:["Bergamot", "Lemon"],h:["Iris", "Vetiver"],b:["Cardamom", "Black pepper"]}},
- {brand:"Valentino",name:"Uomo Born in Roma Yellow Dream",g:"Men",sq:"XRZWTFEH4VB5LESUQKZ2ZWWU",img:IMG["u-yellow.jpg"],imgL:IMG_L["u-yellow.jpg"],imgR:IMG_R["u-yellow.jpg"],sea:"w",tm:"b",cat:"Sweet",cat2:"Spicy",notes:"Pineapple and mandarin over gingerbread spice, ginger, vanilla and cedar. Sweet and sunny.",p:{2:12,5:25,10:40},l:{3:21,5:28,10:43},color:"#e0c040",n:{t:["Pineapple", "Italian mandarin"],h:["Spices", "Gingerbread", "Ginger"],b:["Madagascar vanilla", "Cedar", "Leather accord"]}},
- {brand:"Valentino",name:"Uomo Born in Roma Purple Melancholia",g:"Men",sq:"4R5LGTZLZQUWDBINL746IB7P",img:IMG["u-purple.jpg"],imgL:IMG_L["u-purple.jpg"],imgR:IMG_R["u-purple.jpg"],sea:"c",tm:"b",cat:"Sweet",cat2:"Spicy",notes:"Cardamom over coconut and lavender, settling into warm amberwood.",p:{2:12,5:25,10:40},l:{3:21,5:28,10:43},color:"#7a5a9a",n:{t:["Cardamom", "Bergamot"],h:["Lavandin", "Coconut accord"],b:["Amberwood"]}},
- {brand:"Versace",name:"Eros Najim Parfum",g:"Men",sq:"VATMWQOVHP5T5Y6NATNYLUIA",soon:1,limited:"Arriving soon",img:IMG["u-najim.jpg"],imgL:IMG_L["u-najim.jpg"],imgR:IMG_R["u-najim.jpg"],rep:1,sea:"c",tm:"n",cat:"Sweet",cat2:"Woody",notes:"Yellow mandarin and caramel over cardamom and oud wood, settling into incense, patchouli and vetiver. Warm, ambery and easy to reach for.",p:{2:10,5:20,10:35},l:{3:18,5:23,10:38},color:"#b5793a",n:{t:["Italian mandarin","Caramel"],h:["Cardamom","Oud wood"],b:["Incense","Patchouli","Vetiver"]}},
- {brand:"Xerjoff",name:"Erba Pura Eau de Parfum",g:"Unisex",sq:"WC4P3J4BYGBICYUBCCPVGEOV",img:IMG["u-erbapura.jpg"],imgL:IMG_L["u-erbapura.jpg"],imgR:IMG_R["u-erbapura.jpg"],sea:"w",tm:"d",cat:"Fresh",cat2:"Sweet",notes:"Sicilian orange, bergamot and lemon over a basket of ripe fruits, settling into white musk, amber and Madagascar vanilla. Juicy, bright and easy to love.",p:{2:15,5:30,10:50},l:{3:26,5:33,10:53},color:"#e3a53c",n:{t:["Sicilian orange", "Calabrian bergamot", "Sicilian lemon"],h:["Fruity notes"],b:["White musk", "Madagascar vanilla", "Amber"]}},
- {brand:"Yves Saint Laurent",name:"La Nuit de L'Homme",g:"Men",sq:"I2YT222LFWFYRAWUXOQSDZPB",img:IMG["u-lanuit.jpg"],imgL:IMG_L["u-lanuit.jpg"],imgR:IMG_R["u-lanuit.jpg"],sea:"c",tm:"n",cat:"Spicy",cat2:"Woody",notes:"Cardamom, lavender and cedar. A seductive evening classic.",p:{2:10,5:20,10:35},l:{3:18,5:23,10:38},color:"#3a3a5a",n:{t:["Cardamom", "Bergamot"],h:["Lavender", "Virginia cedar"],b:["Vetiver", "Caraway", "Tonka bean"]}}
+ {brand:"Tom Ford",name:"Ombre Leather Eau de Parfum",g:"Unisex",sq:"LMHN6IFHQPUTAW4H22NTVQKY",img:IMG["tf-ombre-leather.jpg"],imgL:IMG_L["tf-ombre-leather.jpg"],imgR:IMG_R["tf-ombre-leather.jpg"],sea:"c",tm:"n",cat:"Leather",cat2:"Spicy",notes:"Cardamom and jasmine sambac over a black leather accord, patchouli, white moss and amber.",p:{2:15,5:30,10:50},l:{3:26,5:33,10:53},color:"#5a3a2a",n:{t:["Black leather accord", "Cardamom", "Jasmine sambac", "Patchouli", "White moss", "Amber"],h:[],b:[]}},
+ {brand:"Tom Ford",name:"Tuscan Leather Eau de Parfum",g:"Unisex",sq:"Q6IFTTHV75EK3RJTB474ZTI5",img:IMG["tf-tuscan-leather.jpg"],imgL:IMG_L["tf-tuscan-leather.jpg"],imgR:IMG_R["tf-tuscan-leather.jpg"],sea:"c",tm:"n",cat:"Leather",cat2:"Spicy",notes:"Raspberry, saffron and thyme over olibanum and night-blooming jasmine, on rich leather, black suede and amberwood. Bold and luxurious.",p:{2:20,5:45,10:75},l:{3:33,5:48,10:78},color:"#7a2a1a",n:{t:["Saffron", "Raspberry", "Thyme", "Olibanum", "Night-blooming jasmine", "Leather", "Black suede", "Amberwood"],h:[],b:[]}},
+ {brand:"Valentino",name:"Uomo Born in Roma Coral Fantasy",g:"Men",sq:"WFC3PXWORS5A6XAMKWG7PGMJ",img:IMG["u-coral.jpg"],imgL:IMG_L["u-coral.jpg"],imgR:IMG_R["u-coral.jpg"],rep:1,sea:"a",tm:"b",cat:"Sweet",cat2:"Spicy",notes:"Valentino names three notes: apple, sage and tobacco. Red apple and cardamom glow over lavender, geranium and clary sage, with tobacco leaf, patchouli and vetiver underneath.",p:{2:12,5:25,10:40},l:{3:21,5:28,10:43},color:"#d9705a",n:{t:["Red apple", "Cardamom", "Bergamot"],h:["Lavender", "Geranium", "Clary sage"],b:["Tobacco leaf", "Patchouli", "Vetiver"]}},
+ {brand:"Valentino",name:"Uomo Born in Roma Green Stravaganza",g:"Men",sq:"E7TWUA2IZR65TXSYDMQKSHIL",img:IMG["u-green.jpg"],imgL:IMG_L["u-green.jpg"],imgR:IMG_R["u-green.jpg"],sea:"w",tm:"d",cat:"Fresh",cat2:"Woody",notes:"Calabrian bergamot, a coffee accord and vetiver. Fresh with a dark twist.",p:{2:12,5:25,10:40},l:{3:21,5:28,10:43},color:"#6a9a5a",n:{t:["Calabrian bergamot"],h:["Coffee accord"],b:["Vetiver"]}},
+ {brand:"Valentino",name:"Uomo (2021)",g:"Men",sq:"GM25IFJLU2DGTU243KTOJQH7",img:IMG["u-uomo.jpg"],imgL:IMG_L["u-uomo.jpg"],imgR:IMG_R["u-uomo.jpg"],sea:"c",tm:"b",cat:"Floral",cat2:"Fresh",notes:"Bergamot and lemon over powdery iris and vetiver, finished with cardamom and black pepper. Clean and refined.",p:{2:10,5:20,10:30},l:{3:18,5:23,10:33},color:"#8a9aa8",n:{t:["Bergamot", "Lemon"],h:["Iris", "Vetiver"],b:["Cardamom", "Black pepper"]}},
+ {brand:"Valentino",name:"Uomo Born in Roma Yellow Dream",g:"Men",sq:"XRZWTFEH4VB5LESUQKZ2ZWWU",img:IMG["u-yellow.jpg"],imgL:IMG_L["u-yellow.jpg"],imgR:IMG_R["u-yellow.jpg"],sea:"w",tm:"d",cat:"Sweet",cat2:"Spicy",notes:"Italian mandarin and pineapple over a gingerbread accord of cinnamon, cardamom and nutmeg, on vanilla absolute and cedarwood. Sweet and sunny.",p:{2:12,5:25,10:40},l:{3:21,5:28,10:43},color:"#e0c040",n:{t:["Italian mandarin", "Pineapple accord"],h:["Gingerbread accord (cinnamon, cardamom, nutmeg)"],b:["Vanilla absolute", "Cedarwood"]}},
+ {brand:"Valentino",name:"Uomo Born in Roma Purple Melancholia",g:"Men",sq:"4R5LGTZLZQUWDBINL746IB7P",img:IMG["u-purple.jpg"],imgL:IMG_L["u-purple.jpg"],imgR:IMG_R["u-purple.jpg"],sea:"w",tm:"b",cat:"Sweet",cat2:"Spicy",notes:"Spicy cardamom over a creamy coconut accord and lavender, settling into ambery woods.",p:{2:12,5:25,10:40},l:{3:21,5:28,10:43},color:"#7a5a9a",n:{t:["Spicy cardamom", "Lavender", "Creamy coconut accord", "Ambery woods"],h:[],b:[]}},
+ {brand:"Versace",name:"Eros Najim Parfum",g:"Men",sq:"VATMWQOVHP5T5Y6NATNYLUIA",soon:1,limited:"Arriving soon",img:IMG["u-najim.jpg"],imgL:IMG_L["u-najim.jpg"],imgR:IMG_R["u-najim.jpg"],rep:1,sea:"c",tm:"n",cat:"Spicy",cat2:"Sweet",notes:"Yellow mandarin, saffron and cardamom over an oud accord, cedar and caramel, settling into incense, patchouli, vetiver and tonka. Warm, ambery and easy to reach for.",p:{2:10,5:20,10:35},l:{3:18,5:23,10:38},color:"#b5793a",n:{t:["Yellow mandarin", "Clary sage", "Saffron", "Cardamom"],h:["Oud accord", "Cedarwood", "Caramel"],b:["Patchouli", "Vetiver", "Incense accord", "Tonka bean"]}},
+ {brand:"Xerjoff",name:"Erba Pura Eau de Parfum",g:"Unisex",sq:"WC4P3J4BYGBICYUBCCPVGEOV",img:IMG["u-erbapura.jpg"],imgL:IMG_L["u-erbapura.jpg"],imgR:IMG_R["u-erbapura.jpg"],sea:"w",tm:"d",cat:"Fresh",cat2:"Sweet",notes:"Lemon, Calabrian bergamot and Sicilian orange over a basket of Mediterranean fruit, settling into amber, Madagascar vanilla and white musk. Juicy, bright and easy to love.",p:{2:15,5:30,10:50},l:{3:26,5:33,10:53},color:"#e3a53c",n:{t:["Lemon", "Calabrian bergamot", "Sicilian orange"],h:["Mediterranean fruit"],b:["Amber", "Madagascar vanilla beans", "White musk"]}},
+ {brand:"Yves Saint Laurent",name:"La Nuit de L'Homme Eau de Toilette",g:"Men",sq:"I2YT222LFWFYRAWUXOQSDZPB",img:IMG["u-lanuit.jpg"],imgL:IMG_L["u-lanuit.jpg"],imgR:IMG_R["u-lanuit.jpg"],sea:"c",tm:"n",cat:"Spicy",cat2:"Woody",notes:"Cardamom, lavender and cedar. A seductive evening classic.",p:{2:10,5:20,10:35},l:{3:18,5:23,10:38},color:"#3a3a5a",n:{t:["Cardamom", "Bergamot"],h:["Lavender", "Cedar"],b:["Vetiver", "Tonka bean"]}}
 ];
 /* Shop-card write-ups: one short story per fragrance, shown instead of the notes line.
    Keyed by the exact product name; the Scent Sherpa and filters still read p.notes. */
 const MOOD={
-"Ani Extrait de Parfum": "Ani means “memory” in Turkish, and it is also the name of an ancient Silk Road city whose ruins stand on the UNESCO World Heritage List. Nishane dedicated it to a close friend of the founders. Ginger and bergamot open warm, then rose, vanilla and sandalwood stay on your skin long after you've left. A scent people remember you by.",
-"Fan Your Flames Extrait de Parfum": "The name comes from Rumi, who told us to seek out the people who fan our flames. Coconut, rum and tobacco melt into tonka like a late night with your closest friends, the ones who bring out your best. Warm, addictive and made for good company.",
-"Fan Your Flames X Extrait de Parfum": "A second take on Fan Your Flames, reworked with thyme and mastic. The same coconut, rum and tobacco, now woodier and more herbal, with cedar and patchouli underneath. For when you love the original but want something a little more grown.",
-"Hacivat Extrait de Parfum": "In Turkish shadow theatre, Hacivat is the polished one: well-read, well-spoken, always composed. This scent carries itself the same way. A bright burst of pineapple and grapefruit settles into dry oakmoss and woods. Wear it when you want to be the most put-together person in the room.",
-"Kredo Extrait de Parfum": "Kredo comes from the Esperanto word for belief. Pink pepper and cardamom spark over osmanthus, then oud, sandalwood and soft suede settle in with conviction. A scent for knowing exactly what you stand for, and wearing it quietly.",
-"Papilefiko Extrait de Parfum": "Papilefiko is named for the butterfly effect: the idea that one small change can set something enormous in motion. Cardamom, lavender and jasmine open crisp and composed over a deep base of fir balsam, styrax and moss. Wear it on the days you're building something.",
-"Deziro Extrait de Parfum": "Deziro means desire in Esperanto, and this one pulls toward the sea. Mandarin and ambergris drift over mint, star anise and geranium, drying down to sandalwood, vetiver and clean musk. Fresh and easy, like the first morning of a long trip.",
-"Tempfluo Extrait de Parfum": "Tempfluo means the flow of time, and it feels like an afternoon you wish would slow down. Bright mandarin, bergamot and orange blossom carry a thread of saffron, then soften into praline, cashmere wood and vanilla. Brighter than its notes suggest, and easy to lose track of time in.",
-"Hundred Silent Ways X Extrait de Parfum": "Its name comes from Rumi, who wrote of saying everything without a word, in a hundred silent ways. Tuberose, gardenia and iris bloom over peach and mandarin, then vanilla, leather and patchouli bring the night in. A darker take on the original, for when you'd rather let your presence do the talking.",
-"Nefs Extrait de Parfum": "Nefs is an old Ottoman Turkish word for the soul, and this is Nishane at its most opulent. Rose and honey with saffron and fig, poured over oud, whiskey, leather and amber. Rich and boozy, like a palace banquet that runs until dawn.",
-"Suède et Safran Extrait de Parfum": "The name is simply French for suede and saffron, and it delivers exactly that, beautifully. Saffron and ambrette glow over soft suede and ginger, then dry down to leather and musk. Understated and tactile, like a well-worn suede jacket.",
-"Wulong Cha Extrait de Parfum": "Wulong cha is Mandarin for oolong tea, literally “black dragon tea”. Bergamot, orange and mandarin pour over oolong and a pinch of nutmeg, settling into fig and clean musk. Calm and bright, like the first cup of a slow morning.",
-"Wulong Cha X Extrait de Parfum": "The X takes Nishane's beloved oolong and softens it into something quieter. Bergamot, yuzu and mandarin sparkle over green tea, magnolia and a touch of thyme, then settle into creamy fig and soft musk. Calm, polished and effortlessly fresh, like a slow morning in a garden at dawn.",
-"Tero Extrait de Parfum": "Tero means Earth in Esperanto, and this one is grounded in every sense. Salted caramel crackles against black and Sichuan pepper, then patchouli and cinnamon bark warm into Haitian vetiver, amber and oak. Composed by Carlos Benaïm, the legend behind Ralph Lauren Polo. Rich, earthy and quietly commanding.",
-"Black Orchid Eau de Parfum": "Tom Ford set out to capture the blackest orchid, a flower that barely exists outside the imagination. Black truffle and dark orchid open rich and a little mysterious, then chocolate, patchouli and incense settle in. Dark and opulent, for nights when you want to be remembered.",
-"Noir Eau de Parfum": "Tom Ford called Noir one of his most personal fragrances, an invitation to explore your darker side. Bergamot, violet and pink pepper open clean and sharp, then iris, nutmeg and rose give way to vanilla, amber and leather. Classic evening elegance with a sensual side.",
-"Ombre Leather Eau de Parfum": "Inspired by the American West and Tom Ford's Texas childhood: open desert, worn saddles, cowboy country. Cardamom and jasmine drift over soft leather and patchouli, rugged but never rough. Smooth and effortless, for the confident type who doesn't need to say much.",
-"Tuscan Leather Eau de Parfum": "One of the original twelve Private Blend fragrances from 2007, and still one of the boldest. Raspberry and saffron cut through rich, smoky leather like a glass of red in a leather armchair. Luxurious and unapologetic, for when you want to own the room.",
-"Uomo Born in Roma Coral Fantasy": "Coral Fantasy was built around Rome's golden hour, the warm light just before sunset. Red apple and cardamom glow over lavender and sweet tobacco, with patchouli and vetiver underneath. Smooth and easy to love, for evening plans that start with the sunset.",
-"Uomo Born in Roma Green Stravaganza": "Green Stravaganza takes you through Rome's gardens at sunrise, while the air is still cool. Bergamot opens fresh, then coffee and vetiver add a dark, grounded twist. Crisp enough for daytime, with just enough edge to carry into the night.",
-"Uomo Born in Roma Yellow Dream": "Yellow Dream bottles Roman sunlight, its yellow glass and neon script inspired by the city's street culture. Pineapple and mandarin meet gingerbread spice and ginger over vanilla and cedar. Sweet, sunny and playful, for good days and better company.",
-"Uomo Born in Roma Purple Melancholia": "Purple Melancholia is inspired by the memory of a night in a Roman palace, and by the idea that a pensive mood can spark something creative. Cardamom drifts over coconut and lavender, settling into warm amberwood. Soft and a little wistful, for late nights and deep conversations.",
-"Uomo (2021)": "In 2021, Valentino reinvented Uomo with an entirely new scent, cleaner and more refined than the 2014 original. Bergamot and lemon open bright over powdery iris and vetiver, finished with cardamom and black pepper. Polished on the outside, a little rock and roll underneath, and quietly confident from the office to the evening.",
-"Baccarat Rouge 540 Eau de Parfum": "Baccarat Rouge 540 began as a tribute to the 250th anniversary of Baccarat, the French crystal house. The number is the temperature, 540°C, at which crystal fused with gold turns Baccarat's signature red. Saffron and jasmine glow over airy amberwood and ambergris, with fir resin and cedar. Luminous and instantly recognizable.",
-"Petit Matin Eau de Parfum": "Petit matin is French for early morning, and Kurkdjian made it to capture Paris at dawn, while the city is still quiet. Lemon and litsea cubeba sparkle over lavandin, orange blossom and hawthorn, then settle into soft musk. Bright and clean, like fresh sheets and an open window.",
-"Replica Jazz Club": "Replica recreates real moments, and Jazz Club takes you to a Brooklyn jazz club in 2013, cocktails in hand and cigar smoke in the air. Rum, tobacco leaf and vanilla bean warm up like a leather armchair in a dim room. The coziest thing you can wear when the nights turn cold.",
-"Replica Coffee Break": "Coffee Break captures coming in from the cold to a warm café on a winter day, and finally taking a break. Coffee and milky foam, softened by lavender. Cozy and comforting, like your favourite sweater with a latte in hand.",
-"La Melodie Maximal Parfum": "La Mélodie Maximal plays fresh and bright from the first note. Mandarin, grapefruit and sea air rise over jasmine and bay leaf, with oakmoss, guaiac wood and a splash of whiskey underneath. Easygoing on top and smooth on the drydown, like a song you keep on repeat.",
-"Or Noir Café Parfum": "Or noir is French for black gold, and this one pours like it. Pink pepper and lavender open over toffee and cinnamon, then coffee, amber, tonka and vanilla turn it rich and warm. A dessert-and-espresso scent for cold evenings.",
-"Le Piano Eau de Parfum": "Named for the piano, in keeping with Claude Marsal's musical theme. Citrus and neroli open light and clear, then airy florals and sea notes drift down into musk, amber and cedar. Fresh and composed, like a soft melody on a Sunday morning.",
-"I Will Eau de Parfum": "I Will is Armani's first new men's signature in about twenty years, built around will and perseverance rather than luck. Two master perfumers spent four years and some 2,800 trials getting it right. Madagascar vanilla and lavender, lifted by cardamom and bergamot, over soft woody leather. For the man who makes his own luck.",
-"Uomo Signature Eau de Parfum": "Signature is Ferragamo Uomo dressed up in all black, a more polished take on the original. Mandarin and pink pepper open into cinnamon and cardamom, over leather with a soft touch of coffee and tonka. Sharp, warm and refined, like a tailored suit on a night out.",
-"Zoltan Extrait de Parfum": "Zoltan is built on contrast: ice and fire in the same bottle. Icy mint and grapefruit hit first, like cold air on a winter night, then cinnamon and red rose turn up the heat. Leather, tonka and amber close it out, smooth and a little dangerous. Masculine and provocative, for when you walk in from the cold and every head turns.",
-"Gentleman Réserve Privée Eau de Parfum": "Réserve Privée means private reserve, and Givenchy built it around the world of artisanal whisky. Iris, whisky and chestnut, polished and a little boozy, over a warm amber glow. For the gentleman who saves the good bottle for the right company.",
-"Althaïr Eau de Parfum": "Althaïr is built around Bourbon vanilla, which Parfums de Marly traces back to the court of Louis XV. Bergamot, orange blossom, cinnamon and cardamom keep it fresh, then praline, guaiac wood and musk add warmth. A vanilla that's elegant rather than sweet.",
-"Eros Najim Parfum": "Eros Najim was created for the Middle East, a richer, smokier side of Versace's Eros. Yellow mandarin and caramel open over cardamom and oud wood, then settle into incense, patchouli and vetiver. Warm and ambery, like desert air after dark.",
-"Erba Pura Eau de Parfum": "Erba Pura is a sun-soaked Mediterranean basket: Sicilian orange, lemon and Calabrian bergamot piled with ripe fruit. White musk, amber and Madagascar vanilla soften it into something juicy and easy to love. Bright and generous, and made for compliments.",
-"Le Male Elixir Parfum": "The original Le Male was created in 1995 by Francis Kurkdjian, the nose who would later make Baccarat Rouge 540, and its sailor-torso bottle became an icon. In 2023, Quentin Bisch took it after dark with Elixir, the richest Le Male yet. Lavender and mint open cool, then vanilla, benzoin and honey melt into tonka and tobacco. Sweet, warm and made for cold nights.",
-"La Nuit de L'Homme": "La Nuit de L'Homme means the night of man, and YSL built it on contrast and tension. Cardamom, lavender and cedar, fresh on top and smoky-sweet beneath. A modern evening classic for dates, dim lights and close conversation."
+"La Mélodie Maximal Parfum": "Claude Marsal names every scent after music, and La Mélodie is the one you hum without noticing. Mandarin, grapefruit and sea air open bright and easy, jasmine and bay leaf carry the middle, and oakmoss, guaiac wood and a pour of whiskey give the drydown its smooth, low-lit finish. Fresh enough for a long afternoon, polished enough for what comes after. A song you keep on repeat.",
+"Or Noir Café Parfum": "Or noir is French for black gold, and this one pours like it. Pink pepper and a flash of juniper open over lavender, then toffee and cinnamon take the warm, glossy middle. Amber, tonka, vanilla and soft suede close it out with a dark roast of coffee underneath, smooth as a leather banquette in a good restaurant. Claude Marsal's limited Noir Edition, for dinner reservations and cold evenings.",
+"Le Piano Eau de Parfum": "The brand describes Le Piano as a scent made by the ocean and the sun, and that is exactly how it plays. Lime, lemon, mandarin and neroli open clear and cool, a wash of airy florals and sea notes keeps the middle light, and white musk, amber and cedar settle it into something calm and clean. Fresh and composed, like a soft melody on a Sunday morning.",
+"Zoltan Extrait de Parfum": "Zoltán is a Hungarian name with a ruler's roots, and the scent carries itself that way: ice and fire in the same bottle. Mint, grapefruit and blood mandarin hit first, like cold air on a winter night, then cinnamon and red rose turn up the heat. Leather, tonka and amber close it out, smooth and a little dangerous. The brand calls it masculine and provocative; wear it when you walk in from the cold and want every head to turn.",
+"I Will Eau de Parfum": "I Will is Armani's first new men's pillar in about twenty years, and one of the last projects Mr. Armani oversaw himself. Its line is “it's not about luck, it's about will”: Alberto Morillas and Nathalie Lorson spent four years and more than 2,800 trials on it. Calabrian bergamot opens, lavender and sage settle in, and Madagascar vanilla melts into a soft wood-and-leather accord. Warm, confident and quietly expensive. For the man who makes his own luck.",
+"Uomo Signature Eau de Parfum": "Signature is Ferragamo Uomo in a black bottle, and it cuts the sugar: the house built it on two Florentine staples, fine leather and dark-roast coffee. Alberto Morillas opens it with mandarin and pink pepper, warms the middle with cinnamon and cardamom, then lets leather, roasted coffee and tonka take over. Sharp, warm and refined, like a tailored suit on a night out.",
+"Gentleman Réserve Privée Eau de Parfum": "Réserve Privée means private reserve, and Givenchy built it around real whisky: an absolute made in Grasse from the barley of a Scottish distillery, composed by Nathalie Lorson and Olivier Cresp alongside a master distiller. Bergamot and that whisky open together, chestnut and iris give it a smooth, roasted heart, and cedar, vetiver and patchouli finish it dry and warm. Even the bottle is shaped like a hip flask. For the gentleman who saves the good bottle for the right company.",
+"Le Male Elixir Parfum": "The original Le Male was created in 1995 by a 26-year-old Francis Kurkdjian, the nose who would later make Baccarat Rouge 540, and its sailor-torso bottle became an icon. In 2023 Quentin Bisch took it after dark with Elixir, the line's first Parfum: a sharp breath of mint, then lavender turning warm, then benzoin and tonka melting into honeyed vanilla with a touch of tobacco. Sweet, warm and made for cold nights.",
+"Replica Coffee Break": "Replica bottles moments, and Coffee Break is coming in from the cold to a warm café in the middle of winter and finally sitting down. A roasted coffee accord with red apple and lemon opens, lavender and spearmint keep it fresh, and a milk-mousse accord over sandalwood and cedar makes it as soft as foam. Margiela calls it a “fougère tasty”, the classic barbershop lavender turned into dessert. Cozy and comforting, like your favourite sweater with a latte in hand.",
+"Replica Jazz Club": "Replica recreates real moments, and Jazz Club takes you to a Brooklyn jazz club in 2013, cocktails in hand and cigar smoke in the air. Aliénor Massenet composed it as the line's first scent for him. Rum, tobacco leaf and vanilla bean warm up like a leather armchair in a dim room. The coziest thing you can wear when the nights turn cold.",
+"Baccarat Rouge 540 Eau de Parfum": "Baccarat Rouge 540 began in 2014 as 250 crystal bottles for the 250th anniversary of Baccarat, the French crystal house; a year later Francis Kurkdjian put it in his permanent collection. The number is the temperature, 540°C, at which gold-infused crystal turns Baccarat's signature red. Kurkdjian builds it in three auras: jasmine and saffron for air, ambergris and dry woods for the mineral glow, and a sugared warmth for fire. Luminous, and unmistakably itself.",
+"Petit Matin Eau de Parfum": "Petit matin is French for early morning, and Kurkdjian made it to capture Paris at dawn, while the city is still quiet; its twin, Grand Soir, is the same city at night. Lemon and litsea cubeba sparkle over lavandin, orange blossom and hawthorn, then settle into soft musks. Bright and clean, like fresh sheets and an open window.",
+"Ani Extrait de Parfum": "Ani is a ruined medieval city on the Silk Road, once the capital of an Armenian kingdom and now a UNESCO World Heritage site on Turkey's eastern edge. Nishane named this one for it, and for “Sarı Gelin”, the folk song both peoples claim, because the only real border is the one we imagine. Cécile Zarokian opens it with blue ginger and bergamot, warms it with Turkish rose and blackcurrant, then lets vanilla, benzoin and sandalwood stay on your skin long after you've left. A scent people remember you by.",
+"Fan Your Flames Extrait de Parfum": "“Set your life on fire and seek those who fan your flames.” Nishane took the line from Rumi and the scene from a night out with loved ones and a coconut shisha. Coconut and rum open sweet, tobacco smoke and tonka melt in, and Chinese cedar and oakmoss keep it from ever turning to syrup. A late night with the people who bring out your best. Warm, addictive and made for good company.",
+"Fan Your Flames X Extrait de Parfum": "For its tenth anniversary Nishane asked Miroslav Petkov to turn the original's flames down to a glow. Coconut and rum open softer and more tropical, with a resinous touch of mastic; thyme and carrot give the tobacco-and-tonka heart an herbal edge; and cedar, oakmoss and patchouli settle it earthy underneath. For when you love the original but want it a little smoother.",
+"Hacivat Extrait de Parfum": "In Turkish shadow theatre, a tradition on UNESCO's heritage list, Hacivat is the polished one: well-read, well-spoken, always composed, the foil to the rowdy Karagöz. Nishane's tribute to elegance carries itself the same way. Jorge Lee opens it with a bright burst of pineapple, grapefruit and bergamot, lets jasmine and patchouli pass through, and lands it on dry oakmoss and clear, timbered woods. Wear it when you want to be the most put-together person in the room.",
+"Kredo Extrait de Parfum": "Kredo is Esperanto for belief, and Nishane gave the brief to Jean-Louis Sieuzac for its Time Capsule collection: four scents about action, time, place and belief, sealed for future generations. Pink pepper and cardamom spark over an osmanthus absolute, then oud, sandalwood and soft suede settle in with conviction. A scent for knowing exactly what you stand for, and wearing it quietly.",
+"Papilefiko Extrait de Parfum": "Papilefiko is named for the butterfly effect: the idea that one small change can set something enormous in motion. It was composed by Dominique Ropion, the IFF master perfumer behind Frédéric Malle's Portrait of a Lady and one of the most respected noses alive. Cardamom and coriander open crisp and composed, lavandin and jasmine keep it aromatic, and fir balsam, moss and styrax give it a deep, resinous floor. Wear it on the days you're building something.",
+"Deziro Extrait de Parfum": "Deziro means desire in Esperanto, and this one pulls toward the sea. Alberto Morillas, the master perfumer behind CK One and Kenzo Flower, built it as an aquatic fougère: mandarin and ambergris drift over mint, star anise and geranium, with a faint, skin-like twist from carrot seed, then sandalwood, vetiver and clean musk. Fresh and easy, like the first morning of a long trip.",
+"Tempfluo Extrait de Parfum": "Tempfluo means the flow of time in Esperanto, and Nishane built it around one idea: we live once, so seize the day. Anne Flipo, the IFF master perfumer who co-created YSL Libre, opens it with mandarin, bergamot and a thread of saffron, then lets jasmine sambac, orange flower and praline melt into cashmere wood and vanilla. Sweet, golden and brighter than its notes suggest. Easy to lose track of time in.",
+"Hundred Silent Ways X Extrait de Parfum": "Its name comes from Rumi: “I closed my mouth and spoke to you in a hundred silent ways.” Nishane's original is one of its five best-sellers worldwide; for the tenth-anniversary X collection, Anne Flipo kept the tuberose, gardenia and iris blooming over peach and mandarin, added heliotrope, and swapped the soft woods for leather and patchouli. More elegant and more evening than the original, for when you'd rather let your presence do the talking.",
+"Wulong Cha X Extrait de Parfum": "For its tenth anniversary Nishane handed Wūlóng Chá to Julien Rasquinet with one brief: soften the sharp edges and let florals in. The oolong steps aside for green tea and magnolia; bergamot, yuzu and mandarin sparkle on top, a touch of thyme keeps it herbal, and creamy fig and soft musk settle it. Calm, polished and effortlessly fresh, like a slow morning in a garden at dawn.",
+"Nefs Extrait de Parfum": "Nefs is an old Ottoman Turkish word for the soul, and Nishane calls this its flagship oriental, written with One Thousand and One Nights in mind. Chris Maurice opens it with honey, saffron and fig, lets rose and osmanthus take the heart, then pours oud, whiskey, leather and amber underneath. Rich and boozy, like a palace banquet that runs until dawn.",
+"Suède et Safran Extrait de Parfum": "The name is simply French for suede and saffron, and Nishane describes it as a tailored leather jacket spiced with saffron from Iran and ambrette seed from India. Jorge Lee lets the saffron and ambrette glow over soft suede and ginger, then dries it down to leather and musk. Understated and tactile, like a jacket you've worn for years. If you love Tuscan Leather, this is its quieter cousin.",
+"Wulong Cha Extrait de Parfum": "Wūlóng chá is Mandarin for oolong tea, literally “black dragon tea”, and Nishane calls this one of the strongest fresh scents on the market. Bergamot, orange and mandarin sparkle over a cup of oolong with a pinch of nutmeg, then settle into Mediterranean fig and clean musk. Composed by Jorge Lee in 2015. Calm and bright, like the first cup of a slow morning.",
+"Tero Extrait de Parfum": "Tero means Earth in Esperanto, and this one is grounded in every sense. Salted caramel crackles against black and Sichuan pepper, then patchouli and cinnamon bark warm into Haitian vetiver, amber and oak. Composed by Carlos Benaïm, the IFF master perfumer behind Ralph Lauren Polo, who was asked to capture Place for Nishane's Time Capsule. Rich, earthy and quietly commanding.",
+"Althaïr Eau de Parfum": "Althaïr is Parfums de Marly's vanilla, and the house describes it as majestic, subtle and surprisingly fresh: a Bourbon vanilla the way 18th-century Europe first fell for it, as a rare luxury. Bergamot, mandarin and elemi open bright, orange blossom, cinnamon and cardamom warm the heart, then vanilla, guaiac wood and praline settle in without ever turning sugary. Elegant rather than sweet, for cool evenings when you'd rather be noticed than loud.",
+"Black Orchid Eau de Parfum": "Black Orchid was the first fragrance Tom Ford ever put his name on, in 2006, built around a flower he called perfect and could barely find. Black truffle and ylang-ylang open rich and a little mysterious, rum-soaked black plum surrounds the orchid at the heart, and patchouli and creamy vanilla wrap it in warmth. Dark and opulent, for nights when you want to be remembered.",
+"Noir Eau de Parfum": "Tom Ford called Noir “perhaps my most personal fragrance yet”, and built it in two parts: the polished gentleman everyone meets, and the one underneath the suit. Bergamot, violet and pink pepper open clean and sharp, iris, rose and nutmeg hold the middle, then vanilla, amber and leather reveal themselves slowly. Composed by Olivier Gillotin in 2012. Classic evening elegance with a sensual side.",
+"Ombre Leather Eau de Parfum": "“Dust on wind, skin on skin” is how Tom Ford describes it: a leather born of the American West, the desert country Ford grew up around in Texas and Santa Fe. Cardamom and jasmine sambac drift over a black leather accord, patchouli and white moss, rugged but never rough, with amber like heat off rock and sand. Composed by Sonia Constant. Smooth and effortless, for the confident type who doesn't need to say much.",
+"Tuscan Leather Eau de Parfum": "One of the original twelve Private Blend fragrances from 2007, the line Tom Ford calls his own scent laboratory, and still one of the boldest. Raspberry and saffron cut through rich, smoky leather like a glass of red in a leather armchair, with olibanum and night-blooming jasmine keeping it from ever going flat. Luxurious and unapologetic, for when you want to own the room.",
+"Uomo Born in Roma Coral Fantasy": "Valentino built Coral Fantasy around Rome at sunset, the coral-lit hour when the whole city glows. Nicolas Beaulieu and Jean-Christophe Hérault keep it simple: a juicy red apple on top, clary sage at the heart, and a soft, sweet tobacco underneath that lasts into the night. Smooth and easy to love, for evening plans that start with the sunset.",
+"Uomo Born in Roma Green Stravaganza": "Green Stravaganza takes you through Rome's gardens at sunrise, while the air is still cool. Nathalie Lorson and Olivier Cresp, the nose behind Mugler Angel, keep it to three ideas: Calabrian bergamot opens green and zesty, a coffee accord adds the dark, grounded twist, and Haitian vetiver carries it. Crisp enough for daytime, with just enough edge to carry into the night.",
+"Uomo (2021)": "Valentino Uomo first arrived in 2014 from Olivier Polge, now Chanel's in-house perfumer; in 2021 the house reworked it into the cleaner, more refined scent you have here. Italian lemon and bergamot open bright over an iris heart laced with vetiver, and cardamom with a touch of black pepper gives it a sharp, tailored finish. Polished on the outside, a little rock and roll underneath, which is exactly how Valentino describes its man. Quietly confident from the office to the evening.",
+"Uomo Born in Roma Yellow Dream": "Yellow Dream bottles Roman sunlight: a fluorescent yellow signature on the Rockstud bottle, Valentino's nod to haute couture meeting street culture. Italian mandarin and a juicy pineapple accord open bright, a gingerbread accord of cinnamon, cardamom and nutmeg warms the middle, and vanilla absolute over cedarwood keeps it soft. “If you don't dream, you can't deliver dreams,” said Pierpaolo Piccioli at the launch. Sweet, sunny and playful, for good days and better company.",
+"Uomo Born in Roma Purple Melancholia": "Purple Melancholia is Valentino's newest colour, built on the idea that a pensive, nostalgic mood can be the start of something creative. Spicy cardamom opens over a creamy coconut accord, lavender keeps the Born in Roma signature, and ambery woods settle it into Rome's eternal light after dark. Soft and a little wistful, for late nights and deep conversations.",
+"Eros Najim Parfum": "Najim means star in Arabic, and Versace launched this one in Dubai before the rest of the world got it: Eros in the golden light of a desert sunset. Yellow mandarin, saffron and cardamom open warm and bright, an oud accord with cedar and caramel smoulders underneath, and incense, patchouli, vetiver and tonka carry it deep into the night. The richer, smokier side of Eros, in an amber-glass bottle. Like desert air after dark.",
+"Erba Pura Eau de Parfum": "Erba Pura is a stroll through a Mediterranean old town at golden hour: Sicilian orange, lemon and Calabrian bergamot piled high with ripe fruit. Amber, Madagascar vanilla and white musk soften it into something juicy and easy to love. From Xerjoff, the Turin house founded by Sergio Momo, and part of its Vibe collection, where every bottle ships with a silk foulard woven in Como. Bright and generous, with a glow that doesn't go unnoticed.",
+"La Nuit de L'Homme Eau de Toilette": "La Nuit de L'Homme means the night of man, and YSL built it on three pairs of opposites: cardamom against bergamot, lavender against cedar, vetiver against sweet tonka. The 2009 original came from Anne Flipo, Dominique Ropion and Pierre Wargnye, with Vincent Cassel as its face. Fresh on top and smoky-sweet beneath, a modern evening classic for dates, dim lights and close conversation."
 };
 PRODUCTS.forEach(p=>{if(MOOD[p.name])p.mood=MOOD[p.name]});
 /* For her: 1 = a top pick for women, 2 = unisex she can wear too. Untagged = for him.
    The line is shown in Scent Sherpa results when "Her" is chosen. */
 const HER={
-"Black Orchid Eau de Parfum":[1,"Tom Ford first launched it as a women's fragrance in 2006, and it's still one of the most loved on women. Gardenia, ylang-ylang and dark chocolate make it glamorous, bold and unforgettable."],
-"Hundred Silent Ways X Extrait de Parfum":[1,"The most feminine scent in the collection: a creamy bouquet of tuberose, gardenia and iris over peach, warmed by vanilla. Soft, romantic and quietly sensual."],
-"Tempfluo Extrait de Parfum":[1,"Created by Anne Flipo, the perfumer behind YSL Libre, and often compared to it. Orange blossom, jasmine and praline make it radiant and feminine."],
-"Baccarat Rouge 540 Eau de Parfum":[1,"One of the most-loved niche scents on women anywhere. Saffron and jasmine over sugary amber woods leave a glowing trail people notice."],
+"Black Orchid Eau de Parfum":[1,"Tom Ford first launched it as a women's fragrance in 2006, and it's still one of the most loved on women. Ylang-ylang, black plum and a rum-dark orchid make it glamorous, bold and unforgettable."],
+"Hundred Silent Ways X Extrait de Parfum":[1,"A creamy bouquet of tuberose, gardenia and iris over peach, warmed by vanilla and a whisper of leather. Soft, romantic and quietly sensual."],
+"Tempfluo Extrait de Parfum":[1,"Created by Anne Flipo, co-creator of YSL Libre, and often compared to it. Orange flower, jasmine and praline make it radiant and feminine."],
+"Baccarat Rouge 540 Eau de Parfum":[1,"A modern classic on women. Saffron and jasmine over a sugared ambergris glow leave the trail everyone recognizes."],
 "Erba Pura Eau de Parfum":[1,"Juicy citrus and ripe fruit over vanilla and white musk. Bright, sweet and easy to love, it wears beautifully on women."],
-"Ani Extrait de Parfum":[1,"A cult favourite and one of the most celebrated vanillas around. Blackcurrant and Turkish rose give it a soft, romantic side."],
+"Ani Extrait de Parfum":[1,"A cult favourite vanilla. Blackcurrant and Turkish rose give it a soft, romantic side, and the drydown stays close and warm."],
 "Replica Coffee Break":[1,"Creamy coffee and milky foam with orange blossom and lavender. Cozy and sweet, and a favourite with women who love a gourmand."],
 "Petit Matin Eau de Parfum":[1,"Lemon, orange blossom and hawthorn over soft musks. Clean, luminous and effortlessly elegant for daytime."],
 "Wulong Cha Extrait de Parfum":[1,"Bright citrus and oolong tea over creamy fig and musk. Fresh, soft and truly unisex, perfect for spring and summer."],
@@ -974,9 +993,173 @@ const HER={
 "Tuscan Leather Eau de Parfum":[2,"Raspberry and jasmine soften its rich leather. Bold and luxurious, for the woman who loves a statement leather."],
 "Ombre Leather Eau de Parfum":[2,"Jasmine and cardamom keep the leather smooth rather than heavy. Sleek, confident and effortlessly cool."],
 "Hacivat Extrait de Parfum":[2,"Juicy pineapple and grapefruit over earthy woods. Bright, fresh and confident, easy to wear anywhere."],
-"Uomo Born in Roma Coral Fantasy":[2,"Sold as a men's scent, but its sweet red apple and soft tobacco give it a real unisex charm."]
+"Uomo Born in Roma Coral Fantasy":[2,"Sold as a men's scent, but its sweet red apple and soft tobacco give it a real unisex charm."],
+"Replica Jazz Club":[2,"Rum, vanilla and tobacco leaf on a woman read warm and a little mysterious rather than masculine. An evening scent with real presence."],
+"Althaïr Eau de Parfum":[2,"A soft Bourbon vanilla with orange blossom and praline, elegant rather than sugary. Easy for her to wear on cooler days."]
 };
 PRODUCTS.forEach(p=>{const h=HER[p.name];if(h){p.her=h[0];p.herWhy=h[1]}});
+/* Scent Sherpa write-ups: each scent's own voice (vibe) and when it shines (when). Used instead of templates. */
+const SHERPA={
+"La Mélodie Maximal Parfum": {
+"vibe": "The easy one in the collection: citrus and sea air up front, a smooth whiskey-and-moss drydown that never shouts.",
+"when": "A daily driver for someone who wants fresh without smelling like everyone else at the office."
+},
+"Or Noir Café Parfum": {
+"vibe": "Black gold in a bottle: toffee, cinnamon and a dark roast of coffee over suede, rich without being heavy.",
+"when": "Dinner reservations and cold evenings, when you want to smell like dessert with a tailored jacket on."
+},
+"Le Piano Eau de Parfum": {
+"vibe": "Ocean and sun, played softly: lime, neroli and airy florals that settle into clean musk and cedar.",
+"when": "Warm days and daytime plans; the one to reach for when the forecast says sun."
+},
+"Zoltan Extrait de Parfum": {
+"vibe": "Ice and fire in one bottle: mint and grapefruit that turn into cinnamon, rose and leather within the hour.",
+"when": "Winter nights out. It walks in cold and leaves warm, and people notice the turn."
+},
+"I Will Eau de Parfum": {
+"vibe": "Armani's new signature: bergamot and lavender melting into Madagascar vanilla and a soft wood-and-leather accord.",
+"when": "The quietly expensive cold-weather scent for someone who'd rather be respected than noticed."
+},
+"Uomo Signature Eau de Parfum": {
+"vibe": "Ferragamo Uomo with the sugar cut: leather and dark-roast coffee under mandarin, pink pepper and cinnamon.",
+"when": "A suit-and-dinner scent for fall and winter evenings; sharp first, warm later."
+},
+"Gentleman Réserve Privée Eau de Parfum": {
+"vibe": "A real whisky absolute over iris and chestnut, finished dry with cedar and vetiver, bottled like a hip flask.",
+"when": "The gentleman's after-dark pick for cold months, when the good bottle comes out for the right company."
+},
+"Le Male Elixir Parfum": {
+"vibe": "Le Male after dark: a breath of mint, then lavender, benzoin and tonka melting into honeyed vanilla with a touch of tobacco.",
+"when": "Sweet, warm and made for winter nights; a crowd-pleaser that still feels like a choice."
+},
+"Replica Coffee Break": {
+"vibe": "Coming in from the cold to a warm café: roasted coffee, red apple and lavender over a milk-mousse accord as soft as foam.",
+"when": "Daytime comfort in fall and winter, for anyone who likes their gourmand gentle rather than syrupy."
+},
+"Replica Jazz Club": {
+"vibe": "A Brooklyn jazz club in 2013: rum, tobacco leaf and vanilla bean, with cigar smoke in the air.",
+"when": "The coziest thing you can wear once the nights turn cold; dim bars and leather armchairs."
+},
+"Baccarat Rouge 540 Eau de Parfum": {
+"vibe": "Kurkdjian's crystal glow: jasmine and saffron over ambergris and dry woods, with a sugared warmth that everyone recognizes.",
+"when": "Year-round and day-or-night, for someone who wants the trail people turn around for."
+},
+"Petit Matin Eau de Parfum": {
+"vibe": "Paris at dawn: lemon and litsea cubeba over lavandin, orange blossom and hawthorn, settling into clean musks.",
+"when": "Spring and summer mornings; bright, clean and effortless for the daytime."
+},
+"Ani Extrait de Parfum": {
+"vibe": "Blue ginger and bergamot that warm into Turkish rose, blackcurrant and a vanilla-benzoin drydown that stays close and warm.",
+"when": "Cold-weather days and nights alike; the scent people remember you by."
+},
+"Fan Your Flames Extrait de Parfum": {
+"vibe": "Coconut, rum and tobacco smoke melting into tonka, with cedar and oakmoss keeping it from turning to syrup.",
+"when": "Late nights with your closest friends, in fall and winter; warm, addictive and made for company."
+},
+"Fan Your Flames X Extrait de Parfum": {
+"vibe": "The original's flames turned down to a glow: softer, more tropical coconut and rum with thyme, carrot and mastic.",
+"when": "For someone who loves Fan Your Flames but wants it smoother; fall and winter evenings."
+},
+"Hacivat Extrait de Parfum": {
+"vibe": "A bright burst of pineapple, grapefruit and bergamot that dries down to oakmoss and clear, timbered woods.",
+"when": "Spring and summer days when you want to be the most put-together person in the room."
+},
+"Kredo Extrait de Parfum": {
+"vibe": "Pink pepper and cardamom over osmanthus, then oud, sandalwood and soft suede with real conviction.",
+"when": "Cold months, day or night, for someone who knows exactly what they stand for and wears it quietly."
+},
+"Papilefiko Extrait de Parfum": {
+"vibe": "Dominique Ropion's butterfly effect: crisp cardamom and lavandin over a deep floor of fir balsam, moss and styrax.",
+"when": "An all-year, day-or-night scent for the days you're building something."
+},
+"Deziro Extrait de Parfum": {
+"vibe": "Alberto Morillas's aquatic fougère: mandarin and ambergris over mint, star anise and geranium, then sandalwood and vetiver.",
+"when": "Spring and summer daytime; fresh and easy, like the first morning of a long trip."
+},
+"Tempfluo Extrait de Parfum": {
+"vibe": "Anne Flipo's golden afternoon: mandarin and saffron melting into jasmine sambac, orange flower, praline and cashmere wood.",
+"when": "Any season, day or night; sweet and radiant, and easy to lose track of time in."
+},
+"Hundred Silent Ways X Extrait de Parfum": {
+"vibe": "Tuberose, gardenia and iris blooming over peach, warmed by vanilla, leather and patchouli.",
+"when": "Cold-weather evenings, for when you'd rather let your presence do the talking."
+},
+"Wulong Cha X Extrait de Parfum": {
+"vibe": "Wulong Cha with its edges softened: bergamot, yuzu and mandarin over green tea, magnolia and a touch of thyme, on creamy fig.",
+"when": "Spring and summer daytime; calm, polished and effortlessly fresh."
+},
+"Nefs Extrait de Parfum": {
+"vibe": "Nishane's flagship oriental: honey, saffron and fig over rose and osmanthus, poured onto oud, whiskey, leather and amber.",
+"when": "Winter nights and big occasions; rich, boozy and unapologetically opulent."
+},
+"Suède et Safran Extrait de Parfum": {
+"vibe": "A tailored suede jacket spiced with Iranian saffron and ambrette, drying down to leather and musk.",
+"when": "Cold months, day or night; Tuscan Leather's quieter cousin."
+},
+"Wulong Cha Extrait de Parfum": {
+"vibe": "Bergamot, orange and mandarin over a cup of oolong with a pinch of nutmeg, settling into fig and clean musk.",
+"when": "Spring and summer days; the first cup of a slow morning."
+},
+"Tero Extrait de Parfum": {
+"vibe": "Carlos Benaïm's salted caramel crackling against black and Sichuan pepper, warming into patchouli, cinnamon bark, vetiver and oak.",
+"when": "Fall and winter evenings; rich, earthy and quietly commanding."
+},
+"Althaïr Eau de Parfum": {
+"vibe": "A majestic, surprisingly fresh Bourbon vanilla: bergamot, mandarin and elemi over orange blossom, cinnamon and cardamom, then praline and guaiac wood.",
+"when": "Cool evenings when you'd rather be noticed than loud; elegant rather than sweet."
+},
+"Black Orchid Eau de Parfum": {
+"vibe": "Tom Ford's first fragrance: black truffle and ylang-ylang over black orchid, rum-soaked plum and patchouli.",
+"when": "Cold-weather nights when you want to be remembered; dark, opulent and unmistakable."
+},
+"Noir Eau de Parfum": {
+"vibe": "Tom Ford's most personal: bergamot, violet and pink pepper over iris, rose and nutmeg, revealing vanilla, amber and leather slowly.",
+"when": "Evening elegance for the colder months, with a sensual side underneath the suit."
+},
+"Ombre Leather Eau de Parfum": {
+"vibe": "Dust on wind, skin on skin: cardamom and jasmine sambac over a black leather accord, patchouli, white moss and amber.",
+"when": "Fall and winter, day or night, for the confident type who doesn't need to say much."
+},
+"Tuscan Leather Eau de Parfum": {
+"vibe": "One of the original twelve Private Blends: raspberry and saffron cutting through rich, smoky leather, olibanum and black suede.",
+"when": "Cold-weather evenings when you want to own the room; luxurious and unapologetic."
+},
+"Uomo Born in Roma Coral Fantasy": {
+"vibe": "Rome at sunset: a juicy red apple, clary sage at the heart and a soft, sweet tobacco that lasts into the night.",
+"when": "All year, day or night; smooth and easy to love, for plans that start with the sunset."
+},
+"Uomo Born in Roma Green Stravaganza": {
+"vibe": "Rome's gardens at sunrise: Calabrian bergamot opening green and zesty, a coffee accord for the dark twist, vetiver to carry it.",
+"when": "Spring and summer days with just enough edge for the evening."
+},
+"Uomo (2021)": {
+"vibe": "Lemon and bergamot over an iris heart laced with vetiver, finished sharp with cardamom and black pepper.",
+"when": "All year, office to evening; polished outside, a little rock and roll underneath."
+},
+"Uomo Born in Roma Yellow Dream": {
+"vibe": "Roman sunlight: Italian mandarin and pineapple over a gingerbread accord, on vanilla absolute and cedarwood.",
+"when": "Spring and summer, day or night; sweet, sunny and playful, for good days and better company."
+},
+"Uomo Born in Roma Purple Melancholia": {
+"vibe": "Spicy cardamom over a creamy coconut accord and lavender, settling into ambery woods.",
+"when": "Cold-weather nights and deep conversations; soft and a little wistful."
+},
+"Eros Najim Parfum": {
+"vibe": "Eros at desert sunset: yellow mandarin, saffron and cardamom over an oud accord, cedar and caramel, into incense and tonka.",
+"when": "Fall and winter evenings; the richer, smokier side of Eros."
+},
+"Erba Pura Eau de Parfum": {
+"vibe": "A Mediterranean old town at golden hour: Sicilian orange, lemon and bergamot piled with ripe fruit over amber, vanilla and white musk.",
+"when": "Spring and summer days; bright, generous and impossible to miss."
+},
+"La Nuit de L'Homme Eau de Toilette": {
+"vibe": "Three pairs of opposites: cardamom against bergamot, lavender against cedar, vetiver against sweet tonka.",
+"when": "Dates, dim lights and close conversation in the colder months; a modern evening classic."
+}
+};
+/* Strength (1 soft & close, 2 noticeable, 3 bold) and extra descriptors per scent, from Fragrantica longevity/sillage votes and accords. */
+const TAGS={"La Mélodie Maximal Parfum": {"s": 3, "x": ["boozy", "aquatic", "aromatic"]}, "Or Noir Café Parfum": {"s": 2, "x": ["gourmand", "powdery", "aromatic"]}, "Le Piano Eau de Parfum": {"s": 2, "x": ["aromatic", "powdery", "green"]}, "Zoltan Extrait de Parfum": {"s": 2, "x": ["amber", "green", "musky"]}, "I Will Eau de Parfum": {"s": 2, "x": ["aromatic", "powdery", "amber"]}, "Uomo Signature Eau de Parfum": {"s": 2, "x": ["gourmand", "aromatic", "amber"]}, "Gentleman Réserve Privée Eau de Parfum": {"s": 2, "x": ["boozy", "powdery", "amber"]}, "Le Male Elixir Parfum": {"s": 3, "x": ["amber", "aromatic", "gourmand"]}, "Replica Coffee Break": {"s": 1, "x": ["gourmand", "aromatic", "amber"]}, "Replica Jazz Club": {"s": 1, "x": ["boozy", "aromatic", "amber"]}, "Baccarat Rouge 540 Eau de Parfum": {"s": 3, "x": ["amber", "aromatic", "resinous"]}, "Petit Matin Eau de Parfum": {"s": 1, "x": ["musky", "aromatic"]}, "Ani Extrait de Parfum": {"s": 3, "x": ["powdery", "amber", "resinous"]}, "Fan Your Flames Extrait de Parfum": {"s": 3, "x": ["boozy", "gourmand"]}, "Fan Your Flames X Extrait de Parfum": {"s": 2, "x": ["boozy", "gourmand", "aromatic"]}, "Hacivat Extrait de Parfum": {"s": 3, "x": ["fruity", "green"]}, "Kredo Extrait de Parfum": {"s": 2, "x": ["oud", "musky", "powdery"]}, "Papilefiko Extrait de Parfum": {"s": 2, "x": ["aromatic", "green", "amber"]}, "Deziro Extrait de Parfum": {"s": 2, "x": ["aromatic", "green", "aquatic"]}, "Tempfluo Extrait de Parfum": {"s": 3, "x": ["musky", "amber", "gourmand"]}, "Hundred Silent Ways X Extrait de Parfum": {"s": 3, "x": ["powdery", "animalic", "smoky"]}, "Wulong Cha X Extrait de Parfum": {"s": 2, "x": ["tea", "green", "aromatic"]}, "Nefs Extrait de Parfum": {"s": 3, "x": ["oud", "boozy", "amber"]}, "Suède et Safran Extrait de Parfum": {"s": 3, "x": ["musky", "powdery"]}, "Wulong Cha Extrait de Parfum": {"s": 2, "x": ["tea", "fruity", "aromatic"]}, "Tero Extrait de Parfum": {"s": 3, "x": ["gourmand", "amber"]}, "Althaïr Eau de Parfum": {"s": 2, "x": ["powdery", "musky", "gourmand"]}, "Black Orchid Eau de Parfum": {"s": 3, "x": ["gourmand", "amber", "powdery"]}, "Noir Eau de Parfum": {"s": 2, "x": ["amber", "powdery", "aromatic"]}, "Ombre Leather Eau de Parfum": {"s": 2, "x": ["animalic", "smoky", "amber"]}, "Tuscan Leather Eau de Parfum": {"s": 3, "x": ["fruity", "animalic", "smoky"]}, "Uomo Born in Roma Coral Fantasy": {"s": 2, "x": ["fruity", "aromatic"]}, "Uomo Born in Roma Green Stravaganza": {"s": 1, "x": ["aromatic", "green", "gourmand"]}, "Uomo (2021)": {"s": 1, "x": ["powdery", "aromatic"]}, "Uomo Born in Roma Yellow Dream": {"s": 1, "x": ["fruity", "gourmand"]}, "Uomo Born in Roma Purple Melancholia": {"s": 2, "x": ["aromatic", "gourmand", "amber"]}, "Eros Najim Parfum": {"s": 2, "x": ["oud", "smoky", "resinous"]}, "Erba Pura Eau de Parfum": {"s": 3, "x": ["fruity", "musky", "powdery"]}, "La Nuit de L'Homme Eau de Toilette": {"s": 1, "x": ["aromatic"]}};
+PRODUCTS.forEach(p=>{const t=TAGS[p.name];if(t){p.str=t.s;p.x=t.x||[]}});
 const inStock=p=>!!p.sq&&!p.soon;
 /* When each fragrance joined the collection (UTC), keyed by Square item id. Used by the "Recently added" sort. */
 const ADDED={"BABPMMILE54ZYB5JFIJY34IK":"2026-10-15T21:10","ZXPCML5QU6DKV5U2OFSVHC4Y":"2026-10-11T00:42","CPQZVESNT2M27ETVZCOK7U6U":"2026-10-11T00:42","R6RQ2KN46KOJNXXLIK3Y5UHT":"2026-10-11T00:42","JQWKMPNXK3MMHWNFVD3RZVTW":"2026-10-11T00:42","JUINXX3FUCEBNI3FGJQLAULG":"2026-10-11T00:42","2SLX3E67ZUQTY7XT2OI2PLNR":"2026-10-11T00:42","CENIOXSZE3IM2XDDFTHGCQBE":"2026-10-11T00:42","E7TWUA2IZR65TXSYDMQKSHIL":"2026-10-11T00:42","WFC3PXWORS5A6XAMKWG7PGMJ":"2026-10-11T00:42","6IXPDR425PPISJBHT2OAGJZY":"2026-10-11T00:42","I2YT222LFWFYRAWUXOQSDZPB":"2026-10-11T00:42","AW3KVJLCAKI7SLNFDO6J7WPV":"2026-10-11T00:42","IEIPT6KIEZLX3W3U3CRDMOD6":"2026-10-11T00:42","LMHN6IFHQPUTAW4H22NTVQKY":"2026-10-11T00:42","7JWDJBC2YGFN577RB6D2AWJI":"2026-10-11T00:42","6RRUWMTR6HR57YISIVFICWM3":"2026-10-11T00:42","IGK65TSUCPCGLTA7O7OP7XMT":"2026-10-11T00:42","5QQ4SJTXANHQPQIU7ORYBAJB":"2026-10-11T00:42","4R5LGTZLZQUWDBINL746IB7P":"2026-10-11T00:42","ZWRPIQIHVK7HZA2GOFV7NRE2":"2026-10-11T00:42","Q6IFTTHV75EK3RJTB474ZTI5":"2026-10-11T00:42","KKI3DK26WYBVAERBJMRI2BVQ":"2026-10-11T00:42","HAQDGYJNCWMIHP5A5GJJSRHJ":"2026-10-11T00:42","XRZWTFEH4VB5LESUQKZ2ZWWU":"2026-10-11T00:42","GM25IFJLU2DGTU243KTOJQH7":"2026-10-11T05:12","PE33TD43HYRTTZC5A6JHU25A":"2026-10-11T18:54","H3H6KYWKL24KR6EEZM7B7MIR":"2026-10-13T18:47","KTKK4UIN7XJTUQTWUT5FKHOS":"2026-10-13T18:47","WC4P3J4BYGBICYUBCCPVGEOV":"2026-10-13T21:05","NIBHBS673EEIIPPGJSAEI7JY":"2026-10-13T21:22","RIDSP2UTX5Z3YD5AFG2WQ5LQ":"2026-10-13T21:22","OZ5Z33WF6IPMP7W6MNJWE47G":"2026-10-13T21:23","TC2TRWOK25KG3ZSUULU3PTSO":"2026-10-13T21:24","V55WG46EP3VHSPNRPSWAJKOV":"2026-10-13T21:24","VATMWQOVHP5T5Y6NATNYLUIA":"2026-10-13T21:47","BIOLOUFPWNNQQ2BOBZSMYZI5":"2026-10-13T22:03","XLJ4LPB4VDJPEJKLLWRUDVS5":"2026-10-14T17:42","LIIP3QVKFSAXBVJPFFAID37G":"2026-10-15T20:27"};
@@ -1083,12 +1266,14 @@ function vdescHTML(v,z){return v==="classic"?"A traditional glass screw-top atom
 function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v],sp=isSpot(p);
  return `<article class="card${sp?" spot":""}" data-i="${i}">
    <div class="photo">${sp?`<div class="spot-rib"><span>&#10022;</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?`<img class="shot" loading="lazy" width="720" height="720" src="${st.v==="luxe"&&p.imgL?p.imgL:st.v==="roll"&&p.imgR?p.imgR:p.img}" alt="${p.rep?`${p.brand} ${p.name}: bottle photo coming soon, shown with`:`${p.brand} ${p.name} bottle beside`} ${st.v==="luxe"?"luxury decant vials":st.v==="roll"?"decant vials and a roll-on":"classic decant vials"} on a wooden table" decoding="async">`:bottleArt(p,i)}</div>
-   <div class="body"><div class="brand">${p.brand}<span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name">${p.name}</div>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<p class="mood">${p.mood}</p>`:`<div class="notes">${p.notes}</div>`}${p.n?`<details class="pyr"><summary>Full notes</summary><dl><dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd></dl></details>`:""}
+   <div class="body"><div class="brand">${p.brand}<span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name">${p.name}</div>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
    <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}${k==="luxe"?'<span class="vup">+$3</span>':k==="roll"?'<span class="vup">+$4</span>':""}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
    <div class="sizes">${V.sizes.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml<span class="pml-b">${pml(p,st.v,z)}</span></button>`).join("")}</div>
    <div class="buyrow"><div class="price">${priceHTML(p,st.v,st.z)}</div>${inStock(p)?`<button type="button" class="order add">Add to cart</button>`:""}</div></div></article>`}
 function bind(card){const i=+card.dataset.i,p=PRODUCTS[i],st=state[i];
+ const sm=card.querySelector(".story-more"),mp=card.querySelector(".mood");
+ if(sm&&mp){if(mp.scrollHeight<=mp.clientHeight+2)sm.hidden=true;sm.onclick=()=>{const open=mp.classList.toggle("clamp")===false;sm.textContent=open?"Show less":"Read the story";sm.setAttribute("aria-expanded",open);card.style.minHeight="";equalize()}}
  card.querySelectorAll(".vt").forEach(b=>b.onclick=()=>{st.v=b.dataset.v;if(!VIALS[st.v].sizes.includes(st.z))st.z=VIALS[st.v].sizes[0];
   const n=document.createElement("div");n.innerHTML=cardHTML(p);const c=n.firstElementChild;c.style.minHeight=card.style.minHeight;card.replaceWith(c);bind(c)});
  const ab=card.querySelector(".add");if(ab)ab.onclick=()=>{Cart.add(p,st.v,st.z);ab.textContent="Added ✓";ab.classList.add("done");clearTimeout(ab._t);ab._t=setTimeout(()=>{ab.textContent="Add to cart";ab.classList.remove("done")},1400)};
@@ -1203,10 +1388,12 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  BUNDLES={pct:Math.max(0,Math.min(50,Number(j.pct)||0)),sizes:(j.sizes||[2,5]).map(Number),bundles:j.bundles};
  collections();if(window.Cart&&Cart.refresh)Cart.refresh()}).catch(()=>{});
 
-/* ===== FIND YOUR SCENT =====
-   Two modes in one popup: Quick pick (tap options, matches update live) and Step by step (one question at a time).
-   Uses each fragrance's cat (scent family), sea (c = fall/winter, w = spring/summer, a = all year)
-   and tm (d = daytime, n = evening, b = both). Tag new fragrances the same way and they join in. */
+/* ===== SCENT SHERPA =====
+   Two modes in one popup: Step by step (default; one question at a time, starting with "Who's wearing it?")
+   and Quick pick (every question on one screen; picks appear once "who" is answered).
+   Each fragrance carries: cat/cat2 (family), x (extra descriptors), sea (c/w/a), tm (d/n/b), str (1 soft, 2 noticeable, 3 bold),
+   her (1 top pick for her, 2 unisex she can wear). SHERPA[name] holds the hand-written write-up for each scent.
+   Only in-stock scents fill the three picks; one "Arriving soon · worth the wait" card may follow. */
 (function(){
  const ov=document.getElementById("qz-ov"),box=document.getElementById("qz-body");
  const DOT={Fresh:"#9cc0c8",Floral:"#c48aa8",Sweet:"#d9a24a",Spicy:"#a04a2a",Woody:"#6a7a4a",Leather:"#5a3a2a"};
@@ -1222,137 +1409,123 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
    ["any","Not sure yet","Surprise me"]]},
   {k:"love",multi:12,q:"Any notes you love?",short:"Notes I love",hint:"Pick any. The Sherpa will look for them.",o:[
    ["vanilla","Vanilla & tonka"],["boozy","Boozy","Rum, whisky"],["tobacco","Tobacco"],["leather","Leather & suede"],["coffee","Coffee"],
-   ["citrus","Citrus"],["spice","Warm spices"],["woods","Woods & moss"],["floral","Florals"],["fruity","Fruity"],["marine","Sea & mint"],["oud","Oud"],["lavender","Lavender"]]},
+   ["citrus","Citrus"],["spice","Warm spices"],["woods","Woods & moss"],["floral","Florals"],["fruity","Fruity"],["marine","Sea & mint"],["oud","Oud"],["lavender","Lavender"],["any","Not sure, skip this"]]},
+  {k:"like",multi:3,q:"Any scents you already love?",short:"I already love",hint:"Pick up to three. The Sherpa finds the closest thing in the collection.",o:[["aventus", "Creed Aventus"], ["bleu", "Bleu de Chanel"], ["sauvage", "Dior Sauvage"], ["adg", "Acqua di Giò"], ["libre", "YSL Libre"], ["blackopium", "YSL Black Opium"], ["lemale", "JPG Le Male"], ["lebeau", "JPG Le Beau"], ["eros", "Versace Eros"], ["invictus", "Rabanne Invictus"], ["swy", "Armani Stronger With You"], ["mostwanted", "Azzaro The Most Wanted"], ["layton", "PdM Layton"], ["diorhomme", "Dior Homme / Prada L'Homme"], ["tobvan", "TF Tobacco Vanille"], ["oudwood", "TF Oud Wood"], ["tuscan", "TF Tuscan Leather"], ["br540", "MFK Baccarat Rouge 540"], ["spicebomb", "Spicebomb Extreme"], ["jazzclub", "Replica Jazz Club"], ["any", "None of these"]]},
   {k:"sea",q:"When will you wear it most?",short:"Season",o:[["c","Fall & winter"],["w","Spring & summer"],["a","All year round"]]},
-  {k:"tm",q:"Where are you wearing it?",short:"Wearing it",o:[["d","Daytime","Work, class, errands"],["n","Evenings out","Dinners, dates, nights out"],["b","A bit of everything"]]},
+  {k:"occ",q:"What's the occasion?",short:"Occasion",o:[["work","Work & daytime","Office, class, errands"],["date","Date night","Dinner, drinks, close company"],["night","Night out","Bars, parties, late nights"],["special","A special occasion","Weddings, celebrations, the big night"],["any","A bit of everything"]]},
+  {k:"str",q:"How much presence do you want?",short:"Presence",o:[["1","Soft & close","Stays near the skin"],["2","Noticeable","Present without taking over"],["3","Bold","Fills the room"],["any","No preference"]]},
   {k:"avoid",multi:9,q:"Anything you'd rather avoid?",short:"Skip anything with",hint:"Pick any that apply, and we'll leave them out.",o:[
    ["floral","Strong florals","Rose, jasmine, tuberose"],["coffee","Coffee"],["smoke","Tobacco or smoke"],["leather","Leather"],
    ["oud","Oud"],["lavender","Lavender"],["coconut","Coconut"],["sweet","Very sweet scents"],["any","Nothing, I'm open"]]}
  ];
- let mode="quick",step=0,ans={},last=null;const openNotes=new Set();
+ /* Popular scents → closest matches in the collection (verified against Fragrantica "reminds me of" data and reviews). */
+ const LIKE={"aventus": [["Hacivat Extrait de Parfum", 4], ["Ani Extrait de Parfum", 1], ["Uomo Born in Roma Yellow Dream", 1]], "bleu": [["Deziro Extrait de Parfum", 4], ["Le Piano Eau de Parfum", 1], ["Uomo Born in Roma Green Stravaganza", 1]], "sauvage": [["Deziro Extrait de Parfum", 2.5]], "adg": [["Deziro Extrait de Parfum", 2.5]], "libre": [["Tempfluo Extrait de Parfum", 4]], "blackopium": [["Hundred Silent Ways X Extrait de Parfum", 4], ["Replica Coffee Break", 1], ["Black Orchid Eau de Parfum", 1]], "lemale": [["Le Male Elixir Parfum", 4], ["I Will Eau de Parfum", 2.5]], "lebeau": [["Uomo Born in Roma Purple Melancholia", 4], ["Fan Your Flames X Extrait de Parfum", 1]], "eros": [["Eros Najim Parfum", 2.5], ["Uomo Born in Roma Yellow Dream", 2.5], ["Le Male Elixir Parfum", 1]], "invictus": [["La Mélodie Maximal Parfum", 4], ["Uomo Born in Roma Yellow Dream", 2.5]], "swy": [["I Will Eau de Parfum", 2.5], ["Eros Najim Parfum", 2.5], ["Uomo Born in Roma Yellow Dream", 2.5], ["Le Male Elixir Parfum", 1]], "mostwanted": [["Uomo Born in Roma Yellow Dream", 2.5], ["Tempfluo Extrait de Parfum", 2.5], ["Eros Najim Parfum", 1]], "layton": [["I Will Eau de Parfum", 4], ["Uomo Born in Roma Coral Fantasy", 3], ["Althaïr Eau de Parfum", 2.5], ["Uomo Signature Eau de Parfum", 2.5], ["Tero Extrait de Parfum", 1], ["Ani Extrait de Parfum", 1]], "diorhomme": [["Uomo (2021)", 4], ["Gentleman Réserve Privée Eau de Parfum", 4], ["La Nuit de L'Homme Eau de Toilette", 2.5], ["Noir Eau de Parfum", 2.5], ["Uomo Signature Eau de Parfum", 1]], "tobvan": [["Replica Jazz Club", 2.5], ["Fan Your Flames Extrait de Parfum", 2.5], ["Le Male Elixir Parfum", 1]], "oudwood": [["Kredo Extrait de Parfum", 2.5], ["Nefs Extrait de Parfum", 1]], "tuscan": [["Tuscan Leather Eau de Parfum", 4], ["Suède et Safran Extrait de Parfum", 4], ["Ombre Leather Eau de Parfum", 4]], "br540": [["Baccarat Rouge 540 Eau de Parfum", 4], ["Tempfluo Extrait de Parfum", 1], ["Erba Pura Eau de Parfum", 1], ["Hundred Silent Ways X Extrait de Parfum", 1]], "spicebomb": [["Le Male Elixir Parfum", 2.5], ["Replica Jazz Club", 2.5], ["Or Noir Café Parfum", 1], ["Zoltan Extrait de Parfum", 1]], "jazzclub": [["Replica Jazz Club", 4], ["Fan Your Flames Extrait de Parfum", 2.5]]};
+ const LIKE_TXT={"aventus": "Creed Aventus", "bleu": "Bleu de Chanel", "sauvage": "Dior Sauvage", "adg": "Acqua di Giò", "libre": "YSL Libre", "blackopium": "YSL Black Opium", "lemale": "JPG Le Male", "lebeau": "JPG Le Beau", "eros": "Versace Eros", "invictus": "Rabanne Invictus", "swy": "Armani Stronger With You", "mostwanted": "Azzaro The Most Wanted", "layton": "PdM Layton", "diorhomme": "Dior Homme / Prada L'Homme", "tobvan": "TF Tobacco Vanille", "oudwood": "TF Oud Wood", "tuscan": "TF Tuscan Leather", "br540": "MFK Baccarat Rouge 540", "spicebomb": "Spicebomb Extreme", "jazzclub": "Replica Jazz Club"};
+ let mode="steps",step=0,ans={},last=null;const openNotes=new Set();
  try{const sv=JSON.parse(sessionStorage.getItem("vv-scent")||"null");if(sv){mode=sv.mode||mode;step=sv.step||0;ans=sv.ans||{}}}catch(e){}
  const saveQ=()=>{try{sessionStorage.setItem("vv-scent",JSON.stringify({mode,step,ans}))}catch(e){}};
  const hasAns=()=>Object.values(ans).some(v=>Array.isArray(v)?v.length:v!==undefined);
- const SHORT={a:"All year",b:"Both",any:"Either"};
- const has=(p,re)=>re.test(p.notes);
- const AVOID={floral:p=>has(p,/rose|jasmine|tuberose|gardenia|orchid|iris|osmanthus|orange blossom|neroli|florals/i),coffee:p=>has(p,/coffee/i),
-  smoke:p=>has(p,/tobacco|smok/i),leather:p=>has(p,/leather|suede/i),oud:p=>has(p,/\boud/i),lavender:p=>has(p,/lavender/i),coconut:p=>has(p,/coconut/i),sweet:p=>p.cat==="Sweet"};
- const allNotes=p=>p._all||(p._all=[p.notes].concat(p.n?[...p.n.t,...p.n.h,...p.n.b]:[]).join(", "));
- const LOVE={vanilla:/vanilla|tonka|benzoin/i,boozy:/\brum\b|whisk|cognac|bourbon/i,tobacco:/tobacco/i,leather:/leather|suede/i,coffee:/coffee/i,
-  citrus:/bergamot|mandarin|lemon|grapefruit|orange(?! blossom)|lime|citrus/i,spice:/cardamom|cinnamon|pepper|nutmeg|ginger|saffron|anise/i,
-  woods:/cedar|sandalwood|vetiver|guaiac|oakmoss|\bmoss|fir/i,floral:/rose|jasmine|tuberose|iris|orris|osmanthus|gardenia|neroli|orange blossom|violet|orchid/i,
-  fruity:/pineapple|apple|peach|raspberry|fig|currant|coconut|plum/i,marine:/\bsea\b|marine|aquatic|ambergris|mint/i,oud:/\boud/i,lavender:/lavender/i};
+ const SHORT={a:"All year",any:"Either"};
+ const has=(p,re)=>re.test(allNotes(p));
+ const AVOID={floral:p=>has(p,/rose|jasmine|tuberose|gardenia|orchid|iris|orris|osmanthus|orange blossom|orange flower|neroli|magnolia|florals/i),coffee:p=>has(p,/coffee/i),
+  smoke:p=>has(p,/tobacco|smok|incense|styrax/i),leather:p=>has(p,/leather|suede/i),oud:p=>has(p,/\boud|agarwood/i),lavender:p=>has(p,/lavender|lavandin/i),coconut:p=>has(p,/coconut/i),sweet:p=>p.cat==="Sweet"||(p.x||[]).includes("gourmand")};
+ const allNotes=p=>p._all||(p._all=[p.notes].concat(p.n?[...p.n.t,...p.n.h,...p.n.b]:[]).concat(p.x||[]).join(", "));
+ const LOVE={vanilla:/vanilla|tonka|benzoin|ethyl maltol/i,boozy:/\brum\b|whisk|cognac|bourbon|boozy/i,tobacco:/tobacco/i,leather:/leather|suede/i,coffee:/coffee/i,
+  citrus:/bergamot|mandarin|lemon|grapefruit|orange(?! blossom| flower)|lime|citrus|yuzu|litsea/i,spice:/cardamom|cinnamon|pepper|nutmeg|ginger|saffron|anise/i,
+  woods:/cedar|sandalwood|vetiver|guaiac|oakmoss|\bmoss|fir|timberwood|clearwood|dry woods/i,floral:/rose|jasmine|tuberose|iris|orris|osmanthus|gardenia|neroli|orange blossom|orange flower|violet|orchid|magnolia|heliotrope/i,
+  fruity:/pineapple|apple|peach|raspberry|fig|currant|coconut|plum|fruit/i,marine:/\bsea\b|marine|aquatic|ambergris|mint/i,oud:/\boud|agarwood/i,lavender:/lavender|lavandin/i};
  const LOVE_TXT={vanilla:"vanilla",boozy:"boozy rum or whisky",tobacco:"tobacco",leather:"leather",coffee:"coffee",citrus:"citrus",spice:"warm spice",woods:"woods",floral:"florals",fruity:"fruit",marine:"sea air and mint",oud:"oud",lavender:"lavender"};
- function fits(p){const f=(ans.fam||[]).filter(v=>v!=="any"),lv=(ans.love||[]);
-  const famOk=!f.length||f.includes(p.cat)||(p.cat2&&f.includes(p.cat2))||lv.some(a=>LOVE[a]&&LOVE[a].test(allNotes(p)));
-  const loveOk=!lv.length||lv.some(a=>LOVE[a]&&LOVE[a].test(allNotes(p)));
-  const seaOk=!ans.sea||ans.sea==="a"||p.sea===ans.sea||p.sea==="a";
-  const tmOk=!ans.tm||ans.tm==="b"||p.tm===ans.tm||p.tm==="b";
-  const avOk=!(ans.avoid||[]).some(a=>AVOID[a]&&AVOID[a](p));
-  return famOk&&loveOk&&seaOk&&tmOk&&avOk&&whoOk(p)}
- /* Who's wearing it: Her = only scents tagged in HER (top picks first); Him = all but the most feminine,
-    unless florals were asked for; Anyone = the whole collection. */
+ const OCC_TM={work:"d",date:"n",night:"n",special:"n",any:"b"};
+ const famOf=p=>[p.cat,p.cat2].filter(Boolean);
  const wantsFloral=()=>(ans.fam||[]).includes("Floral")||(ans.love||[]).includes("floral");
  function whoOk(p){if(ans.who==="her")return !!p.her;if(ans.who==="him")return !(p.her===1&&p.cat==="Floral"&&p.cat2==="Sweet")||wantsFloral();return true}
- const SEA_TXT={c:"Fall & winter",w:"Spring & summer",a:"All year"},TM_TXT={d:"Daytime",n:"Evenings",b:"Day or night"};
- function score(p){let s=0;const f=ans.fam||[];
-  if(f.length&&!f.includes("any"))s+=f.includes(p.cat)?5:(p.cat2&&f.includes(p.cat2))?3.5:0;
-  const se=ans.sea||"a";if(se==="a")s+=p.sea==="a"?2:1;else s+=p.sea===se?3:p.sea==="a"?2:-3;
-  const t=ans.tm||"b";if(t==="b")s+=p.tm==="b"?2:1;else s+=p.tm===t?2:p.tm==="b"?1:-1;
+ function likeHits(p){return (ans.like||[]).filter(a=>LIKE[a]&&LIKE[a].some(m=>m[0]===p.name))}
+ function likeWeight(a,p){const m=(LIKE[a]||[]).find(m=>m[0]===p.name);return m?m[1]:0}
+ function fits(p){const f=(ans.fam||[]).filter(v=>v!=="any"),lv=(ans.love||[]).filter(v=>v!=="any");
+  const famOk=!f.length||f.some(c=>famOf(p).includes(c))||lv.some(a=>LOVE[a]&&LOVE[a].test(allNotes(p)))||likeHits(p).length;
+  const loveOk=!lv.length||lv.some(a=>LOVE[a]&&LOVE[a].test(allNotes(p)))||likeHits(p).length;
+  const seaOk=!ans.sea||ans.sea==="a"||p.sea===ans.sea||p.sea==="a";
+  const tm=OCC_TM[ans.occ||"any"];const tmOk=tm==="b"||p.tm===tm||p.tm==="b";
+  const avOk=!(ans.avoid||[]).some(a=>AVOID[a]&&AVOID[a](p));
+  return famOk&&loveOk&&seaOk&&tmOk&&avOk&&whoOk(p)}
+ function score(p){let s=0;const f=(ans.fam||[]).filter(v=>v!=="any");
+  if(f.length)s+=f.includes(p.cat)?5:(p.cat2&&f.includes(p.cat2))?3.5:0;
+  const se=ans.sea||"a";if(se==="a")s+=1;else s+=p.sea===se?3:p.sea==="a"?2:-3;
+  const tm=OCC_TM[ans.occ||"any"];if(tm==="b")s+=1;else s+=p.tm===tm?2:p.tm==="b"?1:-1;
+  const st=p.str||2;
+  if(ans.occ==="work")s+=st<=2?1:-1;if(ans.occ==="special")s+=st===3?1.5:0;if(ans.occ==="date")s+=(p.x||[]).some(t=>/gourmand|boozy|amber|musky|leather/.test(t))?1:0;if(ans.occ==="night")s+=st>=2?1:0;
+  if(ans.str&&ans.str!=="any"){const d=Math.abs(st-Number(ans.str));s+=d===0?2:d===1?.5:-2}
   (ans.avoid||[]).forEach(a=>{if(AVOID[a]&&AVOID[a](p))s-=8});
-  (ans.love||[]).forEach(a=>{if(LOVE[a]&&LOVE[a].test(allNotes(p)))s+=2.5});
+  const lv=(ans.love||[]).filter(a=>LOVE[a]&&LOVE[a].test(allNotes(p)));s+=Math.min(3,lv.length)*2.5;
+  (ans.like||[]).forEach(a=>{s+=likeWeight(a,p)});
   if(ans.who&&ans.who!=="all"&&!whoOk(p))s-=100;
   if(ans.who==="her")s+=p.her===1?4:1;
-  if(inStock(p))s+=.5;return s}
- function picks(){return PRODUCTS.map((p,i)=>({p,i,s:score(p)})).sort((a,b)=>b.s-a.s||low(a.p)-low(b.p)).filter(x=>x.s>0).reduce((out,x,_,all)=>{if(!out.length){const f=(ans.fam||[]).filter(v=>v!=="any");f.forEach(c=>{const t=all.find(y=>(y.p.cat===c||y.p.cat2===c)&&y.s>=5&&!out.includes(y));if(t)out.push(t)});out.sort((a,b)=>b.s-a.s)}if(out.length<3&&!out.includes(x))out.push(x);return out},[]).slice(0,3)}
+  return s}
+ const hashS=t=>{let h=7;for(const c of t)h=(h*31+c.charCodeAt(0))>>>0;return h};
+ function ranked(){const h=hashS(JSON.stringify(ans)),tie=(a,b)=>((h+a.i*7)%13)-((h+b.i*7)%13);
+  return PRODUCTS.map((p,i)=>({p,i,s:score(p)})).sort((a,b)=>b.s-a.s||tie(a,b)).filter(x=>x.s>0)}
+ function pickFrom(list){return list.reduce((out,x,_,arr)=>{if(!out.length){const f=(ans.fam||[]).filter(v=>v!=="any");f.forEach(c=>{const t=arr.find(y=>famOf(y.p).includes(c)&&y.s>=5&&!out.includes(y));if(t)out.push(t)});out.sort((a,b)=>b.s-a.s)}if(out.length<3&&!out.includes(x))out.push(x);return out},[]).slice(0,3)}
+ function picks(){const all=ranked();const stock=pickFrom(all.filter(x=>inStock(x.p)));
+  if(stock.length<3)return pickFrom(all);
+  return stock.concat(all.filter(x=>!inStock(x.p)).slice(0,1))}
  function esc(t){return String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
  function pick(q,v,single){
   if(q.multi){let a=(ans[q.k]||[]).slice();if(v==="any")a=a.includes("any")?[]:["any"];else{a=a.filter(x=>x!=="any");a=a.includes(v)?a.filter(x=>x!==v):a.concat(v);if(a.length>q.multi)a.shift()}ans[q.k]=a}
   else ans[q.k]=(single&&ans[q.k]===v)?undefined:v}
  function toggleHTML(){return `<div class="qz-mode" role="tablist" aria-label="How to find your scent">
-   <button type="button" role="tab" class="qz-m ${mode==="quick"?"on":""}" aria-selected="${mode==="quick"}" data-mode="quick">Quick pick</button>
-   <button type="button" role="tab" class="qz-m ${mode==="steps"?"on":""}" aria-selected="${mode==="steps"}" data-mode="steps">Step by step</button></div>`}
+   <button type="button" role="tab" class="qz-m ${mode==="steps"?"on":""}" aria-selected="${mode==="steps"}" data-mode="steps">Step by step</button>
+   <button type="button" role="tab" class="qz-m ${mode==="quick"?"on":""}" aria-selected="${mode==="quick"}" data-mode="quick">Quick pick</button></div>`}
  function bindToggle(){box.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{if(mode===b.dataset.mode)return;mode=b.dataset.mode;step=0;draw()})}
- function resultsHTML(r){
-  if(!r.length)return `<p class="qz-none">Nothing fits all of that yet. Try a different budget or season.</p>`;
-  const avail=r.filter(x=>inStock(x.p)),setPrice=avail.reduce((a,x)=>a+unit(x.p,"p",2),0);
-  const used=new Set();return `<div class="qz-res">${r.map((x,k)=>{const p=x.p;return `<div class="qz-r ${k?"":"best"}"><div class="tag">${k?"Also on your trail":"The Sherpa’s top pick"}</div>
-    <h4>${esc(p.brand)} ${esc(p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,""))}</h4>
-    <p class="why">${FAM_LABEL[p.cat]||p.cat}${p.cat2?" with "+(FAM_LABEL[p.cat2]||p.cat2).toLowerCase():""} · ${SEA_TXT[p.sea]} · ${TM_TXT[p.tm]}</p><p class="n">${whyText(p,k,used)}</p>${ans.who==="her"&&p.herWhy?`<p class="n qz-her"><b>Why it works for her:</b> ${esc(p.herWhy)}</p>`:""}
-    ${p.n?`<details class="qz-pyr"${openNotes.has(x.i)?" open":""} data-i="${x.i}"><summary>Full notes</summary><dl><dt>Top</dt><dd>${p.n.t.map(esc).join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.map(esc).join(", ")}</dd><dt>Base</dt><dd>${p.n.b.map(esc).join(", ")}</dd></dl></details>`:""}
-    <div class="row"><span class="from">From $${low(p)}${inStock(p)?"":`<span class="soon">${esc(p.limited||"Coming soon")}</span>`}</span><button type="button" class="qz-view" data-i="${x.i}">View</button></div></div>`}).join("")}</div>
-   ${avail.length>1?`<div class="qz-set">Can't decide? Try ${avail.length===r.length?"all "+avail.length:"the "+avail.length+" in stock"} as 2 ml samples for $${setPrice}.<button type="button" data-a="set">Add ${avail.length} samples to cart</button></div>`:""}`}
-  const PROPER=/^(Italian|Chinese|Madagascar|Turkish|Haitian|Australian|Calabrian|Indian|Java|Sicilian|Bulgarian|Egyptian|Virginia|Mysore|Tahitian|Bourbon|Indonesian|Sri|Florentine)$/;
- const lc=a=>a.map(x=>x.split(" ").map(w=>PROPER.test(w)?w:w.toLowerCase()).join(" "));
+ const lc=a=>a.map(x=>x.split(" ").map(w=>/^(Italian|Chinese|Madagascar|Turkish|Haitian|Australian|Calabrian|Indian|Java|Sicilian|Bulgarian|Egyptian|Virginia|Mysore|Tahitian|Bourbon|Indonesian|Sri|Florentine|Mediterranean|Iranian)$/.test(w)?w:w.toLowerCase()).join(" "));
  const list=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+" and "+a[a.length-1];
  const AV_TXT={floral:"strong florals",coffee:"coffee",smoke:"tobacco and smoke",leather:"leather",oud:"oud",lavender:"lavender",coconut:"coconut",sweet:"heavy sweetness"};
- /* ===== SHERPA WRITE-UPS =====
-   18 templates. Which one each pick gets depends on the fragrance and the answers given,
-   so changing answers reshuffles the wording, and the three picks never share a template. */
- const hashS=t=>{let h=7;for(const c of t)h=(h*31+c.charCodeAt(0))>>>0;return h};
- const TPL=[
-  c=>`${c.fam} It opens with ${c.T}, then settles into ${c.B}. It's made for ${c.SEA} and suits ${c.TIME}.${c.love}`,
-  c=>`Think ${c.T} at first, drying down to ${c.B}. ${c.fam}${c.love} It's right at home in ${c.SEA}, ${c.TIMEwhen}.`,
-  c=>`If you want something for ${c.use}, start here. ${c.famShort}, built on ${c.T} up top and ${c.B} underneath.${c.love}`,
-  c=>`Picture ${c.T} on the first spray. A few hours later, it's all ${c.B}. ${c.fam}${c.love}`,
-  c=>`${c.famShort}. The ${c.T} opening keeps it lively, while ${c.B} give it staying power. A natural pick for ${c.SEA}.${c.love}`,
-  c=>`This is one I'd hand you for ${c.TIME} in ${c.SEA}. ${c.T} up front, ${c.B} in the dry-down.${c.love} ${c.fam}`,
-  c=>`Short version: ${c.L}, ${c.seaAdj}, ${c.timeAdj}. Longer version: it opens with ${c.T} and fades into ${c.B}.${c.love}`,
-  c=>`${c.lh?`You said you love ${c.lh}, and this delivers. `:""}${c.fam} Expect ${c.T}, then ${c.B}. Best in ${c.SEA}.`,
-  c=>`Why this one? ${c.fam} The ${c.T} opening is what people notice, and the ${c.B} base is what makes it last.${c.love}`,
-  c=>`Here's a pick that fits your plans for ${c.use}. ${c.famShort}, with ${c.T} leading into ${c.B}.${c.love}`,
-  c=>`On skin it starts with ${c.T} and slowly turns to ${c.B}. ${c.fam} Wear it ${c.TIMEwhen}, especially in ${c.SEA}.${c.love}`,
-  c=>`${c.famShort}, and a real crowd-pleaser in ${c.SEA}. It opens on ${c.T} and closes on ${c.B}.${c.love}`,
-  c=>`A great match for ${c.TIME}. ${c.fam} It leads with ${c.T} and rests on ${c.B}.${c.love}`,
-  c=>`If you only try one sample from this list, this is a smart bet. ${c.fam} ${c.cap(c.T)} first, ${c.B} after.${c.love}`,
-  c=>`Here you get ${c.T} over a base of ${c.B}. ${c.fam}${c.love} It shines in ${c.SEA}.`,
-  c=>`Easy recommendation: ${c.L}, ${c.seaAdj} and ${c.timeAdj}. Look for ${c.T} early on, then ${c.B}.${c.love}`,
-  c=>`You'll get ${c.T} on the first spray and ${c.B} by the end of the day. ${c.fam}${c.love}`,
-  c=>`This one rounds out your list nicely. ${c.famShort}, made for ${c.SEA}, with ${c.T} giving way to ${c.B}.${c.love}`
- ];
- const FAMV={
-  primary:[c=>`You asked for ${c.L}, and this sits right at the heart of it.`,c=>`It's squarely ${c.L}, just what you asked for.`,c=>`It's pure ${c.L}, as requested.`],
-  secondary:[c=>`It's ${c.L} at its core, with the ${c.L2} side you asked for.`,c=>`It brings the ${c.L2} you wanted, on a ${c.L} base.`,c=>`It's mostly ${c.L}, with a real ${c.L2} streak.`],
-  detour:[c=>`It's ${c.L}, a small detour, but it fits everything else you told me.`,c=>`It steps outside what you picked (it's ${c.L}), but your other answers point right to it.`,c=>`It's not quite the family you chose, but it ticks your other boxes.`],
-  open:[c=>`It's a ${c.L} scent and a great place to start exploring.`,c=>`It's a ${c.L} pick to start your search.`,c=>`It's a lovely ${c.L} place to begin.`]};
- const FAMS={primary:c=>`It's ${c.L} through and through`,secondary:c=>`It has a real ${c.L2} streak on a ${c.L} base`,detour:c=>`It's more ${c.L} than you asked for`,open:c=>`It's ${c.L}`};
- const LOVEV=[x=>` You'll find the ${x} you love in it.`,x=>` Bonus: it has ${x}, which you said you love.`,x=>` And yes, you'll get ${x} here.`];
- function whyText(p,k,used){k=k||0;used=used||new Set();
-  const f=(ans.fam||[]).filter(v=>v!=="any"),se=ans.sea,t=ans.tm;
-  const hit=f.includes(p.cat)?"primary":p.cat2&&f.includes(p.cat2)?"secondary":f.length?"detour":"open";
-  const h=hashS(JSON.stringify(ans)+"|"+p.name),hA=hashS(JSON.stringify(ans));
-  const c={cap:t=>t.charAt(0).toUpperCase()+t.slice(1),L:(FAM_LABEL[p.cat]||p.cat).toLowerCase(),L2:p.cat2?(FAM_LABEL[p.cat2]||p.cat2).toLowerCase():"",
-   T:p.n?list(lc(p.n.t.slice(0,2))):"its opening notes",B:p.n?list(lc(p.n.b.slice(0,2))):"its base",
-   SEA:{c:"fall and winter",w:"spring and summer",a:"any season"}[p.sea],
-   seaAdj:{c:"cold-weather ready",w:"warm-weather friendly",a:"year-round"}[p.sea],
-   TIME:{d:"daytime",n:"evenings out",b:"day or night"}[p.tm],
-   TIMEwhen:{d:"during the day",n:"in the evening",b:"day or night"}[p.tm],
-   timeAdj:{d:"easy for daytime",n:"made for evenings",b:"good day or night"}[p.tm]};
-  c.use=(t==="d"?"daytime":t==="n"?"evenings out":"any occasion")+(se==="c"?" in fall and winter":se==="w"?" in spring and summer":"");
+ const SEA_TXT={c:"Fall & winter",w:"Spring & summer",a:"All year"},TM_TXT={d:"Daytime",n:"Evenings",b:"Day or night"},STR_TXT={1:"Soft & close",2:"Noticeable",3:"Bold"};
+ /* The write-up: this scent's own story line (SHERPA), one sentence on exactly how it fits the answers, then when to wear it. */
+ function whyText(p,k){
+  const sh=SHERPA[p.name]||{vibe:p.notes,when:""};
+  const f=(ans.fam||[]).filter(v=>v!=="any");
+  const hits=[];
+  if(f.length){const prim=f.includes(p.cat),sec=p.cat2&&f.includes(p.cat2);
+   if(prim)hits.push(`it's ${(FAM_LABEL[p.cat]||p.cat).toLowerCase()} through and through`);
+   else if(sec)hits.push(`it's ${(FAM_LABEL[p.cat]||p.cat).toLowerCase()} with the ${(FAM_LABEL[p.cat2]||p.cat2).toLowerCase()} side you asked for`)}
   const lh=(ans.love||[]).filter(a=>LOVE[a]&&LOVE[a].test(allNotes(p))).map(a=>LOVE_TXT[a]);
-  c.lh=lh.length?list(lh):"";
-  c.fam=FAMV[hit][(hA+k)%3](c);c.famShort=FAMS[hit](c);
-  let ti=(h+k*7)%TPL.length;while(used.has(ti))ti=(ti+1)%TPL.length;used.add(ti);
-  const tpl=TPL[ti];c.love=c.lh&&!/You said you love/.test(tpl(Object.assign({},c,{love:""})))?LOVEV[(hA+k)%3](c.lh):"";
-  let out=tpl(c);
-  const seaFit=!se||se==="a"?"":p.sea===se?"exact":p.sea==="a"?"versatile":"stretch";
-  if(seaFit==="stretch")out+=` Heads up: it's happiest in ${c.SEA}.`;
+  if(lh.length)hits.push(`it carries the ${list(lh)} you love`);
+  const lk=likeHits(p).map(a=>LIKE_TXT[a]);
+  if(lk.length)hits.push(`it's the closest thing here to ${list(lk)}`);
+  const se=ans.sea;if(se&&se!=="a"){if(p.sea===se)hits.push(`it's built for ${se==="c"?"fall and winter":"spring and summer"}`);else if(p.sea==="a")hits.push("it wears all year")}
+  const tm=OCC_TM[ans.occ||"any"];if(ans.occ&&ans.occ!=="any"){const o={work:"workdays",date:"a date",night:"a night out",special:"a big occasion"}[ans.occ];if(p.tm===tm)hits.push(`it's made for ${o}`);else if(p.tm==="b")hits.push(`it works for ${o} as easily as any other day`)}
+  if(ans.str&&ans.str!=="any"&&(p.str||2)===Number(ans.str))hits.push(ans.str==="1"?"it stays close to the skin":ans.str==="3"?"it fills a room":"it's present without taking over");
+  let fit="";
+  if(hits.length)fit=` Why it's on your trail: ${list(hits)}.`;
+  else if(hasAns())fit=" It fits everything you told me without needing a stretch.";
+  else fit=" With no filters set, it's one of the best places in the collection to start.";
+  let out=`${sh.vibe}${fit} ${sh.when}`;
+  if(se&&se!=="a"&&p.sea!==se&&p.sea!=="a")out+=` Heads up: it's happiest in ${p.sea==="c"?"fall and winter":"spring and summer"}.`;
   const av=(ans.avoid||[]).filter(v=>v!=="any"&&AV_TXT[v]).map(v=>AV_TXT[v]);
   if(!k&&av.length)out+=` None of my picks lean on ${list(av)}.`;
-  if(!inStock(p))out+=" It's arriving soon, so check back shortly.";
+  if(!inStock(p))out+=" It's arriving soon, so you can't order it today, but it's worth the wait.";
   return esc(out.replace(/\s+/g," ").trim())}
- const short=n=>n.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"");
+ function resultsHTML(r){
+  if(!r.length)return `<p class="qz-none">Nothing fits all of that yet. Try fewer "avoid" picks, or a different scent family or season.</p>`;
+  const avail=r.filter(x=>inStock(x.p)),setPrice=avail.reduce((a,x)=>a+unit(x.p,"p",2),0);
+  return `<div class="qz-res">${r.map((x,k)=>{const p=x.p,soon=!inStock(p);return `<div class="qz-r ${k||soon?"":"best"}${soon?" qz-soon":""}"><div class="tag">${soon?"Arriving soon · worth the wait":k?"Also on your trail":"The Sherpa’s top pick"}</div>
+    <h4>${esc(p.brand)} ${esc(p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Eau de Toilette|Parfum)$/,""))}</h4>
+    <p class="why">${FAM_LABEL[p.cat]||p.cat}${p.cat2?" with "+(FAM_LABEL[p.cat2]||p.cat2).toLowerCase():""} · ${SEA_TXT[p.sea]} · ${TM_TXT[p.tm]} · ${STR_TXT[p.str||2]}</p><p class="n">${whyText(p,k)}</p>${ans.who==="her"&&p.herWhy?`<p class="n qz-her"><b>Why it works for her:</b> ${esc(p.herWhy)}</p>`:""}
+    ${p.n?`<details class="qz-pyr"${openNotes.has(x.i)?" open":""} data-i="${x.i}"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.map(esc).join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.map(esc).join(", ")}</dd><dt>Base</dt><dd>${p.n.b.map(esc).join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.map(esc).join(", ")}</dd>`}</dl></details>`:""}
+    <div class="row"><span class="from">From $${low(p)}${soon?`<span class="soon">${esc(p.limited||"Arriving soon")}</span>`:""}</span><button type="button" class="qz-view" data-i="${x.i}">View</button></div></div>`}).join("")}</div>
+   ${avail.length>1?`<div class="qz-set">Can't decide? Try ${avail.length===r.length?"all "+avail.length:"the "+avail.length+" in stock"} as 2 ml samples for $${setPrice}.<button type="button" data-a="set">Add ${avail.length} samples to cart</button></div>`:""}`}
+ const short=n=>n.replace(/ (Extrait de Parfum|Eau de Parfum|Eau de Toilette|Parfum)$/,"");
  function famInfo(q){const sel=(ans.fam||[]).filter(v=>v!=="any");if(!sel.length)return "";
   return `<div class="qz-fam">${sel.map(c=>{const o=q.o.find(x=>x[0]===c),nm=p=>{const n=short(p.name);return n.split(" ").length>2?n:p.brand+" "+n},names=PRODUCTS.filter(p=>p.cat===c).map(nm),also=PRODUCTS.filter(p=>p.cat2===c).map(nm);
    return `<p><span class="dot" style="--c:${DOT[c]}"></span><b>${o[1]}</b> notes like ${o[2].toLowerCase()}. <span class="ex">In the collection: ${esc(list(names))}.${also.length?` With a ${o[1].toLowerCase()} side: ${esc(list(also))}.`:""}</span></p>`}).join("")}</div>`}
  function draw(){saveQ();if(mode==="quick")return quick();if(step>=Q.length)return results();steps()}
  function quick(){
-  const any=Object.values(ans).some(v=>Array.isArray(v)?v.length:v!==undefined);
-  box.innerHTML=toggleHTML()+`<div class="qz-step">Scent Sherpa</div><h3 class="qz-q" id="qz-title">Let’s find your scent</h3><p class="qz-hint">Tell me what you like and I’ll point the way. Your picks update as you tap.</p>
+  const who=!!ans.who,any=hasAns();
+  box.innerHTML=toggleHTML()+`<div class="qz-step">Scent Sherpa</div><h3 class="qz-q" id="qz-title">Let’s find your scent</h3><p class="qz-hint">${who?"Tell me what you like and I’ll point the way. Your picks update as you tap.":"Start with who’s wearing it, then tell me what you like. Your picks update as you tap."}</p>
    <div class="qz-groups">${Q.map((q,qi)=>{const sel=q.multi?(ans[q.k]||[]):[ans[q.k]];
-    return `<div class="qz-g"><div class="qz-gl">${q.short}${q.multi?` <span>${q.multi>5?"pick any":"up to "+q.multi}</span>`:""}</div><div class="qz-chips">${q.o.map(([v,l])=>`<button type="button" class="qz-c ${sel.includes(v)?"on":""}" aria-pressed="${sel.includes(v)}" data-q="${qi}" data-v="${v}">${q.k==="fam"&&DOT[v]?`<span class="dot" style="--c:${DOT[v]}"></span>`:""}${q.k==="fam"||q.k==="avoid"||q.k==="love"||q.k==="who"?(q.k==="avoid"&&v==="any"?"Nothing":l):(SHORT[v]||l)}</button>`).join("")}</div>${q.k==="fam"?famInfo(q):""}</div>`}).join("")}</div>
-   <div class="qz-live" aria-live="polite">${any?`<div class="qz-step">The Sherpa’s picks</div>`+resultsHTML(picks()):`<p class="qz-none">Pick a scent type or a season to see your matches.</p>`}</div>
-   ${any?`<div class="qz-links"><button type="button" data-a="clear">Clear choices</button><button type="button" data-a="shop">Show all matches</button></div><button type="button" class="qz-jump">See my ${picks().length} matches &darr;</button>`:""}`;
+    return `<div class="qz-g${q.k==="who"&&!who?" qz-first":""}"><div class="qz-gl">${q.short}${q.multi?` <span>${q.multi>5?"pick any":"up to "+q.multi}</span>`:""}</div><div class="qz-chips">${q.o.map(([v,l])=>`<button type="button" class="qz-c ${sel.includes(v)?"on":""}" aria-pressed="${sel.includes(v)}" data-q="${qi}" data-v="${v}">${q.k==="fam"&&DOT[v]?`<span class="dot" style="--c:${DOT[v]}"></span>`:""}${q.k==="avoid"&&v==="any"?"Nothing":q.k==="love"&&v==="any"?"Not sure":q.k==="like"&&v==="any"?"None of these":q.k==="str"&&v==="any"?"No preference":(SHORT[v]||l)}</button>`).join("")}</div>${q.k==="fam"?famInfo(q):""}</div>`}).join("")}</div>
+   <div class="qz-live" aria-live="polite">${!who?`<p class="qz-none">Pick who’s wearing it to see your matches.</p>`:`<div class="qz-step">The Sherpa’s picks</div>`+resultsHTML(picks())}</div>
+   ${any?`<div class="qz-links"><button type="button" data-a="clear">Clear choices</button>${who?`<button type="button" data-a="shop">Show all matches</button>`:""}</div>${who?`<button type="button" class="qz-jump">See my ${picks().length} matches &darr;</button>`:""}`:""}`;
   const jb=box.querySelector(".qz-jump");if(jb){jb.onclick=()=>box.querySelector(".qz-live").scrollIntoView({behavior:"smooth",block:"start"});
    const io="IntersectionObserver" in window&&new IntersectionObserver(es=>{jb.hidden=es[0].isIntersecting});if(io)io.observe(box.querySelector(".qz-live"))}
   box.querySelectorAll(".qz-c").forEach(b=>b.onclick=()=>{pick(Q[+b.dataset.q],b.dataset.v,true);const y=box.parentElement.scrollTop;quick();box.parentElement.scrollTop=y;const nb=box.querySelector(`.qz-c[data-q="${b.dataset.q}"][data-v="${b.dataset.v}"]`);if(nb)nb.focus({preventScroll:true})});
@@ -1366,11 +1539,11 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   box.querySelectorAll(".qz-opt").forEach(b=>b.onclick=()=>{pick(q,b.dataset.v,false);if(multi)draw();else{step++;draw()}});
   const bk=box.querySelector(".qz-back");if(bk)bk.onclick=()=>{step--;draw()};
   const nx=box.querySelector(".qz-next");if(nx)nx.onclick=()=>{step++;draw()};
-  bindToggle()}
+  bindToggle();box.parentElement.scrollTop=0}
  function results(){
   box.innerHTML=toggleHTML()+`<div class="qz-step">Scent Sherpa</div><h3 class="qz-q" id="qz-title">Here’s where I’d start</h3>${resultsHTML(picks())}
    <div class="qz-links"><button type="button" data-a="again">Retake the quiz</button><button type="button" data-a="shop">Show all matches</button></div>`;
-  bindToggle();bindRes()}
+  bindToggle();bindRes();box.parentElement.scrollTop=0}
  function bindRes(){
   const avail=picks().filter(x=>inStock(x.p));
   box.querySelectorAll(".qz-view").forEach(b=>b.onclick=()=>showCard(+b.dataset.i));
@@ -1378,7 +1551,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   box.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const a=b.dataset.a;
    if(a==="again"||a==="clear"){step=0;ans={};draw()}
    else if(a==="set"){avail.forEach(x=>Cart.add(x.p,"classic",2));close();Cart.open()}
-   else if(a==="shop"){const order=PRODUCTS.map((p,i)=>({i,s:score(p)})).filter(x=>fits(PRODUCTS[x.i])&&x.s>0).sort((a,b)=>b.s-a.s).map(x=>x.i);
+   else if(a==="shop"){const order=ranked().filter(x=>fits(x.p)).map(x=>x.i);
     picks().forEach(x=>{if(!order.includes(x.i))order.unshift(x.i)});
     setFilters("All scents","all","all");sherpaSet=order;render();close();const sb=document.getElementById("sherpa-bar");setTimeout(()=>window.scrollTo({top:sb.getBoundingClientRect().top+scrollY-document.querySelector("header").offsetHeight-16,behavior:"smooth"}),30)}})}
  function setFilters(fv,sv,gv){sherpaSet=null;brandSel.clear();fam=fv;sea=sv;gen=gv;fs.value=fv;document.getElementById("sea").value=sv;genChips();chips();render()}
@@ -1386,6 +1559,8 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   const c=g.querySelector(`.card[data-i="${i}"]`);if(!c)return;c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}
  const pill=document.getElementById("qz-pill");
  function showPill(){pill.hidden=!(hasAns()&&(mode==="quick"||step>=Q.length))}
+ /* keep keyboard focus inside the dialog while it is open */
+ function trap(e){if(ov.hidden||e.key!=="Tab")return;const f=[...ov.querySelectorAll("button,[href],input,select,textarea,summary,[tabindex]:not([tabindex='-1'])")].filter(el=>!el.disabled&&el.offsetParent!==null);if(!f.length)return;const first=f[0],lastEl=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();lastEl.focus()}else if(!e.shiftKey&&document.activeElement===lastEl){e.preventDefault();first.focus()}}
  function open(){last=document.activeElement;pill.hidden=true;if(mode==="steps"&&step<Q.length&&!hasAns())step=0;draw();ov.hidden=false;document.body.style.overflow="hidden";setTimeout(()=>{const t=box.querySelector(".qz-m.on");if(t)t.focus({preventScroll:true})},30)}
  function close(){ov.hidden=true;document.body.style.overflow="";showPill();if(window.VVSherpaRefresh)window.VVSherpaRefresh();if(last&&last.focus)last.focus({preventScroll:true})}
  document.querySelectorAll("[data-quiz]").forEach(b=>b.onclick=open);
@@ -1393,19 +1568,20 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  pill.querySelector(".qz-pill-go").onclick=open;pill.querySelector(".qz-pill-x").onclick=()=>{pill.hidden=true};
  showPill();
  ov.addEventListener("click",e=>{if(e.target===ov)close()});
- document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!ov.hidden)close()});
- window.VVSherpa={open:open};
+ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!ov.hidden)close();trap(e)});
+ window.VVSherpa={open:open,picks:picks,score:score,ranked:ranked,setAns:a=>{ans=a}};
  if(location.hash==="#quiz")open();
 })();
 </script>
 <script>
 var Cart=(function(){
  var KEY="vv-cart-v1",FREE=85,SHIP={pickup:0,onqc:18,roc:23};
- var lines=[],ship=null;
- try{var s=JSON.parse(localStorage.getItem(KEY)||"null");if(s){lines=s.lines||[];ship=s.ship||null}}catch(e){}
+ var lines=[],ship=null,promo=null; /* promo = {code, pct, cents} once checked by /.netlify/functions/coupon */
+ try{var s=JSON.parse(localStorage.getItem(KEY)||"null");if(s){lines=s.lines||[];ship=s.ship||null;promo=s.promo||null}}catch(e){}
  var $=function(id){return document.getElementById(id)};
  var VN={classic:"Classic",luxe:"Luxury",roll:"Roll-on"};
- function save(){try{localStorage.setItem(KEY,JSON.stringify({lines:lines,ship:ship}))}catch(e){}}
+ function save(){try{localStorage.setItem(KEY,JSON.stringify({lines:lines,ship:ship,promo:promo}))}catch(e){}}
+ function promoOff(){if(!promo)return 0;var s=subtotal();return promo.pct?Math.floor(s*promo.pct)/100:Math.min(s,(promo.cents||0)/100)}
  function money(n){return "$"+(Number.isInteger(n)?n:n.toFixed(2))}
  function priceOf(p,v,z){return unit(p,VIALS[v].key,z)}
  function find(sq){return PRODUCTS.find(function(p){return p.sq===sq})}
@@ -1443,8 +1619,10 @@ var Cart=(function(){
   document.querySelectorAll('[data-ship]').forEach(function(b){b.textContent=s>=FREE?"Free":money(SHIP[b.dataset.ship])});
   $("cart-free").textContent=s>=FREE?"You've unlocked free shipping.":"Add "+money(FREE-s)+" more for free shipping anywhere in Canada.";
   $("cart-sub").textContent=money(s);
+  var po=promoOff();$("cart-promo-line").hidden=!po;if(po)$("cart-promo-amt").textContent="−"+money(Math.round(po*100)/100);
+  $("cart-code").value=promo?promo.code:$("cart-code").value;
   $("cart-ship").textContent=sc===null?"Choose an option":sc===0?"Free":money(sc);
-  $("cart-total").textContent=money(s+(sc||0));
+  $("cart-total").textContent=money(Math.round((s-po+(sc||0))*100)/100);
   $("cart-msg").hidden=true;
  }
  var last=null,pushed=false;
@@ -1461,7 +1639,7 @@ var Cart=(function(){
   if(!ship){msg("Please choose Ottawa pickup or shipping first.");return}
   var btn=$("cart-checkout");btn.disabled=true;btn.textContent="Opening secure checkout…";
   fetch("/.netlify/functions/checkout",{method:"POST",headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({ship:ship,items:lines.map(function(l){if(l.b){var b=bun(l.b);return {bundle:l.b,z:l.z,q:l.q,label:b?b.name:l.b}}var p=find(l.sq);return {sq:l.sq,v:VN[l.v]+", "+l.z+" ml",q:l.q,label:p.name+" "+l.z+" ml"}})})})
+   body:JSON.stringify({ship:ship,coupon:promo?promo.code:"",items:lines.map(function(l){if(l.b){var b=bun(l.b);return {bundle:l.b,z:l.z,q:l.q,label:b?b.name:l.b}}var p=find(l.sq);return {sq:l.sq,v:VN[l.v]+", "+l.z+" ml",q:l.q,label:p.name+" "+l.z+" ml"}})})})
   .then(function(r){return r.json().then(function(d){if(!r.ok||!d.url)throw new Error(d.error||"Checkout failed");return d})})
   .then(function(d){location.href=d.url})
   .catch(function(e){msg((e&&e.message)||"Checkout couldn't be started. Please try again, or email velvetvolute@gmail.com.");btn.disabled=false;btn.textContent="Checkout"});
@@ -1474,6 +1652,18 @@ var Cart=(function(){
  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("cart-ov").hidden)close()});
  document.querySelectorAll('input[name=ship]').forEach(function(r){r.onchange=function(){ship=r.value;save();draw()}});
  $("cart-checkout").onclick=checkout;
+ function promoMsg(t,cls){var m=$("cart-promo-msg");m.textContent=t;m.className="cart-promo-msg"+(cls?" "+cls:"");m.hidden=!t}
+ function applyPromo(){var code=($("cart-code").value||"").trim().toUpperCase().replace(/\s+/g,"");
+  if(!code){promo=null;save();draw();promoMsg("");return}
+  if(promo&&promo.code===code){promoMsg("Code "+code+" is applied.","ok");return}
+  var b=$("cart-code-apply");b.disabled=true;b.textContent="…";
+  fetch("/.netlify/functions/coupon?code="+encodeURIComponent(code),{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
+   if(d&&d.ok){promo={code:d.code,pct:d.pct||0,cents:d.cents||0};save();draw();promoMsg("Code "+d.code+" applied: "+(d.pct?d.pct+"% off":money(d.cents/100)+" off")+". It's taken off at checkout.","ok")}
+   else{promo=null;save();draw();promoMsg((d&&d.error)||"That promo code isn't valid.","err")}
+  }).catch(function(){promoMsg("Couldn't check that code right now. You can also enter it under “Add coupon” on the payment page.","err")})
+  .then(function(){b.disabled=false;b.textContent="Apply"})}
+ $("cart-code-apply").onclick=applyPromo;$("cart-code").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();applyPromo()}});
+ $("cart-code").addEventListener("input",function(){if(promo&&$("cart-code").value.trim().toUpperCase()!==promo.code){promo=null;save();draw();promoMsg("")}});
  addEventListener("pageshow",function(){var b=$("cart-checkout");b.disabled=false;b.textContent="Checkout"});
  badge();
  return {add:add,addBundle:addBundle,open:open,refresh:function(){draw();badge()}};

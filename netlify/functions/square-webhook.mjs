@@ -1,0 +1,94 @@
+// Square webhook for velvetvolute.ca. Subscribe this URL in the Square Developer dashboard to
+// "payment.completed" only; set SQUARE_WEBHOOK_SIGNATURE_KEY in Netlify.
+// On a paid order it: 1) pings Justin's phone (NTFY_TOPIC), 2) retires a one-time promo code,
+// 3) emails the buyer a Velvet Volute order confirmation (GMAIL_USER + GMAIL_APP_PASSWORD).
+// Each of those is skipped silently when its env vars are missing.
+import { sq, LOCATION_ID, isReusableCode } from "../lib/square.mjs";
+import { summarize } from "./order.mjs";
+
+const SITE = process.env.SITE_URL || "https://velvetvolute.ca";
+const BOOKING_URL = "https://calendar.app.google/9Gg9gioRktiA5eocA";
+const money = (c) => "$" + (c / 100).toFixed(2);
+
+async function validSignature(req, raw) {
+  const key = process.env.SQUARE_WEBHOOK_SIGNATURE_KEY;
+  if (!key) return false;
+  const url = process.env.SQUARE_WEBHOOK_URL || `${SITE}/.netlify/functions/square-webhook`;
+  const k = await crypto.subtle.importKey("raw", new TextEncoder().encode(key), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const mac = new Uint8Array(await crypto.subtle.sign("HMAC", k, new TextEncoder().encode(url + raw)));
+  const sig = btoa(String.fromCharCode(...mac));
+  return sig === (req.headers.get("x-square-hmacsha256-signature") || "");
+}
+
+async function notify(s) {
+  const topic = process.env.NTFY_TOPIC;
+  if (!topic) return;
+  const lines = s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""}`);
+  await fetch("https://ntfy.sh/" + encodeURIComponent(topic), {
+    method: "POST",
+    headers: { Title: `New order ${s.no} · ${money(s.total)}`, Priority: "high", Tags: "shopping_bags" },
+    body: [s.method === "pickup" ? "Ottawa pickup" : s.method === "ship" ? "Shipping" : "", ...lines].filter(Boolean).join("\n"),
+  }).catch(() => {});
+}
+
+// One-time promo codes: delete the catalog Discount after its first paid order (OPEN-… codes stay).
+async function retireCoupon(order, token) {
+  for (const d of order.discounts || []) {
+    if (!d.catalog_object_id || isReusableCode(d.name)) continue;
+    try { await sq(`/catalog/object/${d.catalog_object_id}`, token, null, "DELETE"); } catch (e) { console.error(e); }
+  }
+}
+
+function emailHTML(s, ref) {
+  const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const rows = s.items.map((i) => `<tr><td style="padding:6px 0;border-bottom:1px solid #eadfcd">${i.qty > 1 ? i.qty + "× " : ""}${esc(i.name)}${i.variation ? `<br><span style="color:#8a6d4b;font-size:13px">${esc(i.variation)}</span>` : ""}</td><td style="padding:6px 0;border-bottom:1px solid #eadfcd;text-align:right;white-space:nowrap">${money(i.total)}</td></tr>`).join("");
+  const charges = s.charges.map((c) => `<tr><td style="padding:6px 0">${esc(c.name)}</td><td style="padding:6px 0;text-align:right">${money(c.total)}</td></tr>`).join("");
+  const next = s.method === "pickup"
+    ? `<p>Pickup is at the Shoppers Drug Mart on Carling Ave, Ottawa. <a href="${BOOKING_URL}" style="color:#6e1a31">Book your 15-minute slot here</a> (24 hours' notice). I'll confirm by email.</p>`
+    : `<p>I'll hand-pour your decants and ship them with Canada Post, and email you once they're on the way.</p>`;
+  return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#2c0610">
+  <div style="background:#4a0e1e;color:#e8d3b4;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">ORDER CONFIRMATION</div></div>
+  <div style="padding:24px;background:#fbf6ee">
+   <p style="font-size:18px;margin:0 0 6px">Thank you for your order.</p>
+   <p style="margin:0 0 18px">Order number <b style="letter-spacing:.06em">${esc(s.no)}</b>${ref ? ` · Square reference ${esc(ref)}` : ""}</p>
+   <table style="width:100%;border-collapse:collapse;font-size:15px">${rows}${charges}${s.method === "ship" && !s.charges.length ? `<tr><td style="padding:6px 0">Shipping</td><td style="padding:6px 0;text-align:right">Free</td></tr>` : ""}${s.discount ? `<tr><td style="padding:6px 0">Discounts</td><td style="padding:6px 0;text-align:right">−${money(s.discount)}</td></tr>` : ""}${s.tax ? `<tr><td style="padding:6px 0">Tax</td><td style="padding:6px 0;text-align:right">${money(s.tax)}</td></tr>` : ""}<tr><td style="padding:10px 0;border-top:1px solid #b5946a;font-weight:bold">Total paid</td><td style="padding:10px 0;border-top:1px solid #b5946a;text-align:right;font-weight:bold">${money(s.total)}</td></tr></table>
+   <h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:22px 0 6px">What happens next</h3>${next}
+   <p style="margin-top:22px">Questions? Reply to this email or write to velvetvolute@gmail.com and include ${esc(s.no)}.</p>
+   <p style="color:#8a6d4b;font-size:13px">Peace &amp; Love, Izzi · <a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
+  </div></div>`;
+}
+
+async function emailBuyer(s, to, ref) {
+  const user = process.env.GMAIL_USER, pass = process.env.GMAIL_APP_PASSWORD;
+  if (!user || !pass || !to) return;
+  const { default: nodemailer } = await import("nodemailer");
+  const t = nodemailer.createTransport({ service: "gmail", auth: { user, pass } });
+  await t.sendMail({
+    from: `"Velvet Volute" <${user}>`, to, replyTo: user,
+    subject: `Your Velvet Volute order ${s.no}`,
+    text: [`Thank you for your order. Order number ${s.no}.`, ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""} ${money(i.total)}`), `Total paid ${money(s.total)}`, s.method === "pickup" ? `Pickup: book your slot at ${BOOKING_URL}` : "I'll email you once your decants ship."].join("\n"),
+    html: emailHTML(s, ref),
+  });
+}
+
+export default async (req) => {
+  if (req.method !== "POST") return new Response("", { status: 405 });
+  const raw = await req.text();
+  if (!(await validSignature(req, raw))) return new Response("bad signature", { status: 401 });
+  let ev; try { ev = JSON.parse(raw); } catch { return new Response("bad json", { status: 400 }); }
+  const pay = ev?.data?.object?.payment;
+  // Subscribe only to payment.completed in Square, so each order triggers this exactly once.
+  if (ev.type !== "payment.completed" || !pay?.order_id || (pay.location_id && pay.location_id !== LOCATION_ID)) return new Response("ignored");
+  const token = process.env.SQUARE_ACCESS_TOKEN;
+  if (!token) return new Response("not configured", { status: 500 });
+  try {
+    const { order } = await sq(`/orders/${pay.order_id}`, token);
+    if (!order) return new Response("no order");
+    const s = summarize(order);
+    await Promise.all([notify(s), retireCoupon(order, token), emailBuyer(s, pay.buyer_email_address, pay.receipt_number)]);
+    return new Response("ok");
+  } catch (e) {
+    console.error(e);
+    return new Response("error", { status: 500 });
+  }
+};

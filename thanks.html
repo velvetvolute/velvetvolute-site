@@ -28,6 +28,8 @@ h1{font:400 44px/1.1 var(--serif);margin:0 0 10px}
 .tot{font-weight:500;border-top:1px solid var(--line);border-bottom:0;margin-top:4px;padding-top:10px}
 .next p{margin:0 0 8px;color:var(--soft)}
 .next p:last-child{margin:0}
+.next a{color:var(--ink)}
+.next a.btn{margin:4px 0 8px}
 a.btn{display:inline-block;margin-top:6px;padding:13px 30px;border:1px solid var(--gold);color:var(--ink);text-decoration:none;letter-spacing:.2em;text-transform:uppercase;font-size:12.5px}
 a.btn:hover{background:rgba(181,148,106,.12)}
 .help{font-size:14px;color:var(--soft);margin-top:22px}
@@ -45,7 +47,7 @@ a.btn:hover{background:rgba(181,148,106,.12)}
 <section class="card" id="items" hidden><h2>Your order</h2><div id="rows"></div></section>
 
 <section class="card next"><h2>What happens next</h2><div id="next">
- <p>I'll hand-pour your decants and email you with pickup or shipping details soon.</p>
+ <p>I'll hand-pour your decants and email you with the details. Picking up in Ottawa? <a href="https://calendar.app.google/9Gg9gioRktiA5eocA" target="_blank" rel="noopener">Book your 15-minute slot</a> (24 hours' notice).</p>
 </div></section>
 
 <a class="btn" href="/">Back to the shop</a>
@@ -77,7 +79,7 @@ a.btn:hover{background:rgba(181,148,106,.12)}
   if(o.tax)h+='<div class="row"><span>Tax</span><span>'+m(o.tax)+"</span></div>";
   h+='<div class="row tot"><span>Total paid</span><span>'+m(o.total)+"</span></div>";
   $("rows").innerHTML=h;$("items").hidden=false;
-  if(o.method==="pickup")$("next").innerHTML="<p>I'll hand-pour your decants and email you soon to set a pickup time at the Shoppers Drug Mart on Carling Ave.</p><p>Pickups are in 15-minute slots with 24 hours' notice.</p>";
+  if(o.method==="pickup")$("next").innerHTML="<p>I'll hand-pour your decants for pickup at the Shoppers Drug Mart on Carling Ave.</p><p><a class=\"btn\" href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Book your pickup slot</a></p><p>15-minute slots, 24 hours' notice. I'll confirm by email.</p>";
   else if(o.method==="ship")$("next").innerHTML="<p>I'll hand-pour your decants and ship them with Canada Post. I'll email you once they're on the way.</p>";
  })
  .catch(function(){});

@@ -22,3 +22,9 @@
   to = "/not-found"
   status = 404
   force = true
+
+[[redirects]]
+  from = "/README.md"
+  to = "/not-found"
+  status = 404
+  force = true

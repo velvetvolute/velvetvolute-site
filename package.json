@@ -1,0 +1,8 @@
+{
+  "name": "velvetvolute-site",
+  "private": true,
+  "description": "velvetvolute.ca — static site plus Netlify functions for Square checkout",
+  "dependencies": {
+    "nodemailer": "^7.0.0"
+  }
+}
