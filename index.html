@@ -702,7 +702,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .bundle{display:flex;flex-direction:column;padding:28px;border-radius:4px;color:#330a14;
   background:radial-gradient(60% 40% at 18% 22%,rgba(92,52,24,.30),transparent 70%),radial-gradient(45% 35% at 82% 58%,rgba(70,38,16,.26),transparent 72%),#a07b52} /* taste-skill-ignore: camel card texture, matches shop cards */
 .bundle .house{font:500 13px/1 var(--sans);letter-spacing:.02em;text-transform:none;color:#2c0610}
-.bundle .bshot{display:block;width:calc(100% + 56px);height:auto;margin:-28px -28px 20px;aspect-ratio:16/9;object-fit:cover;object-position:50% 88%;border-radius:4px 4px 0 0}
+.bundle .bshot{display:block;width:calc(100% + 56px);height:auto;margin:-28px -28px 20px;aspect-ratio:4/3;object-fit:cover;object-position:50% 88%;border-radius:4px 4px 0 0}
 @media (max-width:768px){.bundle .bshot{width:calc(100% + 44px);margin:-22px -22px 16px}}
 .bundle h3{font:500 clamp(26px,2.6vw,32px)/1.1 var(--serif);color:#2c0610;margin:10px 0 14px}
 .bundle .shots{display:flex;gap:10px;margin:0 0 16px}
@@ -712,6 +712,12 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .bundle li a{display:inline-block;background:rgba(74,14,30,.1);border:0;border-radius:999px;padding:6px 12px;font:500 13px/1.2 var(--sans);color:#330a14;text-decoration:none;cursor:pointer}
 .bundle li a:hover{background:rgba(74,14,30,.2)}
 .bundle .bshot-link{display:block}
+.bundle .track{display:flex;overflow:hidden;touch-action:pan-y pinch-zoom;cursor:grab;user-select:none;-webkit-user-select:none;background:#3a0a17}
+.bundle .track.drag{cursor:grabbing}
+.bundle .track .slide{flex:0 0 100%;height:100%;margin:0;position:relative;transition:transform .34s cubic-bezier(.22,.7,.2,1);will-change:transform}
+.bundle .track .slide img.shot{width:100%;height:100%;object-fit:cover;object-position:50% 38%;pointer-events:none;-webkit-user-drag:none}
+.bundle .track .slide.grp img.shot{object-position:50% 80%}
+.bundle .track .slide figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px 12px 9px;text-align:center;background:linear-gradient(transparent,rgba(44,6,16,.85));color:#e8d3b4;font:500 12px var(--sans);letter-spacing:.08em;pointer-events:none}
 .bundle li .soon{font-weight:600;color:#6a1020}
 .bundle .buy{margin-top:auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:14px 18px}
 .bundle .sizes{display:inline-flex;border-radius:999px;background:rgba(74,14,30,.12);padding:3px}
@@ -1676,6 +1682,12 @@ function strip(track,N,onIdx,onTap){const SL=[...track.children];let vi=+track.d
  let wacc=0,wt=0,wdone=false;
  track.addEventListener("wheel",e=>{if(Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;e.preventDefault();const now=Date.now();if(now-wt>200){wacc=0;wdone=false}wt=now;wacc+=e.deltaX;if(!wdone&&Math.abs(wacc)>40){wdone=true;step(wacc>0?1:-1)}},{passive:false});
  return {go:i=>{if(i!==((vi%N)+N)%N)go(i)}}}
+/* collection card photo: the group shot, then one slide per scent; swipe wraps around; tapping opens the collection or that scent's page */
+function collStrip(b,ps){const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+ const slides=[{src:COLL_ART[b.id],cap:"The collection",alt:`${b.name} bottles side by side`,href:`/collections/${b.id}/`,grp:1},...ps.filter(p=>p.img).map(p=>({src:p.img,cap:shortName(p),alt:`${p.brand} ${p.name} bottle beside classic decant vials`,href:pUrl(p)}))];
+ const fig=(o,clone)=>`<figure class="slide${o.grp?" grp":""}"${clone?' aria-hidden="true"':''}><img class="shot" loading="lazy" width="720" height="720" src="${o.src}" alt="${esc(o.alt)}" decoding="async"><figcaption>${esc(o.cap)}</figcaption></figure>`;
+ const N=slides.length;if(N<2)return `<a class="bshot-link" href="${slides[0].href}" aria-label="See the ${esc(b.name)}"><img class="bshot" src="${slides[0].src}" alt="${esc(slides[0].alt)}" width="1200" height="1200" loading="lazy" decoding="async"></a>`;
+ return `<div class="bshot track" data-n="${N}" data-hrefs="${esc(JSON.stringify(slides.map(o=>o.href)))}" role="link" title="Open the full page" aria-label="Collection photos, swipe to change">${[fig(slides[N-1],1),...slides.map(o=>fig(o)),fig(slides[0],1)].join("").replace(/<figure /g,`<figure style="transform:translateX(-100%)" `)}</div>`}
 function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v],sp=isSpot(p);
  return `<article class="card${sp?" spot":""}" data-i="${i}">
    <div class="photo">${sp?`<div class="spot-rib"><span class="rib-vv">VV</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?photoStrip(p,st):bottleArt(p,i)}</div>
@@ -1792,13 +1804,14 @@ function collections(){
  const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
  document.getElementById("coll-pct").textContent=BUNDLES.pct+"%";
  box.innerHTML=BUNDLES.bundles.map((b,bi)=>{const ps=bItems(b),ready=bReady(b);
-  return `<article class="bundle" data-b="${bi}">${COLL_ART[b.id]?`<a class="bshot-link" href="/collections/${esc(b.id)}/" aria-label="See the ${esc(b.name)}"><img class="bshot" src="${COLL_ART[b.id]}" alt="${esc(b.name)} bottles side by side" width="1200" height="1200" loading="lazy" decoding="async"></a>`:""}<span class="house">${esc(b.house)} · ${ps.length} scents</span><h3>${esc(b.name)}</h3><a class="pp-link" href="/collections/${esc(b.id)}/">See the full page &rarr;</a>
+  return `<article class="bundle" data-b="${bi}">${COLL_ART[b.id]?collStrip(b,ps):""}<span class="house">${esc(b.house)} · ${ps.length} scents</span><h3>${esc(b.name)}</h3><a class="pp-link" href="/collections/${esc(b.id)}/">See the full page &rarr;</a>
   <p class="blurb">${esc(b.blurb)}</p>
   <ul>${ps.map(p=>`<li><a href="${pUrl(p)}">${esc(shortName(p))}${inStock(p)?"":` <span class="soon">· arriving soon</span>`}</a></li>`).join("")}</ul>
   <div class="buy"><div class="sizes" role="group" aria-label="Vial size">${BUNDLES.sizes.map((z,k)=>`<button type="button" data-z="${z}" class="${k?"":"on"}" aria-pressed="${!k}">${z} ml each</button>`).join("")}</div>
   <div class="price"></div>
   <button type="button" class="add" ${ready?"":"disabled"}>${ready?"Add the collection":"Arriving soon"}</button></div></article>`}).join("");
  box.querySelectorAll(".bundle").forEach(el=>{const b=BUNDLES.bundles[+el.dataset.b];let z=BUNDLES.sizes[0];
+  const tk=el.querySelector(".track");if(tk){const H=JSON.parse(tk.dataset.hrefs);let ci=0;tk.dataset.vi=0;strip(tk,+tk.dataset.n,i=>{ci=i},()=>{location.href=H[ci]})}
   const show=()=>{el.querySelector(".price").innerHTML=`<s>$${bBase(b,z)}</s>$${bPrice(b,z)}<small>Save $${bBase(b,z)-bPrice(b,z)} · ${bItems(b).length} × ${z} ml classic</small>`};
   el.querySelectorAll("[data-z]").forEach(t=>t.onclick=()=>{z=+t.dataset.z;el.querySelectorAll("[data-z]").forEach(x=>{x.classList.toggle("on",x===t);x.setAttribute("aria-pressed",x===t)});show()});
   el.querySelector(".add").onclick=()=>{if(bReady(b)&&window.Cart)Cart.addBundle(b,z)};
