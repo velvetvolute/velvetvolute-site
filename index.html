@@ -1839,7 +1839,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
    ["citrus","Citrus"],["spice","Warm spices"],["woods","Woods & moss"],["floral","Florals"],["fruity","Fruity"],["marine","Sea & mint"],["oud","Oud"],["lavender","Lavender"],["any","Not sure, skip this"]]},
   {k:"like",multi:3,q:"Any scents you already love?",short:"I already love",hint:"Pick up to three. The Sherpa finds the closest thing in the collection.",o:[["aventus", "Creed Aventus"], ["bleu", "Bleu de Chanel"], ["sauvage", "Dior Sauvage"], ["adg", "Acqua di Giò"], ["libre", "YSL Libre"], ["blackopium", "YSL Black Opium"], ["lemale", "JPG Le Male"], ["lebeau", "JPG Le Beau"], ["eros", "Versace Eros"], ["invictus", "Rabanne Invictus"], ["swy", "Armani Stronger With You"], ["mostwanted", "Azzaro The Most Wanted"], ["layton", "PdM Layton"], ["diorhomme", "Dior Homme / Prada L'Homme"], ["tobvan", "TF Tobacco Vanille"], ["oudwood", "TF Oud Wood"], ["tuscan", "TF Tuscan Leather"], ["br540", "MFK Baccarat Rouge 540"], ["spicebomb", "Spicebomb Extreme"], ["jazzclub", "Replica Jazz Club"], ["any", "None of these"]]},
   {k:"sea",q:"When will you wear it most?",short:"Season",o:[["c","Fall & winter"],["w","Spring & summer"],["a","All year round"]]},
-  {k:"occ",q:"What's the occasion?",short:"Occasion",o:[["work","Work & daytime","Office, class, errands"],["date","Date night","Dinner, drinks, close company"],["night","Night out","Bars, parties, late nights"],["special","A special occasion","Weddings, celebrations, the big night"],["any","A bit of everything"]]},
+  {k:"occ",q:"What's the occasion?",short:"Occasion",o:[["work","Work & daytime","Office, class, errands"],["gym","Gym & active","Workouts, sports, on the move"],["date","Date night","Dinner, drinks, close company"],["night","Night out","Bars, parties, late nights"],["special","A special occasion","Weddings, celebrations, the big night"],["any","A bit of everything"]]},
   {k:"str",q:"How much presence do you want?",short:"Presence",o:[["1","Soft & close","Stays near the skin"],["2","Noticeable","Present without taking over"],["3","Bold","Fills the room"],["any","No preference"]]},
   {k:"avoid",multi:9,q:"Anything you'd rather avoid?",short:"Skip anything with",hint:"Pick any that apply, and we'll leave them out.",o:[
    ["floral","Strong florals","Rose, jasmine, tuberose"],["coffee","Coffee"],["smoke","Tobacco or smoke"],["leather","Leather"],
@@ -1862,7 +1862,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   woods:/cedar|sandalwood|vetiver|guaiac|oakmoss|\bmoss|fir|timberwood|clearwood|dry woods/i,floral:/rose|jasmine|tuberose|iris|orris|osmanthus|gardenia|neroli|orange blossom|orange flower|violet|orchid|magnolia|heliotrope/i,
   fruity:/pineapple|apple|peach|raspberry|fig|currant|coconut|plum|fruit/i,marine:/\bsea\b|marine|aquatic|ambergris|mint/i,oud:/\boud|agarwood/i,lavender:/lavender|lavandin/i};
  const LOVE_TXT={vanilla:"vanilla",boozy:"boozy rum or whisky",tobacco:"tobacco",leather:"leather",coffee:"coffee",citrus:"citrus",spice:"warm spice",woods:"woods",floral:"florals",fruity:"fruit",marine:"marine notes and mint",oud:"oud",lavender:"lavender"};
- const OCC_TM={work:"d",date:"n",night:"n",special:"n",any:"b"};
+ const OCC_TM={work:"d",gym:"d",date:"n",night:"n",special:"n",any:"b"};
  const famOf=p=>[p.cat,p.cat2].filter(Boolean);
  const wantsFloral=()=>(ans.fam||[]).includes("Floral")||(ans.love||[]).includes("floral");
  function whoOk(p){if(ans.who==="her")return !!p.her;if(ans.who==="him")return !(p.her===1&&p.cat==="Floral"&&p.cat2==="Sweet")||wantsFloral();return true}
@@ -1880,7 +1880,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   const se=ans.sea||"a";if(se==="a")s+=1;else s+=p.sea===se?3:p.sea==="a"?2:-3;
   const tm=OCC_TM[ans.occ||"any"];if(tm==="b")s+=1;else s+=p.tm===tm?2:p.tm==="b"?1:-1;
   const st=p.str||2;
-  if(ans.occ==="work")s+=st<=2?1:-1;if(ans.occ==="special")s+=st===3?1.5:0;if(ans.occ==="date")s+=(p.x||[]).some(t=>/gourmand|boozy|amber|musky|leather/.test(t))?1:0;if(ans.occ==="night")s+=st>=2?1:0;
+  if(ans.occ==="work")s+=st<=2?1:-1;if(ans.occ==="gym"){s+=st<=2?1.5:-2;s+=(p.x||[]).some(t=>/aquatic|green|tea|fruity|aromatic/.test(t))||p.cat==="Fresh"||p.cat2==="Fresh"?2:0;s-=(p.x||[]).some(t=>/gourmand|boozy|oud|animalic|smoky/.test(t))||p.cat==="Leather"?1.5:0}if(ans.occ==="special")s+=st===3?1.5:0;if(ans.occ==="date")s+=(p.x||[]).some(t=>/gourmand|boozy|amber|musky|leather/.test(t))?1:0;if(ans.occ==="night")s+=st>=2?1:0;
   if(ans.str&&ans.str!=="any"){const d=Math.abs(st-Number(ans.str));s+=d===0?2:d===1?.5:-2}
   (ans.avoid||[]).forEach(a=>{if(AVOID[a]&&AVOID[a](p))s-=8});
   const lv=(ans.love||[]).filter(a=>LOVE[a]&&LOVE[a].test(allNotes(p)));s+=Math.min(3,lv.length)*2.5;
@@ -1910,7 +1910,8 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  /* The write-up: this scent's own story line (SHERPA.vibe), then up to three hand-written FIT sentences for the exact
     reasons it matched (closest-to, family, loved notes, occasion, season, presence; most specific first), then when to wear it.
     `used` holds the four-word runs already shown on earlier cards in this result, so no two cards share a phrase. */
- const OCC_TXT={work:"work",date:"a date",night:"a night out",special:"a big occasion"};
+ const OCC_TXT={work:"work",gym:"the gym",date:"a date",night:"a night out",special:"a big occasion"};
+ const GYM_TXT=["Light and clean enough for the gym: it reads as fresh, not perfumed, once you warm up.","Built for movement: it sits close, stays crisp and never turns heavy when you sweat.","A gym-bag scent in the best sense, bright and tidy, two sprays and go.","Fresh enough to wear mid-workout without anyone on the next machine minding."];
  const CAVEAT={c:["Built for the cold months, mind you.","One note: it's a cold-weather scent at heart.","Fair warning: it wants a chill in the air.","Worth knowing: it's happiest once the coats come out."],
   w:["Built for warm weather, mind you.","One note: it's a warm-weather scent at heart.","Fair warning: it wants sunshine.","Worth knowing: it's happiest after the thaw."]};
  /* Four-word runs per sentence; slot fills (the shopper's own answers, wrapped in U+2063) are skipped, since repeating "a big occasion" is not a repeated phrase. */
@@ -1923,7 +1924,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   const lk=likeHits(p).map(a=>LIKE_TXT[a]);if(lk.length&&ft.like)cands.push(ft.like.replace("{s}",slot(list(lk))));
   if(f.length){if(f.includes(p.cat)&&ft.fam)cands.push(ft.fam);else if(p.cat2&&f.includes(p.cat2)&&ft.fam2)cands.push(ft.fam2)}
   const lh=(ans.love||[]).filter(a=>LOVE[a]&&LOVE[a].test(allNotes(p))).map(a=>LOVE_TXT[a]);if(lh.length&&ft.love)cands.push(ft.love.replace("{n}",slot(list(lh))));
-  if(ans.occ&&ans.occ!=="any"){const o=OCC_TXT[ans.occ],tm=OCC_TM[ans.occ];if(p.tm===tm&&ft.occ)cands.push(ft.occ.replace("{o}",slot(o)));else if(p.tm==="b"&&ft.occB)cands.push(ft.occB.replace("{o}",slot(o)))}
+  if(ans.occ==="gym"){if(p.tm!=="n")cands.push(GYM_TXT[PRODUCTS.indexOf(p)%GYM_TXT.length])}else if(ans.occ&&ans.occ!=="any"){const o=OCC_TXT[ans.occ],tm=OCC_TM[ans.occ];if(p.tm===tm&&ft.occ)cands.push(ft.occ.replace("{o}",slot(o)));else if(p.tm==="b"&&ft.occB)cands.push(ft.occB.replace("{o}",slot(o)))}
   const se=ans.sea;if(se&&se!=="a"){if(p.sea===se&&ft.sea)cands.push(ft.sea);else if(p.sea==="a"&&ft.seaAll)cands.push(ft.seaAll)}
   if(ans.str&&ans.str!=="any"&&(p.str||2)===Number(ans.str)&&ft.str)cands.push(ft.str);
   const fit=[];for(const c of cands){if(fit.length>=3)break;if(used&&runs(c).some(r=>used.has(r)))continue;fit.push(cap(c))}
@@ -2182,7 +2183,9 @@ body.sh-hide .sh-fab,body.sh-hide .sh-bub{display:none}
  function go(){hide();set(K,"1");
   if(window.VVSherpa&&window.VVSherpa.open)window.VVSherpa.open();else location.href="/#quiz"}
  fab.onclick=go;document.getElementById("sh-go").onclick=go;
- addEventListener("scroll",function(){fab.classList.toggle("compact",scrollY>320)},{passive:true});
+ /* Pill shrinks to the compass while scrolling down, grows back when scrolling up or near the top; re-checked when a page is shown again. */
+ var lastY=scrollY;function pill(){var y=scrollY;if(y<160)fab.classList.remove("compact");else if(y>lastY+6)fab.classList.add("compact");else if(y<lastY-6)fab.classList.remove("compact");lastY=y}
+ addEventListener("scroll",pill,{passive:true});addEventListener("pageshow",function(){lastY=scrollY;fab.classList.toggle("compact",scrollY>320)});pill();
  document.getElementById("sh-x").onclick=function(){hide();set(K,"1")};
  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&bub.classList.contains("on"))hide()});
  function refresh(){var p=hasPicks();document.getElementById("sh-dot").hidden=!p;var t=p?"See your Scent Sherpa picks":"Ask the Scent Sherpa";fab.setAttribute("aria-label",t);fab.title=t;document.getElementById("sh-lbl").textContent=p?"Your picks":"Ask the Scent Sherpa"}

@@ -577,7 +577,9 @@ body.sh-hide .sh-fab,body.sh-hide .sh-bub{display:none}
  function go(){hide();set(K,"1");
   if(window.VVSherpa&&window.VVSherpa.open)window.VVSherpa.open();else location.href="/#quiz"}
  fab.onclick=go;document.getElementById("sh-go").onclick=go;
- addEventListener("scroll",function(){fab.classList.toggle("compact",scrollY>320)},{passive:true});
+ /* Pill shrinks to the compass while scrolling down, grows back when scrolling up or near the top; re-checked when a page is shown again. */
+ var lastY=scrollY;function pill(){var y=scrollY;if(y<160)fab.classList.remove("compact");else if(y>lastY+6)fab.classList.add("compact");else if(y<lastY-6)fab.classList.remove("compact");lastY=y}
+ addEventListener("scroll",pill,{passive:true});addEventListener("pageshow",function(){lastY=scrollY;fab.classList.toggle("compact",scrollY>320)});pill();
  document.getElementById("sh-x").onclick=function(){hide();set(K,"1")};
  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&bub.classList.contains("on"))hide()});
  function refresh(){var p=hasPicks();document.getElementById("sh-dot").hidden=!p;var t=p?"See your Scent Sherpa picks":"Ask the Scent Sherpa";fab.setAttribute("aria-label",t);fab.title=t;document.getElementById("sh-lbl").textContent=p?"Your picks":"Ask the Scent Sherpa"}

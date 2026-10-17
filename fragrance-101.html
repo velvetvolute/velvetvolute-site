@@ -565,7 +565,7 @@ header{border-bottom:0}
         <span class="t-abbr">EDP</span><span class="t-name">Eau de Parfum</span>
         <span class="t-bar" aria-hidden="true"><i style="width:48%"></i></span>
         <dl><dt>Oil</dt><dd>about 15 to 20%</dd><dt>Wears</dt><dd>roughly 5 to 8+ hours</dd></dl>
-        <p>The sweet spot. Richer than an EDT, still easy to wear from the office to dinner. Most of the collection lives here: four sprays and you're set for the day.</p>
+        <p>The sweet spot. Richer than an EDT, still easy to wear from the office to dinner (save the EDTs and fresh ones for the gym). Most of the collection lives here: four sprays and you're set for the day.</p>
         <small>In the collection: Tom Ford Noir, Black Orchid, Ombre Leather and Tuscan Leather · MFK Baccarat Rouge 540 and Petit Matin · Parfums de Marly Althaïr · Xerjoff Erba Pura · Givenchy Gentleman Réserve Privée · Ferragamo Uomo Signature · Armani I Will · Claude Marsal Le Piano</small>
       </li>
       <li>
@@ -620,7 +620,7 @@ header{border-bottom:0}
         <li>
           <span class="l-n">04</span>
           <h3>Match the moment</h3>
-          <p>Heat amplifies a fragrance; cold mutes it. Sweet, spicy, leather and amber scents bloom in cooler weather and after dark. Fresh, citrus, tea and green scents are built for daytime, summer and the office, where you want to be noticed, not announced.</p>
+          <p>Heat amplifies a fragrance; cold mutes it. Sweet, spicy, leather and amber scents bloom in cooler weather and after dark. Fresh, citrus, tea and green scents are built for daytime, summer, the office and the gym, where you want to be noticed, not announced.</p>
           <p class="l-tip">The shop filters by Warm weather / Cold weather and Day / Night, so you can build a rotation, not a one-scent wardrobe.</p>
         </li>
         <li>
@@ -715,7 +715,9 @@ body.sh-hide .sh-fab,body.sh-hide .sh-bub{display:none}
  function go(){hide();set(K,"1");
   if(window.VVSherpa&&window.VVSherpa.open)window.VVSherpa.open();else location.href="/#quiz"}
  fab.onclick=go;document.getElementById("sh-go").onclick=go;
- addEventListener("scroll",function(){fab.classList.toggle("compact",scrollY>320)},{passive:true});
+ /* Pill shrinks to the compass while scrolling down, grows back when scrolling up or near the top; re-checked when a page is shown again. */
+ var lastY=scrollY;function pill(){var y=scrollY;if(y<160)fab.classList.remove("compact");else if(y>lastY+6)fab.classList.add("compact");else if(y<lastY-6)fab.classList.remove("compact");lastY=y}
+ addEventListener("scroll",pill,{passive:true});addEventListener("pageshow",function(){lastY=scrollY;fab.classList.toggle("compact",scrollY>320)});pill();
  document.getElementById("sh-x").onclick=function(){hide();set(K,"1")};
  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&bub.classList.contains("on"))hide()});
  function refresh(){var p=hasPicks();document.getElementById("sh-dot").hidden=!p;var t=p?"See your Scent Sherpa picks":"Ask the Scent Sherpa";fab.setAttribute("aria-label",t);fab.title=t;document.getElementById("sh-lbl").textContent=p?"Your picks":"Ask the Scent Sherpa"}
