@@ -180,17 +180,20 @@ function draw(){$("sizes").innerHTML=V[v].sizes.map(function(s){return '<button 
  document.querySelectorAll(".vt,#ppcar .dots button").forEach(function(b){var on=b.dataset.v===v;b.classList.toggle("on",on);b.setAttribute(b.classList.contains("vt")?"aria-pressed":"aria-selected",on)});
  document.querySelectorAll(".sz").forEach(function(b){b.onclick=function(){z=+b.dataset.s;ZS[v]=z;draw()}})}
 /* the photo is a swipeable strip: classic, luxury, roll-on. Swiping it changes the vial type; the vial tabs and dots scroll it. */
-var KEYS=Object.keys(V),tr=document.querySelector("#ppcar .track"),SL=[].slice.call(tr.children),ZS={classic:2},idx=0;
-/* The strip is moved by hand, not by native scrolling, so one swipe (hard or soft) always moves exactly one slide. */
-function place(off,anim){SL.forEach(function(s){s.style.transition=anim?"":"none";s.style.transform="translateX(calc("+(-idx*100)+"% + "+off+"px))"})}
+var KEYS=Object.keys(V),N=KEYS.length,tr=document.querySelector("#ppcar .track"),SL=[].slice.call(tr.children),ZS={classic:2},vi=0,settle;
+/* The strip is moved by hand, not by native scrolling, so one swipe (hard or soft) always moves exactly one slide, and it wraps:
+   a copy of the last slide sits before the first and a copy of the first after the last; after sliding onto a copy we jump (unanimated) to the real one. */
+var cL=SL[N-1].cloneNode(true),cF=SL[0].cloneNode(true);cL.setAttribute("aria-hidden","true");cF.setAttribute("aria-hidden","true");tr.insertBefore(cL,SL[0]);tr.appendChild(cF);SL=[cL].concat(SL,[cF]);
+function place(off,anim){SL.forEach(function(s){s.style.transition=anim?"":"none";s.style.transform="translateX(calc("+(-(vi+1)*100)+"% + "+off+"px))"})}
+function norm(){clearTimeout(settle);if(vi<0||vi>=N){vi=(vi+N)%N;place(0,false)}}
 /* size follows you between vial types: a size you tapped is remembered for that type; otherwise the current size carries over when the new type offers it, else its smallest */
-function setV(nv){if(nv!==v){v=nv;var S=V[v].sizes;z=S.indexOf(ZS[v])>=0?ZS[v]:S.indexOf(z)>=0?z:S[0];draw()}idx=KEYS.indexOf(v);place(0,true)}
-function step(d){setV(KEYS[Math.max(0,Math.min(KEYS.length-1,idx+d))])}
+function setV(nv,at){if(nv!==v){v=nv;var S=V[v].sizes;z=S.indexOf(ZS[v])>=0?ZS[v]:S.indexOf(z)>=0?z:S[0];draw()}vi=at===undefined?KEYS.indexOf(v):at;place(0,true);clearTimeout(settle);if(vi<0||vi>=N)settle=setTimeout(norm,380)}
+function step(d){var ni=vi+d;setV(KEYS[(ni+N)%N],ni)}
 var sx=null,sy=0,dx=0,drag=null,pid=null;
-tr.addEventListener("pointerdown",function(e){if(e.pointerType==="mouse"&&e.button!==0)return;sx=e.clientX;sy=e.clientY;dx=0;drag=null;pid=e.pointerId;try{tr.setPointerCapture(pid)}catch(x){}});
+tr.addEventListener("pointerdown",function(e){if(e.pointerType==="mouse"&&e.button!==0)return;norm();sx=e.clientX;sy=e.clientY;dx=0;drag=null;pid=e.pointerId;try{tr.setPointerCapture(pid)}catch(x){}});
 tr.addEventListener("pointermove",function(e){if(sx===null||e.pointerId!==pid)return;var mx=e.clientX-sx,my=e.clientY-sy;
  if(drag===null){if(Math.hypot(mx,my)<8)return;drag=Math.abs(mx)>=Math.abs(my)*.8;if(drag)tr.classList.add("drag")}
- if(!drag)return;dx=mx;if((idx===0&&dx>0)||(idx===KEYS.length-1&&dx<0))dx*=.3;place(dx,false);e.preventDefault()});
+ if(!drag)return;dx=mx;place(dx,false);e.preventDefault()});
 /* a quick flick may deliver only a couple of move events, so the decision is made from where the finger lifted, not just the last move */
 function end(e){if(sx===null||e.pointerId!==pid)return;var fx=e.type==="pointercancel"?dx:e.clientX-sx,fy=e.type==="pointercancel"?0:e.clientY-sy;
  if(drag===null&&Math.abs(fx)>=8&&Math.abs(fx)>=Math.abs(fy)*.8)drag=true;
