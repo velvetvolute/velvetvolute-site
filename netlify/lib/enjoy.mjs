@@ -20,6 +20,15 @@ export function spraysFor(name) {
   return "4 or more sprays"; // Eau de Toilette, and anything without a concentration in its name
 }
 
+// Roughly how many sprays a vial holds: about 10 per ml (Fragrance 101: a 10 ml decant is ~100 sprays).
+// Roll-ons are dabbed, not sprayed.
+export function vialSprays(variation) {
+  const v = String(variation || "");
+  if (/roll/i.test(v)) return "Roll-on, no spray";
+  const ml = Number((/(\d+(?:\.\d+)?)\s*ml/i.exec(v) || [])[1]);
+  return ml ? `about ${Math.round(ml * 10)} sprays` : "";
+}
+
 // Who to email: the fulfillment recipient, then the Square customer, then the buyer on the payment.
 export async function buyerEmail(order, token) {
   for (const f of order.fulfillments || []) {
@@ -47,7 +56,7 @@ const H3 = (t) => `<h3 style="font-size:14px;letter-spacing:.18em;text-transform
 export function enjoyHTML(s, firstName) {
   const hi = firstName ? `, ${esc(firstName)}` : "";
   const rows = s.items.map((i) => {
-    const sprays = spraysFor(i.name);
+    const sprays = vialSprays(i.variation);
     return `<tr><td style="padding:6px 0;border-bottom:1px solid #eadfcd">${i.qty > 1 ? i.qty + "× " : ""}${esc(i.name)}${i.variation ? `<br><span style="color:#8a6d4b;font-size:13px">${esc(i.variation)}</span>` : ""}</td><td style="padding:6px 0;border-bottom:1px solid #eadfcd;text-align:right;white-space:nowrap;color:#6e1a31">${sprays}</td></tr>`;
   }).join("");
   return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#2c0610">
@@ -55,15 +64,16 @@ export function enjoyHTML(s, firstName) {
   <div style="padding:24px;background:#fbf6ee;line-height:1.55">
    <p style="font-size:18px;margin:0 0 6px">Your decants are officially yours${hi}.</p>
    <p style="margin:0 0 16px">Thank you for choosing Velvet Volute. Here's a little guide so you get the most out of every spray.</p>
-   <table style="width:100%;border-collapse:collapse;font-size:15px"><tr><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a6d4b">Order ${esc(s.no)}</td><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a6d4b;text-align:right">How much</td></tr>${rows}</table>
+   <table style="width:100%;border-collapse:collapse;font-size:15px"><tr><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a6d4b">Order ${esc(s.no)}</td><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a6d4b;text-align:right">Sprays in your vial</td></tr>${rows}</table>
+   <div style="border:1px solid #b5946a;background:#fff;padding:12px 16px;margin:16px 0 0">
+    <p style="margin:0 0 4px;font-size:16px"><b>You only need 2 to 4 sprays to wear one.</b></p>
+    <p style="margin:0;font-size:14px;color:#5a3a2a">Extraits and Parfums: 2 sprays. Eau de Parfum: 3 to 4. Eau de Toilette: 4. Roll-ons: 2 or 3 light swipes. The higher the oil, the less you need, and an Extrait can still be there the next morning.</p>
+   </div>
 
    ${H3("Where to spray")}
    <p style="margin:0 0 8px">On clean, moisturized skin where you run warm: the <b>neck</b>, <b>chest</b> and <b>inside the wrists</b>. Warmth is what carries a scent off your skin.</p>
    <p style="margin:0 0 8px"><b>Don't rub your wrists together.</b> Let it settle on its own; rubbing rushes the opening.</p>
    <p style="margin:0">A spray on a scarf or sweater can last for days, but skin tells the full story.</p>
-
-   ${H3("How much")}
-   <p style="margin:0">Extraits and Parfums: <b>2 sprays</b>. Eau de Parfum: <b>3 to 4</b>. Eau de Toilette: <b>4 or more</b>. The higher the oil, the less you need, and an Extrait can still be there the next morning.</p>
 
    ${H3("Give it an hour")}
    <p style="margin:0">Every fragrance is a story in three acts. The <b>top notes</b> are the first 15 minutes, bright and loud. The <b>heart</b> takes over for the next few hours. Then the <b>dry-down</b> (woods, amber, musk, leather, vanilla) is what people actually smell on you most of the day. Never judge a scent by the first spray.</p>
@@ -89,9 +99,9 @@ export function enjoyHTML(s, firstName) {
 export function enjoyText(s, firstName) {
   return [
     `Enjoy your Velvet Volute order ${s.no}${firstName ? ", " + firstName : ""}.`,
-    ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""}${spraysFor(i.name) ? `: ${spraysFor(i.name)}` : ""}`),
+    ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""}${vialSprays(i.variation) ? `: ${vialSprays(i.variation)}` : ""}`),
     "Where to spray: clean, moisturized skin where you're warm (neck, chest, inside the wrists). Don't rub your wrists together.",
-    "How much: Extraits and Parfums 2 sprays, Eau de Parfum 3 to 4, Eau de Toilette 4 or more.",
+    "You only need 2 to 4 sprays to wear one: Extraits and Parfums 2, Eau de Parfum 3 to 4, Eau de Toilette 4. Roll-ons: 2 or 3 light swipes.",
     "Give it an hour: the dry-down is the real scent.",
     "Storage: cool and dark, cap on. Not the bathroom.",
     `More: ${SITE}/fragrance-101.html`,
