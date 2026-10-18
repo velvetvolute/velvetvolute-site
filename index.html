@@ -335,6 +335,9 @@ nav a{white-space:nowrap}
 .qz-r{border:1px solid var(--line);border-radius:6px;padding:14px 16px;background:rgba(181,148,106,.06);display:grid;grid-template-columns:72px minmax(0,1fr);column-gap:14px}
 .qz-r>*{grid-column:2}.qz-r .qz-thumb{grid-column:1;grid-row:1/span 3;width:72px;height:72px;object-fit:cover;border-radius:4px;background:#2c0610}
 .qz-r p.n:not(.qz-her){display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.qz-r p.n.open{display:block;-webkit-line-clamp:unset;overflow:visible}
+.qz-more{background:none;border:0;padding:4px 0 0;color:var(--gold);font:500 11.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.qz-more:hover{text-decoration:underline;text-underline-offset:3px}
 @media(max-width:560px){.qz-r p.n:not(.qz-her){-webkit-line-clamp:3}}
 .qz-r.best{border-color:var(--gold)}
 .qz-r.qz-soon{border-style:dashed;opacity:.9}
@@ -2019,7 +2022,9 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  function famInfo(q){const sel=(ans.fam||[]).filter(v=>v!=="any");if(!sel.length)return "";
   return `<div class="qz-fam">${sel.map(c=>{const o=q.o.find(x=>x[0]===c),nm=p=>{const n=short(p.name);return n.split(" ").length>2?n:p.brand+" "+n},names=PRODUCTS.filter(p=>p.cat===c).map(nm),also=PRODUCTS.filter(p=>p.cat2===c).map(nm);
    return `<p><span class="dot" style="--c:${DOT[c]}"></span><b>${o[1]}</b> notes like ${o[2].toLowerCase()}. <span class="ex">In the collection: ${esc(list(names))}.${also.length?` With a ${o[1].toLowerCase()} side: ${esc(list(also))}.`:""}</span></p>`}).join("")}</div>`}
- function draw(){saveQ();const ov=document.getElementById("qz-ov");if(ov)ov.scrollTop=0;if(mode==="quick")return quick();if(step>=Q.length)return results();steps()}
+ /* The why-text is clipped to a few lines on phones; a Read more link opens it when it overflows. */
+ function moreLinks(){box.querySelectorAll(".qz-r p.n:not(.qz-her):not(.open)").forEach(p=>{if(p.nextElementSibling&&p.nextElementSibling.classList.contains("qz-more"))return;if(p.scrollHeight>p.clientHeight+2){const b=document.createElement("button");b.type="button";b.className="qz-more";b.textContent="Read more";b.onclick=()=>{p.classList.add("open");b.remove()};p.after(b)}})}
+ function draw(){saveQ();const ov=document.getElementById("qz-ov");if(ov)ov.scrollTop=0;if(mode==="quick")quick();else if(step>=Q.length)results();else steps();moreLinks()}
  function quick(){
   const who=!!ans.who,any=hasAns();
   box.innerHTML=toggleHTML()+`<div class="qz-step">Scent Sherpa</div><h3 class="qz-q" id="qz-title">Let’s find your scent</h3><p class="qz-hint">${who?"Tell me what you like and I’ll point the way. Your picks update as you tap.":"Start with who’s wearing it, then tell me what you like. Your picks update as you tap."}</p>
@@ -2029,7 +2034,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
    ${any?`<div class="qz-links"><button type="button" data-a="clear">Clear choices</button>${who?`<button type="button" data-a="shop">Show all matches</button>`:""}</div>${who?`<button type="button" class="qz-jump">See my ${picks().length} matches &darr;</button>`:""}`:""}`;
   const jb=box.querySelector(".qz-jump");if(jb){jb.onclick=()=>box.querySelector(".qz-live").scrollIntoView({behavior:"smooth",block:"start"});
    const io="IntersectionObserver" in window&&new IntersectionObserver(es=>{jb.hidden=es[0].isIntersecting});if(io)io.observe(box.querySelector(".qz-live"))}
-  box.querySelectorAll(".qz-c").forEach(b=>b.onclick=()=>{pick(Q[+b.dataset.q],b.dataset.v,true);const y=box.parentElement.scrollTop;quick();box.parentElement.scrollTop=y;const nb=box.querySelector(`.qz-c[data-q="${b.dataset.q}"][data-v="${b.dataset.v}"]`);if(nb)nb.focus({preventScroll:true})});
+  box.querySelectorAll(".qz-c").forEach(b=>b.onclick=()=>{pick(Q[+b.dataset.q],b.dataset.v,true);const y=box.parentElement.scrollTop;quick();moreLinks();box.parentElement.scrollTop=y;const nb=box.querySelector(`.qz-c[data-q="${b.dataset.q}"][data-v="${b.dataset.v}"]`);if(nb)nb.focus({preventScroll:true})});
   bindToggle();bindRes()}
  function steps(){
   const q=Q[step],sel=ans[q.k],multi=!!q.multi,chosen=multi?(sel||[]):[sel];
