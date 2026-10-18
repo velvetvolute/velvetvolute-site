@@ -334,7 +334,7 @@ const SEARCH = [
   { t: "page", b: "Guide", n: "Fragrance 101", u: "/fragrance-101", s: "EDT vs EDP vs Extrait vs Parfum, notes, families, how to wear it", k: "concentration edt edp extrait parfum beginner guide longevity sillage projection notes families glossary" },
   { t: "page", b: "Page", n: "How It Works", u: "/how-it-works", s: "Ordering, pickup and shipping", k: "order pickup shipping e-transfer square canada post free shipping" },
   { t: "page", b: "Page", n: "About the Brand", u: "/about", s: "Who Velvet Volute is", k: "about izzi story brand curated" },
-  { t: "page", b: "Page", n: "Contact", u: "/contact", s: "Email, Messenger, pickup booking", k: "contact email messenger facebook message pickup booking" },
+  { t: "page", b: "Page", n: "Contact", u: "/contact", s: "Email, Messenger, pickup & delivery", k: "contact email messenger facebook message pickup booking" },
 ];
 writeFileSync(join(ROOT, "search.json"), JSON.stringify(SEARCH));
 writeFileSync(join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(([u, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod><priority>${pr}</priority></url>`).join("\n")}\n</urlset>\n`);
