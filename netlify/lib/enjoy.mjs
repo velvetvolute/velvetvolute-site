@@ -1,5 +1,8 @@
-// "Enjoy your order" email, sent once when an order's fulfillment is marked complete in Square
-// (picked up, hand delivered or shipped). Wear and care tips come from the Fragrance 101 page.
+// Emails sent when an order's fulfillment is marked complete in Square:
+//  - pickup / local hand delivery: "Enjoy your order", with wear and care tips from Fragrance 101
+//    (the decants are in their hands at that point).
+//  - Canada Post shipping: a short "Your order is on its way" with tracking. The "Enjoy your order"
+//    email for shipped orders is meant to follow on delivery (sendEnjoy with { delivered: true }).
 import { sq } from "./square.mjs";
 import { summarize } from "../functions/order.mjs";
 
@@ -14,8 +17,7 @@ export function spraysFor(name) {
   const n = String(name || "").toLowerCase();
   if (/extrait/.test(n) || (/\bparfum\b/.test(n) && !/eau de parfum/.test(n))) return "2 sprays";
   if (/eau de parfum/.test(n)) return "3 to 4 sprays";
-  if (/eau de toilette/.test(n)) return "4 or more sprays";
-  return "";
+  return "4 or more sprays"; // Eau de Toilette, and anything without a concentration in its name
 }
 
 // Who to email: the fulfillment recipient, then the Square customer, then the buyer on the payment.
@@ -43,17 +45,16 @@ export async function buyerEmail(order, token) {
 const H3 = (t) => `<h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:24px 0 6px">${t}</h3>`;
 
 export function enjoyHTML(s, firstName) {
-  const shipped = s.method === "ship";
   const hi = firstName ? `, ${esc(firstName)}` : "";
   const rows = s.items.map((i) => {
     const sprays = spraysFor(i.name);
     return `<tr><td style="padding:6px 0;border-bottom:1px solid #eadfcd">${i.qty > 1 ? i.qty + "× " : ""}${esc(i.name)}${i.variation ? `<br><span style="color:#8a6d4b;font-size:13px">${esc(i.variation)}</span>` : ""}</td><td style="padding:6px 0;border-bottom:1px solid #eadfcd;text-align:right;white-space:nowrap;color:#6e1a31">${sprays}</td></tr>`;
   }).join("");
   return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#2c0610">
-  <div style="background:#4a0e1e;color:#e8d3b4;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">${shipped ? "YOUR ORDER IS ON ITS WAY" : "ENJOY YOUR ORDER"}</div></div>
+  <div style="background:#4a0e1e;color:#e8d3b4;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">ENJOY YOUR ORDER</div></div>
   <div style="padding:24px;background:#fbf6ee;line-height:1.55">
-   <p style="font-size:18px;margin:0 0 6px">${shipped ? `Your decants are on their way${hi}.` : `Your decants are officially yours${hi}.`}</p>
-   <p style="margin:0 0 16px">${shipped ? "While they travel, here's a little guide so you get the most out of every spray." : "Thank you for choosing Velvet Volute. Here's a little guide so you get the most out of every spray."}</p>
+   <p style="font-size:18px;margin:0 0 6px">Your decants are officially yours${hi}.</p>
+   <p style="margin:0 0 16px">Thank you for choosing Velvet Volute. Here's a little guide so you get the most out of every spray.</p>
    <table style="width:100%;border-collapse:collapse;font-size:15px"><tr><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a6d4b">Order ${esc(s.no)}</td><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a6d4b;text-align:right">How much</td></tr>${rows}</table>
 
    ${H3("Where to spray")}
@@ -86,9 +87,8 @@ export function enjoyHTML(s, firstName) {
 }
 
 export function enjoyText(s, firstName) {
-  const shipped = s.method === "ship";
   return [
-    shipped ? `Your Velvet Volute order ${s.no} is on its way${firstName ? ", " + firstName : ""}.` : `Enjoy your Velvet Volute order ${s.no}${firstName ? ", " + firstName : ""}.`,
+    `Enjoy your Velvet Volute order ${s.no}${firstName ? ", " + firstName : ""}.`,
     ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""}${spraysFor(i.name) ? `: ${spraysFor(i.name)}` : ""}`),
     "Where to spray: clean, moisturized skin where you're warm (neck, chest, inside the wrists). Don't rub your wrists together.",
     "How much: Extraits and Parfums 2 sprays, Eau de Parfum 3 to 4, Eau de Toilette 4 or more.",
@@ -99,8 +99,41 @@ export function enjoyText(s, firstName) {
   ].join("\n");
 }
 
+// Tracking link for the "on its way" email: Square's own tracking URL, else Canada Post's tracker.
+export function trackingFor(order) {
+  for (const f of order.fulfillments || []) {
+    const d = f.shipment_details;
+    if (!d?.tracking_number && !d?.tracking_url) continue;
+    const no = String(d.tracking_number || "").replace(/\s+/g, "");
+    const url = d.tracking_url || (no ? `https://www.canadapost-postescanada.ca/track-reperage/en#/search?searchFor=${encodeURIComponent(no)}` : "");
+    return { no, url, carrier: d.carrier || "Canada Post" };
+  }
+  return null;
+}
+
+export function shippedHTML(s, firstName, track) {
+  const hi = firstName ? `, ${esc(firstName)}` : "";
+  const rows = s.items.map((i) => `<tr><td style="padding:6px 0;border-bottom:1px solid #eadfcd">${i.qty > 1 ? i.qty + "× " : ""}${esc(i.name)}${i.variation ? `<br><span style="color:#8a6d4b;font-size:13px">${esc(i.variation)}</span>` : ""}</td></tr>`).join("");
+  const trackBlock = track
+    ? `<div style="border:1px solid #b5946a;padding:14px 16px;margin:18px 0;background:#fff;text-align:center"><div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin-bottom:6px">${esc(track.carrier)} tracking</div>${track.no ? `<div style="font-size:18px;letter-spacing:.06em;font-weight:bold;margin-bottom:8px">${esc(track.no)}</div>` : ""}${track.url ? `<a href="${esc(track.url)}" style="display:inline-block;background:#4a0e1e;color:#e8d3b4;padding:9px 18px;text-decoration:none;letter-spacing:.1em">TRACK YOUR ORDER</a>` : ""}</div>`
+    : "";
+  return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#2c0610">
+  <div style="background:#4a0e1e;color:#e8d3b4;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">YOUR ORDER IS ON ITS WAY</div></div>
+  <div style="padding:24px;background:#fbf6ee;line-height:1.55">
+   <p style="font-size:18px;margin:0 0 6px">Your decants are on their way${hi}.</p>
+   <p style="margin:0 0 4px">Hand-poured, labelled and packed with care, now in Canada Post's hands.</p>
+   ${trackBlock}
+   <table style="width:100%;border-collapse:collapse;font-size:15px"><tr><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a6d4b">Order ${esc(s.no)}</td></tr>${rows}</table>
+   <p style="margin:18px 0 0">Once they land, I'll send you a little guide on how to wear and store them so you get the most out of every spray.</p>
+   <p style="margin:12px 0 0;font-size:13px;color:#8a6d4b">Something arrive damaged? Reply within 24 hours of delivery with a photo and your order number.</p>
+   <p style="margin-top:22px">Peace &amp; Love,<br>Izzi</p>
+   <p style="color:#8a6d4b;font-size:13px"><a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
+  </div></div>`;
+}
+
 // Called from the Square webhook on order.fulfillment.updated once a fulfillment reaches COMPLETED.
-export async function sendEnjoy(orderId, token) {
+// Shipped orders get "on its way"; everything else (and shipped orders once delivered) gets "enjoy".
+export async function sendEnjoy(orderId, token, { delivered = false } = {}) {
   const key = process.env.RESEND_API_KEY;
   if (!key) return "no resend key";
   const { order } = await sq(`/orders/${orderId}`, token);
@@ -108,14 +141,18 @@ export async function sendEnjoy(orderId, token) {
   const s = summarize(order);
   const { email, name } = await buyerEmail(order, token);
   const first = String(name || "").trim().split(/\s+/)[0] || "";
+  const onItsWay = s.method === "ship" && !delivered;
+  const track = onItsWay ? trackingFor(order) : null;
   const body = {
     from: MAIL_FROM,
     to: [email || MAIL_COPY],
     bcc: email ? [MAIL_COPY] : [],
     reply_to: SHOP_EMAIL,
-    subject: s.method === "ship" ? `Your Velvet Volute order ${s.no} is on its way` : `Enjoy your Velvet Volute order ${s.no}`,
-    text: enjoyText(s, first),
-    html: enjoyHTML(s, first),
+    subject: onItsWay ? `Your Velvet Volute order ${s.no} is on its way` : `Enjoy your Velvet Volute order ${s.no}`,
+    text: onItsWay
+      ? [`Your Velvet Volute order ${s.no} is on its way.`, ...(track?.url ? [`Track it: ${track.url}`] : []), ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""}`), "Once it lands, I'll send you a guide on how to wear and store your decants.", "Peace & Love, Izzi"].join("\n")
+      : enjoyText(s, first),
+    html: onItsWay ? shippedHTML(s, first, track) : enjoyHTML(s, first),
   };
   const r = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify(body) });
   if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
