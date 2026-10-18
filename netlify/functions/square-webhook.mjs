@@ -1,5 +1,5 @@
 // Square webhook for velvetvolute.ca. Subscribe this URL in the Square Developer dashboard to
-// "payment.updated" only; set SQUARE_WEBHOOK_SIGNATURE_KEY in Netlify.
+// "payment.updated" and "order.fulfillment.updated"; set SQUARE_WEBHOOK_SIGNATURE_KEY in Netlify.
 // Square sends payment.updated several times per payment (often 2–3 within a second, all
 // status COMPLETED), so each payment id is claimed once in Netlify Blobs before anything fires.
 // On a paid order it: 1) pings Justin's phone (NTFY_TOPIC), 2) retires a one-time promo code,
@@ -8,6 +8,7 @@
 import { getStore } from "@netlify/blobs";
 import { sq, LOCATION_ID, isReusableCode } from "../lib/square.mjs";
 import { summarize } from "./order.mjs";
+import { sendEnjoy } from "../lib/enjoy.mjs";
 
 const SITE = process.env.SITE_URL || "https://velvetvolute.ca";
 const BOOKING_URL = "https://calendar.app.google/9Gg9gioRktiA5eocA";
@@ -105,6 +106,23 @@ export default async (req) => {
   const raw = await req.text();
   if (!(await validSignature(req, raw))) return new Response("bad signature", { status: 401 });
   let ev; try { ev = JSON.parse(raw); } catch { return new Response("bad json", { status: 400 }); }
+  // Order marked fulfilled in Square (picked up, delivered or shipped): send the "Enjoy your order"
+  // email once per order. Needs "order.fulfillment.updated" ticked on the Square webhook subscription.
+  if (ev.type === "order.fulfillment.updated") {
+    const fu = ev?.data?.object?.order_fulfillment_updated || {};
+    const done = (fu.fulfillment_update || []).some((u) => u.new_state === "COMPLETED");
+    if (!done || !fu.order_id || (fu.location_id && fu.location_id !== LOCATION_ID)) return new Response("ignored");
+    const token = process.env.SQUARE_ACCESS_TOKEN;
+    if (!token) return new Response("not configured", { status: 500 });
+    if (!(await firstDelivery("enjoy-" + fu.order_id))) return new Response("duplicate");
+    try {
+      return new Response(await sendEnjoy(fu.order_id, token));
+    } catch (e) {
+      console.error(e);
+      await getStore("vv-orders").delete("enjoy-" + fu.order_id).catch(() => {});
+      return new Response("error", { status: 500 });
+    }
+  }
   const pay = ev?.data?.object?.payment;
   // Square has no payment.completed event: payment.updated fires on every change, so act only
   // when the payment is COMPLETED, and only on the first delivery for that payment id.
