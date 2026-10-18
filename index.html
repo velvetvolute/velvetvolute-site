@@ -2042,7 +2042,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
    <h3 class="qz-q" id="qz-title">${q.q}</h3>${q.hint?`<p class="qz-hint">${q.hint}</p>`:""}
    <div class="qz-opts${q.o.length>8?" dense":""}">${q.o.map(([v,l,sub])=>`<button type="button" class="qz-opt ${chosen.includes(v)?"on":""}" data-v="${v}" aria-pressed="${chosen.includes(v)}">${q.k==="fam"&&DOT[v]?`<span class="dot" style="--c:${DOT[v]}"></span>`:""}<span>${l}${sub?`<small>${sub}</small>`:""}</span></button>`).join("")}</div>
    <div class="qz-nav">${step?`<button type="button" class="qz-back">Back</button>`:"<span></span>"}${multi?`<button type="button" class="btn qz-next" ${chosen.length?"":"disabled"}>Next</button>`:""}</div>`;
-  box.querySelectorAll(".qz-opt").forEach(b=>b.onclick=()=>{pick(q,b.dataset.v,false);if(multi)draw();else{step++;draw()}});
+  box.querySelectorAll(".qz-opt").forEach(b=>b.onclick=()=>{pick(q,b.dataset.v,false);if(multi)draw();else{/* show the merlot pick for a beat before moving on */box.querySelectorAll(".qz-opt").forEach(o=>{o.classList.toggle("on",o===b);o.disabled=true});setTimeout(()=>{step++;draw()},320)}});
   const bk=box.querySelector(".qz-back");if(bk)bk.onclick=()=>{step--;draw()};
   const nx=box.querySelector(".qz-next");if(nx)nx.onclick=()=>{step++;draw()};
   bindToggle();box.parentElement.scrollTop=0}
