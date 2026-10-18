@@ -783,7 +783,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .card .photo img.shot{object-fit:cover;object-position:50% 0;width:100%;height:100%}
 </style>
 <link rel="stylesheet" href="/nav.css">
-<script src="/nav.js" defer></script>
+<script src="/nav.js" defer></script><script src="/track.js" defer></script>
 </head>
 <body>
 
@@ -2093,6 +2093,9 @@ var Cart=(function(){
  function find(sq){return PRODUCTS.find(function(p){return p.sq===sq})}
  function bun(id){return typeof bundleById==="function"?bundleById(id):null}
  function linePrice(l){if(l.b){var b=bun(l.b);return b?bPrice(b,l.z):0}var p=find(l.sq);return p?priceOf(p,l.v,l.z):0}
+ /* analytics (track.js): never let a tracking hiccup break the cart */
+ function track(n,d){try{if(window.vvTrack)vvTrack(n,d)}catch(e){}}
+ function trackItems(){return lines.map(function(l){if(l.b){var b=bun(l.b);return {name:b?b.name:l.b,brand:"Velvet Volute collection",variant:l.z+" ml each",price:linePrice(l),qty:l.q}}var p=find(l.sq);return {name:p?p.name:l.sq,brand:p?p.brand:"",variant:VN[l.v]+" "+l.z+" ml",price:linePrice(l),qty:l.q}})}
  function keep(l){return l.b?(typeof BUNDLES==="undefined"||!BUNDLES||!!bun(l.b)):!!find(l.sq)}
  function count(){return lines.reduce(function(a,l){return a+l.q},0)}
  function subtotal(){return lines.reduce(function(a,l){return a+linePrice(l)*l.q},0)}
@@ -2101,9 +2104,11 @@ var Cart=(function(){
  function badge(){var c=count(),b=$("cart-count");b.textContent=c;b.hidden=!c}
  function toast(t){var el=$("cart-toast");el.innerHTML=t+' <button type="button">View cart</button>';el.querySelector("button").onclick=open;el.classList.add("on");clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove("on")},2600)}
  function add(p,v,z){var l=lines.find(function(x){return x.sq===p.sq&&x.v===v&&x.z===z});
-  if(l)l.q=Math.min(10,l.q+1);else lines.push({sq:p.sq,v:v,z:z,q:1});save();badge();draw();toast("Added "+p.name.split(" Eau")[0].split(" Extrait")[0]+" · "+z+" ml "+VN[v].toLowerCase())}
+  if(l)l.q=Math.min(10,l.q+1);else lines.push({sq:p.sq,v:v,z:z,q:1});save();badge();draw();toast("Added "+p.name.split(" Eau")[0].split(" Extrait")[0]+" · "+z+" ml "+VN[v].toLowerCase());
+  track("add_to_cart",{value:priceOf(p,v,z),items:[{name:p.name,brand:p.brand,variant:VN[v]+" "+z+" ml",price:priceOf(p,v,z),qty:1}]})}
  function addBundle(b,z){var l=lines.find(function(x){return x.b===b.id&&x.z===z});
-  if(l)l.q=Math.min(10,l.q+1);else lines.push({b:b.id,z:z,q:1});save();badge();draw();toast("Added "+b.name+" · "+z+" ml each")}
+  if(l)l.q=Math.min(10,l.q+1);else lines.push({b:b.id,z:z,q:1});save();badge();draw();toast("Added "+b.name+" · "+z+" ml each");
+  track("add_to_cart",{value:bPrice(b,z),items:[{name:b.name,brand:"Velvet Volute collection",variant:z+" ml each",price:bPrice(b,z),qty:1}]})}
  function draw(){
   var box=$("cart-lines"),foot=$("cart-foot");
   lines=lines.filter(keep);
@@ -2152,6 +2157,7 @@ var Cart=(function(){
   $("cart-msg").hidden=true;
   if(!ready())return;
   var btn=$("cart-checkout");btn.disabled=true;btn.textContent="Opening secure checkout…";
+  track("begin_checkout",{value:subtotal(),coupon:promo?promo.code:"",items:trackItems()});
   fetch("/.netlify/functions/checkout",{method:"POST",headers:{"Content-Type":"application/json"},
    body:JSON.stringify({ship:ship,pc:ship==="local"?pc.trim().toUpperCase():"",coupon:promo?promo.code:"",items:items()})})
   .then(function(r){return r.json().then(function(d){if(!r.ok||!d.url)throw new Error(d.error||"Checkout failed");return d})})
@@ -2177,6 +2183,7 @@ var Cart=(function(){
   if(!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v("et-email"))){msg("Please enter a valid email address, so I can send you the e-Transfer details.");$("et-email").focus();return}
   if(need&&(v("et-street").length<4||v("et-city").length<2||!v("et-prov")||!/^[A-Z]\d[A-Z]\s?\d[A-Z]\d$/i.test(v("et-postal")))){msg("Please fill in your full address with a valid postal code.");return}
   var btn=$("et-submit");btn.disabled=true;btn.textContent="Sending your order…";
+  track("begin_checkout",{value:subtotal(),coupon:promo?promo.code:"",items:trackItems()});
   fetch("/.netlify/functions/etransfer",{method:"POST",headers:{"Content-Type":"application/json"},
    body:JSON.stringify({ship:ship,pc:ship==="local"?pc.trim().toUpperCase():"",coupon:promo?promo.code:"",items:items(),website:v("et-website"),
     contact:{name:v("et-name"),email:v("et-email"),phone:v("et-phone"),street:need?v("et-street"):"",city:need?v("et-city"):"",prov:need?v("et-prov"):"",postal:need?v("et-postal"):""}})})
