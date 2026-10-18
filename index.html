@@ -1642,7 +1642,7 @@ const offPct=p=>isSpot(p)?SPOT.pct:isZod(p)?ZOD.pct:0; /* never stacks: the bigg
 const unit=(p,key,z)=>{const n=p[key][z],o=offPct(p);return o?Math.floor(n*(100-o)/100):n};
 const low=p=>Math.min(...Object.keys(p.p).map(z=>unit(p,"p",z)));
 const state={};
-const SPRAYS={2:25,3:35,5:60,10:120}; /* about 12 sprays per ml from a standard decant atomizer */
+const SPRAYS={2:20,3:30,5:50,10:100}; /* about 10 sprays per ml (0.1 ml a spray); same table as netlify/lib/enjoy.mjs */
 const pml=(p,v,z)=>`$${(unit(p,VIALS[v].key,z)/z).toFixed(2)}/ml`;
 function priceHTML(p,v,z){const _b=p[VIALS[v].key][z],_n=unit(p,VIALS[v].key,z);return `${_n!==_b?`<s class="was">$${_b}</s>`:""}$${Number.isInteger(_n)?_n:_n.toFixed(2)}<small>CAD · ${z} ml ${VIALS[v].label.toLowerCase()}</small><span class="sprays">${v==="roll"?"":`About ${SPRAYS[z]} sprays`}</span>`}
 
