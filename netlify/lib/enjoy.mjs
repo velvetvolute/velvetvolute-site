@@ -20,13 +20,15 @@ export function spraysFor(name) {
   return "4 or more sprays"; // Eau de Toilette, and anything without a concentration in its name
 }
 
-// Roughly how many sprays a vial holds: about 10 per ml (Fragrance 101: a 10 ml decant is ~100 sprays).
-// Roll-ons are dabbed, not sprayed.
+// Roughly how many sprays a vial holds. Same numbers as the shop's size buttons (index.html, SPRAYS:
+// about 12 per ml from a standard decant atomizer); change both together. Roll-ons are dabbed, not sprayed.
+const SPRAYS = { 2: 25, 3: 35, 5: 60, 10: 120 };
 export function vialSprays(variation) {
   const v = String(variation || "");
   if (/roll/i.test(v)) return "Roll-on, no spray";
   const ml = Number((/(\d+(?:\.\d+)?)\s*ml/i.exec(v) || [])[1]);
-  return ml ? `about ${Math.round(ml * 10)} sprays` : "";
+  if (!ml) return "";
+  return `about ${SPRAYS[ml] || Math.round(ml * 12)} sprays`;
 }
 
 // Who to email: the fulfillment recipient, then the Square customer, then the buyer on the payment.
