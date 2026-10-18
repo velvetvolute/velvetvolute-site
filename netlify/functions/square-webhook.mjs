@@ -58,7 +58,7 @@ async function retireCoupon(order, token) {
   }
 }
 
-function emailHTML(s, ref) {
+function emailHTML(s, ref, etransfer = false) {
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const rows = s.items.map((i) => `<tr><td style="padding:6px 0;border-bottom:1px solid #eadfcd">${i.qty > 1 ? i.qty + "× " : ""}${esc(i.name)}${i.variation ? `<br><span style="color:#8a6d4b;font-size:13px">${esc(i.variation)}</span>` : ""}</td><td style="padding:6px 0;border-bottom:1px solid #eadfcd;text-align:right;white-space:nowrap">${money(i.total)}</td></tr>`).join("");
   const charges = s.charges.map((c) => `<tr><td style="padding:6px 0">${esc(c.name)}</td><td style="padding:6px 0;text-align:right">${money(c.total)}</td></tr>`).join("");
@@ -68,9 +68,9 @@ function emailHTML(s, ref) {
       ? `<p>Your order qualifies for free local hand delivery: I bring it to your door myself, no courier. <a href="${DELIVERY_BOOKING_URL}" style="color:#6e1a31">Pick a delivery window here</a> (24 hours' notice) and I'll bring your decants to the address you gave at checkout. I'll confirm by email.</p>`
     : `<p>I'll hand-pour your decants and ship them with Canada Post, and email you once they're on the way.</p>`;
   return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#2c0610">
-  <div style="background:#4a0e1e;color:#e8d3b4;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">ORDER CONFIRMATION</div></div>
+  <div style="background:#4a0e1e;color:#e8d3b4;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">${etransfer ? "INVOICE PAID" : "ORDER CONFIRMATION"}</div></div>
   <div style="padding:24px;background:#fbf6ee">
-   <p style="font-size:18px;margin:0 0 6px">Thank you for your order.</p>
+   <p style="font-size:18px;margin:0 0 6px">${etransfer ? "Thank you, your e-Transfer has been received." : "Thank you for your order."}</p>
    <p style="margin:0 0 18px">Order number <b style="letter-spacing:.06em">${esc(s.no)}</b>${ref ? ` · Square reference ${esc(ref)}` : ""}</p>
    <table style="width:100%;border-collapse:collapse;font-size:15px">${rows}${charges}${s.method === "ship" && !s.charges.length ? `<tr><td style="padding:6px 0">Shipping</td><td style="padding:6px 0;text-align:right">Free</td></tr>` : ""}${s.discount ? `<tr><td style="padding:6px 0">Discounts</td><td style="padding:6px 0;text-align:right">−${money(s.discount)}</td></tr>` : ""}${s.tax ? `<tr><td style="padding:6px 0">Tax</td><td style="padding:6px 0;text-align:right">${money(s.tax)}</td></tr>` : ""}<tr><td style="padding:10px 0;border-top:1px solid #b5946a;font-weight:bold">Total paid</td><td style="padding:10px 0;border-top:1px solid #b5946a;text-align:right;font-weight:bold">${money(s.total)}</td></tr></table>
    <h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:22px 0 6px">What happens next</h3>${next}
@@ -82,7 +82,9 @@ function emailHTML(s, ref) {
 // Resend (https://resend.com): one HTTPS call, no SDK. The buyer gets the confirmation; the shop
 // gets an identical copy via BCC, so Justin sees exactly what the customer saw. Replies go to the
 // shop's Gmail. When no buyer email is on the payment, the copy is sent to the shop alone.
-async function emailBuyer(s, to, ref) {
+// etransfer: the payment was recorded by hand in Square (source_type EXTERNAL), e.g. an Interac
+// e-Transfer, so the email reads "Invoice paid" instead of "Order confirmation".
+async function emailBuyer(s, to, ref, etransfer = false) {
   const key = process.env.RESEND_API_KEY;
   if (!key) return;
   const body = {
@@ -90,9 +92,9 @@ async function emailBuyer(s, to, ref) {
     to: [to || MAIL_COPY],
     bcc: to ? [MAIL_COPY] : [],
     reply_to: SHOP_EMAIL,
-    subject: `Your Velvet Volute order ${s.no}`,
-    text: [`Thank you for your order. Order number ${s.no}.`, ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""} ${money(i.total)}`), `Total paid ${money(s.total)}`, s.method === "pickup" ? `Pickup: book your slot at ${BOOKING_URL}` : "I'll email you once your decants ship."].join("\n"),
-    html: emailHTML(s, ref),
+    subject: etransfer ? `Your Velvet Volute order ${s.no}: invoice paid` : `Your Velvet Volute order ${s.no}`,
+    text: [etransfer ? `Invoice paid. Thank you, your e-Transfer has been received. Order number ${s.no}.` : `Thank you for your order. Order number ${s.no}.`, ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""} ${money(i.total)}`), `Total paid ${money(s.total)}`, s.method === "pickup" ? `Pickup: book your slot at ${BOOKING_URL}` : "I'll email you once your decants ship."].join("\n"),
+    html: emailHTML(s, ref, etransfer),
   };
   const r = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify(body) });
   if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
@@ -114,7 +116,7 @@ export default async (req) => {
     const { order } = await sq(`/orders/${pay.order_id}`, token);
     if (!order) return new Response("no order");
     const s = summarize(order);
-    await Promise.all([notify(s), retireCoupon(order, token), emailBuyer(s, pay.buyer_email_address, pay.receipt_number)]);
+    await Promise.all([notify(s), retireCoupon(order, token), emailBuyer(s, pay.buyer_email_address, pay.receipt_number, pay.source_type === "EXTERNAL")]);
     return new Response("ok");
   } catch (e) {
     console.error(e);
