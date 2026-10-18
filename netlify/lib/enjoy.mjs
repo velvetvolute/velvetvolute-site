@@ -1,8 +1,8 @@
 // Emails sent when an order's fulfillment is marked complete in Square:
 //  - pickup / local hand delivery: "Enjoy your order", with wear and care tips from Fragrance 101
 //    (the decants are in their hands at that point).
-//  - Canada Post shipping: a short "Your order is on its way" with tracking. The "Enjoy your order"
-//    email for shipped orders is meant to follow on delivery (sendEnjoy with { delivered: true }).
+//  - Canada Post shipping: a short "Your order is on its way" with tracking, then "Enjoy your order"
+//    5 days later (queued by the webhook, sent by enjoy-followup.mjs with { delivered: true }).
 import { sq } from "./square.mjs";
 import { summarize } from "../functions/order.mjs";
 
@@ -156,5 +156,5 @@ export async function sendEnjoy(orderId, token, { delivered = false } = {}) {
   };
   const r = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify(body) });
   if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
-  return "sent";
+  return onItsWay ? "shipped" : "sent";
 }

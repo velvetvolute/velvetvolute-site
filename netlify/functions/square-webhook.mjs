@@ -116,7 +116,12 @@ export default async (req) => {
     if (!token) return new Response("not configured", { status: 500 });
     if (!(await firstDelivery("enjoy-" + fu.order_id))) return new Response("duplicate");
     try {
-      return new Response(await sendEnjoy(fu.order_id, token));
+      const result = await sendEnjoy(fu.order_id, token);
+      // Shipped orders just got "on its way": queue "Enjoy your order" for 5 days later (enjoy-followup.mjs).
+      if (result === "shipped") {
+        await getStore("vv-enjoy-queue").setJSON(fu.order_id, { due: Date.now() + 5 * 864e5 }).catch((e) => console.error(e));
+      }
+      return new Response(result);
     } catch (e) {
       console.error(e);
       await getStore("vv-orders").delete("enjoy-" + fu.order_id).catch(() => {});
