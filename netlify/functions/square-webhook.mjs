@@ -68,7 +68,7 @@ function emailHTML(s, ref, etransfer = false) {
       ? `<p>Your order qualifies for free local hand delivery: I bring it to your door myself, no courier. <a href="${DELIVERY_BOOKING_URL}" style="color:#6e1a31">Pick a delivery window here</a> (24 hours' notice) and I'll bring your decants to the address you gave at checkout. I'll confirm by email.</p>`
     : `<p>I'll hand-pour your decants and ship them with Canada Post, and email you once they're on the way.</p>`;
   return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#2c0610">
-  <div style="background:#4a0e1e;color:#e8d3b4;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">${etransfer ? "INVOICE PAID" : "ORDER CONFIRMATION"}</div></div>
+  <div style="background:#4a0e1e;color:#e8d3b4;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">${etransfer ? "ORDER CONFIRMATION / INVOICE PAID" : "ORDER CONFIRMATION"}</div></div>
   <div style="padding:24px;background:#fbf6ee">
    <p style="font-size:18px;margin:0 0 6px">${etransfer ? "Thank you, your e-Transfer has been received." : "Thank you for your order."}</p>
    <p style="margin:0 0 18px">Order number <b style="letter-spacing:.06em">${esc(s.no)}</b>${ref ? ` · Square reference ${esc(ref)}` : ""}</p>
