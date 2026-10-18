@@ -66,7 +66,7 @@ export function enjoyHTML(s, firstName) {
    <p style="margin:0 0 16px">Thank you for choosing Velvet Volute. Here's a little guide so you get the most out of every spray.</p>
    <table style="width:100%;border-collapse:collapse;font-size:15px"><tr><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a6d4b">Order ${esc(s.no)}</td><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a6d4b;text-align:right">Sprays in your vial</td></tr>${rows}</table>
    <div style="border:1px solid #b5946a;background:#fff;padding:12px 16px;margin:16px 0 0">
-    <p style="margin:0 0 4px;font-size:16px"><b>You only need 2 to 4 sprays to wear one.</b></p>
+    <p style="margin:0 0 4px;font-size:16px"><b>You only need 2 to 4 sprays per use.</b></p>
     <p style="margin:0;font-size:14px;color:#5a3a2a">Extraits and Parfums: 2 sprays. Eau de Parfum: 3 to 4. Eau de Toilette: 4. Roll-ons: 2 or 3 light swipes. The higher the oil, the less you need, and an Extrait can still be there the next morning.</p>
    </div>
 
@@ -101,7 +101,7 @@ export function enjoyText(s, firstName) {
     `Enjoy your Velvet Volute order ${s.no}${firstName ? ", " + firstName : ""}.`,
     ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""}${vialSprays(i.variation) ? `: ${vialSprays(i.variation)}` : ""}`),
     "Where to spray: clean, moisturized skin where you're warm (neck, chest, inside the wrists). Don't rub your wrists together.",
-    "You only need 2 to 4 sprays to wear one: Extraits and Parfums 2, Eau de Parfum 3 to 4, Eau de Toilette 4. Roll-ons: 2 or 3 light swipes.",
+    "You only need 2 to 4 sprays per use: Extraits and Parfums 2, Eau de Parfum 3 to 4, Eau de Toilette 4. Roll-ons: 2 or 3 light swipes.",
     "Give it an hour: the dry-down is the real scent.",
     "Storage: cool and dark, cap on. Not the bathroom.",
     `More: ${SITE}/fragrance-101.html`,
