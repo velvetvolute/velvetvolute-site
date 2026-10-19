@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-palette="camel-m" data-tiles="camel">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Real Ones punch card | Velvet Volute</title>
+<meta name="description" content="Every decant is a punch. At six, the seventh is free: any 5 ml in the collection up to $45, or $45 toward a bigger one. The Velvet Volute punch card.">
+<link rel="canonical" href="https://velvetvolute.ca/the-real-ones">
+<meta name="theme-color" content="#4a0e1e">
+<link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Velvet Volute"><meta property="og:title" content="The Real Ones punch card · Velvet Volute"><meta property="og:description" content="Every decant is a punch. At six, the seventh is on us."><meta property="og:url" content="https://velvetvolute.ca/the-real-ones"><meta property="og:locale" content="en_CA">
+<meta property="og:image" content="https://velvetvolute.ca/img/og-velvetvolute-bb4b0b5447.jpg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="The Real Ones punch card · Velvet Volute"><meta name="twitter:image" content="https://velvetvolute.ca/img/og-velvetvolute-bb4b0b5447.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/pages.css"><link rel="stylesheet" href="/nav.css"><script src="/nav.js" defer></script>
+<style>
+.ro{max-width:640px;margin:0 auto;padding:34px 24px 70px}
+.ro .hero-mono{margin:0 auto 18px}
+.ro .eyebrow,.ro h1,.ro .lede{text-align:center}
+.ro .lede{margin:0 auto 24px}
+.punches{display:flex;justify-content:center;gap:10px;margin:18px 0 6px}
+.punches i{width:34px;height:34px;border-radius:50%;border:1px solid #d6b077;display:grid;place-items:center;font:italic 15px var(--serif);color:#d6b077}
+.punches i.on{background:#d6b077;color:#2c0610}
+.punches i.seven{border-style:dashed;width:40px;height:40px;font-size:17px}
+.ro-card{color:#330a14;background:#a07b52;border:1px solid #d6b077;border-radius:10px;padding:22px 20px 18px;box-shadow:0 22px 50px rgba(10,2,4,.35);margin:22px 0}
+.ro-card h2{font:500 24px/1.15 var(--serif);color:#2c0610;margin:0 0 8px;text-align:left}
+.ro-card p{margin:0 0 10px;font:400 15px/1.5 var(--sans)}
+.ro-card ol{margin:0 0 6px;padding-left:20px;font:400 15px/1.6 var(--sans)}
+.ro-card label.f{display:block;font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#3A0A17;margin:0 0 6px}
+.ro-card input[type=email]{display:block;width:100%;box-sizing:border-box;background:rgba(255,255,255,.22);border:1px solid rgba(74,14,30,.5);border-radius:4px;padding:11px 12px;color:#2C0610;font:400 16px var(--sans)}
+.ro-card input:focus{outline:2px solid #3A0A17;outline-offset:1px}
+.ro-card .go{display:block;width:100%;margin-top:12px;padding:14px 0;border:0;border-radius:2px;background:#4A0E1E;color:#E6D3BC;font:600 12.5px var(--sans);letter-spacing:.18em;text-transform:uppercase;cursor:pointer}
+.ro-card .go:hover:not(:disabled){background:#2C0610}
+.ro-card .go:disabled{opacity:.55;cursor:default}
+.ro-card .msg{margin:10px 0 0;font:400 14px/1.4 var(--sans);color:#8a1f2e}
+.ro-card .msg.ok{color:#2f5a3a}
+.ro-card .status{text-align:center;margin:8px 0 0}
+.ro-card .status b{display:block;font:500 22px/1.2 var(--serif);color:#2c0610}
+.ro-card .status .punches i{border-color:#4a0e1e;color:#4a0e1e}.ro-card .status .punches i.on{background:#4a0e1e;color:#e8d3b4}
+/* choose your free 5 ml */
+.opts{display:flex;flex-direction:column;gap:8px;margin:12px 0 4px}
+.opt{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:9px 12px 9px 9px;border:1px solid rgba(74,14,30,.45);border-radius:8px;cursor:pointer;background:rgba(255,255,255,.06)}
+.opt:has(input:checked){border-color:#4a0e1e;background:#4a0e1e;color:#e8d3b4}
+.opt input{position:absolute;opacity:0;width:1px;height:1px}
+.opt img{grid-row:1/3;width:56px;height:56px;border-radius:4px;object-fit:cover;background:#2c0610}
+.opt .b{font:500 10.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;opacity:.8}
+.opt .n{font:500 17px/1.15 var(--serif)}
+.opt .v{grid-column:2;font:400 13px var(--sans);opacity:.85}
+.opt .pr{grid-column:3;grid-row:1/3;text-align:right;font:500 15px var(--sans);white-space:nowrap}
+.opt .pr small{display:block;font:400 11px var(--sans);opacity:.8;letter-spacing:.04em}
+.opt:has(input:checked) .pr small{color:#e8d3b4}
+.opt:has(input:focus-visible){outline:2px solid #3A0A17;outline-offset:2px}
+.filter{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 10px}
+.filter button{border:1px solid rgba(74,14,30,.5);background:transparent;color:#3A0A17;border-radius:30px;padding:6px 13px;font:500 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.filter button.on{background:#4a0e1e;color:#e8d3b4;border-color:#4a0e1e}
+.ro-fine{margin:26px auto 0;max-width:480px;text-align:center;font-size:12.5px;line-height:1.6;color:var(--muted)}
+.ro-fine a{color:#e8d3b4}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="bar">Free Ottawa hand delivery over $65 · Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
+<header><div class="wrap nav">
+  <button type="button" class="menu-open" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><a class="logo" href="/"><span class="mono">VV</span>Velvet <span>Volute</span></a>
+  <nav><a href="/#shop">Shop</a><a href="/houses/">Fragrance Houses</a><a href="/collections/">Curated Collections</a><a href="/fragrance-101">Fragrance 101</a><a href="/about">About the Brand</a><a href="/how-it-works">How It Works</a><a href="/contact">Contact</a></nav><div class="icons"><button type="button" class="search-open" id="search-open" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></button><a class="cart-open" href="/#cart-page" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></a></div>
+</div></header>
+<main>
+<section class="ro" id="the-real-ones">
+ <div class="hero-mono" aria-hidden="true">VV</div>
+ <div class="eyebrow">The Real Ones</div>
+ <h1>Lucky #7 is on us</h1>
+ <p class="lede">Every decant you buy is a punch. At six, the seventh is free: any 5 ml in the collection up to $45, or $45 toward a bigger one. No card to carry, no app. It's tied to the email you order with.</p>
+ <div class="punches" aria-hidden="true"><i class="on">1</i><i class="on">2</i><i class="on">3</i><i class="on">4</i><i class="on">5</i><i class="on">6</i><i class="seven">7</i></div>
+
+ <!-- claim flow: /the-real-ones?claim=TOKEN -->
+ <div class="ro-card" id="claim" hidden>
+  <h2 id="claim-h">Choose your free 5 ml</h2>
+  <p id="claim-p">Every 5 ml in the collection, Classic, Luxury or Roll-on. Anything up to $45 is on the house; pick one above and the code takes $45 off it.</p>
+  <div class="filter" id="claim-filter" role="group" aria-label="Vial type"><button type="button" class="on" data-v="">All</button><button type="button" data-v="classic">Classic</button><button type="button" data-v="luxe">Luxury</button><button type="button" data-v="roll">Roll-on</button></div>
+  <form id="claim-form" novalidate><div class="opts" id="claim-opts" role="radiogroup" aria-label="Your free 5 ml"></div>
+   <button type="submit" class="go" id="claim-go" disabled>Email me the code</button>
+   <p class="msg" id="claim-msg" hidden></p></form>
+ </div>
+
+ <!-- status check -->
+ <div class="ro-card" id="check">
+  <h2>Where am I at?</h2>
+  <form id="check-form" novalidate>
+   <label class="f" for="check-email">The email you order with</label>
+   <input type="email" id="check-email" autocomplete="email" inputmode="email" maxlength="254" placeholder="you@example.com" required spellcheck="false">
+   <button type="submit" class="go" id="check-go">Show my punches</button>
+   <p class="msg" id="check-msg" hidden></p>
+  </form>
+  <div class="status" id="status" hidden></div>
+ </div>
+
+ <div class="ro-card">
+  <h2>How it works</h2>
+  <ol>
+   <li>Order decants, any size, any way to pay. Each decant in a paid order is one punch (a Curated Collection set counts every vial).</li>
+   <li>At six punches I email you a link to choose your free 5 ml. Pick any scent in stock, Classic, Luxury or Roll-on.</li>
+   <li>You get a one-time code for 100% off that 5 ml. Pick one over $45 and the code takes $45 off instead; you cover the rest.</li>
+   <li>The punches start again from zero. For the real ones, there's always another seventh.</li>
+  </ol>
+  <p>Your punch count also shows up in the "Enjoy your order" email after every order. Questions? Email <a href="mailto:velvetvolute@gmail.com" style="color:#2c0610">velvetvolute@gmail.com</a>.</p>
+ </div>
+ <p class="ro-fine">Rewards are tied to the email address on the order. A free 5 ml doesn't punch itself. Codes are one-time and can't be exchanged for cash. <a href="/how-it-works#policies">Policies</a></p>
+</section>
+</main>
+<footer><div class="wrap">
+  <div><div class="logo"><span class="mono">VV</span>Velvet Volute</div><p>© 2026 Velvet Volute · <a class="pol-link" href="/how-it-works#policies">Policies</a></p></div>
+  <div>
+    <p>All decants are hand-decanted from authentic original bottles and repackaged in new containers. The original manufacturer's bottle and packaging are not included.</p>
+    <p>Not affiliated with, endorsed by, or associated with any fragrance brand or designer. All trademarks belong to their respective owners and are used only to identify the authentic products from which each decant is prepared.</p>
+  </div>
+</div></footer>
+<script>
+(function(){
+ var $=function(i){return document.getElementById(i)},esc=function(t){return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})};
+ var EMAIL=/^[^\s@<>"]{1,64}@[^\s@<>"]{1,190}\.[a-z]{2,24}$/i,VL={classic:"Classic",luxe:"Luxury",roll:"Roll-on"};
+ try{var s=JSON.parse(localStorage.getItem("vv-cart-v1")||"null"),n=s&&s.lines?s.lines.reduce(function(a,l){return a+(l.q||0)},0):0,b=$("cart-count");if(b){b.textContent=n;b.hidden=!n}}catch(e){}
+ function dots(k,pending){var h="";for(var i=1;i<=6;i++)h+='<i class="'+(i<=k||pending?"on":"")+'">'+i+'</i>';return '<div class="punches" aria-hidden="true">'+h+'<i class="seven">7</i></div>'}
+ /* status check */
+ try{var e=localStorage.getItem("vv-email");if(e)$("check-email").value=e}catch(x){}
+ $("check-form").addEventListener("submit",function(ev){ev.preventDefault();var v=$("check-email").value.trim().toLowerCase(),m=$("check-msg"),go=$("check-go");
+  m.hidden=true;if(!EMAIL.test(v)){m.textContent="Please enter a valid email address.";m.className="msg";m.hidden=false;return}
+  go.disabled=true;go.textContent="Looking…";
+  fetch("/.netlify/functions/punches?email="+encodeURIComponent(v),{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
+   if(d.error)throw new Error(d.error);var st=$("status");
+   st.innerHTML=(d.pending>0?'<b>6 of 6 punched. Lucky #7 is on us.</b>'+dots(6,true)+'<p>'+(d.claimUrl?'<a class="go" style="display:inline-block;padding:12px 26px;text-decoration:none" href="'+esc(d.claimUrl)+'">Choose your free 5 ml</a>':'The link to choose your free 5 ml is in your inbox.')+'</p>':'<b>'+d.cycle+' of 6 punched'+(d.earned?' · '+d.earned+' free decant'+(d.earned>1?'s':'')+' so far':'')+'</b>'+dots(d.cycle)+'<p>'+(d.cycle?(6-d.cycle)+' more and lucky #7 is on us.':'Your first order starts the card.')+'</p>');
+   st.hidden=false}).catch(function(x){m.textContent=(x&&x.message)||"Couldn't check right now.";m.className="msg";m.hidden=false}).then(function(){go.disabled=false;go.textContent="Show my punches"})});
+ /* claim */
+ var claim=/[?&]claim=([a-z0-9]{20,40})/.exec(location.search);if(!claim)return;
+ var box=$("claim"),opts=$("claim-opts"),form=$("claim-form"),goC=$("claim-go"),msgC=$("claim-msg"),ALL=[],cap=4500,filt="";
+ box.hidden=false;$("check").hidden=true;box.scrollIntoView({block:"start"});
+ function sayC(t,ok){msgC.textContent=t;msgC.className="msg"+(ok?" ok":"");msgC.hidden=!t}
+ function money(c){return "$"+(c/100).toFixed(c%100?2:0)}
+ function draw(){var list=filt?ALL.filter(function(o){return o.vial===filt}):ALL;
+  opts.innerHTML=list.map(function(o){return '<label class="opt"><input type="radio" name="vid" value="'+esc(o.vid)+'"><img src="/'+esc(o.img)+'" width="56" height="56" alt="" loading="lazy"><span class="b">'+esc(o.brand)+'</span><span class="n">'+esc(o.name)+'</span><span class="v">'+esc(VL[o.vial]||o.label)+' · 5 ml</span><span class="pr">'+(o.overCap?money(o.cents)+'<small>you pay '+money(o.cents-cap)+'</small>':'<s style="opacity:.7">'+money(o.cents)+'</s><small>free</small>')+'</span></label>'}).join("");
+  opts.querySelectorAll("input").forEach(function(r){r.onchange=function(){goC.disabled=false;var o=ALL.find(function(x){return x.vid===r.value});goC.textContent=o&&o.overCap?"Email me the code ($"+((o.cents-cap)/100)+" to pay)":"Email me the code"}})}
+ $("claim-filter").querySelectorAll("button").forEach(function(b){b.onclick=function(){filt=b.dataset.v;$("claim-filter").querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x===b)});goC.disabled=true;goC.textContent="Email me the code";draw()}});
+ fetch("/.netlify/functions/real-ones?claim="+claim[1],{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
+  if(d.error)throw new Error(d.error);cap=d.capCents||cap;
+  if(d.used){$("claim-h").textContent="Already claimed";$("claim-p").textContent="This reward went to "+(d.usedFor||"a 5 ml")+". The code is in your inbox. Thank you for being one of the real ones.";form.hidden=true;$("claim-filter").hidden=true;$("check").hidden=false;return}
+  if(d.first)$("claim-h").textContent="Choose your free 5 ml, "+d.first;
+  $("claim-p").textContent="Every 5 ml in the collection, Classic, Luxury or Roll-on. Anything up to "+money(cap)+" is on the house; pick one above and the code takes "+money(cap)+" off it.";
+  ALL=d.options||[];draw()}).catch(function(x){$("claim-h").textContent="That link didn't work";$("claim-p").textContent=(x&&x.message)||"Try the link from your email again, or write to velvetvolute@gmail.com.";form.hidden=true;$("claim-filter").hidden=true;$("check").hidden=false});
+ form.addEventListener("submit",function(ev){ev.preventDefault();var r=form.querySelector("input[name=vid]:checked");if(!r){sayC("Pick one first.");return}
+  var o=ALL.find(function(x){return x.vid===r.value});goC.disabled=true;goC.textContent="Creating your code…";sayC("");
+  fetch("/.netlify/functions/real-ones",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({claim:claim[1],vid:r.value})})
+  .then(function(rs){return rs.json().then(function(d){if(!rs.ok||!d.ok)throw new Error(d.error||"Couldn't create the code");return d})})
+  .then(function(d){$("claim-h").textContent="Done. Check your inbox.";$("claim-p").innerHTML="Your one-time code for <b>"+esc(o.brand+" "+o.name)+" · "+esc(VL[o.vial]||o.label)+" 5 ml</b> is on its way by email"+(d.overCap?" (it takes "+money(cap)+" off; you pay "+money(Math.round(d.pay*100))+")":"")+". Add that size to your cart, enter the code, and choose pickup, delivery or shipping as usual.<br><br><a href=\"/#shop\" style=\"color:#2c0610\">Go to the shop &rarr;</a>";form.hidden=true;$("claim-filter").hidden=true})
+  .catch(function(x){sayC((x&&x.message)||"Couldn't create your code right now. Please try again.");goC.disabled=false;goC.textContent="Email me the code"})});
+})();
+</script>
+</body>
+</html>

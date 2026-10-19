@@ -808,6 +808,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
    <div class="cart-row"><span>Subtotal</span><span id="cart-sub">$0</span></div>
    <div class="cart-row" id="cart-promo-line" hidden><span>Promo code</span><span id="cart-promo-amt"></span></div>
    <div class="cart-row"><span>Delivery</span><span id="cart-ship">Choose an option</span></div>
+   <div class="cart-email" id="cart-email"><label class="cart-email-l" for="cart-mail">Where should we send your order details?</label><input id="cart-mail" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="you@example.com" spellcheck="false"><label class="cart-dibs"><input type="checkbox" id="cart-dibs">First dibs on new drops, collections &amp; sales</label><p class="cart-email-msg" id="cart-email-msg" hidden></p></div>
    <div class="cart-pay">
     <div class="cart-row total"><span>Total</span><span id="cart-total">$0</span></div>
     <button type="button" class="cart-checkout" id="cart-checkout">Checkout</button>
@@ -841,6 +842,21 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 </div>
 <div class="qz-pill" id="qz-pill" hidden><button type="button" class="qz-pill-go">Back to your Sherpa picks</button><button type="button" class="qz-pill-x" aria-label="Hide">&times;</button></div>
 <div class="cart-toast" id="cart-toast" role="status" aria-live="polite"></div>
+<div class="cart-bar" id="cart-bar" hidden role="status"><span id="cart-bar-txt"></span><button type="button" class="cart-bar-go" id="cart-bar-go">Checkout</button><button type="button" class="cart-bar-x" id="cart-bar-x" aria-label="Dismiss">&times;</button></div>
+<aside class="su-card" id="su-card" hidden aria-labelledby="su-title">
+ <button type="button" class="su-x" id="su-x" aria-label="Not now">&times;</button>
+ <div class="eyebrow">For the real ones</div>
+ <h3 id="su-title">10% off your first decant</h3>
+ <form id="su-form" novalidate>
+  <p>Leave your email and I'll send a one-time code. No spam, ever.</p>
+  <input type="email" id="su-email" autocomplete="email" inputmode="email" maxlength="254" placeholder="you@example.com" required spellcheck="false">
+  <label class="cart-dibs"><input type="checkbox" id="su-dibs">First dibs on new drops, collections &amp; sales</label>
+  <div class="et-hp" aria-hidden="true"><label>Website<input id="su-website" tabindex="-1" autocomplete="off"></label></div>
+  <button type="submit" class="su-go" id="su-go">Send my code</button>
+  <p class="su-note">The code arrives by email either way. Tick the box only if you want to hear about new drops too.</p>
+  <p class="su-msg" id="su-msg" hidden></p>
+ </form>
+</aside>
 <div class="bar">Free Ottawa hand delivery over $65 · Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
   <button type="button" class="menu-open" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><a class="logo" href="#top"><span class="mono">VV</span>Velvet <span>Volute</span></a>
@@ -2017,7 +2033,31 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
     <p class="why">${FAM_LABEL[p.cat]||p.cat}${p.cat2?" with "+(FAM_LABEL[p.cat2]||p.cat2).toLowerCase():""} · ${SEA_TXT[p.sea]} · ${TM_TXT[p.tm]} · ${STR_TXT[p.str||2]}</p><p class="n">${whyText(p,k,used)}</p>${ans.who==="her"&&p.herWhy?`<p class="n qz-her"><b>Why it <em>also</em> works for her:</b> ${esc(p.herWhy)}</p>`:""}
     ${p.n?`<details class="qz-pyr"${openNotes.has(x.i)?" open":""} data-i="${x.i}"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.map(esc).join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.map(esc).join(", ")}</dd><dt>Base</dt><dd>${p.n.b.map(esc).join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.map(esc).join(", ")}</dd>`}</dl></details>`:""}
     <div class="row"><span class="from">From $${low(p)}${soon?`<span class="soon">${esc(p.limited||"Arriving soon")}</span>`:""}</span><button type="button" class="qz-view" data-i="${x.i}">View</button></div></div>`}).join("")}</div>
-   ${avail.length>1?`<div class="qz-set">Can't decide? Try ${avail.length===r.length?"all "+avail.length:"the "+avail.length+" in stock"} as 2 ml samples for $${setPrice}.<button type="button" data-a="set">Add ${avail.length} samples to cart</button></div>`:""}`}
+   ${avail.length>1?`<div class="qz-set">Can't decide? Try ${avail.length===r.length?"all "+avail.length:"the "+avail.length+" in stock"} as 2 ml samples for $${setPrice}.<button type="button" data-a="set">Add ${avail.length} samples to cart</button></div>`:""}
+   ${avail.length?capHTML(avail):""}`}
+ /* Email me my picks: one-time 10% off the three picks, any size, sent by sherpa-picks.mjs. The draft survives redraws. */
+ const capD={email:"",first:"",consent:false,sent:false};
+ try{capD.email=localStorage.getItem("vv-email")||"";capD.consent=localStorage.getItem("vv-dibs")==="1";capD.sent=sessionStorage.getItem("vv-sherpa-sent")===JSON.stringify((ans.who||"")+"|")}catch(e){}
+ function capHTML(avail){
+  if(capD.sent)return `<div class="qz-cap sent"><div class="qz-step">Sent</div><h4>Your picks are on their way</h4><p>Check your inbox for the three scents, their stories and your one-time code for 10% off any size of them.</p></div>`;
+  const n=avail.length;
+  return `<form class="qz-cap" id="qz-cap" novalidate><div class="qz-step">Keep these</div><h4>Email me my picks <span>&rarr; 10% off your top ${n===1?"pick":n}</span></h4>
+   <p>I'll send ${n===1?"this pick":"these "+n+" picks"} with ${n===1?"its":"their"} story and a one-time code for 10% off any size of ${n===1?"it":"them"}. Good for 14 days.</p>
+   <div class="qz-cap-row"><input type="email" id="qzc-email" value="${esc(capD.email)}" placeholder="you@example.com" autocomplete="email" inputmode="email" maxlength="254" required spellcheck="false" aria-label="Email"><input type="text" id="qzc-first" value="${esc(capD.first)}" placeholder="First name (optional)" autocomplete="given-name" maxlength="40" aria-label="First name"></div>
+   <label class="cart-dibs"><input type="checkbox" id="qzc-consent" ${capD.consent?"checked":""}>First dibs on new drops, collections &amp; sales</label>
+   <button type="submit" class="qz-cap-go" id="qzc-go">Email me my picks</button><p class="qz-cap-msg" id="qzc-msg" hidden></p></form>`}
+ function bindCap(){const f=box.querySelector("#qz-cap");if(!f)return;
+  const em=f.querySelector("#qzc-email"),fn=f.querySelector("#qzc-first"),ck=f.querySelector("#qzc-consent"),msg=f.querySelector("#qzc-msg"),go=f.querySelector("#qzc-go");
+  const say=(t,ok)=>{msg.textContent=t;msg.className="qz-cap-msg"+(ok?" ok":"");msg.hidden=!t};
+  em.oninput=()=>{capD.email=em.value.trim()};fn.oninput=()=>{capD.first=fn.value.trim()};ck.onchange=()=>{capD.consent=ck.checked};
+  f.onsubmit=e=>{e.preventDefault();const v=em.value.trim().toLowerCase();
+   if(!/^[^\s@<>"]{1,64}@[^\s@<>"]{1,190}\.[a-z]{2,24}$/i.test(v)){say("Please enter a valid email address.");em.focus();return}
+   const ids=picks().filter(x=>inStock(x.p)).map(x=>x.p.sq);go.disabled=true;go.textContent="Sending…";
+   fetch("/.netlify/functions/sherpa-picks",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:v,first:capD.first,consent:capD.consent,picks:ids,who:ans.who||""})})
+   .then(r=>r.json().then(d=>{if(!r.ok||!d.ok)throw new Error(d.error||"Couldn't send");return d}))
+   .then(()=>{capD.sent=true;try{localStorage.setItem("vv-email",v);localStorage.setItem("vv-dibs",capD.consent?"1":"0");localStorage.setItem("vv-subscribed","1");sessionStorage.setItem("vv-sherpa-sent",JSON.stringify((ans.who||"")+"|"))}catch(x){}
+    if(window.Cart&&Cart.setEmail)Cart.setEmail(v,capD.consent);f.outerHTML=capHTML([])})
+   .catch(x=>{say((x&&x.message)||"Couldn't send your picks right now. Please try again.");go.disabled=false;go.textContent="Email me my picks"})}}
  const short=n=>n.replace(/ (Extrait de Parfum|Eau de Parfum|Eau de Toilette|Parfum)$/,"");
  function famInfo(q){const sel=(ans.fam||[]).filter(v=>v!=="any");if(!sel.length)return "";
   return `<div class="qz-fam">${sel.map(c=>{const o=q.o.find(x=>x[0]===c),nm=p=>{const n=short(p.name);return n.split(" ").length>2?n:p.brand+" "+n},names=PRODUCTS.filter(p=>p.cat===c).map(nm),also=PRODUCTS.filter(p=>p.cat2===c).map(nm);
@@ -2052,7 +2092,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   bindToggle();bindRes();box.parentElement.scrollTop=0}
  function bindRes(){
   const avail=picks().filter(x=>inStock(x.p));
-  box.querySelectorAll(".qz-view").forEach(b=>b.onclick=()=>showCard(+b.dataset.i));
+  box.querySelectorAll(".qz-view").forEach(b=>b.onclick=()=>showCard(+b.dataset.i));bindCap();
   box.querySelectorAll(".qz-pyr").forEach(d=>d.ontoggle=()=>{d.open?openNotes.add(+d.dataset.i):openNotes.delete(+d.dataset.i)});
   box.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const a=b.dataset.a;
    if(a==="again"||a==="clear"){step=0;ans={};draw()}
@@ -2078,16 +2118,55 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  window.VVSherpa={open:open,picks:picks,score:score,ranked:ranked,setAns:a=>{ans=a},resultsHTML:resultsHTML,why:whyText,likeHits:likeHits};
  if(location.hash==="#quiz")open();
 })();
+/* "Shop your picks" link in the Sherpa email: /?picks=ID,ID,ID shows just those scents, best first */
+(function(){const m=/[?&]picks=([A-Z0-9,]+)/.exec(location.search);if(!m)return;
+ const order=m[1].split(",").map(id=>PRODUCTS.findIndex(p=>p.sq===id)).filter(i=>i>=0);if(!order.length)return;
+ sherpaSet=order;brandSel.clear();fam="All scents";sea="all";gen="all";fs.value=fam;document.getElementById("sea").value=sea;genChips();chips();render();
+ setTimeout(()=>{const sb=document.getElementById("sherpa-bar");window.scrollTo({top:sb.getBoundingClientRect().top+scrollY-document.querySelector("header").offsetHeight-16})},120)})();
+/* Sign-up card: bottom-right, after 30 s or on exit intent (desktop), once per 30 days, never for a known email. */
+(function(){const card=document.getElementById("su-card");if(!card)return;
+ const get=k=>{try{return localStorage.getItem(k)||""}catch(e){return ""}},set=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+ const force=/[?&]signup=now/.test(location.search);
+ if(!force&&(get("vv-subscribed")||get("vv-email")||Date.now()-Number(get("vv-signup-seen")||0)<30*864e5))return;
+ let shown=false;
+ function show(){if(shown)return;shown=true;set("vv-signup-seen",String(Date.now()));card.hidden=false;requestAnimationFrame(()=>card.classList.add("on"))}
+ function hide(){card.classList.remove("on");setTimeout(()=>{card.hidden=true},350)}
+ setTimeout(show,force?300:30000);
+ document.addEventListener("mouseout",e=>{if(!e.relatedTarget&&e.clientY<8&&matchMedia("(pointer:fine)").matches)show()});
+ document.getElementById("su-x").onclick=hide;
+ document.getElementById("su-form").onsubmit=e=>{e.preventDefault();const em=document.getElementById("su-email"),ck=document.getElementById("su-dibs"),msg=document.getElementById("su-msg"),go=document.getElementById("su-go");
+  const say=(t,ok)=>{msg.textContent=t;msg.className="su-msg"+(ok?" ok":"");msg.hidden=!t};const v=em.value.trim().toLowerCase();
+  if(!/^[^\s@<>"]{1,64}@[^\s@<>"]{1,190}\.[a-z]{2,24}$/i.test(v)){say("Please enter a valid email address.");em.focus();return}
+  go.disabled=true;go.textContent="Sending…";
+  fetch("/.netlify/functions/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:v,consent:ck.checked,source:"card",website:document.getElementById("su-website").value})})
+  .then(r=>r.json().then(d=>{if(!r.ok||!d.ok)throw new Error(d.error||"Couldn't sign you up");return d}))
+  .then(()=>{set("vv-email",v);set("vv-dibs",ck.checked?"1":"0");set("vv-subscribed","1");if(window.Cart&&Cart.setEmail)Cart.setEmail(v,ck.checked);
+   document.getElementById("su-form").innerHTML='<p><b>Sent.</b> Your code is on its way to '+v.replace(/</g,"&lt;")+'. Check your inbox (and promotions tab).</p>';setTimeout(hide,6000)})
+  .catch(x=>{say((x&&x.message)||"Couldn't sign you up right now. Please try again.");go.disabled=false;go.textContent="Send my code"})}})();
 </script>
 <script>
 var Cart=(function(){
  var KEY="vv-cart-v1",FREE=85,LOCAL_FREE=65,SHIP={pickup:0,local:0,canada:9},OTTAWA=/^K(1[A-Z]|2[A-Z]|4A)\s?\d[A-Z]\d$/i,pc="";
- var lines=[],ship=null,promo=null; /* promo = {code, pct, cents} once checked by /.netlify/functions/coupon */
- try{var s=JSON.parse(localStorage.getItem(KEY)||"null");if(s){lines=s.lines||[];ship=s.ship||null;promo=s.promo||null;pc=s.pc||"";if(ship==="onqc"||ship==="roc")ship="canada"}}catch(e){}
+ var lines=[],ship=null,promo=null,ts=0; /* promo = {code, pct, cents, only} once checked by /.netlify/functions/coupon */
+ try{var s=JSON.parse(localStorage.getItem(KEY)||"null");if(s){lines=s.lines||[];ship=s.ship||null;promo=s.promo||null;pc=s.pc||"";ts=s.ts||0;if(ship==="onqc"||ship==="roc")ship="canada"}}catch(e){}
  var $=function(id){return document.getElementById(id)};
  var VN={classic:"Classic",luxe:"Luxury",roll:"Roll-on"};
- function save(){try{localStorage.setItem(KEY,JSON.stringify({lines:lines,ship:ship,promo:promo,pc:pc}))}catch(e){}}
- function promoOff(){if(!promo)return 0;var s=subtotal();return promo.pct?Math.floor(s*promo.pct)/100:Math.min(s,(promo.cents||0)/100)}
+ /* Email first: remembered in this browser, prefilled on Square's payment page and the e-Transfer form,
+    and (with the cart lines) saved to cart-save.mjs so a forgotten cart gets one reminder. */
+ var EMAIL_RE=/^[^\s@<>"]{1,64}@[^\s@<>"]{1,190}\.[a-z]{2,24}$/i;
+ function lsGet(k){try{return localStorage.getItem(k)||""}catch(e){return ""}}
+ function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+ var email=lsGet("vv-email"),dibs=lsGet("vv-dibs")==="1";
+ function cartId(){var id=lsGet("vv-cart-id");if(!id){id="";var c="abcdefghijklmnopqrstuvwxyz0123456789",b=new Uint8Array(20);(crypto.getRandomValues?crypto.getRandomValues(b):b);for(var i=0;i<20;i++)id+=c[(b[i]||Math.floor(Math.random()*36))%36];lsSet("vv-cart-id",id)}return id}
+ var saveT=null;
+ function cartSave(now){if(!EMAIL_RE.test(email)||!lines.length)return;clearTimeout(saveT);saveT=setTimeout(function(){fetch("/.netlify/functions/cart-save",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:cartId(),email:email,consent:dibs,lines:lines,ship:ship,promo:promo?promo.code:null})}).catch(function(){})},now?0:900)}
+ function emailMsg(t,ok){var m=$("cart-email-msg");if(!m)return;m.textContent=t||"";m.className="cart-email-msg"+(ok?" ok":"");m.hidden=!t}
+ function save(){ts=Date.now();try{localStorage.setItem(KEY,JSON.stringify({lines:lines,ship:ship,promo:promo,pc:pc,ts:ts}))}catch(e){}cartSave()}
+ function promoOff(){if(!promo)return 0;var s=subtotal();
+  if(promo.only&&promo.only.length){var hit=lines.filter(function(l){return !l.b&&promo.only.some(function(o){return o.sq===l.sq&&(!o.v||o.v===(VN[l.v]+", "+l.z+" ml").toLowerCase())})});
+   if(!hit.length)return 0;if(promo.pct)return Math.floor(hit.reduce(function(a,l){return a+linePrice(l)*l.q},0)*promo.pct)/100;
+   var top=Math.max.apply(null,hit.map(linePrice));return Math.min(top,(promo.cents||0)/100)}
+  return promo.pct?Math.floor(s*promo.pct)/100:Math.min(s,(promo.cents||0)/100)}
  function money(n){return "$"+(Number.isInteger(n)?n:n.toFixed(2))}
  function priceOf(p,v,z){return unit(p,VIALS[v].key,z)}
  function find(sq){return PRODUCTS.find(function(p){return p.sq===sq})}
@@ -2138,6 +2217,7 @@ var Cart=(function(){
   $("cart-ship").textContent=sc===null?"Choose an option":sc===0?"Free":money(sc);
   $("cart-total").textContent=money(Math.round((s-po+(sc||0))*100)/100);
   $("cart-msg").hidden=true;
+  if($("cart-mail")&&!$("cart-mail").value&&email)$("cart-mail").value=email;
  }
  var last=null,pushed=false;
  function open(){if($("cart-ov").hidden)last=document.activeElement;draw();$("cart-ov").hidden=false;document.body.style.overflow="hidden";setTimeout(function(){$("cart-x").focus()},30)}
@@ -2151,9 +2231,11 @@ var Cart=(function(){
  function checkout(){
   $("cart-msg").hidden=true;
   if(!ready())return;
+  if(!emailOk())return;
   var btn=$("cart-checkout");btn.disabled=true;btn.textContent="Opening secure checkout…";
+  cartSave(true);
   fetch("/.netlify/functions/checkout",{method:"POST",headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({ship:ship,pc:ship==="local"?pc.trim().toUpperCase():"",coupon:promo?promo.code:"",items:items()})})
+   body:JSON.stringify({ship:ship,pc:ship==="local"?pc.trim().toUpperCase():"",coupon:promo?promo.code:"",items:items(),email:email,consent:dibs,cartId:cartId()})})
   .then(function(r){return r.json().then(function(d){if(!r.ok||!d.url)throw new Error(d.error||"Checkout failed");return d})})
   .then(function(d){location.href=d.url})
   .catch(function(e){msg((e&&e.message)||"Checkout couldn't be started. Please try again, or email velvetvolute@gmail.com.");btn.disabled=false;btn.textContent="Checkout"});
@@ -2165,9 +2247,11 @@ var Cart=(function(){
   if(ship==="local"&&subtotal()<LOCAL_FREE){say("Local hand delivery is free on orders of $65 or more. Add a little more, or choose pickup or shipping.");return false}
   if(ship==="local"&&!pcOk()){say("Please enter an Ottawa postal code for hand delivery (Orléans, Kanata and Barrhaven included).");$("cart-pc").focus();return false}
   return true}
+ function emailOk(){var v=($("cart-mail").value||"").trim().toLowerCase();if(EMAIL_RE.test(v)){email=v;lsSet("vv-email",v);emailMsg("");$("cart-mail").classList.remove("bad");return true}
+  emailMsg("Enter your email first, so I can send you your order details.");$("cart-mail").classList.add("bad");$("cart-mail").focus();return false}
  /* Interac e-Transfer: the order is emailed to the customer and the shop; nothing is charged online */
  function etAddr(){var f=$("cart-et"),need=ship&&ship!=="pickup";f.querySelector("[data-addr]").hidden=!need;if(ship==="local"&&!$("et-postal").value&&pc)$("et-postal").value=pc.trim().toUpperCase();return need}
- function etToggle(){var f=$("cart-et"),b=$("cart-et-btn"),on=f.hidden;f.hidden=!on;b.setAttribute("aria-expanded",on);if(on){etAddr();setTimeout(function(){$("et-name").focus()},30)}}
+ function etToggle(){var f=$("cart-et"),b=$("cart-et-btn"),on=f.hidden;f.hidden=!on;b.setAttribute("aria-expanded",on);if(on){etAddr();if(!$("et-email").value&&EMAIL_RE.test(email))$("et-email").value=email;setTimeout(function(){$("et-name").focus()},30)}}
  function etSubmit(e){
   e.preventDefault();$("cart-msg").hidden=true;$("et-msg").hidden=true;
   var msg=function(t){var m=$("et-msg");m.textContent=t;m.hidden=false};
@@ -2178,10 +2262,10 @@ var Cart=(function(){
   if(need&&(v("et-street").length<4||v("et-city").length<2||!v("et-prov")||!/^[A-Z]\d[A-Z]\s?\d[A-Z]\d$/i.test(v("et-postal")))){msg("Please fill in your full address with a valid postal code.");return}
   var btn=$("et-submit");btn.disabled=true;btn.textContent="Sending your order…";
   fetch("/.netlify/functions/etransfer",{method:"POST",headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({ship:ship,pc:ship==="local"?pc.trim().toUpperCase():"",coupon:promo?promo.code:"",items:items(),website:v("et-website"),
+   body:JSON.stringify({ship:ship,pc:ship==="local"?pc.trim().toUpperCase():"",coupon:promo?promo.code:"",items:items(),website:v("et-website"),cartId:cartId(),consent:dibs,
     contact:{name:v("et-name"),email:v("et-email"),phone:v("et-phone"),street:need?v("et-street"):"",city:need?v("et-city"):"",prov:need?v("et-prov"):"",postal:need?v("et-postal"):""}})})
   .then(function(r){return r.json().then(function(d){if(!r.ok||!d.ok)throw new Error(d.error||"Order failed");return d})})
-  .then(function(d){try{sessionStorage.setItem("vv-et",JSON.stringify(d))}catch(x){}lines=[];promo=null;save();badge();location.href="/thanks.html?et=1"})
+  .then(function(d){try{sessionStorage.setItem("vv-et",JSON.stringify(d))}catch(x){}lines=[];promo=null;try{localStorage.removeItem("vv-cart-id")}catch(x){}save();badge();location.href="/thanks.html?et=1"})
   .catch(function(x){msg((x&&x.message)||"Your order couldn't be sent. Please try again, or email velvetvolute@gmail.com.");btn.disabled=false;btn.textContent="Place order"});
  }
  $("cart-et-btn").onclick=etToggle;$("cart-et").addEventListener("submit",etSubmit);
@@ -2200,15 +2284,29 @@ var Cart=(function(){
   if(promo&&promo.code===code){promoMsg("Code "+code+" is applied.","ok");return}
   var b=$("cart-code-apply");b.disabled=true;b.textContent="…";
   fetch("/.netlify/functions/coupon?code="+encodeURIComponent(code),{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
-   if(d&&d.ok){promo={code:d.code,pct:d.pct||0,cents:d.cents||0};save();draw();promoMsg("Code "+d.code+" applied: "+(d.pct?d.pct+"% off":money(d.cents/100)+" off")+". It's taken off at checkout.","ok")}
+   if(d&&d.ok){promo={code:d.code,pct:d.pct||0,cents:d.cents||0,only:d.only||null};save();draw();var po2=promoOff();promoMsg("Code "+d.code+" applied: "+(d.pct?d.pct+"% off":money(d.cents/100)+" off")+(d.only&&d.only.length?(po2?" the scents it covers.":". It covers specific scents or sizes that aren't in your cart yet."):". It's taken off at checkout."),po2||!(d.only&&d.only.length)?"ok":"err")}
    else{promo=null;save();draw();promoMsg((d&&d.error)||"That promo code isn't valid.","err")}
   }).catch(function(){promoMsg("Couldn't check that code right now. You can also enter it under “Add coupon” on the payment page.","err")})
   .then(function(){b.disabled=false;b.textContent="Apply"})}
  $("cart-code-apply").onclick=applyPromo;$("cart-code").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();applyPromo()}});
  $("cart-code").addEventListener("input",function(){if(promo&&$("cart-code").value.trim().toUpperCase()!==promo.code){promo=null;save();draw();promoMsg("")}});
  addEventListener("pageshow",function(){var b=$("cart-checkout");b.disabled=false;b.textContent="Checkout";var e=$("et-submit");e.disabled=false;e.textContent="Place order"});
+ /* email field: remember it, save the cart once it's valid */
+ $("cart-mail").value=email;$("cart-dibs").checked=dibs;
+ $("cart-mail").addEventListener("input",function(){var v=$("cart-mail").value.trim().toLowerCase();$("cart-mail").classList.remove("bad");if(EMAIL_RE.test(v)){email=v;lsSet("vv-email",v);emailMsg("");cartSave()}});
+ $("cart-mail").addEventListener("blur",function(){var v=$("cart-mail").value.trim();if(v&&!EMAIL_RE.test(v))emailMsg("That email doesn't look right.");});
+ $("cart-dibs").addEventListener("change",function(){dibs=$("cart-dibs").checked;lsSet("vv-dibs",dibs?"1":"0");cartSave()});
+ /* "Finish checkout" link from the reminder email: /?cart=<id> restores the saved cart */
+ (function(){var m=/[?&]cart=([a-z0-9]{12,40})/.exec(location.search);if(!m)return;
+  fetch("/.netlify/functions/cart-save?id="+m[1],{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(d){if(!d||!d.lines)return;
+   lsSet("vv-cart-id",m[1]);d.lines.forEach(function(nl){if(!lines.some(function(l){return nl.b?l.b===nl.b&&l.z===nl.z:l.sq===nl.sq&&l.v===nl.v&&l.z===nl.z}))lines.push(nl)});
+   if(d.ship&&!ship)ship=d.ship;save();badge();history.replaceState(null,"",location.pathname+"#cart-page");open();setFull(true)}).catch(function(){})})();
+ /* returning visitor with a cart older than an hour: a small bar, dismissed for the session */
+ (function(){var n=count();if(!n||!ts||Date.now()-ts<36e5)return;try{if(sessionStorage.getItem("vv-cartbar"))return}catch(e){}
+  var bar=$("cart-bar");$("cart-bar-txt").innerHTML="You left <b>"+n+" decant"+(n>1?"s":"")+"</b> in your cart";bar.hidden=false;
+  $("cart-bar-go").onclick=function(){bar.hidden=true;openFull()};$("cart-bar-x").onclick=function(){bar.hidden=true;try{sessionStorage.setItem("vv-cartbar","1")}catch(e){}}})();
  badge();
- return {add:add,addBundle:addBundle,open:open,refresh:function(){draw();badge()}};
+ return {add:add,addBundle:addBundle,open:open,refresh:function(){draw();badge()},email:function(){return email},setEmail:function(v,d){if(EMAIL_RE.test(v)){email=v;lsSet("vv-email",v)}if(d!==undefined){dibs=!!d;lsSet("vv-dibs",dibs?"1":"0")}}};
 })();
 </script>
 
@@ -2275,6 +2373,67 @@ var Cart=(function(){
 .sh-fab:hover{box-shadow:0 14px 32px rgba(10,2,4,.6)}
 body.qz-open .sh-bub{opacity:0;pointer-events:none}
 body.sh-hide .sh-fab,body.sh-hide .sh-bub{display:none}
+/* ===== email + loyalty layer ===== */
+/* cart: email first (camel panel, merlot type like the e-Transfer form) */
+.cart-email{margin:4px 0 12px;padding:12px 14px 10px;border:1px solid rgba(74,14,30,.5);border-radius:6px;background:rgba(255,255,255,.08)}
+.cart-email .cart-email-l{display:block;font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#3A0A17;margin:0 0 6px}
+.cart-email input[type=email]{display:block;width:100%;box-sizing:border-box;background:rgba(255,255,255,.18);border:1px solid rgba(74,14,30,.5);border-radius:4px;padding:10px 11px;color:#2C0610;font:400 16px var(--sans)}
+.cart-email input[type=email]::placeholder{color:#5a3a2a;opacity:.7}
+.cart-email input[type=email]:focus{outline:2px solid #3A0A17;outline-offset:1px}
+.cart-email input.bad{border-color:#8a1f2e}
+.cart-dibs{display:flex;align-items:flex-start;gap:9px;margin:9px 0 0;font:400 13.5px/1.4 var(--sans);color:#3A0A17;cursor:pointer}
+.cart-dibs input{margin:3px 0 0;width:16px;height:16px;accent-color:#4A0E1E;flex:none}
+.cart-email-msg{margin:6px 0 0;font:400 13px/1.4 var(--sans);color:#8a1f2e}
+.cart-email-msg.ok{color:#2f5a3a}
+.cart-ov.full .cart-email{border-color:rgba(74,14,30,.5)}
+/* abandoned-cart bar: a small strip above the Sherpa pill */
+.cart-bar{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:44;display:flex;align-items:center;gap:12px;width:max-content;max-width:calc(100vw - 32px);padding:10px 12px 10px 16px;background:#2c0610;color:#e8d3b4;border:1px solid #b5946a;border-radius:30px;box-shadow:0 14px 34px rgba(10,2,4,.55);font:400 14px/1.3 var(--sans)}
+.cart-bar[hidden]{display:none}
+.cart-bar b{font-weight:600}
+.cart-bar span{white-space:nowrap}
+.cart-bar .cart-bar-go{border:0;border-radius:30px;background:#b5946a;color:#2c0610;padding:8px 16px;font:600 11.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.cart-bar .cart-bar-go:hover{background:#cdb08a}
+.cart-bar .cart-bar-x{border:0;background:none;color:#cdb08a;font-size:22px;line-height:1;cursor:pointer;padding:0 2px}
+@media(max-width:600px){.cart-bar{left:16px;right:16px;transform:none;width:auto;max-width:none;justify-content:space-between;bottom:calc(64px + env(safe-area-inset-bottom,0px));font-size:13.5px;gap:8px;padding:8px 8px 8px 14px}.cart-bar span{white-space:normal}}
+/* sign-up card: bottom-right, above the Sherpa pill, never a modal */
+.su-card{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:46;width:min(340px,calc(100vw - 36px));background:#a07b52;color:#330a14;border:1px solid #d6b077;border-radius:10px;padding:20px 20px 18px;box-shadow:0 22px 50px rgba(10,2,4,.55);font:400 14.5px/1.5 var(--sans);opacity:0;transform:translateY(12px);transition:opacity .35s ease,transform .35s ease;pointer-events:none}
+.su-card.on{opacity:1;transform:none;pointer-events:auto}
+.su-card[hidden]{display:none}
+.su-card .su-x{position:absolute;top:8px;right:8px;width:32px;height:32px;border:0;background:none;color:#330a14;font-size:22px;line-height:1;cursor:pointer;border-radius:50%}
+.su-card .su-x:hover{background:rgba(51,10,20,.1)}
+.su-card .eyebrow{color:#330a14;opacity:.8;font-size:10.5px}
+.su-card h3{font:500 25px/1.1 var(--serif);color:#2c0610;margin:4px 24px 6px 0}
+.su-card p{margin:0 0 10px}
+.su-card input[type=email]{display:block;width:100%;box-sizing:border-box;background:rgba(255,255,255,.22);border:1px solid rgba(74,14,30,.5);border-radius:4px;padding:10px 11px;color:#2C0610;font:400 16px var(--sans)}
+.su-card input[type=email]:focus{outline:2px solid #3A0A17;outline-offset:1px}
+.su-card .cart-dibs{margin:8px 0 2px;font-size:13px}
+.su-card .su-go{display:block;width:100%;margin-top:10px;padding:12px 0;border:0;border-radius:2px;background:#4A0E1E;color:#E6D3BC;font:600 12px var(--sans);letter-spacing:.18em;text-transform:uppercase;cursor:pointer}
+.su-card .su-go:hover:not(:disabled){background:#2C0610}
+.su-card .su-go:disabled{opacity:.6;cursor:wait}
+.su-card .su-note{margin:8px 0 0;font-size:12px;color:#451019;opacity:.85}
+.su-card .su-msg{margin:8px 0 0;font-size:13px;color:#8a1f2e}
+.su-card .su-msg.ok{color:#2f5a3a}
+.su-card .et-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+body.qz-open .su-card,.su-card.quiet{opacity:0;pointer-events:none}
+@media(max-width:600px){.su-card{bottom:calc(64px + env(safe-area-inset-bottom,0px));padding:18px 16px 16px}.su-card h3{font-size:22px}}
+/* Scent Sherpa results: email me my picks */
+.qz-cap{margin-top:14px;padding:16px 16px 14px;border:1px solid #4a0e1e;border-radius:6px;background:rgba(44,6,16,.08);color:#330a14}
+.qz-cap h4{margin:4px 0 4px;font:500 22px/1.15 var(--serif);color:#2c0610}
+.qz-cap h4 span{color:#4a0e1e}
+.qz-cap p{margin:0 0 10px;font-size:13.5px;line-height:1.45}
+.qz-cap .qz-cap-row{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:460px){.qz-cap .qz-cap-row{grid-template-columns:1.4fr 1fr}}
+.qz-cap input[type=email],.qz-cap input[type=text]{display:block;width:100%;box-sizing:border-box;background:rgba(255,255,255,.2);border:1px solid rgba(74,14,30,.5);border-radius:4px;padding:10px 11px;color:#2C0610;font:400 16px var(--sans)}
+.qz-cap input:focus{outline:2px solid #3A0A17;outline-offset:1px}
+.qz-cap input::placeholder{color:#5a3a2a;opacity:.7}
+.qz-cap .cart-dibs{margin:9px 0 0;font-size:13px}
+.qz-cap .qz-cap-go{display:block;width:100%;margin-top:10px;padding:13px 0;border:0;border-radius:2px;background:#4a0e1e;color:#e8d3b4;font:600 12.5px var(--sans);letter-spacing:.18em;text-transform:uppercase;cursor:pointer}
+.qz-cap .qz-cap-go:hover:not(:disabled){background:#2c0610}
+.qz-cap .qz-cap-go:disabled{opacity:.6;cursor:wait}
+.qz-cap .qz-cap-msg{margin:8px 0 0;font-size:13px;color:#8a1f2e}
+.qz-cap .qz-cap-msg.ok{color:#2f5a3a}
+.qz-capD.sent{text-align:center}
+.qz-capD.sent h4{margin-bottom:6px}
 </style>
 <button type="button" class="sh-fab" id="sh-fab" aria-label="Ask the Scent Sherpa" title="Ask the Scent Sherpa">
  <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="16" r="12.5"/><path d="M16 5.5v2.2M16 24.3v2.2M5.5 16h2.2M24.3 16h2.2"/><path d="M19.8 12.2l-2.2 5.4-5.4 2.2 2.2-5.4z" fill="currentColor" stroke="none"/></svg>
