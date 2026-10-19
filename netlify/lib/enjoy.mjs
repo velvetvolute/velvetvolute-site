@@ -5,6 +5,10 @@
 //    5 days later (queued by the webhook, sent by enjoy-followup.mjs with { delivered: true }).
 import { sq } from "./square.mjs";
 import { summarize } from "../functions/order.mjs";
+import { getContact, upsertContact, getPunches, queueFollowup, stores, getJSON, normEmail } from "./store.mjs";
+import { issueCode, issueReferralCode, activeCode, DAY } from "./codes.mjs";
+import { loyaltyBlock, fmtPunch } from "./emails.mjs";
+import { byName, parseVariation } from "./scents.mjs";
 
 const SITE = process.env.SITE_URL || "https://velvetvolute.ca";
 const SHOP_EMAIL = "velvetvolute@gmail.com";
@@ -55,7 +59,7 @@ export async function buyerEmail(order, token) {
 
 const H3 = (t) => `<h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:24px 0 6px">${t}</h3>`;
 
-export function enjoyHTML(s, firstName) {
+export function enjoyHTML(s, firstName, extra = "") {
   const hi = firstName ? `, ${esc(firstName)}` : "";
   const rows = s.items.map((i) => {
     const sprays = vialSprays(i.variation);
@@ -91,10 +95,11 @@ export function enjoyHTML(s, firstName) {
    <p style="margin:0 0 8px">&bull; The same scent smells different on two people. That's <b>skin chemistry</b>: pH, warmth, diet, even your moisturizer.</p>
    <p style="margin:0">&bull; The trail you leave when you walk past is called <b>sillage</b>, pronounced <i>see-yazh</i>.</p>
 
+   ${extra}
    <p style="margin:24px 0 8px">Want to go deeper? <a href="${SITE}/fragrance-101.html" style="color:#6e1a31">Fragrance 101</a> covers it all. When you're ready for your next find, the <a href="${SITE}" style="color:#6e1a31">Scent Sherpa</a> can help you curate your own playlist.</p>
    <p style="margin:0">Fell for one? Reply and tell me which, I'd love to hear it.</p>
    <p style="margin-top:22px">Peace &amp; Love,<br>Izzi</p>
-   <p style="color:#8a6d4b;font-size:13px"><a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
+   <p style="color:#8a6d4b;font-size:13px">Velvet Volute · Ottawa, ON · <a href="mailto:${SHOP_EMAIL}" style="color:#6e1a31">${SHOP_EMAIL}</a> · <a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
   </div></div>`;
 }
 
@@ -139,8 +144,50 @@ export function shippedHTML(s, firstName, track) {
    <p style="margin:18px 0 0">Once they land, I'll send you a little guide on how to wear and store them so you get the most out of every spray.</p>
    <p style="margin:12px 0 0;font-size:13px;color:#8a6d4b">Something arrive damaged? Reply within 24 hours of delivery with a photo and your order number.</p>
    <p style="margin-top:22px">Peace &amp; Love,<br>Izzi</p>
-   <p style="color:#8a6d4b;font-size:13px"><a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
+   <p style="color:#8a6d4b;font-size:13px">Velvet Volute · Ottawa, ON · <a href="mailto:${SHOP_EMAIL}" style="color:#6e1a31">${SHOP_EMAIL}</a> · <a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
   </div></div>`;
+}
+
+// The loyalty layer of the enjoy email: review link, one-time RETURN code (10%, 30 days), the
+// customer's personal referral code, punch-card status and the Sherpa's-pick note. Also queues the
+// 21-day "loved the 2 ml?" follow-up for every 2 / 3 ml whose 10 ml they haven't bought.
+// Everything here is best-effort: a failure leaves the enjoy email as it was.
+export async function loyaltyExtras(s, email, first, token) {
+  if (!email) return { html: "", text: "" };
+  email = normEmail(email);
+  try {
+    const contact = (await getContact(email)) || {};
+    const codes = contact.codes || {};
+    let ret = await activeCode(contact, "return");
+    if (!ret) { const c = await issueCode({ kind: "return", email, prefix: "VV-BACK", percent: 10, days: 30 }, token); ret = { code: c.code, expiresAt: c.expiresAt }; }
+    let ref = await activeCode(contact, "ref");
+    if (!ref) { const c = await issueReferralCode(email, first || contact.first, token); ref = { code: c.code }; }
+    await upsertContact(email, { first, codes: { return: ret.code, ref: ref.code } });
+    const punches = await getPunches(email);
+    const claimUrl = punches.pending > 0 && punches.claim ? `${SITE}/the-real-ones?claim=${punches.claim}` : "";
+    const paid = await getJSON(stores.paid(), s.no);
+    const pick = paid?.pick ? byName(paid.pick) || { short: paid.pick, brand: "" } : null;
+    // 21-day follow-up: a 2 ml (classic) or 3 ml (luxury) of a scent, with no 10 ml of it in this order or earlier
+    const tenMl = new Set([...(contact.seg?.tenMl || []), ...s.items.filter((i) => parseVariation(i.variation).ml >= 10).map((i) => byName(i.name)?.sq).filter(Boolean)]);
+    const small = s.items.filter((i) => [2, 3].includes(parseVariation(i.variation).ml));
+    for (const i of small) {
+      const p = byName(i.name);
+      if (!p || tenMl.has(p.sq)) continue;
+      await queueFollowup(`upsize-${s.no}-${p.sq}`, { type: "upsize", due: Date.now() + 21 * DAY, email, first: first || contact.first || "", sq: p.sq, ml: parseVariation(i.variation).ml }).catch((e) => console.error(e));
+    }
+    const html = loyaltyBlock({ returnCode: ret.code, returnExpires: ret.expiresAt, referralCode: ref.code, punches, sherpaPickName: pick ? `${pick.brand} ${pick.short}`.trim() : "", claimUrl, email });
+    const text = [
+      `Leave a review: ${process.env.GOOGLE_REVIEW_URL || "https://www.facebook.com/share/19pYKmRDYj/"}`,
+      `10% off your next order: ${ret.code}${ret.expiresAt ? ` (until ${new Date(ret.expiresAt).toLocaleDateString("en-CA")})` : ""}`,
+      `Your referral code: ${ref.code} ($5 off a friend's first order; you get $5 each time)`,
+      punches.pending > 0 ? `Stamp card: 6 of 6. Lucky #7 is on us: ${claimUrl || "see your inbox"}` : `Stamp card: ${fmtPunch(punches.cycle)} of 6 stamps. Lucky #7 is on us.`,
+      ...(pick ? [`Sherpa's pick: a 1 ml of ${pick.brand} ${pick.short} is in your order.`] : []),
+    ].join("\n");
+    return { html, text };
+  } catch (e) {
+    console.error("loyalty extras", e);
+    return { html: "", text: "" };
+  }
 }
 
 // Called from the Square webhook on order.fulfillment.updated once a fulfillment reaches COMPLETED.
@@ -155,6 +202,7 @@ export async function sendEnjoy(orderId, token, { delivered = false } = {}) {
   const first = String(name || "").trim().split(/\s+/)[0] || "";
   const onItsWay = s.method === "ship" && !delivered;
   const track = onItsWay ? trackingFor(order) : null;
+  const extra = onItsWay ? { html: "", text: "" } : await loyaltyExtras(s, email, first, token);
   const body = {
     from: MAIL_FROM,
     to: [email || MAIL_COPY],
@@ -163,8 +211,8 @@ export async function sendEnjoy(orderId, token, { delivered = false } = {}) {
     subject: onItsWay ? `Your Velvet Volute order ${s.no} is on its way` : `Enjoy your Velvet Volute order ${s.no}`,
     text: onItsWay
       ? [`Your Velvet Volute order ${s.no} is on its way.`, ...(track?.url ? [`Track it: ${track.url}`] : []), ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""}`), "Once it lands, I'll send you a guide on how to wear and store your decants.", "Peace & Love, Izzi"].join("\n")
-      : enjoyText(s, first),
-    html: onItsWay ? shippedHTML(s, first, track) : enjoyHTML(s, first),
+      : enjoyText(s, first) + (extra.text ? "\n\n" + extra.text : ""),
+    html: onItsWay ? shippedHTML(s, first, track) : enjoyHTML(s, first, extra.html),
   };
   const r = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify(body) });
   if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);

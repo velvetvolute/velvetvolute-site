@@ -5,10 +5,38 @@
 [functions]
   directory = "netlify/functions"
 
+# Scheduled functions (cron, UTC). enjoy-followup keeps its schedule in its own file (daily 14:00 UTC).
+[functions."cart-reminders"]
+  schedule = "0 * * * *"      # hourly: one "You left these in your cart" email per saved cart 60–180 min old
+[functions."drip"]
+  schedule = "30 * * * *"     # hourly: welcome series (#1, day 3, day 7), 21-day "loved the 2 ml?", expired-code sweep
+
+# Email + loyalty pages (static files; Netlify's pretty URLs also serve them without .html)
+[[redirects]]
+  from = "/subscribe"
+  to = "/subscribe.html"
+  status = 200
+[[redirects]]
+  from = "/the-real-ones"
+  to = "/the-real-ones.html"
+  status = 200
+
 [[headers]]
   for = "/img/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# sitemap.xml is written by build.mjs into the publish folder at deploy time (robots.txt points to it); serve both as what they are
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Content-Type = "application/xml; charset=utf-8"
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
 
 # Send velvetvolute.com (typo / brand-protection domain) to the real site
 [[redirects]]

@@ -1,7 +1,8 @@
 // Prices a velvetvolute.ca cart against the Square catalogue, for both ways of paying:
 // checkout.mjs (card, Square-hosted checkout) and etransfer.mjs (Interac e-Transfer).
 // Prices always come from Square and the site's JSON files, never from the browser.
-import { sq, findCoupon, normalizeCode } from "./square.mjs";
+import { sq, normalizeCode } from "./square.mjs";
+import { resolveCoupon } from "./codes.mjs";
 
 export const BOOKING_URL = "https://calendar.app.google/9Gg9gioRktiA5eocA";
 export const DELIVERY_BOOKING_URL = process.env.DELIVERY_BOOKING_URL || BOOKING_URL;
@@ -83,10 +84,13 @@ export async function priceCart(req, input, token) {
 
   // Promo code: a Square catalog Discount named after the code (see netlify/lib/square.mjs).
   // It stacks with Spotlight / Zodiac / Collection prices, as Justin prefers.
+  // Codes issued by email (netlify/lib/codes.mjs) can be limited to certain scents or sizes and carry an
+  // expiry; those only discount the matching lines (see applyCoupon below).
   let coupon = null;
   if (code) {
-    coupon = await findCoupon(code, token);
+    coupon = await resolveCoupon(code, token);
     if (!coupon) fail("That promo code isn't valid or has already been used. Remove it to continue.");
+    if (coupon.expired) fail("That promo code has expired. Remove it to continue.");
   }
   const bundles = items.some((i) => i.bundle) ? await loadBundles(req) : null;
   const setOf = (it) => (bundles ? bundles.list.find((b) => b.id === String(it.bundle)) : null);
@@ -104,7 +108,7 @@ export async function priceCart(req, input, token) {
     if (o.type !== "ITEM" || o.is_deleted) continue;
     for (const v of o.item_data?.variations || []) {
       const name = (v.item_variation_data?.name || "").toLowerCase().replace(/\s+/g, " ").trim();
-      variations[`${o.id}|${name}`] = { id: v.id, cents: Number(v.item_variation_data?.price_money?.amount || 0) };
+      variations[`${o.id}|${name}`] = { id: v.id, item: o.id, cents: Number(v.item_variation_data?.price_money?.amount || 0) };
     }
   }
 
@@ -133,8 +137,10 @@ export async function priceCart(req, input, token) {
     const v = variations[key];
     const qty = Math.max(1, Math.min(10, parseInt(it.q, 10) || 1));
     if (!v) fail(`"${it.label || it.v}" is no longer available. Please remove it and try again.`);
-    const deal = spot && spot.ids.has(String(it.sq)) ? { pct: spot.pct, name: `${spot.label} Spotlight ${spot.pct}% off`.trim() }
-      : zod && zod.sq === String(it.sq) ? { pct: zod.pct, name: `${zod.label} ${zod.pct}% off` } : null;
+    // Spotlight and Zodiac never stack: the bigger discount wins (Spotlight on a tie), same rule as the site
+    const sD = spot && spot.ids.has(String(it.sq)) ? { pct: spot.pct, name: `${spot.label} Spotlight ${spot.pct}% off`.trim() } : null;
+    const zD = zod && zod.sq === String(it.sq) ? { pct: zod.pct, name: `${zod.label} ${zod.pct}% off` } : null;
+    const deal = sD && (!zD || sD.pct >= zD.pct) ? sD : zD;
     if (deal) {
       // one line per unit so each fixed discount applies to exactly one vial
       const sale = Math.floor((v.cents * (100 - deal.pct)) / 100 / 100) * 100;
@@ -153,8 +159,27 @@ export async function priceCart(req, input, token) {
   // Free shipping is judged on the subtotal before the promo code, so a code never costs anyone free shipping.
   if (ship === "local" && subtotal < LOCAL_FREE_CENTS) fail("Local hand delivery is free on orders of $65 or more. Add a little more, or choose pickup or shipping.");
   const shipCents = ship === "pickup" || ship === "local" || subtotal >= FREE_SHIPPING_CENTS ? 0 : SHIPPING[ship].cents;
-  if (coupon) discounts.push({ uid: "promo", catalog_object_id: coupon.id, scope: "ORDER" });
+  if (coupon) applyCoupon(coupon, lineItems, discounts, variations);
   return { lineItems, discounts, subtotal, shipCents, ship, pc, coupon };
+}
+
+// A plain code discounts the whole order. A restricted code (its PRODUCT_SET names items or variations)
+// is attached line by line: a percentage to every matching line, a fixed amount to one matching unit
+// only (Square applies a LINE_ITEM fixed amount to each line it is attached to).
+function applyCoupon(coupon, lineItems, discounts, variations) {
+  if (!coupon.ids) { discounts.push({ uid: "promo", catalog_object_id: coupon.id, scope: "ORDER" }); return; }
+  const byVid = Object.fromEntries(Object.values(variations).map((v) => [v.id, v]));
+  const matches = (li) => { const v = byVid[li.catalog_object_id]; return !!v && (coupon.ids.has(v.id) || coupon.ids.has(v.item)); };
+  const hits = lineItems.map((li, k) => (matches(li) ? k : -1)).filter((k) => k >= 0);
+  if (!hits.length) fail(`Code ${coupon.name} only applies to certain scents or sizes, and none of them are in your cart. Remove it to continue.`);
+  discounts.push({ uid: "promo", catalog_object_id: coupon.id, scope: "LINE_ITEM" });
+  const attach = (li) => { li.applied_discounts = [...(li.applied_discounts || []), { discount_uid: "promo" }]; };
+  if (coupon.pct) { hits.forEach((k) => attach(lineItems[k])); return; }
+  // fixed amount: the priciest matching unit, split off its line when the quantity is more than one
+  const k = hits.sort((a, b) => byVid[lineItems[b].catalog_object_id].cents - byVid[lineItems[a].catalog_object_id].cents)[0];
+  const li = lineItems[k], qty = Number(li.quantity || 1);
+  if (qty > 1) { li.quantity = String(qty - 1); const one = { ...li, quantity: "1", applied_discounts: [...(li.applied_discounts || [])] }; lineItems.splice(k + 1, 0, one); attach(one); }
+  else attach(li);
 }
 
 export function refFor(orderNo, { ship, pc, coupon }, extra = "") {

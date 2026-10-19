@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en-CA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Order confirmed | Velvet Volute</title>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="robots" content="noindex">
+<script src="/track.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -34,6 +35,12 @@ a.btn{display:inline-block;margin-top:6px;padding:13px 30px;border:1px solid var
 a.btn:hover{background:rgba(181,148,106,.12)}
 .help{font-size:14px;color:var(--soft);margin-top:22px}
 .help a{color:var(--ink)}
+.hear p{margin:0 0 12px;color:var(--soft)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font:300 13.5px var(--sans);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
+.chips button:hover{border-color:var(--gold)}
+.chips button.on{background:rgba(181,148,106,.18);border-color:var(--gold)}
+.thanks-hear{margin:10px 0 0!important}
 [hidden]{display:none!important}
 @media(max-width:420px){h1{font-size:38px}body{padding-top:32px}}
 </style></head>
@@ -50,16 +57,32 @@ a.btn:hover{background:rgba(181,148,106,.12)}
  <p>I'll hand-pour your decants and email you with the details. Picking up or getting hand delivery in Ottawa? <a href="https://calendar.app.google/9Gg9gioRktiA5eocA" target="_blank" rel="noopener">Book your 15-minute slot</a> (24 hours' notice).</p>
 </div></section>
 
+<section class="card hear" id="hear"><h2>One quick question</h2><p>How did you hear about Velvet Volute?</p>
+ <div class="chips" id="hear-chips"><button type="button" data-v="instagram">Instagram</button><button type="button" data-v="facebook">Facebook</button><button type="button" data-v="tiktok">TikTok</button><button type="button" data-v="google">Google search</button><button type="button" data-v="friend">A friend</button><button type="button" data-v="reddit">Reddit</button><button type="button" data-v="other">Somewhere else</button></div>
+ <p class="thanks-hear" id="hear-done" hidden>Thank you — that helps more than you'd think.</p></section>
+
+<section class="card drops" id="drops" hidden><h2>The Real Ones</h2><p id="drops-txt"></p><p><a href="/the-real-ones">See your stamp card</a></p></section>
+
 <a class="btn" href="/">Back to the shop</a>
 <p class="help">Questions? Email <a href="mailto:velvetvolute@gmail.com">velvetvolute@gmail.com</a><span id="help-no"></span></p>
 </main>
 <script>
 (function(){
- try{localStorage.removeItem("vv-cart-v1")}catch(e){}
+ try{localStorage.removeItem("vv-cart-v1");localStorage.removeItem("vv-cart-id")}catch(e){}
  var q=new URLSearchParams(location.search),id=q.get("orderId");
  var $=function(i){return document.getElementById(i)};
  var m=function(c){return "$"+(c/100).toFixed(2)};
  var esc=function(t){var d=document.createElement("div");d.textContent=t;return d.innerHTML};
+ var track=function(n,d){try{if(window.vvTrack)vvTrack(n,d)}catch(e){}};
+ /* stamp card: 2/3 ml = 1 drop, 5 ml = 2 (a punch), 10 ml = 3 (a stamp and a half); 12 drops fill the card */
+ var drops=function(items){var n=0;(items||[]).forEach(function(i){var m=/(\d+)\s*ml/i.exec((i.variation||"")+" "+(i.name||""));var ml=m?+m[1]:0;n+=(ml>=10?3:ml>=5?2:ml>0?1:0)*(i.qty||1)});
+  if(!n)return;$("drops-txt").innerHTML="This order earns you <b>"+n+" velvet drop"+(n>1?"s":"")+"</b> ("+(n%2?(n>1?Math.floor(n/2):"")+"½":n/2)+" stamp"+(n>2?"s":"")+") toward lucky #7, your free 5 ml. They land on your card once the order is confirmed.";$("drops").hidden=false};
+ /* "How did you hear about us?" one tap, answered once per browser, lands in GA4 as heard_about */
+ (function(){var box=$("hear-chips");if(!box)return;var k="vv-heard";try{if(localStorage.getItem(k)){$("hear").hidden=true;return}}catch(e){}
+  box.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+   [].forEach.call(box.children,function(c){c.classList.remove("on");c.disabled=true});b.classList.add("on");
+   track("heard_about",{source:b.getAttribute("data-v")});try{localStorage.setItem(k,b.getAttribute("data-v"))}catch(x){}
+   $("hear-done").hidden=false})})();
  /* Interac e-Transfer order: details saved by the cart, nothing paid yet */
  if(q.get("et")==="1"){
   var o=null;try{o=JSON.parse(sessionStorage.getItem("vv-et")||"null")}catch(e){}
@@ -74,7 +97,8 @@ a.btn:hover{background:rgba(181,148,106,.12)}
   if(o.discount)h+='<div class="row"><span>Discounts</span><span>−'+m(o.discount)+"</span></div>";
   if(o.tax)h+='<div class="row"><span>Tax</span><span>'+m(o.tax)+"</span></div>";
   h+='<div class="row tot"><span>Total to send</span><span>'+m(o.total)+"</span></div>";
-  $("rows").innerHTML=h;$("items").hidden=false;
+  $("rows").innerHTML=h;$("items").hidden=false;drops(o.items);
+  track("purchase",{id:o.no,value:o.total/100,tax:(o.tax||0)/100,shipping:(o.charges||[]).reduce(function(a,c){return a+c.total},0)/100,method:"etransfer",items:o.items.map(function(i){return {name:i.name,variant:i.variation||"",price:i.total/100/(i.qty||1),qty:i.qty||1}})});
   var after=o.method==="pickup"?"<p>Once it arrives I'll hand-pour your decants for pickup at the Shoppers Drug Mart on Carling Ave. <a href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Book your pickup slot</a> (24 hours' notice).</p>"
    :o.method==="local"?"<p>Once it arrives I'll hand-pour your decants and bring them to your door myself. <a href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Pick your delivery window</a> (24 hours' notice).</p>"
    :"<p>Once it arrives I'll hand-pour your decants, ship them with Canada Post and email you when they're on the way.</p>";
@@ -99,7 +123,8 @@ a.btn:hover{background:rgba(181,148,106,.12)}
   if(o.method==="ship"&&!o.charges.length)h+='<div class="row"><span>Shipping</span><span>Free</span></div>';
   if(o.tax)h+='<div class="row"><span>Tax</span><span>'+m(o.tax)+"</span></div>";
   h+='<div class="row tot"><span>Total paid</span><span>'+m(o.total)+"</span></div>";
-  $("rows").innerHTML=h;$("items").hidden=false;
+  $("rows").innerHTML=h;$("items").hidden=false;drops(o.items);
+  if(o.paid)track("purchase",{id:o.no,value:o.total/100,tax:(o.tax||0)/100,shipping:(o.charges||[]).reduce(function(a,c){return a+c.total},0)/100,method:"square",items:o.items.map(function(i){return {name:i.name,variant:i.variation||"",price:i.total/100/(i.qty||1),qty:i.qty||1}})});
   if(o.method==="pickup")$("next").innerHTML="<p>I'll hand-pour your decants for pickup at the Shoppers Drug Mart on Carling Ave.</p><p><a class=\"btn\" href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Book your pickup slot</a></p><p>15-minute slots, 24 hours' notice. I'll confirm by email.</p>";
   else if(o.method==="local")$("next").innerHTML="<p>Your order qualifies for free local hand delivery. I'll hand-pour your decants and bring them to your door myself, at the address you gave at checkout.</p><p><a class=\"btn\" href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Pick your delivery window</a></p><p>24 hours' notice. I'll confirm by email.</p>";
   else if(o.method==="ship")$("next").innerHTML="<p>I'll hand-pour your decants and ship them with Canada Post. I'll email you once they're on the way.</p>";
