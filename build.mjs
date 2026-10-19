@@ -100,7 +100,7 @@ function head({ title, desc, url, image, jsonld, current, type, dates }) {
 ${ld}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 ${FONTS}
-<link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/pages.css"><link rel="stylesheet" href="/nav.css"><script src="/nav.js" defer></script><script src="/track.js" defer></script>
+<link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/pages.css"><link rel="stylesheet" href="/nav.css"><script src="/nav.js" defer></script><script src="/track.js" defer></script><script src="/deals.js" defer></script>
 </head>
 <body>
 <div class="bar">Free Ottawa hand delivery over $65 · Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
@@ -167,7 +167,7 @@ const HOUSE_BOTTLE = { "Armani": ["I Will"], "Claude Marsal": ["Or Noir"], "Ferr
 const realPhoto = (p) => p.img && !/coming-soon/.test(p.img);
 const houseBottle = (brand) => { const own = PRODUCTS.filter((p) => p.brand === brand && realPhoto(p)); const want = (HOUSE_BOTTLE[brand] || []).map((k) => own.find((p) => p.name.includes(k))).find(Boolean); return (want || own[0] || {}).img; };
 const houseTile = (brand, meta, count, soon) => { const art = houseArt(brand), bottle = art ? null : houseBottle(brand); return `<a class="htile${soon ? " soon" : ""}${bottle ? " has-bottle" : ""}" href="${hUrl(brand)}">${bottle ? `<img class="bottle" src="/${bottle}" alt="" width="400" height="240" loading="lazy" decoding="async"><span class="txt">` : ""}${art ? `<img class="art" src="/${art}" alt="${attr(brand)}" width="200" height="80" loading="lazy">` : `${meta.pre ? `<span class="pre">${esc(meta.pre)}</span>` : ""}<span class="n${(meta.mark || brand).length > 10 ? " two" : ""}">${esc(meta.mark || brand)}</span>`}<span class="rule"></span><span class="o">${esc(meta.city || "")}</span><span class="cnt">${soon ? "arriving soon" : `${count} scent${count === 1 ? "" : "s"}`}</span>${bottle ? "</span>" : ""}</a>`; };
-const scentTile = (p) => `<a class="stile" href="${pUrl(p)}"><span class="ph"><img src="/${p.img}" width="720" height="720" alt="${attr(p.brand + " " + nameNoConc(p))} bottle with Velvet Volute decant vials" loading="lazy" decoding="async"></span><span class="t"><span class="b">${esc(p.brand)}</span><span class="nm">${esc(p.name)}</span><span class="pr">${inStock(p) ? `From ${money(low(p))}` : `<em>${esc(p.limited || "Arriving soon")}</em>`}</span></span></a>`;
+const scentTile = (p) => `<a class="stile" href="${pUrl(p)}"${inStock(p) ? ` data-sq="${p.sq}" data-low="${low(p)}"` : ""}><span class="ph"><img src="/${p.img}" width="720" height="720" alt="${attr(p.brand + " " + nameNoConc(p))} bottle with Velvet Volute decant vials" loading="lazy" decoding="async"></span><span class="t"><span class="b">${esc(p.brand)}</span><span class="nm">${esc(p.name)}</span><span class="pr">${inStock(p) ? `From ${money(low(p))}` : `<em>${esc(p.limited || "Arriving soon")}</em>`}</span></span></a>`;
 
 /* ---------- product page ---------- */
 /* "Nishane Kredo extrait bottle with 2, 5 and 10 ml Velvet Volute decants": the concentration word comes from the product name */
@@ -242,7 +242,7 @@ function productPage(p) {
  </div>
  <div class="pp-right">
  <div class="pp-head">
-  <div class="pp-brandrow"><a class="pp-brand" href="${hUrl(p.brand)}">${esc(p.brand)}<span>${p.g === "Men" ? "For him" : "Unisex"}</span></a><span class="pp-deal" id="deal" hidden></span></div>
+  <div class="pp-brandrow"><span class="pp-brand"><a href="${hUrl(p.brand)}">${esc(p.brand)}</a><a class="pp-gen" href="/?for=${p.g === "Men" ? "him" : "unisex"}#shop">${p.g === "Men" ? "For him" : "Unisex"}</a></span><span class="pp-deal" id="deal" hidden></span></div>
   <h1>${esc(p.name)}</h1>
   ${p.limited ? `<div class="limited">${esc(p.limited)}</div>` : ""}
   <ul class="chips"><li>${esc(FAM_LABEL[p.cat] || p.cat)}${p.cat2 ? ` with ${esc((FAM_LABEL[p.cat2] || p.cat2).toLowerCase())}` : ""}</li><li>${SEA_TXT[p.sea]}</li><li>${TM_TXT[p.tm]}</li><li>${STR_TXT[p.str || 2]}</li></ul>
@@ -285,10 +285,12 @@ var add=$("add");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.par
 draw();
 if(LIVE&&window.fetch){var T=new Date(new Date().toLocaleString("en-US",{timeZone:"America/Toronto"})),md=(T.getMonth()+1)*100+T.getDate(),now=Date.now(),dl=$("deal");
  Promise.all([fetch("/spotlight.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).catch(function(){return null}),fetch("/zodiac.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).catch(function(){return null})]).then(function(a){
-  var sp=a[0],zd=a[1],h="";
-  if(sp&&Array.isArray(sp.picks)&&!(now>Date.parse(sp.until+"T23:59:59-05:00"))&&!(sp.from&&now<Date.parse(sp.from+"T00:00:00-04:00"))&&sp.picks.some(function(x){return String(x.sq)===P.sq})){OFF=Number(sp.pct)||15;dl.className="pp-deal spot";h='<span class="rib-vv">VV</span> '+(sp.label?sp.label+" ":"")+'Spotlight · '+OFF+'% off'}
-  else if(zd&&Array.isArray(zd.signs)){var g=zd.signs.find(function(x){var f=x.from[0]*100+x.from[1],t=x.to[0]*100+x.to[1];return f<=t?md>=f&&md<=t:md>=f||md<=t});
-   if(g&&g.sq===P.sq&&Number(zd.pct)){OFF=Number(zd.pct);dl.className="pp-deal zod";h=g.glyph+"\\uFE0E "+g.sign+" season pick · "+OFF+"% off"}}
+  var sp=a[0],zd=a[1],sP=0,zP=0,sH="",zH="";
+  if(sp&&Array.isArray(sp.picks)&&!(now>Date.parse(sp.until+"T23:59:59-05:00"))&&!(sp.from&&now<Date.parse(sp.from+"T00:00:00-04:00"))&&sp.picks.some(function(x){return String(x.sq)===P.sq})){sP=Number(sp.pct)||15;sH='<span class="rib-vv">VV</span> <span class="l">'+(sp.label?sp.label+" ":"")+'Spotlight · '+sP+'% off</span><span class="s">Spotlight · '+sP+'% off</span>'}
+  if(zd&&Array.isArray(zd.signs)){var g=zd.signs.find(function(x){var f=x.from[0]*100+x.from[1],t=x.to[0]*100+x.to[1];return f<=t?md>=f&&md<=t:md>=f||md<=t});
+   if(g&&g.sq===P.sq&&Number(zd.pct)){zP=Number(zd.pct);zH=g.glyph+"\\uFE0E <span class=\\"l\\">"+g.sign+" season pick · "+zP+"% off</span><span class=\\"s\\">"+g.sign+" pick · "+zP+"% off</span>"}}
+  /* never stacks: the bigger discount wins (spotlight on a tie), same as the homepage and the checkout */
+  var h="";if(sP&&sP>=zP){OFF=sP;dl.className="pp-deal spot";h=sH}else if(zP){OFF=zP;dl.className="pp-deal zod";h=zH}
   if(OFF){dl.innerHTML=h;dl.hidden=false;draw()}})}
 })();`);
 }
@@ -398,6 +400,11 @@ function collectionsIndex() {
 const GUIDE_DIR = join(ROOT, "content", "guides");
 const TOKENS = { count: PRODUCTS.length, houses: new Set(PRODUCTS.map((p) => p.brand)).size, from2: money(Math.min(...PRODUCTS.filter(inStock).map((p) => p.p[2]))), from10: money(Math.min(...PRODUCTS.filter(inStock).map((p) => p.p[10]))) };
 const inline = (t) => esc(t).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/(^|[^*\w])\*(?!\s)(.+?)\*(?!\w)/g, "$1<em>$2</em>").replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>');
+/* Scent names inside guide tables and lists become links to the scent page (longest names first so "Fan Your Flames X" isn't
+   swallowed by "Fan Your Flames"). Only outside existing links/tags. */
+const NAME_LINKS = PRODUCTS.map((p) => [shortName(p), pUrl(p)]).sort((a, b) => b[0].length - a[0].length);
+const NAME_RE = new RegExp("(" + NAME_LINKS.map(([n]) => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")(?![^<]*>|[^<]*<\\/a>)", "g");
+const linkNames = (h) => h.replace(NAME_RE, (m) => { const hit = NAME_LINKS.find(([n]) => n === m); return hit ? `<a href="${hit[1]}">${m}</a>` : m; });
 const hid = (t) => slugify(t.replace(/<[^>]+>/g, "")).slice(0, 60);
 const plain = (h) => h.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 function parseGuide(file) {
@@ -410,8 +417,8 @@ function parseGuide(file) {
   let para = [], list = null, table = null, quote = [], faqMode = false, q = null;
   const flush = () => {
     if (para.length) { const h = `<p>${inline(para.join(" "))}</p>`; out.push(h); if (q) q.a.push(plain(h)); para = []; }
-    if (list) { out.push(`<${list.t}>${list.items.map((i) => `<li>${inline(i)}</li>`).join("")}</${list.t}>`); if (q) q.a.push(list.items.map(plain).join(" ")); list = null; }
-    if (table) { const [hd, ...rows] = table; out.push(`<div class="tbl"><table><thead><tr>${hd.map((c) => `<th scope="col">${inline(c)}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${r.map((c, i) => i ? `<td>${inline(c)}</td>` : `<th scope="row">${inline(c)}</th>`).join("")}</tr>`).join("")}</tbody></table></div>`); table = null; }
+    if (list) { out.push(`<${list.t}>${list.items.map((i) => `<li>${linkNames(inline(i))}</li>`).join("")}</${list.t}>`); if (q) q.a.push(list.items.map(plain).join(" ")); list = null; }
+    if (table) { const [hd, ...rows] = table; out.push(`<div class="tbl"><table><thead><tr>${hd.map((c) => `<th scope="col">${inline(c)}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${r.map((c, i) => i ? `<td>${linkNames(inline(c))}</td>` : `<th scope="row">${inline(c)}</th>`).join("")}</tr>`).join("")}</tbody></table></div>`); table = null; }
     if (quote.length) { out.push(`<blockquote>${inline(quote.join(" "))}</blockquote>`); quote = []; }
   };
   const words = lines.join(" ").split(/\s+/).filter((w) => /\w/.test(w)).length;
@@ -435,7 +442,7 @@ const gUrl = (g) => `/guides/${g.slug}/`;
 const niceDate = (d) => new Date(d + "T12:00:00Z").toLocaleDateString("en-CA", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
 const AUTHOR = { "@type": "Person", name: "Izzi", alternateName: "Justin Izzi", url: SITE + "/about" };
 const PUBLISHER = { "@type": "Organization", "@id": SITE + "/#org", name: "Velvet Volute", url: SITE + "/", logo: { "@type": "ImageObject", url: SITE + "/apple-touch-icon.png" } };
-const ctaBox = (txt) => `<aside class="panel cta-box"><p>${txt}</p><p class="cta-row"><a class="order" href="/#shop">Shop the collection</a><a class="ghost" href="/#quiz">Ask the Scent Sherpa</a></p></aside>`;
+const ctaBox = (txt) => `<aside class="panel cta-box"><p>${txt}</p><p class="cta-row"><a class="order" href="/#shop">Browse every scent</a><a class="ghost" href="/#quiz">Ask the Scent Sherpa</a></p></aside>`;
 function guidePage(g) {
   const url = gUrl(g), title = `${g.title} | Velvet Volute`;
   const scents = g.scents.map((id) => PRODUCTS.find((p) => p.sq === id)).filter(Boolean);
@@ -446,7 +453,6 @@ function guidePage(g) {
   return head({ title, desc: g.description, url, image: { src: g.image, w: 1000, h: 1000, alt: g.imageAlt || g.title }, jsonld: ld, type: "article", dates: { published: g.date, modified: g.updated || g.date } }) + crumbs([{ name: "Shop", href: "/" }, { name: "Guides", href: "/guides/" }, { name: g.title }]) + `
 <article class="guide wrap">
  <div class="guide-head">
-  <p class="eyebrow">Guide</p>
   <h1>${esc(g.title)}</h1>
   <p class="lede">${esc(g.description)}</p>
   <p class="guide-meta">By Izzi · Updated <time datetime="${g.updated || g.date}">${niceDate(g.updated || g.date)}</time> · ${g.minutes} min read</p>
@@ -510,7 +516,6 @@ function comparePage(c) {
   return head({ title, desc: w.desc, url, image: { src: img.jpg, w: 1080, h: 1350, alt: compAlt(c) }, jsonld: ld, type: "article" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Compare", href: "/compare/" }, { name: compName(c) }]) + `
 <section class="cmp wrap">
  <div class="cmp-head">
-  <p class="eyebrow">${esc(unesc(c.eyebrow).toLowerCase().replace(/^\w/, (m) => m.toUpperCase()).replace(/\bx\b/g, "X"))}</p>
   <h1>${esc(w.h1)}</h1>
   <p class="lede">${esc(unesc(c.subtitle))}</p>
  </div>

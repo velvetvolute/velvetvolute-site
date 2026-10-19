@@ -137,8 +137,10 @@ export async function priceCart(req, input, token) {
     const v = variations[key];
     const qty = Math.max(1, Math.min(10, parseInt(it.q, 10) || 1));
     if (!v) fail(`"${it.label || it.v}" is no longer available. Please remove it and try again.`);
-    const deal = spot && spot.ids.has(String(it.sq)) ? { pct: spot.pct, name: `${spot.label} Spotlight ${spot.pct}% off`.trim() }
-      : zod && zod.sq === String(it.sq) ? { pct: zod.pct, name: `${zod.label} ${zod.pct}% off` } : null;
+    // Spotlight and Zodiac never stack: the bigger discount wins (Spotlight on a tie), same rule as the site
+    const sD = spot && spot.ids.has(String(it.sq)) ? { pct: spot.pct, name: `${spot.label} Spotlight ${spot.pct}% off`.trim() } : null;
+    const zD = zod && zod.sq === String(it.sq) ? { pct: zod.pct, name: `${zod.label} ${zod.pct}% off` } : null;
+    const deal = sD && (!zD || sD.pct >= zD.pct) ? sD : zD;
     if (deal) {
       // one line per unit so each fixed discount applies to exactly one vial
       const sale = Math.floor((v.cents * (100 - deal.pct)) / 100 / 100) * 100;
