@@ -278,7 +278,7 @@ document.querySelectorAll(".vt,#ppcar .dots button").forEach(function(b){b.oncli
 document.querySelector("#ppcar .prev").onclick=function(){S.step(-1)};
 document.querySelector("#ppcar .next").onclick=function(){S.step(1)};
 tr.tabIndex=0;tr.addEventListener("keydown",function(e){if(e.key==="ArrowLeft"){S.step(-1);e.preventDefault()}if(e.key==="ArrowRight"){S.step(1);e.preventDefault()}});
-var add=$("add");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.parse(localStorage.getItem(K)||"null")||{lines:[],ship:null,promo:null};s.lines=s.lines||[];var l=s.lines.find(function(x){return x.sq===P.sq&&x.v===v&&x.z===z});if(l)l.q=Math.min(10,l.q+1);else s.lines.push({sq:P.sq,v:v,z:z,q:1});localStorage.setItem(K,JSON.stringify(s));var n=s.lines.reduce(function(a,l){return a+l.q},0),c=$("cart-count");c.textContent=n;c.hidden=false}catch(e){}
+var add=$("add");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.parse(localStorage.getItem(K)||"null")||{lines:[],ship:null,promo:null};s.lines=s.lines||[];var l=s.lines.find(function(x){return x.sq===P.sq&&x.v===v&&x.z===z});if(l)l.q=Math.min(10,l.q+1);else s.lines.push({sq:P.sq,v:v,z:z,q:1});s.ts=Date.now();localStorage.setItem(K,JSON.stringify(s));var n=s.lines.reduce(function(a,l){return a+l.q},0),c=$("cart-count");c.textContent=n;c.hidden=false}catch(e){}
  add.textContent="Added ✓";add.classList.add("done");var t=document.createElement("div");t.className="cart-toast on";t.innerHTML='Added '+P.name.split(" Eau")[0].split(" Extrait")[0]+' · '+z+' ml '+V[v].label.toLowerCase()+' <a href="/#cart-page">View cart</a>';document.body.appendChild(t);setTimeout(function(){add.textContent="Add to cart";add.classList.remove("done")},1400);setTimeout(function(){t.remove()},3200)};
 draw()})();`);
 }
@@ -359,7 +359,7 @@ function collectionPage(b) {
 (function(){var B=${JSON.stringify({ id: b.id, name: b.name, base: Object.fromEntries(BUNDLES.sizes.map((z) => [z, bBase(b, z)])), price: Object.fromEntries(BUNDLES.sizes.map((z) => [z, bPrice(b, z)])), n: items.length })},z=${BUNDLES.sizes[0]},$=function(i){return document.getElementById(i)};
 function draw(){$("cprice").innerHTML='<s class="was">$'+B.base[z]+'</s>$'+B.price[z]+'<small>CAD · '+B.n+' × '+z+' ml classic · save $'+(B.base[z]-B.price[z])+'</small>';document.querySelectorAll(".coll-buy .sz").forEach(function(b){b.classList.toggle("on",+b.dataset.z===z);b.setAttribute("aria-pressed",+b.dataset.z===z)})}
 document.querySelectorAll(".coll-buy .sz").forEach(function(b){b.onclick=function(){z=+b.dataset.z;draw()}});
-var add=$("cadd");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.parse(localStorage.getItem(K)||"null")||{lines:[],ship:null,promo:null};s.lines=s.lines||[];var l=s.lines.find(function(x){return x.b===B.id&&x.z===z});if(l)l.q=Math.min(10,l.q+1);else s.lines.push({b:B.id,z:z,q:1});localStorage.setItem(K,JSON.stringify(s));var n=s.lines.reduce(function(a,l){return a+l.q},0),c=$("cart-count");c.textContent=n;c.hidden=false}catch(e){}
+var add=$("cadd");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.parse(localStorage.getItem(K)||"null")||{lines:[],ship:null,promo:null};s.lines=s.lines||[];var l=s.lines.find(function(x){return x.b===B.id&&x.z===z});if(l)l.q=Math.min(10,l.q+1);else s.lines.push({b:B.id,z:z,q:1});s.ts=Date.now();localStorage.setItem(K,JSON.stringify(s));var n=s.lines.reduce(function(a,l){return a+l.q},0),c=$("cart-count");c.textContent=n;c.hidden=false}catch(e){}
  add.textContent="Added ✓";add.classList.add("done");var t=document.createElement("div");t.className="cart-toast on";t.innerHTML='Added '+B.name+' · '+z+' ml each <a href="/#cart-page">View cart</a>';document.body.appendChild(t);setTimeout(function(){add.textContent="Add the set";add.classList.remove("done")},1400);setTimeout(function(){t.remove()},3200)};
 /* the photos are a swipeable strip: one swipe moves one slide, it wraps around, the dots and arrows step it, a tap opens that scent's page */
 var tr=document.querySelector("#car .track"),dots=document.querySelectorAll("#car .dots button"),HREF=[].slice.call(tr.children).map(function(f){return f.dataset.href});
@@ -540,7 +540,7 @@ const out = (rel, content) => { const f = join(ROOT, rel); mkdirSync(join(f, "..
 for (const d of ["fragrance", "houses", "collections", "guides", "compare"]) if (existsSync(join(ROOT, d))) rmSync(join(ROOT, d), { recursive: true });
 writeFileSync(join(ROOT, "site.css"), styleBlock);
 /* sitemap rows: [url, priority, lastmod, images[]] */
-const urls = [["/", 1.0, TODAY, [OG_DEFAULT.src]], ["/fragrance-101", .7], ["/about", .6], ["/how-it-works", .6], ["/contact", .5], ["/houses/", .8], ["/collections/", .8], ["/guides/", .8], ["/compare/", .8]];
+const urls = [["/", 1.0, TODAY, [OG_DEFAULT.src]], ["/fragrance-101", .7], ["/about", .6], ["/how-it-works", .6], ["/contact", .5], ["/houses/", .8], ["/collections/", .8], ["/guides/", .8], ["/compare/", .8], ["/the-real-ones", .5], ["/subscribe", .4]];
 for (const p of PRODUCTS) { out(`fragrance/${pSlug(p)}/index.html`, productPage(p)); urls.push([pUrl(p), inStock(p) ? .8 : .5, TODAY, [...new Set([p.img, p.imgL, p.imgR].filter(Boolean))]]); }
 const groups = Object.entries(PRODUCTS.reduce((m, p) => ((m[p.brand] = m[p.brand] || []).push(p), m), {})).sort((a, b) => a[0].localeCompare(b[0]));
 for (const [brand, items] of groups) { out(`houses/${hSlug(brand)}/index.html`, housePage(brand, items)); urls.push([hUrl(brand), .7]); }
@@ -565,6 +565,15 @@ const SEARCH = [
   ...COMPARES.map((c) => ({ t: "page", b: "Compare", n: `${compName(c)} compared`, u: compUrl(c), s: c.cols.map((x) => unesc(x.short)).join(" vs "), k: c.cols.map((x) => `${x.house} ${unesc(x.short)} ${unesc(x.family)} ${x.notes.join(" ")}`).join(" ") + " compare comparison versus side by side" })),
 ];
 writeFileSync(join(ROOT, "search.json"), JSON.stringify(SEARCH));
+/* catalogue for the Netlify functions (emails, Sherpa's pick, punch-card rewards): the same data as the
+   page, trimmed, as an ES module. Git-ignored; written on every build, before Netlify bundles the functions. */
+const CATALOG = PRODUCTS.map((p) => ({
+  sq: p.sq, brand: p.brand, name: p.name, short: p.name.replace(CONC, ""), g: p.g, cat: p.cat, cat2: p.cat2, x: p.x || [], str: p.str || 2, sea: p.sea, tm: p.tm,
+  notes: p.notes, n: p.n || null, img: p.img, imgL: p.imgL || p.img, imgR: p.imgR || p.img, soon: !!p.soon, limited: p.limited || "", p: p.p, l: p.l, r: p.r,
+  vibe: (SHERPA[p.name] || {}).vibe || "", when: (SHERPA[p.name] || {}).when || "", mood: p.mood || "", her: p.her || 0, url: pUrl(p), houseUrl: hUrl(p.brand),
+}));
+mkdirSync(join(ROOT, "netlify", "lib"), { recursive: true });
+writeFileSync(join(ROOT, "netlify", "lib", "catalog.mjs"), `// GENERATED by build.mjs from index.html. Do not edit; edit PRODUCTS / SHERPA / MOOD in index.html.\nexport const PRODUCTS = ${JSON.stringify(CATALOG)};\nexport const FAM_LABEL = ${JSON.stringify(FAM_LABEL)};\nexport const BUNDLES = ${JSON.stringify(BUNDLES)};\n`);
 /* sitemap: every page, generated ones included, with lastmod and the page's images */
 const smImg = (imgs) => (imgs || []).map((i) => `<image:image><image:loc>${SITE}/${i}</image:loc></image:image>`).join("");
 writeFileSync(join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls.map(([u, pr, lm, imgs]) => `  <url><loc>${SITE}${u}</loc><lastmod>${lm || TODAY}</lastmod><priority>${pr}</priority>${smImg(imgs)}</url>`).join("\n")}\n</urlset>\n`);

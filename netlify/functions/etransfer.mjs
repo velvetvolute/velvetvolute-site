@@ -11,6 +11,8 @@ import { getStore } from "@netlify/blobs";
 import { sq, LOCATION_ID, isReusableCode } from "../lib/square.mjs";
 import { priceCart, isCartError, newOrderNumber, refFor, SHIPPING, BOOKING_URL, DELIVERY_BOOKING_URL } from "../lib/cart.mjs";
 import { summarize } from "./order.mjs";
+import { saveCart, upsertContact, CART_ID_RE } from "../lib/store.mjs";
+import { segmentsFromOrder } from "../lib/scents.mjs";
 
 const SITE = process.env.SITE_URL || "https://velvetvolute.ca";
 const SHOP_EMAIL = "velvetvolute@gmail.com";
@@ -159,6 +161,10 @@ export default async (req) => {
     const s = summarize(priced);
     await sendEmail(s, contact, cart.ship);
     await notify(s, contact);
+    // Loyalty layer: the saved cart is no longer abandoned, and the contact is known (consent only if ticked).
+    const cartId = CART_ID_RE.test(String(input.cartId || "")) ? String(input.cartId) : "";
+    if (cartId) await saveCart(cartId, { orderNo: s.no, ordered: true, checkoutAt: Date.now(), email: contact.email }).catch((e) => console.error("cart-save", e));
+    await upsertContact(contact.email, { first: contact.name, source: "etransfer", ...(input.consent ? { consent: true } : {}), seg: segmentsFromOrder(s.items, s.method) }).catch((e) => console.error("contact", e));
     // One-time promo codes are retired now, since an e-Transfer never reaches the Square webhook.
     if (cart.coupon && !isReusableCode(cart.coupon.name)) {
       await sq(`/catalog/object/${cart.coupon.id}`, token, null, "DELETE").catch((e) => console.error(e));

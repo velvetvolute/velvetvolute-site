@@ -2,6 +2,7 @@
 // Pricing lives in ../lib/cart.mjs, shared with the e-Transfer option (etransfer.mjs).
 import { sq, LOCATION_ID } from "../lib/square.mjs";
 import { priceCart, isCartError, newOrderNumber, refFor, SHIPPING, BOOKING_URL, DELIVERY_BOOKING_URL } from "../lib/cart.mjs";
+import { saveCart, upsertContact, stores, EMAIL_RE, normEmail, CART_ID_RE } from "../lib/store.mjs";
 const SITE = process.env.SITE_URL || "https://velvetvolute.ca";
 
 const json = (status, body) =>
@@ -29,6 +30,15 @@ export default async (req) => {
     if (shipCents > 0) checkout_options.shipping_fee = { name: SHIPPING[ship].label, charge: { amount: shipCents, currency: "CAD" } };
 
     const orderNo = newOrderNumber();
+    // The cart asks for the email first: prefill it on Square's payment page and tie the saved cart
+    // (cart-save.mjs) to this order number, so the abandoned-cart reminder knows it was checked out.
+    const email = normEmail(input.email);
+    const cartId = CART_ID_RE.test(String(input.cartId || "")) ? String(input.cartId) : "";
+    if (cartId) {
+      saveCart(cartId, { orderNo, checkoutAt: Date.now(), ...(EMAIL_RE.test(email) ? { email } : {}) }).catch((e) => console.error("cart-save", e));
+      stores.paid().setJSON("cart-" + orderNo, { cartId, ts: Date.now() }).catch((e) => console.error("cart link", e)); // the webhook marks the cart ordered
+    }
+    if (EMAIL_RE.test(email)) upsertContact(email, { source: "checkout", ...(input.consent ? { consent: true } : {}) }).catch((e) => console.error("contact", e));
     const note = `Order ${orderNo} · ` + (
       ship === "pickup"
         ? `Ottawa pickup at Shoppers Drug Mart, Carling Ave. Book your 15-min slot: ${BOOKING_URL}`
@@ -48,6 +58,7 @@ export default async (req) => {
         reference_id: refFor(orderNo, cart),
       },
       checkout_options,
+      ...(EMAIL_RE.test(email) ? { pre_populated_data: { buyer_email: email } } : {}),
       payment_note: note,
     });
     return json(200, { url: link.payment_link?.url || link.payment_link?.long_url });
