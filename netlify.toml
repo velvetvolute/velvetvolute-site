@@ -5,6 +5,22 @@
 [functions]
   directory = "netlify/functions"
 
+# Scheduled functions (cron, UTC). enjoy-followup keeps its schedule in its own file (daily 14:00 UTC).
+[functions."cart-reminders"]
+  schedule = "0 * * * *"      # hourly: one "You left these in your cart" email per saved cart 60–180 min old
+[functions."drip"]
+  schedule = "30 * * * *"     # hourly: welcome series (#1, day 3, day 7), 21-day "loved the 2 ml?", expired-code sweep
+
+# Email + loyalty pages (static files; Netlify's pretty URLs also serve them without .html)
+[[redirects]]
+  from = "/subscribe"
+  to = "/subscribe.html"
+  status = 200
+[[redirects]]
+  from = "/the-real-ones"
+  to = "/the-real-ones.html"
+  status = 200
+
 [[headers]]
   for = "/img/*"
   [headers.values]

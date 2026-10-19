@@ -2,13 +2,20 @@
 // "payment.updated" and "order.fulfillment.updated"; set SQUARE_WEBHOOK_SIGNATURE_KEY in Netlify.
 // Square sends payment.updated several times per payment (often 2–3 within a second, all
 // status COMPLETED), so each payment id is claimed once in Netlify Blobs before anything fires.
-// On a paid order it: 1) pings Justin's phone (NTFY_TOPIC), 2) retires a one-time promo code,
-// 3) emails the buyer a Velvet Volute order confirmation via Resend (RESEND_API_KEY), with an
-//    identical copy to the shop (ORDER_COPY_TO). Each of those is skipped silently when its env vars are missing.
+// On a paid order it: 1) pings Justin's phone (NTFY_TOPIC) with the Sherpa's pick, 2) retires a
+// one-time promo code (and credits the referrer when a REF- code was used), 3) emails the buyer a
+// Velvet Volute order confirmation via Resend (RESEND_API_KEY) and the shop its own copy with the
+// Sherpa's pick and the mark-shipped link, 4) updates the contact's segments and punch card.
+// Each of those is skipped silently when its env vars are missing.
 import { getStore } from "@netlify/blobs";
-import { sq, LOCATION_ID, isReusableCode } from "../lib/square.mjs";
+import { sq, LOCATION_ID, isReusableCode, isReferralCode } from "../lib/square.mjs";
 import { summarize } from "./order.mjs";
-import { sendEnjoy } from "../lib/enjoy.mjs";
+import { sendEnjoy, buyerEmail } from "../lib/enjoy.mjs";
+import { stores, getJSON, getCode, recordPaid, saveCart, getContact, upsertContact, addPunches, setPunchClaim, newToken, normEmail, EMAIL_RE, firstName } from "../lib/store.mjs";
+import { retireCode, issueCode, PUNCH_REWARD_CAP_CENTS } from "../lib/codes.mjs";
+import { scentsInOrder, sherpasPick, segmentsFromOrder, parseVariation, byName, fullName } from "../lib/scents.mjs";
+import { shopExtrasBlock, rewardEmail, referralThanksEmail } from "../lib/emails.mjs";
+import { sendMail, MARKETING_FROM, unsubscribeUrl } from "../lib/mail.mjs";
 
 const SITE = process.env.SITE_URL || "https://velvetvolute.ca";
 const BOOKING_URL = "https://calendar.app.google/9Gg9gioRktiA5eocA";
@@ -40,26 +47,76 @@ async function firstDelivery(paymentId) {
   }
 }
 
-async function notify(s) {
+async function notify(s, picks) {
   const topic = process.env.NTFY_TOPIC;
   if (!topic) return;
   const lines = s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""}`);
+  const sp = picks.length ? ["", "Sherpa's pick (1 ml surprise):", ...picks.map((x, k) => `${k + 1}. ${fullName(x.p)}`)] : [];
   await fetch("https://ntfy.sh/" + encodeURIComponent(topic), {
     method: "POST",
     headers: { Title: `New order ${s.no} · ${money(s.total)}`, Priority: "high", Tags: "shopping_bags" },
-    body: [s.method === "pickup" ? "Ottawa pickup" : s.method === "local" ? "LOCAL HAND DELIVERY" : s.method === "ship" ? "Shipping" : "", ...lines].filter(Boolean).join("\n"),
+    body: [s.method === "pickup" ? "Ottawa pickup" : s.method === "local" ? "LOCAL HAND DELIVERY" : s.method === "ship" ? "Shipping" : "", ...lines, ...sp].filter(Boolean).join("\n"),
   }).catch(() => {});
 }
 
-// One-time promo codes: delete the catalog Discount after its first paid order (OPEN-… codes stay).
+// One-time promo codes: delete the catalog Discount (and, for codes we issued, its pricing rule and
+// product set) after its first paid order. OPEN-… and REF-… codes stay.
 async function retireCoupon(order, token) {
+  const used = [];
   for (const d of order.discounts || []) {
-    if (!d.catalog_object_id || isReusableCode(d.name)) continue;
-    try { await sq(`/catalog/object/${d.catalog_object_id}`, token, null, "DELETE"); } catch (e) { console.error(e); }
+    if (!d.catalog_object_id) continue;
+    used.push(d.name || "");
+    if (isReusableCode(d.name)) continue;
+    const done = await retireCode(d.name, token).catch((e) => { console.error(e); return false; });
+    if (!done) { try { await sq(`/catalog/object/${d.catalog_object_id}`, token, null, "DELETE"); } catch (e) { console.error(e); } }
+  }
+  return used;
+}
+
+// A REF- code was used: the friend got $5 off; the referrer gets a one-time $5 code by email, if this
+// really is the buyer's first order and the buyer isn't the referrer.
+async function creditReferrer(codeName, buyer, s, token) {
+  const rec = await getCode(codeName).catch(() => null);
+  if (!rec || rec.kind !== "referral" || !rec.email) return;
+  const buyerEmail = normEmail(buyer.email);
+  if (!buyerEmail || buyerEmail === rec.email) return;
+  const c = await getContact(buyerEmail);
+  if ((c?.seg?.orders || 0) > 0) { console.log("referral code used by a returning customer, no credit", codeName); return; }
+  const referrer = await getContact(rec.email);
+  if (referrer?.unsubscribed) return; // the thank-you is transactional, but respect a hard opt-out anyway
+  const thanks = await issueCode({ kind: "thanks", email: rec.email, prefix: "VV-THANKS", amountCents: 500, days: 60 }, token);
+  const unsubUrl = await unsubscribeUrl(rec.email);
+  const m = referralThanksEmail({ first: referrer?.first || "", code: thanks.code, expiresAt: thanks.expiresAt, unsubUrl });
+  await sendMail({ from: MARKETING_FROM, to: rec.email, subject: m.subject, html: m.html, text: m.text, tags: [{ name: "kind", value: "referral-thanks" }] });
+  await upsertContact(rec.email, { referrals: (referrer?.referrals || 0) + 1 }).catch(() => {});
+}
+
+// Segments + punch card for the buyer. Every decant is a punch; a free 5 ml paid for with a punch code
+// doesn't punch itself. At six, a claim link goes out.
+async function loyalty(s, buyer, order, usedCodes, token) {
+  const email = normEmail(buyer.email);
+  if (!EMAIL_RE.test(email)) return;
+  const first = firstName(buyer.name);
+  const c = await getContact(email);
+  const seg = segmentsFromOrder(s.items, s.method);
+  const tenMl = s.items.filter((i) => parseVariation(i.variation).ml >= 10).map((i) => byName(i.name)?.sq).filter(Boolean);
+  const qty = s.items.reduce((a, i) => a + Number(i.qty || 0), 0);
+  const freeUnits = (await Promise.all(usedCodes.map((n) => getCode(n).catch(() => null)))).filter((r) => r?.kind === "punch").length;
+  await upsertContact(email, {
+    first, source: "order",
+    seg: { ...seg, tenMl, orders: (c?.seg?.orders || 0) + 1, decants: (c?.seg?.decants || 0) + qty, repeat: (c?.seg?.orders || 0) > 0, firstOrderAt: c?.seg?.firstOrderAt || Date.now(), lastOrderAt: Date.now(), lastOrderNo: s.no },
+  });
+  const p = await addPunches(email, Math.max(0, qty - freeUnits), s.no);
+  if (p.pending > 0 && !p.claim) {
+    const tokenId = newToken(28);
+    await stores.claims().setJSON(tokenId, { email, first, created: Date.now(), used: false, capCents: PUNCH_REWARD_CAP_CENTS });
+    await setPunchClaim(email, tokenId);
+    const m = rewardEmail({ first, claimUrl: `${SITE}/the-real-ones?claim=${tokenId}`, unsubUrl: await unsubscribeUrl(email), capCents: PUNCH_REWARD_CAP_CENTS });
+    await sendMail({ from: MARKETING_FROM, to: email, bcc: [MAIL_COPY], subject: m.subject, html: m.html, text: m.text, tags: [{ name: "kind", value: "punch-reward" }] });
   }
 }
 
-function emailHTML(s, ref, etransfer = false) {
+function emailHTML(s, ref, etransfer = false, extra = "") {
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const rows = s.items.map((i) => `<tr><td style="padding:6px 0;border-bottom:1px solid #eadfcd">${i.qty > 1 ? i.qty + "× " : ""}${esc(i.name)}${i.variation ? `<br><span style="color:#8a6d4b;font-size:13px">${esc(i.variation)}</span>` : ""}</td><td style="padding:6px 0;border-bottom:1px solid #eadfcd;text-align:right;white-space:nowrap">${money(i.total)}</td></tr>`).join("");
   const charges = s.charges.map((c) => `<tr><td style="padding:6px 0">${esc(c.name)}</td><td style="padding:6px 0;text-align:right">${money(c.total)}</td></tr>`).join("");
@@ -67,7 +124,7 @@ function emailHTML(s, ref, etransfer = false) {
     ? `<p>Pickup is at the Shoppers Drug Mart on Carling Ave, Ottawa. <a href="${BOOKING_URL}" style="color:#6e1a31">Book your 15-minute slot here</a> (24 hours' notice). I'll confirm by email.</p>`
     : s.method === "local"
       ? `<p>Your order qualifies for free local hand delivery: I bring it to your door myself, no courier. <a href="${DELIVERY_BOOKING_URL}" style="color:#6e1a31">Pick a delivery window here</a> (24 hours' notice) and I'll bring your decants to the address you gave at checkout. I'll confirm by email.</p>`
-    : `<p>I'll hand-pour your decants and ship them with Canada Post, and email you once they're on the way.</p>`;
+      : `<p>I'll hand-pour your decants and ship them with Canada Post, and email you once they're on the way.</p>`;
   return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#2c0610">
   <div style="background:#4a0e1e;color:#e8d3b4;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">${etransfer ? "ORDER CONFIRMATION / INVOICE PAID" : "ORDER CONFIRMATION"}</div></div>
   <div style="padding:24px;background:#fbf6ee">
@@ -76,29 +133,31 @@ function emailHTML(s, ref, etransfer = false) {
    <table style="width:100%;border-collapse:collapse;font-size:15px">${rows}${charges}${s.method === "ship" && !s.charges.length ? `<tr><td style="padding:6px 0">Shipping</td><td style="padding:6px 0;text-align:right">Free</td></tr>` : ""}${s.discount ? `<tr><td style="padding:6px 0">Discounts</td><td style="padding:6px 0;text-align:right">−${money(s.discount)}</td></tr>` : ""}${s.tax ? `<tr><td style="padding:6px 0">Tax</td><td style="padding:6px 0;text-align:right">${money(s.tax)}</td></tr>` : ""}<tr><td style="padding:10px 0;border-top:1px solid #b5946a;font-weight:bold">Total paid</td><td style="padding:10px 0;border-top:1px solid #b5946a;text-align:right;font-weight:bold">${money(s.total)}</td></tr></table>
    <h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:22px 0 6px">What happens next</h3>${next}
    <p style="margin-top:22px">Questions? Reply to this email or write to ${SHOP_EMAIL} and include ${esc(s.no)}.</p>
-   <p style="color:#8a6d4b;font-size:13px">Peace &amp; Love, Izzi · <a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
+   ${extra}
+   <p style="color:#8a6d4b;font-size:13px">Peace &amp; Love, Izzi · Velvet Volute · Ottawa, ON · <a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
   </div></div>`;
 }
 
-// Resend (https://resend.com): one HTTPS call, no SDK. The buyer gets the confirmation; the shop
-// gets an identical copy via BCC, so Justin sees exactly what the customer saw. Replies go to the
-// shop's Gmail. When no buyer email is on the payment, the copy is sent to the shop alone.
+// Resend (https://resend.com): one HTTPS call, no SDK. The buyer gets the confirmation; the shop gets
+// its own copy with the Sherpa's pick (three 1 ml candidates) and the mark-shipped link, so Justin
+// sees what the customer saw plus what to pour. Replies go to the shop's Gmail.
 // etransfer: the payment was recorded by hand in Square (source_type EXTERNAL), e.g. an Interac
 // e-Transfer, so the email reads "Invoice paid" instead of "Order confirmation".
-async function emailBuyer(s, to, ref, etransfer = false) {
+async function emailBuyer(s, to, ref, etransfer = false, picks = []) {
   const key = process.env.RESEND_API_KEY;
   if (!key) return;
-  const body = {
-    from: MAIL_FROM,
-    to: [to || MAIL_COPY],
-    bcc: to ? [MAIL_COPY] : [],
-    reply_to: SHOP_EMAIL,
-    subject: etransfer ? `Your Velvet Volute order ${s.no}: invoice paid` : `Your Velvet Volute order ${s.no}`,
-    text: [etransfer ? `Invoice paid. Thank you, your e-Transfer has been received. Order number ${s.no}.` : `Thank you for your order. Order number ${s.no}.`, ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""} ${money(i.total)}`), `Total paid ${money(s.total)}`, s.method === "pickup" ? `Pickup: book your slot at ${BOOKING_URL}` : "I'll email you once your decants ship."].join("\n"),
-    html: emailHTML(s, ref, etransfer),
-  };
-  const r = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify(body) });
-  if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
+  const text = [etransfer ? `Invoice paid. Thank you, your e-Transfer has been received. Order number ${s.no}.` : `Thank you for your order. Order number ${s.no}.`, ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""} ${money(i.total)}`), `Total paid ${money(s.total)}`, s.method === "pickup" ? `Pickup: book your slot at ${BOOKING_URL}` : "I'll email you once your decants ship."].join("\n");
+  const subject = etransfer ? `Your Velvet Volute order ${s.no}: invoice paid` : `Your Velvet Volute order ${s.no}`;
+  const adminKey = process.env.ADMIN_KEY;
+  const admin = (q) => (adminKey ? `${SITE}/.netlify/functions/mark-shipped?order=${encodeURIComponent(s.no)}&key=${encodeURIComponent(adminKey)}${q}` : "");
+  const extras = picks.length || adminKey ? shopExtrasBlock({ picks, method: s.method, markShippedUrl: admin(""), pickUrl: adminKey ? (sqId) => admin(`&pick=${encodeURIComponent(sqId)}&only=pick`) : null }) : "";
+  const sends = [];
+  if (to) sends.push({ to: [to], html: emailHTML(s, ref, etransfer) });
+  sends.push({ to: [MAIL_COPY], html: emailHTML(s, ref, etransfer, extras), text: text + (picks.length ? `\n\nSherpa's pick (1 ml surprise): ${picks.map((x) => fullName(x.p)).join("; ")}` : "") });
+  for (const m of sends) {
+    const r = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify({ from: MAIL_FROM, to: m.to, reply_to: SHOP_EMAIL, subject: m.to[0] === MAIL_COPY && to ? `[shop copy] ${subject}` : subject, text: m.text || text, html: m.html }) });
+    if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
+  }
 }
 
 export default async (req) => {
@@ -139,7 +198,16 @@ export default async (req) => {
     const { order } = await sq(`/orders/${pay.order_id}`, token);
     if (!order) return new Response("no order");
     const s = summarize(order);
-    await Promise.all([notify(s), retireCoupon(order, token), emailBuyer(s, pay.buyer_email_address, pay.receipt_number, pay.source_type === "EXTERNAL")]);
+    const buyer = await buyerEmail(order, token).catch(() => ({ email: "", name: "" }));
+    if (!buyer.email && pay.buyer_email_address) buyer.email = pay.buyer_email_address;
+    const picks = sherpasPick(scentsInOrder(s.items));
+    // Record the paid order and release the saved cart (checkout.mjs linked cart id → order number).
+    const cartLink = await getJSON(stores.paid(), "cart-" + s.no).catch(() => null);
+    await recordPaid(s.no, { email: normEmail(buyer.email), orderId: order.id, paymentId: pay.id, items: s.items, method: s.method, total: s.total, cartId: cartLink?.cartId || null, picks: picks.map((x) => x.p.sq) }).catch((e) => console.error(e));
+    if (cartLink?.cartId) await saveCart(cartLink.cartId, { ordered: true, orderNo: s.no }).catch(() => {});
+    const [, usedCodes] = await Promise.all([notify(s, picks), retireCoupon(order, token), emailBuyer(s, pay.buyer_email_address || buyer.email, pay.receipt_number, pay.source_type === "EXTERNAL", picks)]);
+    await loyalty(s, buyer, order, usedCodes, token).catch((e) => console.error("loyalty", e));
+    for (const name of usedCodes) if (isReferralCode(name)) await creditReferrer(name, buyer, s, token).catch((e) => console.error("referral", e));
     return new Response("ok");
   } catch (e) {
     console.error(e);
