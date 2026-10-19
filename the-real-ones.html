@@ -24,10 +24,10 @@
 .drops-t th{font-weight:600}
 .drops-t tr.bonus{background:rgba(74,14,30,.12)}.drops-t tr.bonus a{color:#2c0610}
 .drops-t td:nth-child(2){min-width:58px}
-.drops-t td:last-child{color:#4a0e1e;font-style:italic;font-family:var(--serif);font-size:16.5px}
+.drops-t td:last-child{color:#4a0e1e;font:500 15px var(--sans);font-variant-numeric:lining-nums}
 .drops-t .dr{width:13px;height:18px;fill:#4a0e1e;margin-right:3px;vertical-align:-3px}
 .drops-fine{text-align:center;font-size:14px;opacity:.85;margin:8px 0 0}
-@media(max-width:420px){.drops-t th,.drops-t td{padding:9px 9px;font-size:14px}.drops-t td:last-child{font-size:15px}}
+@media(max-width:420px){.drops-t th,.drops-t td{padding:9px 9px;font-size:14px}}
 .vvcard{max-width:420px;margin:20px auto 8px}.vvcard svg{display:block;width:100%;height:auto;filter:drop-shadow(0 8px 18px rgba(0,0,0,.28))}
 .punches{display:flex;justify-content:center;gap:10px;margin:18px 0 6px}
 .punches i{width:34px;height:34px;border-radius:50%;border:1px solid #d6b077;display:grid;place-items:center;font:italic 15px var(--serif);color:#d6b077}
@@ -103,11 +103,11 @@
 
  <!-- status check -->
  <div class="ro-card" id="check">
-  <h2>Where am I at?</h2>
+  <h2>How many drops do I have?</h2>
   <form id="check-form" novalidate>
    <label class="f" for="check-email">The email you order with</label>
    <input type="email" id="check-email" autocomplete="email" inputmode="email" maxlength="254" placeholder="you@example.com" required spellcheck="false">
-   <button type="submit" class="go" id="check-go">Show my punches</button>
+   <button type="submit" class="go" id="check-go">Show my drops</button>
    <p class="msg" id="check-msg" hidden></p>
   </form>
   <div class="status" id="status" hidden></div>
@@ -149,7 +149,7 @@
   fetch("/.netlify/functions/punches?email="+encodeURIComponent(v),{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
    if(d.error)throw new Error(d.error);var st=$("status");
    st.innerHTML=(d.pending>0?'<b>6 of 6 punched. Lucky #7 is on us.</b>'+dots(6,true)+'<p>'+(d.claimUrl?'<a class="go" style="display:inline-block;padding:12px 26px;text-decoration:none" href="'+esc(d.claimUrl)+'">Choose your free 5 ml</a>':'The link to choose your free 5 ml is in your inbox.')+'</p>':'<b>'+half(d.cycle)+' of 6 punches'+(d.earned?' · '+d.earned+' free decant'+(d.earned>1?'s':'')+' so far':'')+'</b>'+dots(d.cycle)+'<p>'+(d.cycle?half(6-d.cycle)+' more punch'+(6-d.cycle>1?'es':'')+' and lucky #7 is on us.':'Your first order starts the card.')+'</p>');
-   st.hidden=false}).catch(function(x){m.textContent=(x&&x.message)||"Couldn't check right now.";m.className="msg";m.hidden=false}).then(function(){go.disabled=false;go.textContent="Show my punches"})});
+   st.hidden=false}).catch(function(x){m.textContent=(x&&x.message)||"Couldn't check right now.";m.className="msg";m.hidden=false}).then(function(){go.disabled=false;go.textContent="Show my drops"})});
  /* claim */
  var claim=/[?&]claim=([a-z0-9]{20,40})/.exec(location.search);if(!claim)return;
  var box=$("claim"),opts=$("claim-opts"),form=$("claim-form"),goC=$("claim-go"),msgC=$("claim-msg"),ALL=[],cap=4500,filt="";

@@ -17,11 +17,11 @@
       var cx=34+i*44,cy=86,full=drops>=(i+1)*2;
       s+='<circle cx="'+cx+'" cy="'+cy+'" r="19" fill="'+(full?"rgba(74,14,30,.10)":"none")+'" stroke="'+M+'" stroke-width="1.2" stroke-opacity="'+(full?".9":".45")+'"/>'
         +drop(cx-7,cy+2,drops>=i*2+1)+drop(cx+7,cy+2,drops>=i*2+2)
-        +'<text x="'+cx+'" y="'+(cy+33)+'" text-anchor="middle" font-family="Cormorant Garamond,Georgia,serif" font-style="italic" font-size="12" fill="'+INK+'" fill-opacity=".7">'+(i+1)+'</text>';
+        +'<text x="'+cx+'" y="'+(cy+34)+'" text-anchor="middle" font-family="Jost,system-ui,sans-serif" font-weight="500" font-size="12" fill="'+INK+'" fill-opacity=".85">'+(i+1)+'</text>';
     }
     var sx=W-38;
     s+='<circle cx="'+sx+'" cy="86" r="23" fill="'+(pending?M:"none")+'" stroke="'+M+'" stroke-width="1.4" stroke-dasharray="'+(pending?"0":"3 3")+'"/>'
-     +'<text x="'+sx+'" y="94" text-anchor="middle" font-family="Cormorant Garamond,Georgia,serif" font-style="italic" font-size="23" fill="'+(pending?"#e8d3b4":M)+'">7</text>'
+     +'<text x="'+sx+'" y="94" text-anchor="middle" font-family="Jost,system-ui,sans-serif" font-weight="500" font-size="22" fill="'+(pending?"#e8d3b4":M)+'">7</text>'
      +'<text x="'+sx+'" y="'+(86+38)+'" text-anchor="middle" font-family="Jost,system-ui,sans-serif" font-size="8.5" letter-spacing="1.2" fill="'+INK+'" fill-opacity=".75">FREE 5 ML</text>'
      +'</svg>';
     return s;
