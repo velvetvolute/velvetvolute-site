@@ -1,7 +1,7 @@
 // Catalogue helpers for the functions, built on the generated ./catalog.mjs (see build.mjs).
-import { PRODUCTS, FAM_LABEL } from "./catalog.mjs";
+import { PRODUCTS, FAM_LABEL, BUNDLES } from "./catalog.mjs";
 
-export { PRODUCTS, FAM_LABEL };
+export { PRODUCTS, FAM_LABEL, BUNDLES };
 export const inStock = (p) => !!p && !!p.sq && !p.soon;
 export const bySq = (sq) => PRODUCTS.find((p) => p.sq === String(sq || ""));
 export const byName = (name) => PRODUCTS.find((p) => p.name === name) || PRODUCTS.find((p) => name && (name.includes(p.name) || p.name.includes(name)));
