@@ -61,6 +61,8 @@ a.btn:hover{background:rgba(181,148,106,.12)}
  <div class="chips" id="hear-chips"><button type="button" data-v="instagram">Instagram</button><button type="button" data-v="facebook">Facebook</button><button type="button" data-v="tiktok">TikTok</button><button type="button" data-v="google">Google search</button><button type="button" data-v="friend">A friend</button><button type="button" data-v="reddit">Reddit</button><button type="button" data-v="other">Somewhere else</button></div>
  <p class="thanks-hear" id="hear-done" hidden>Thank you — that helps more than you'd think.</p></section>
 
+<section class="card drops" id="drops" hidden><h2>The Real Ones</h2><p id="drops-txt"></p><p><a href="/the-real-ones">See your punch card</a></p></section>
+
 <a class="btn" href="/">Back to the shop</a>
 <p class="help">Questions? Email <a href="mailto:velvetvolute@gmail.com">velvetvolute@gmail.com</a><span id="help-no"></span></p>
 </main>
@@ -72,6 +74,9 @@ a.btn:hover{background:rgba(181,148,106,.12)}
  var m=function(c){return "$"+(c/100).toFixed(2)};
  var esc=function(t){var d=document.createElement("div");d.textContent=t;return d.innerHTML};
  var track=function(n,d){try{if(window.vvTrack)vvTrack(n,d)}catch(e){}};
+ /* punch card: 2/3 ml = 1 drop, 5 ml = 2 (a punch), 10 ml = 3 (a punch and a half); 12 drops fill the card */
+ var drops=function(items){var n=0;(items||[]).forEach(function(i){var m=/(\d+)\s*ml/i.exec((i.variation||"")+" "+(i.name||""));var ml=m?+m[1]:0;n+=(ml>=10?3:ml>=5?2:ml>0?1:0)*(i.qty||1)});
+  if(!n)return;$("drops-txt").innerHTML="This order earns you <b>"+n+" velvet drop"+(n>1?"s":"")+"</b> ("+(n%2?(n>1?Math.floor(n/2):"")+"½":n/2)+" punch"+(n>2?"es":"")+") toward lucky #7, your free 5 ml. They land on your card once the order is confirmed.";$("drops").hidden=false};
  /* "How did you hear about us?" one tap, answered once per browser, lands in GA4 as heard_about */
  (function(){var box=$("hear-chips");if(!box)return;var k="vv-heard";try{if(localStorage.getItem(k)){$("hear").hidden=true;return}}catch(e){}
   box.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
@@ -92,7 +97,7 @@ a.btn:hover{background:rgba(181,148,106,.12)}
   if(o.discount)h+='<div class="row"><span>Discounts</span><span>−'+m(o.discount)+"</span></div>";
   if(o.tax)h+='<div class="row"><span>Tax</span><span>'+m(o.tax)+"</span></div>";
   h+='<div class="row tot"><span>Total to send</span><span>'+m(o.total)+"</span></div>";
-  $("rows").innerHTML=h;$("items").hidden=false;
+  $("rows").innerHTML=h;$("items").hidden=false;drops(o.items);
   track("purchase",{id:o.no,value:o.total/100,tax:(o.tax||0)/100,shipping:(o.charges||[]).reduce(function(a,c){return a+c.total},0)/100,method:"etransfer",items:o.items.map(function(i){return {name:i.name,variant:i.variation||"",price:i.total/100/(i.qty||1),qty:i.qty||1}})});
   var after=o.method==="pickup"?"<p>Once it arrives I'll hand-pour your decants for pickup at the Shoppers Drug Mart on Carling Ave. <a href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Book your pickup slot</a> (24 hours' notice).</p>"
    :o.method==="local"?"<p>Once it arrives I'll hand-pour your decants and bring them to your door myself. <a href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Pick your delivery window</a> (24 hours' notice).</p>"
@@ -118,7 +123,7 @@ a.btn:hover{background:rgba(181,148,106,.12)}
   if(o.method==="ship"&&!o.charges.length)h+='<div class="row"><span>Shipping</span><span>Free</span></div>';
   if(o.tax)h+='<div class="row"><span>Tax</span><span>'+m(o.tax)+"</span></div>";
   h+='<div class="row tot"><span>Total paid</span><span>'+m(o.total)+"</span></div>";
-  $("rows").innerHTML=h;$("items").hidden=false;
+  $("rows").innerHTML=h;$("items").hidden=false;drops(o.items);
   if(o.paid)track("purchase",{id:o.no,value:o.total/100,tax:(o.tax||0)/100,shipping:(o.charges||[]).reduce(function(a,c){return a+c.total},0)/100,method:"square",items:o.items.map(function(i){return {name:i.name,variant:i.variation||"",price:i.total/100/(i.qty||1),qty:i.qty||1}})});
   if(o.method==="pickup")$("next").innerHTML="<p>I'll hand-pour your decants for pickup at the Shoppers Drug Mart on Carling Ave.</p><p><a class=\"btn\" href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Book your pickup slot</a></p><p>15-minute slots, 24 hours' notice. I'll confirm by email.</p>";
   else if(o.method==="local")$("next").innerHTML="<p>Your order qualifies for free local hand delivery. I'll hand-pour your decants and bring them to your door myself, at the address you gave at checkout.</p><p><a class=\"btn\" href=\"https://calendar.app.google/9Gg9gioRktiA5eocA\" target=\"_blank\" rel=\"noopener\">Pick your delivery window</a></p><p>24 hours' notice. I'll confirm by email.</p>";

@@ -12,12 +12,13 @@
 <meta property="og:image" content="https://velvetvolute.ca/img/og-velvetvolute-bb4b0b5447.jpg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="The Real Ones punch card · Velvet Volute"><meta name="twitter:image" content="https://velvetvolute.ca/img/og-velvetvolute-bb4b0b5447.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/pages.css"><link rel="stylesheet" href="/nav.css"><script src="/nav.js" defer></script><script src="/track.js" defer></script>
+<link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/pages.css"><link rel="stylesheet" href="/nav.css"><script src="/nav.js" defer></script><script src="/punchcard.js"></script><script src="/track.js" defer></script><script src="/punchcard.js"></script>
 <style>
 .ro{max-width:640px;margin:0 auto;padding:34px 24px 70px}
 .ro .hero-mono{margin:0 auto 18px}
 .ro .eyebrow,.ro h1,.ro .lede{text-align:center}
 .ro .lede{margin:0 auto 24px}
+.vvcard{max-width:420px;margin:20px auto 8px}.vvcard svg{display:block;width:100%;height:auto;filter:drop-shadow(0 8px 18px rgba(0,0,0,.28))}
 .punches{display:flex;justify-content:center;gap:10px;margin:18px 0 6px}
 .punches i{width:34px;height:34px;border-radius:50%;border:1px solid #d6b077;display:grid;place-items:center;font:italic 15px var(--serif);color:#d6b077}
 .punches i.on{background:#d6b077;color:#2c0610}
@@ -71,7 +72,7 @@
  <div class="hero-mono" aria-hidden="true">VV</div>
  <h1>The Real Ones: lucky #7 is on us</h1>
  <p class="lede">Every 5 ml is a punch, every 10 ml a punch and a half, and every 2 or 3 ml is a drop: half a punch. At six punches, the seventh is free: any 5 ml in the collection up to $45, or $45 toward a bigger one. No card to carry, no app. It's tied to the email you order with.</p>
- <div class="punches" aria-hidden="true"><i class="on">1</i><i class="on">2</i><i class="on">3</i><i class="on">4</i><i class="on">5</i><i class="on">6</i><i class="seven">7</i></div>
+ <div class="vvcard" id="hero-card" aria-hidden="true"></div>
 
  <!-- claim flow: /the-real-ones?claim=TOKEN -->
  <div class="ro-card" id="claim" hidden>
@@ -121,7 +122,8 @@
  var EMAIL=/^[^\s@<>"]{1,64}@[^\s@<>"]{1,190}\.[a-z]{2,24}$/i,VL={classic:"Classic",luxe:"Luxury",roll:"Roll-on"};
  try{var s=JSON.parse(localStorage.getItem("vv-cart-v1")||"null"),n=s&&s.lines?s.lines.reduce(function(a,l){return a+(l.q||0)},0):0,b=$("cart-count");if(b){b.textContent=n;b.hidden=!n}}catch(e){}
  function half(n){return (Math.floor(n)||(n%1?"":"0"))+(n%1?"½":"")}
- function dots(k,pending){var h="";for(var i=1;i<=6;i++)h+='<i class="'+(i<=k||pending?"on":i-0.5<=k?"half":"")+'">'+i+'</i>';return '<div class="punches" aria-hidden="true">'+h+'<i class="seven">7</i></div>'}
+ function dots(k,pending){return '<div class="vvcard">'+(window.vvCard?vvCard(Math.round(k*2),pending):"")+'</div>'}
+ try{var hc=$("hero-card");if(hc&&window.vvCard)hc.innerHTML=vvCard(7,false)}catch(x){}
  /* status check */
  try{var e=localStorage.getItem("vv-email");if(e)$("check-email").value=e}catch(x){}
  $("check-form").addEventListener("submit",function(ev){ev.preventDefault();var v=$("check-email").value.trim().toLowerCase(),m=$("check-msg"),go=$("check-go");
