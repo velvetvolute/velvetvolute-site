@@ -167,7 +167,7 @@
   if(d.error)throw new Error(d.error);cap=d.capCents||cap;
   if(d.used){$("claim-h").textContent="Already claimed";$("claim-p").textContent="This reward went to "+(d.usedFor||"a 5 ml")+". The code is in your inbox. Thank you for being one of the real ones.";form.hidden=true;$("claim-filter").hidden=true;$("check").hidden=false;return}
   if(d.first)$("claim-h").textContent="Choose your free 5 ml, "+d.first;
-  $("claim-p").textContent="Every 5 ml in the collection, Classic, Luxury or Roll-on. Anything up to "+money(cap)+" is on the house; pick one above and the code takes "+money(cap)+" off it.";
+  $("claim-p").textContent="Every 5 ml in the collection, Classic, Luxury or Roll-on. Any 5 ml up to "+money(cap)+" is on the house; pick one above "+money(cap)+" and you only pay the difference.";
   ALL=d.options||[];draw()}).catch(function(x){$("claim-h").textContent="That link didn't work";$("claim-p").textContent=(x&&x.message)||"Try the link from your email again, or write to velvetvolute@gmail.com.";form.hidden=true;$("claim-filter").hidden=true;$("check").hidden=false});
  form.addEventListener("submit",function(ev){ev.preventDefault();var r=form.querySelector("input[name=vid]:checked");if(!r){sayC("Pick one first.");return}
   var o=ALL.find(function(x){return x.vid===r.value});goC.disabled=true;goC.textContent="Creating your code…";sayC("");
