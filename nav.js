@@ -19,11 +19,11 @@
      +'</aside>';
     var links=wrap.querySelector(".mnav-links");
     [].forEach.call(src.querySelectorAll("a"),function(a){links.appendChild(a.cloneNode(true))});
-    /* Rewards: the side menu only (the desktop header keeps its seven links); placed after Curated Collections */
+    /* Rewards: the side menu only (the desktop header keeps its seven links); placed right above How It Works */
     var rw=document.createElement("a");rw.href="/the-real-ones";rw.textContent="Rewards";
     if(/\/the-real-ones/.test(location.pathname))rw.setAttribute("aria-current","page");
-    var after=[].filter.call(links.querySelectorAll("a"),function(a){return /collections/.test(a.getAttribute("href")||"")})[0];
-    if(after&&after.nextSibling)links.insertBefore(rw,after.nextSibling);else links.appendChild(rw);
+    var how=[].filter.call(links.querySelectorAll("a"),function(a){return /how-it-works/.test(a.getAttribute("href")||"")})[0];
+    if(how)links.insertBefore(rw,how);else links.appendChild(rw);
     document.body.insertBefore(wrap,document.body.firstChild);
     var panel=wrap.querySelector(".mnav-panel"),back=wrap.querySelector(".mnav-back"),x=wrap.querySelector(".mnav-x"),last=null,t;
     function mOpen(){last=document.activeElement;clearTimeout(t);wrap.hidden=false;lock("mnav-lock",true);btn.setAttribute("aria-expanded","true");
