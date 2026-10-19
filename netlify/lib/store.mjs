@@ -137,6 +137,7 @@ export async function paidSince(email, sinceMs) {
 // Counted in DROPS: 2 ml / 3 ml = 1 drop (half a punch), 5 ml = 2 drops (a punch), 10 ml = 3 drops (a punch and a half).
 // Six punches = 12 drops fills the card; lucky #7 is the free 5 ml. Everything customer-facing shows punches.
 export const PUNCHES_FOR_REWARD = 6, DROPS_PER_PUNCH = 2, DROPS_FOR_REWARD = PUNCHES_FOR_REWARD * DROPS_PER_PUNCH;
+export const SIGNUP_DROPS = Number(process.env.SIGNUP_DROPS || 2);   // starter drops for a first-time sign-up ("your first punch is on us")
 export const dropsFor = (ml) => (ml >= 10 ? 3 : ml >= 5 ? 2 : ml > 0 ? 1 : 0);
 export async function getPunches(email) {
   email = normEmail(email);

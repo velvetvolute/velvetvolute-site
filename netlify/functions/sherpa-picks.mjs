@@ -6,7 +6,7 @@
 //   live Sherpa code   → re-issued on the NEW picks, keeping the original expiry (re-taking the quiz never extends it)
 //   live welcome code  → no new code; the email shows the welcome code (it works on any decant)
 //   used/expired/customer → picks only, no code. 5 per IP per hour.
-import { allowed, upsertContact, getContact, EMAIL_RE, normEmail, clip, firstName, canMarket } from "../lib/store.mjs";
+import { allowed, upsertContact, getContact, EMAIL_RE, normEmail, clip, firstName, canMarket, addDrops, SIGNUP_DROPS } from "../lib/store.mjs";
 import { syncContact } from "../lib/resend.mjs";
 import { issueCode, retireCode, signupOffer, SIGNUP_DAYS, DAY } from "../lib/codes.mjs";
 import { bySq, inStock } from "../lib/scents.mjs";
@@ -33,7 +33,8 @@ export default async (req) => {
   try {
     const prev = await getContact(email);
     const offer = await signupOffer(prev);
-    let code = null, codeKind = "sherpa";
+    let code = null, codeKind = "sherpa", starterDrops = 0;
+    if (offer.state === "none" && SIGNUP_DROPS > 0) { await addDrops(email, SIGNUP_DROPS, "signup"); starterDrops = SIGNUP_DROPS; }
     if (offer.state === "none" || (offer.state === "active" && offer.kind === "sherpa")) {
       const days = offer.state === "active" ? Math.max(1, (offer.rec.expiresAt - Date.now()) / DAY) : SIGNUP_DAYS;
       if (offer.state === "active") await retireCode(offer.code, token, { force: true }).catch(() => {});
@@ -46,7 +47,7 @@ export default async (req) => {
     await syncContact({ email, first: contact.first, unsubscribed: !canMarket(contact) }).catch((e) => console.error("resend contact", e));
     const shopUrl = `${SITE}/?picks=${picks.map((p) => p.sq).join(",")}#shop`;
     const unsubUrl = await unsubscribeUrl(email);
-    const m = sherpaPicksEmail({ first: contact.first, picks, code: code?.code || null, expiresAt: code?.expiresAt || null, codeKind, shopUrl, unsubUrl, who });
+    const m = sherpaPicksEmail({ first: contact.first, picks, code: code?.code || null, expiresAt: code?.expiresAt || null, codeKind, shopUrl, unsubUrl, who, starterDrops });
     // The picks email is something they asked for (a code), so it goes regardless of the marketing tick;
     // the footer still carries the unsubscribe link.
     await sendMail({ from: MARKETING_FROM, to: email, subject: m.subject, html: m.html, text: m.text, unsubUrl, tags: [{ name: "kind", value: "sherpa-picks" }] });

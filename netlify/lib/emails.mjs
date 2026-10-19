@@ -9,7 +9,7 @@ const PICKUP = "Pickup is at the Shoppers Drug Mart on Carling Ave in Ottawa. Fr
 const out = (subject, html) => ({ subject, html, text: toText(html) });
 
 // 1. Scent Sherpa picks: the three scents, a line each, the price range, the code.
-export function sherpaPicksEmail({ first, picks, code, expiresAt, shopUrl, unsubUrl, who, codeKind = "sherpa" }) {
+export function sherpaPicksEmail({ first, picks, code, expiresAt, shopUrl, unsubUrl, who, codeKind = "sherpa", starterDrops = 0 }) {
   const rows = picks.map((p, k) => scentRow({ img: p.img, brand: p.brand, name: p.short, line: storyLine(p), price: `${priceRange(p)} · ${famLine(p)} · ${WHO(p)}`, href: absUrl(p.url), tag: k ? "Also on your trail" : "The Sherpa's top pick" })).join("");
   const body = `
    ${h2("Here's where I'd start")}
@@ -18,13 +18,14 @@ export function sherpaPicksEmail({ first, picks, code, expiresAt, shopUrl, unsub
    ${!code ? "" : codeKind === "sherpa" ? codeCard(code, "10% off your top 3, any size", expiresAt, "One use, on these three scents only.")
      : codeCard(code, "Your 10% code works on these too", expiresAt, "This is the sign-up code you already have (one per person). One use, on any decant, these three included.")}
    ${button(shopUrl || SITE + "/#shop", "Shop your picks")}
+   ${starterDrops ? punchIntro(starterDrops) : ""}
    ${small(`Not sure which size? A 2 ml is about 20 sprays, enough for a week of wear. A 5 ml is about 50. A 10 ml is a month of daily wear. ${link(SITE + "/fragrance-101", "Fragrance 101")} has the rest.`)}
    ${small(PICKUP)}`;
   return out(`Your Sherpa picks${first ? ", " + first : ""}${code ? ": 3 scents and 10% off them" : ""}`, layout({ kicker: "Your Sherpa picks", title: "Your Sherpa picks", body, unsubUrl, reason: "you asked the Scent Sherpa to email your picks", preheader: "Three scents that fit your answers, and a one-time code for 10% off." }));
 }
 
 // 2. Welcome #1: who Izzi is, the code if they don't already have one.
-export function welcome1Email({ first, code, expiresAt, unsubUrl, codeWhat = "10% off your first decant", codeNote = "One use, on any decant in the collection." }) {
+export function welcome1Email({ first, code, expiresAt, unsubUrl, codeWhat = "10% off your first decant", codeNote = "One use, on any decant in the collection.", starterDrops = 0 }) {
   const body = `
    ${h2("Welcome to the real ones")}
    ${p(`${hi(first)} I'm Izzi. Velvet Volute is my collection: luxury fragrances I've chosen one at a time, hand-poured into 2, 5 and 10 ml decants in Ottawa.`)}
@@ -32,6 +33,7 @@ export function welcome1Email({ first, code, expiresAt, unsubUrl, codeWhat = "10
    ${p(`Every scent on the shelf has a story. If I wouldn't wear it, I wouldn't sell it.`)}
    ${code ? codeCard(code, codeWhat, expiresAt, codeNote) : p(`The 10% sign-up code is one per person, and yours has already been used or has run out, so there's no new one here. The Real Ones punch card has you covered from your first order on, and lucky #7 is on me.`)}
    ${button(SITE + "/#shop", "Browse the collection")}
+   ${starterDrops ? punchIntro(starterDrops) : ""}
    ${rule()}
    ${h3("What's coming")}
    ${p(`Over the next week I'll send you two short notes: how decants work and how to get the most out of yours, then how to find the scent that's actually yours. After that, only first dibs on new drops, collections and sales. No noise.`)}
@@ -162,6 +164,15 @@ export function loyaltyBlock({ returnCode, returnExpires, referralCode, punches,
 // 3.5 → "3½"; dots: ● full punch, ◐ a drop (half), ○ empty
 // The card as an image (img/punch/card-N.png, drawn by punchcard.js); email clients don't show SVG
 export const cardImg = (n) => `<img src="${SITE}/img/punch/card-${n}.png" width="360" height="150" alt="${n === "full" ? "Your punch card is full: lucky #7 is ready" : `${fmtPunch(Number(n) / 2)} of 6 punches`}" style="display:block;width:100%;max-width:360px;height:auto;border:0;margin:8px 0 0">`;
+// Punch-card intro for the sign-up emails: the card with the starter drops already on it.
+export function punchIntro(drops) {
+  const row = (a, b, c) => `<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(74,14,30,.2);font-family:${SANS};font-size:14px;color:#2c0610"><b>${a}</b></td><td style="padding:6px 10px;border-bottom:1px solid rgba(74,14,30,.2);font-family:${SANS};font-size:14px;color:#2c0610">${b}</td><td style="padding:6px 10px;border-bottom:1px solid rgba(74,14,30,.2);font-family:${SERIF};font-style:italic;font-size:15px;color:#4a0e1e">${c}</td></tr>`;
+  return `${rule()}${h3("Your punch card is already started")}
+   ${p(`Welcome to The Real Ones. Every order fills your card with velvet drops, and 12 drops earn lucky #7: any 5 ml up to $45, free. I've added <b>${drops} drops</b> to get you going${drops === 2 ? ", so your first punch is on me" : ""}.`)}
+   ${cardImg(drops)}
+   <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:12px 0 4px;background:#b28a5b;border-radius:8px;border-collapse:separate">${row("2 ml &amp; 3 ml", "1 drop", "½ punch")}${row("5 ml", "2 drops", "1 punch")}${row("10 ml", "3 drops", "1½ punches")}</table>
+   ${small(`Tied to this email address. <a href="${SITE}/the-real-ones" style="color:#6e1a31">See your card anytime</a>.`)}`;
+}
 export const fmtPunch = (n) => `${Math.floor(n) || (n % 1 ? "" : "0")}${n % 1 ? "½" : ""}`;
 export const punchDots = (n) => Array.from({ length: 6 }, (_, i) => (i + 1 <= n ? "●" : i + 0.5 <= n ? "◐" : "○")).join(" ");
 

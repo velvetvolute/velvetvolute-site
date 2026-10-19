@@ -4,7 +4,7 @@
 // ONE 10% code per email, ever, shared with the Sherpa capture (codes.mjs signupOffer). A live code is re-sent,
 // never doubled; a used or expired one, or an existing customer, gets the welcome without a code. 30 days.
 // Welcome #2 and #3 follow from drip.mjs for contacts who ticked "first dibs".
-import { allowed, upsertContact, getContact, EMAIL_RE, normEmail, firstName, canMarket } from "../lib/store.mjs";
+import { allowed, upsertContact, getContact, EMAIL_RE, normEmail, firstName, canMarket, addDrops, SIGNUP_DROPS } from "../lib/store.mjs";
 import { syncContact } from "../lib/resend.mjs";
 import { issueCode, signupOffer, SIGNUP_DAYS } from "../lib/codes.mjs";
 import { welcome1Email } from "../lib/emails.mjs";
@@ -28,8 +28,11 @@ export default async (req) => {
     const prev = await getContact(email);
     const offer = await signupOffer(prev);
     let code = null, expiresAt = null, codeWhat, codeNote;
+    let starterDrops = 0;
     if (offer.state === "none") {
       const c = await issueCode({ kind: "welcome", email, prefix: "VV-HELLO", percent: 10, days: SIGNUP_DAYS }, token); code = c.code; expiresAt = c.expiresAt;
+      // first-time sign-up: their punch card starts with SIGNUP_DROPS (counted once per email: note "signup")
+      if (SIGNUP_DROPS > 0) { await addDrops(email, SIGNUP_DROPS, "signup"); starterDrops = SIGNUP_DROPS; }
     } else if (offer.state === "active") {
       // already holds the sign-up code: send the same one again (they may have lost the email), never a second
       code = offer.code; expiresAt = offer.rec.expiresAt;
@@ -39,7 +42,7 @@ export default async (req) => {
     const contact = await upsertContact(email, { first, consent, source, ...(offer.state === "none" ? { codes: { welcome: code } } : {}), welcome: { 1: prev?.welcome?.[1] || Date.now() } });
     await syncContact({ email, first: contact.first, unsubscribed: !canMarket(contact) }).catch((e) => console.error("resend contact", e));
     const unsubUrl = await unsubscribeUrl(email);
-    const m = welcome1Email({ first: contact.first, code, expiresAt, unsubUrl, codeWhat, codeNote });
+    const m = welcome1Email({ first: contact.first, code, expiresAt, unsubUrl, codeWhat, codeNote, starterDrops });
     await sendMail({ from: MARKETING_FROM, to: email, subject: offer.state === "active" ? "Your Velvet Volute code (again)" : m.subject, html: m.html, text: m.text, unsubUrl, tags: [{ name: "kind", value: "welcome-1" }] });
     return json(200, { ok: true, code: offer.state !== "spent", again: offer.state !== "none", expiresAt });
   } catch (e) {
