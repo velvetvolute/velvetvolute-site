@@ -24,11 +24,11 @@
 .drops-t th{font-weight:600}
 .drops-t tr.bonus{background:rgba(74,14,30,.12)}.drops-t tr.bonus a{color:#2c0610}
 .drops-t td:nth-child(2){min-width:58px}
-.drops-t td.eq{padding-left:2px;padding-right:2px;color:#4a0e1e;font-weight:500;opacity:.7}
-.drops-t td:last-child{color:#4a0e1e;font:500 15px var(--sans);font-variant-numeric:lining-nums}
+.drops-t td.eqv b{font-weight:600;color:#4a0e1e}.drops-t td.eqv .eq{color:#4a0e1e;opacity:.6;margin:0 2px}
+.drops-t td.eqv{color:#2c0610;font:400 15px var(--sans);font-variant-numeric:lining-nums}
 .drops-t .dr{width:13px;height:18px;fill:#4a0e1e;margin-right:3px;vertical-align:-3px}
 .drops-fine{text-align:center;font-size:14px;opacity:.85;margin:8px 0 0}
-@media(max-width:420px){.drops-t th,.drops-t td{padding:9px 6px;font-size:13.5px}.drops-t td:nth-child(2){min-width:0}.drops-t .dr{width:11px;height:15px;margin-right:2px}.drops-t td:last-child{white-space:normal;min-width:72px}.drops-t{min-width:0;width:100%}}
+@media(max-width:420px){.drops-t th,.drops-t td{padding:9px 6px;font-size:13.5px}.drops-t td:nth-child(2){min-width:0}.drops-t .dr{width:11px;height:15px;margin-right:2px}.drops-t{min-width:0;width:100%}.drops-t td.eqv{white-space:normal;font-size:14px}}
 .vvcard{max-width:420px;margin:20px auto 8px}.vvcard svg{display:block;width:100%;height:auto;filter:drop-shadow(0 8px 18px rgba(0,0,0,.28))}
 .punches{display:flex;justify-content:center;gap:10px;margin:18px 0 6px}
 .punches i{width:34px;height:34px;border-radius:50%;border:1px solid #d6b077;display:grid;place-items:center;font:italic 15px var(--serif);color:#d6b077}
@@ -84,10 +84,10 @@
  <h1>The Real Ones: lucky #7 is on us</h1>
  <p class="lede">Fill your card with <b>12 velvet drops</b>.</p>
  <table class="drops-t">
-  <tr><th scope="row">2 ml &amp; 3 ml</th><td><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg></td><td>1 drop</td><td class="eq" aria-hidden="true">=</td><td>½ stamp</td></tr>
-  <tr><th scope="row">5 ml</th><td><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg></td><td>2 drops</td><td class="eq" aria-hidden="true">=</td><td>1 stamp</td></tr>
-  <tr><th scope="row">10 ml</th><td><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg></td><td>3 drops</td><td class="eq" aria-hidden="true">=</td><td>1½ stamps</td></tr>
-  <tr class="bonus"><th scope="row"><a href="/subscribe">Join the list</a></th><td><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg></td><td>2 drops</td><td class="eq" aria-hidden="true">=</td><td>your first stamp</td></tr>
+  <tr><th scope="row">2 ml &amp; 3 ml</th><td><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg></td><td class="eqv">1 drop <span class="eq">=</span> <b>½ stamp</b></td></tr>
+  <tr><th scope="row">5 ml</th><td><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg></td><td class="eqv">2 drops <span class="eq">=</span> <b>1 stamp</b></td></tr>
+  <tr><th scope="row">10 ml</th><td><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg></td><td class="eqv">3 drops <span class="eq">=</span> <b>1½ stamps</b></td></tr>
+  <tr class="bonus"><th scope="row"><a href="/subscribe">Join the list</a></th><td><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg></td><td class="eqv">2 drops <span class="eq">=</span> <b>your first stamp</b></td></tr>
  </table>
  <p class="drops-fine">Lucky #7: any 5 ml up to $45, or $45 off a bigger one. Tied to the email you order with.</p>
  <div class="vvcard" id="hero-card" aria-hidden="true"></div>
