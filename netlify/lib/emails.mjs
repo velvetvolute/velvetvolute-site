@@ -95,7 +95,7 @@ export function abandonedCartEmail({ first, lines, subtotal, restoreUrl, unsubUr
 export function rewardEmail({ first, claimUrl, unsubUrl, capCents = 4500 }) {
   const body = `
    ${h2("Lucky #7 is on us")}
-   ${p(`${hi(first)} six decants in, and that puts you with the real ones. Your seventh is free: any 5 ml in the collection up to $${capCents / 100}, or $${capCents / 100} toward a bigger one.`)}
+   ${p(`${hi(first)} six punches in, and that puts you with the real ones. Your seventh is free: any 5 ml in the collection up to $${capCents / 100}, or $${capCents / 100} toward a bigger one.`)}
    ${button(claimUrl, "Choose your free 5 ml")}
    ${p(`Pick the one you've been circling. I'll email you a one-time code the moment you choose, and it'll show up as 100% off that 5 ml in your cart.`)}
    ${small(`The link is yours alone. It keeps working until you've used it.`)}
@@ -152,13 +152,15 @@ export function loyaltyBlock({ returnCode, returnExpires, referralCode, punches,
   if (punches) {
     const line = punches.pending > 0
       ? `<b>6 of 6 punched · Lucky #7 is on us.</b> ${claimUrl ? `<a href="${esc(claimUrl)}" style="color:#6e1a31">Choose your free 5 ml</a>.` : "Check your inbox for the link to choose your free 5 ml."}`
-      : `<b>${punches.cycle} of 6 punched · Lucky #7 is on us.</b> Every decant is a punch; at six, the seventh is free: any 5 ml up to $45, or $45 toward a bigger one.`;
+      : `<b>${fmtPunch(punches.cycle)} of 6 punches · Lucky #7 is on us.</b> A 2 or 3 ml is a drop (half a punch), a 5 ml is a punch, a 10 ml is a punch and a half. At six, the seventh is free: any 5 ml up to $45, or $45 toward a bigger one.`;
     parts.push(`${H3("The Real Ones punch card")}<p style="margin:0 0 4px">${line}</p><p style="margin:0;font-size:13px;color:#8a6d4b">${punchDots(punches.pending > 0 ? 6 : punches.cycle)} <a href="${SITE}/the-real-ones" style="color:#6e1a31">How it works</a></p>`);
   }
   if (sherpaPickName) parts.push(`${H3("Sherpa's pick")}<p style="margin:0">There's a 1 ml of <b>${esc(sherpaPickName)}</b> tucked in with your order. It's close to what you chose, with a twist. Tell me what you think.</p>`);
   return parts.join("");
 }
-export const punchDots = (n) => Array.from({ length: 6 }, (_, i) => (i < n ? "●" : "○")).join(" ");
+// 3.5 → "3½"; dots: ● full punch, ◐ a drop (half), ○ empty
+export const fmtPunch = (n) => `${Math.floor(n) || (n % 1 ? "" : "0")}${n % 1 ? "½" : ""}`;
+export const punchDots = (n) => Array.from({ length: 6 }, (_, i) => (i + 1 <= n ? "●" : i + 0.5 <= n ? "◐" : "○")).join(" ");
 
 // 11. Shop-copy extras for the order confirmation: Sherpa's pick (top 3 to pour as a 1 ml surprise)
 // and the mark-shipped link.

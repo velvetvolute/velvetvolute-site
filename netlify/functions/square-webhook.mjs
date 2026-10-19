@@ -11,7 +11,7 @@ import { getStore } from "@netlify/blobs";
 import { sq, LOCATION_ID, isReusableCode, isReferralCode } from "../lib/square.mjs";
 import { summarize } from "./order.mjs";
 import { sendEnjoy, buyerEmail } from "../lib/enjoy.mjs";
-import { stores, getJSON, getCode, recordPaid, saveCart, getContact, upsertContact, addPunches, setPunchClaim, newToken, normEmail, EMAIL_RE, firstName } from "../lib/store.mjs";
+import { stores, getJSON, getCode, recordPaid, saveCart, getContact, upsertContact, setPunchClaim, newToken, normEmail, EMAIL_RE, firstName, addDrops, dropsFor } from "../lib/store.mjs";
 import { retireCode, issueCode, PUNCH_REWARD_CAP_CENTS } from "../lib/codes.mjs";
 import { scentsInOrder, sherpasPick, segmentsFromOrder, parseVariation, byName, fullName } from "../lib/scents.mjs";
 import { shopExtrasBlock, rewardEmail, referralThanksEmail } from "../lib/emails.mjs";
@@ -91,8 +91,9 @@ async function creditReferrer(codeName, buyer, s, token) {
   await upsertContact(rec.email, { referrals: (referrer?.referrals || 0) + 1 }).catch(() => {});
 }
 
-// Segments + punch card for the buyer. Every decant is a punch; a free 5 ml paid for with a punch code
-// doesn't punch itself. At six, a claim link goes out.
+// Segments + punch card for the buyer. Punches go by size (store.mjs dropsFor): 2/3 ml a drop (half a punch),
+// 5 ml a punch, 10 ml a punch and a half. A free 5 ml paid for with a punch code doesn't punch itself.
+// At six punches (12 drops), a claim link goes out.
 async function loyalty(s, buyer, order, usedCodes, token) {
   const email = normEmail(buyer.email);
   if (!EMAIL_RE.test(email)) return;
@@ -106,7 +107,8 @@ async function loyalty(s, buyer, order, usedCodes, token) {
     first, source: "order",
     seg: { ...seg, tenMl, orders: (c?.seg?.orders || 0) + 1, decants: (c?.seg?.decants || 0) + qty, repeat: (c?.seg?.orders || 0) > 0, firstOrderAt: c?.seg?.firstOrderAt || Date.now(), lastOrderAt: Date.now(), lastOrderNo: s.no },
   });
-  const p = await addPunches(email, Math.max(0, qty - freeUnits), s.no);
+  const drops = s.items.reduce((a, i) => a + dropsFor(parseVariation(i.variation).ml) * Number(i.qty || 0), 0);
+  const p = await addDrops(email, Math.max(0, drops - freeUnits * dropsFor(5)), s.no);
   if (p.pending > 0 && !p.claim) {
     const tokenId = newToken(28);
     await stores.claims().setJSON(tokenId, { email, first, created: Date.now(), used: false, capCents: PUNCH_REWARD_CAP_CENTS });

@@ -4,7 +4,7 @@
 //  vv-contacts   email → contact (consent, segments, welcome-series progress, codes issued, picks)
 //  vv-carts      cart id → saved cart (email, lines, timestamps, reminder state)
 //  vv-codes      CODE → { kind, email, discountId, productSetId, pricingRuleId, variationIds, expiresAt }
-//  vv-punches    email → { punches, rewarded, history[] }   (The Real Ones punch card)
+//  vv-punches    email → { drops, rewarded, history[] }   (The Real Ones punch card; 2 drops = 1 punch)
 //  vv-claims     claim token → { email, created, used, code }
 //  vv-followups  job id → { type, due, ... }                 (21-day "loved the 2 ml?" etc.)
 //  vv-paid       VV order number → { email, orderId, ts, cartId }
@@ -134,27 +134,30 @@ export async function paidSince(email, sinceMs) {
 }
 
 // ---- punch card ----
-export const PUNCHES_FOR_REWARD = 6;
+// Counted in DROPS: 2 ml / 3 ml = 1 drop (half a punch), 5 ml = 2 drops (a punch), 10 ml = 3 drops (a punch and a half).
+// Six punches = 12 drops fills the card; lucky #7 is the free 5 ml. Everything customer-facing shows punches.
+export const PUNCHES_FOR_REWARD = 6, DROPS_PER_PUNCH = 2, DROPS_FOR_REWARD = PUNCHES_FOR_REWARD * DROPS_PER_PUNCH;
+export const dropsFor = (ml) => (ml >= 10 ? 3 : ml >= 5 ? 2 : ml > 0 ? 1 : 0);
 export async function getPunches(email) {
   email = normEmail(email);
-  const p = (await getJSON(stores.punches(), email)) || { email, punches: 0, rewarded: 0, history: [] };
-  const cycle = p.punches % PUNCHES_FOR_REWARD;
-  const earned = Math.floor(p.punches / PUNCHES_FOR_REWARD);
-  return { ...p, cycle, earned, pending: Math.max(0, earned - (p.rewarded || 0)), claim: p.claim || null };
+  const p = (await getJSON(stores.punches(), email)) || { email, drops: 0, rewarded: 0, history: [] };
+  const drops = p.drops || 0, cycleDrops = drops % DROPS_FOR_REWARD;
+  const earned = Math.floor(drops / DROPS_FOR_REWARD);
+  return { ...p, drops, cycleDrops, cycle: cycleDrops / DROPS_PER_PUNCH, earned, pending: Math.max(0, earned - (p.rewarded || 0)), claim: p.claim || null };
 }
-export async function addPunches(email, n, note) {
+export async function addDrops(email, n, note) {
   email = normEmail(email);
   const s = stores.punches();
-  const p = (await getJSON(s, email)) || { email, punches: 0, rewarded: 0, history: [] };
-  p.punches = Math.max(0, p.punches + n);
-  p.history = [...(p.history || []), { n, note, ts: Date.now() }].slice(-60);
+  const p = (await getJSON(s, email)) || { email, drops: 0, rewarded: 0, history: [] };
+  p.drops = Math.max(0, (p.drops || 0) + n);
+  p.history = [...(p.history || []), { drops: n, note, ts: Date.now() }].slice(-60);
   await s.setJSON(email, p);
   return getPunches(email);
 }
 export async function setPunchClaim(email, claimToken) {
   email = normEmail(email);
   const s = stores.punches();
-  const p = (await getJSON(s, email)) || { email, punches: 0, rewarded: 0, history: [] };
+  const p = (await getJSON(s, email)) || { email, drops: 0, rewarded: 0, history: [] };
   p.rewarded = (p.rewarded || 0) + 1;
   p.claim = claimToken;
   await s.setJSON(email, p);

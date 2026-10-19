@@ -10,5 +10,5 @@ export default async (req) => {
   if (!EMAIL_RE.test(email)) return json(400, { error: "Please enter a valid email address." });
   if (!(await allowed(req, "punches", 30))) return json(429, { error: "Slow down a little." });
   const p = await getPunches(email);
-  return json(200, { punches: p.punches, cycle: p.cycle, earned: p.earned, pending: p.pending, ...(p.pending > 0 && p.claim ? { claimUrl: `${SITE}/the-real-ones?claim=${p.claim}` } : {}) });
+  return json(200, { drops: p.drops, cycle: p.cycle, earned: p.earned, pending: p.pending, ...(p.pending > 0 && p.claim ? { claimUrl: `${SITE}/the-real-ones?claim=${p.claim}` } : {}) });
 };

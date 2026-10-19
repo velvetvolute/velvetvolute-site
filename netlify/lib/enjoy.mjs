@@ -7,7 +7,7 @@ import { sq } from "./square.mjs";
 import { summarize } from "../functions/order.mjs";
 import { getContact, upsertContact, getPunches, queueFollowup, stores, getJSON, normEmail } from "./store.mjs";
 import { issueCode, issueReferralCode, activeCode, DAY } from "./codes.mjs";
-import { loyaltyBlock } from "./emails.mjs";
+import { loyaltyBlock, fmtPunch } from "./emails.mjs";
 import { byName, parseVariation } from "./scents.mjs";
 
 const SITE = process.env.SITE_URL || "https://velvetvolute.ca";
@@ -180,7 +180,7 @@ export async function loyaltyExtras(s, email, first, token) {
       `Leave a review: ${process.env.GOOGLE_REVIEW_URL || "https://www.facebook.com/share/19pYKmRDYj/"}`,
       `10% off your next order: ${ret.code}${ret.expiresAt ? ` (until ${new Date(ret.expiresAt).toLocaleDateString("en-CA")})` : ""}`,
       `Your referral code: ${ref.code} ($5 off a friend's first order; you get $5 each time)`,
-      punches.pending > 0 ? `Punch card: 6 of 6. Lucky #7 is on us: ${claimUrl || "see your inbox"}` : `Punch card: ${punches.cycle} of 6 punched. Lucky #7 is on us.`,
+      punches.pending > 0 ? `Punch card: 6 of 6. Lucky #7 is on us: ${claimUrl || "see your inbox"}` : `Punch card: ${fmtPunch(punches.cycle)} of 6 punches. Lucky #7 is on us.`,
       ...(pick ? [`Sherpa's pick: a 1 ml of ${pick.brand} ${pick.short} is in your order.`] : []),
     ].join("\n");
     return { html, text };
