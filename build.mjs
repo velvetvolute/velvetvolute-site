@@ -242,7 +242,7 @@ function productPage(p) {
  </div>
  <div class="pp-right">
  <div class="pp-head">
-  <a class="pp-brand" href="${hUrl(p.brand)}">${esc(p.brand)}<span>${p.g === "Men" ? "For him" : "Unisex"}</span></a>
+  <div class="pp-brandrow"><a class="pp-brand" href="${hUrl(p.brand)}">${esc(p.brand)}<span>${p.g === "Men" ? "For him" : "Unisex"}</span></a><span class="pp-deal" id="deal" hidden></span></div>
   <h1>${esc(p.name)}</h1>
   ${p.limited ? `<div class="limited">${esc(p.limited)}</div>` : ""}
   <ul class="chips"><li>${esc(FAM_LABEL[p.cat] || p.cat)}${p.cat2 ? ` with ${esc((FAM_LABEL[p.cat2] || p.cat2).toLowerCase())}` : ""}</li><li>${SEA_TXT[p.sea]}</li><li>${TM_TXT[p.tm]}</li><li>${STR_TXT[p.str || 2]}</li></ul>
@@ -260,12 +260,14 @@ function productPage(p) {
 </article>
 <section class="also"><div class="wrap"><h2>You may also like</h2><p class="sub">Picked by shared notes and families</p></div><div class="rail-wrap"><div class="rail wrap">${sims.map(scentTile).join("")}</div></div></section>
 ` + tail(`
-(function(){var P=${JSON.stringify(data)},V=${JSON.stringify(VIALS)},SPR=${JSON.stringify(SPRAYS)},ROLL={5:"",10:""};
+(function(){var P=${JSON.stringify(data)},V=${JSON.stringify(VIALS)},SPR=${JSON.stringify(SPRAYS)},ROLL={5:"",10:""},LIVE=${inStock(p) ? "true" : "false"},OFF=0;
 var v="classic",z=2,$=function(i){return document.getElementById(i)};
 var VD={classic:"A clear glass vial with a fine-mist atomizer. Our everyday decant.",luxe:"A weighted glass bottle with a gold cap and a fine-mist atomizer. The gift-ready one.",roll:"A glass roll-on for the wrist and neck, no spray. Ideal for travel and the office."};
-function price(){var b=P[V[v].key][z];return b}
-function draw(){$("sizes").innerHTML=V[v].sizes.map(function(s){return '<button type="button" class="sz'+(s===z?" on":"")+'" data-s="'+s+'" aria-pressed="'+(s===z)+'">'+s+' ml<span class="pml-b">$'+(P[V[v].key][s]/s).toFixed(2)+'/ml</span></button>'}).join("");
- $("price").innerHTML='$'+price()+'<small>CAD · '+z+' ml '+V[v].label.toLowerCase()+'</small><span class="sprays">'+(v==="roll"?"":"About "+SPR[z]+" sprays")+'</span>';
+/* spotlight / zodiac discount: same files and same rule as the homepage and the checkout (spotlight wins, never stacks, round down) */
+function at(s){var b=P[V[v].key][s];return OFF?Math.floor(b*(100-OFF)/100):b}
+function price(){return at(z)}
+function draw(){$("sizes").innerHTML=V[v].sizes.map(function(s){return '<button type="button" class="sz'+(s===z?" on":"")+'" data-s="'+s+'" aria-pressed="'+(s===z)+'">'+s+' ml<span class="pml-b">$'+(at(s)/s).toFixed(2)+'/ml</span></button>'}).join("");
+ $("price").innerHTML=(OFF?'<s>$'+P[V[v].key][z]+'</s> ':'')+'$'+price()+'<small>CAD · '+z+' ml '+V[v].label.toLowerCase()+'</small><span class="sprays">'+(v==="roll"?"":"About "+SPR[z]+" sprays")+'</span>';
  $("vdesc").textContent=VD[v];
  document.querySelectorAll(".vt,#ppcar .dots button").forEach(function(b){var on=b.dataset.v===v;b.classList.toggle("on",on);b.setAttribute(b.classList.contains("vt")?"aria-pressed":"aria-selected",on)});
  document.querySelectorAll(".sz").forEach(function(b){b.onclick=function(){z=+b.dataset.s;ZS[v]=z;draw()}})}
@@ -280,7 +282,15 @@ document.querySelector("#ppcar .next").onclick=function(){S.step(1)};
 tr.tabIndex=0;tr.addEventListener("keydown",function(e){if(e.key==="ArrowLeft"){S.step(-1);e.preventDefault()}if(e.key==="ArrowRight"){S.step(1);e.preventDefault()}});
 var add=$("add");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.parse(localStorage.getItem(K)||"null")||{lines:[],ship:null,promo:null};s.lines=s.lines||[];var l=s.lines.find(function(x){return x.sq===P.sq&&x.v===v&&x.z===z});if(l)l.q=Math.min(10,l.q+1);else s.lines.push({sq:P.sq,v:v,z:z,q:1});s.ts=Date.now();localStorage.setItem(K,JSON.stringify(s));var n=s.lines.reduce(function(a,l){return a+l.q},0),c=$("cart-count");c.textContent=n;c.hidden=false}catch(e){}
  add.textContent="Added ✓";add.classList.add("done");var t=document.createElement("div");t.className="cart-toast on";t.innerHTML='Added '+P.name.split(" Eau")[0].split(" Extrait")[0]+' · '+z+' ml '+V[v].label.toLowerCase()+' <a href="/#cart-page">View cart</a>';document.body.appendChild(t);setTimeout(function(){add.textContent="Add to cart";add.classList.remove("done")},1400);setTimeout(function(){t.remove()},3200)};
-draw()})();`);
+draw();
+if(LIVE&&window.fetch){var T=new Date(new Date().toLocaleString("en-US",{timeZone:"America/Toronto"})),md=(T.getMonth()+1)*100+T.getDate(),now=Date.now(),dl=$("deal");
+ Promise.all([fetch("/spotlight.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).catch(function(){return null}),fetch("/zodiac.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).catch(function(){return null})]).then(function(a){
+  var sp=a[0],zd=a[1],h="";
+  if(sp&&Array.isArray(sp.picks)&&!(now>Date.parse(sp.until+"T23:59:59-05:00"))&&!(sp.from&&now<Date.parse(sp.from+"T00:00:00-04:00"))&&sp.picks.some(function(x){return String(x.sq)===P.sq})){OFF=Number(sp.pct)||15;dl.className="pp-deal spot";h='<span class="rib-vv">VV</span> '+(sp.label?sp.label+" ":"")+'Spotlight · '+OFF+'% off'}
+  else if(zd&&Array.isArray(zd.signs)){var g=zd.signs.find(function(x){var f=x.from[0]*100+x.from[1],t=x.to[0]*100+x.to[1];return f<=t?md>=f&&md<=t:md>=f||md<=t});
+   if(g&&g.sq===P.sq&&Number(zd.pct)){OFF=Number(zd.pct);dl.className="pp-deal zod";h=g.glyph+"\\uFE0E "+g.sign+" season pick · "+OFF+"% off"}}
+  if(OFF){dl.innerHTML=h;dl.hidden=false;draw()}})}
+})();`);
 }
 
 /* ---------- house pages ---------- */

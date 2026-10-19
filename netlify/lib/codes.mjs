@@ -1,8 +1,9 @@
 // Unique one-time codes: Square catalog objects (see square.mjs createOneTimeCode) plus a record in
 // Netlify Blobs (vv-codes) so the cart can enforce restrictions and the webhook can retire the whole set.
 //
-// Kinds:  sherpa   10% off the three Sherpa picks (all sizes), 14 days          VV-SHERPA-XXXXX
-//         welcome  10% off a first decant, 14 days                              VV-HELLO-XXXXX
+// Kinds:  sherpa   10% off the three Sherpa picks (all sizes), 30 days          VV-SHERPA-XXXXX
+//         welcome  10% off a first decant, 30 days                              VV-HELLO-XXXXX
+//         (welcome + sherpa are the same sign-up offer: ONE per email, ever; see signupOffer below)
 //         return   10% off the next order, 30 days (enjoy email)                VV-BACK-XXXXX
 //         referral personal reusable code, $5 off a friend's first order         REF-NAME-XXXX
 //         thanks   $5 off for the referrer each time a friend orders, 60 days   VV-THANKS-XXXXX
@@ -80,4 +81,21 @@ export async function retireCode(nameOrId, token, { force = false } = {}) {
     return true;
   }
   return false;
+}
+
+// ---- the sign-up offer: one 10% code per email address, ever ----
+// The sign-up card, /subscribe, the Sherpa capture and the welcome drip all go through this, so nobody collects
+// a welcome code AND a Sherpa code. Returns:
+//   { state: "none" }                      never had one and never ordered → issue one (SIGNUP_DAYS)
+//   { state: "active", kind, code, rec }   holds a live one → reuse it, never mint a second
+//   { state: "spent" }                     had one (used or expired), or has already ordered → no new code
+export const SIGNUP_DAYS = 30;
+export async function signupOffer(contact) {
+  if (!contact) return { state: "none" };
+  for (const kind of ["welcome", "sherpa"]) {
+    const rec = await activeCode(contact, kind);
+    if (rec) return { state: "active", kind, code: contact.codes[kind], rec };
+  }
+  if (contact.codes?.welcome || contact.codes?.sherpa || (contact.seg?.orders || 0) > 0) return { state: "spent" };
+  return { state: "none" };
 }

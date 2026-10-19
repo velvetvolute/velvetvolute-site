@@ -286,3 +286,11 @@ a.sh-fab{text-decoration:none}
 .cmp-tbl td .rp{display:inline-block;margin:0 12px 2px 0;white-space:nowrap}
 @media(min-width:960px){.cmp{grid-template-columns:minmax(0,38%) minmax(0,1fr)}}
 .tbl-note{margin:-10px 0 0;font:300 12.5px/1.5 var(--sans);color:var(--muted)}
+
+/* ---- Scent page: spotlight / zodiac pill beside "House | For him" (same look as the homepage card) ---- */
+.pp-brandrow{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px}
+.pp-deal{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:30px;font:600 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+.pp-deal.spot{background:linear-gradient(135deg,#f3dcaa,#c9a066);color:#2c0610}
+.pp-deal.zod{background:#3a0a17;color:#e8d3b4;border:1px solid rgba(201,160,102,.55)}
+.pp-deal .rib-vv{display:inline-block;font:600 9.5px/1 var(--serif);letter-spacing:.04em;color:#4a0e1e;border:1.2px solid #4a0e1e;border-radius:50%;width:16px;height:16px;line-height:14px;text-align:center;margin-right:2px}
+.buyrow .price s{opacity:.6;font-weight:400;margin-right:4px}

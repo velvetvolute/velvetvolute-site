@@ -1,11 +1,12 @@
 // "10% off your first decant" sign-up (bottom-right card on the homepage, /subscribe page, link in bio).
 // POST { email, first?, consent, source?, website? (honeypot) }
-// Stores the contact in Blobs + the Resend audience, issues a one-time 10% code (14 days) unless they
-// already hold an active welcome or Sherpa code, and sends welcome email #1. Welcome #2 and #3 follow
-// from drip.mjs for contacts who ticked "first dibs".
+// Stores the contact in Blobs + the Resend audience and sends welcome email #1 with the sign-up offer:
+// ONE 10% code per email, ever, shared with the Sherpa capture (codes.mjs signupOffer). A live code is re-sent,
+// never doubled; a used or expired one, or an existing customer, gets the welcome without a code. 30 days.
+// Welcome #2 and #3 follow from drip.mjs for contacts who ticked "first dibs".
 import { allowed, upsertContact, getContact, EMAIL_RE, normEmail, firstName, canMarket } from "../lib/store.mjs";
 import { syncContact } from "../lib/resend.mjs";
-import { issueCode, activeCode } from "../lib/codes.mjs";
+import { issueCode, signupOffer, SIGNUP_DAYS } from "../lib/codes.mjs";
 import { welcome1Email } from "../lib/emails.mjs";
 import { sendMail, MARKETING_FROM, unsubscribeUrl } from "../lib/mail.mjs";
 
@@ -25,21 +26,22 @@ export default async (req) => {
   const source = /^[a-z-]{2,20}$/.test(String(input.source || "")) ? input.source : "signup";
   try {
     const prev = await getContact(email);
-    if (prev?.welcome?.[1] && (await activeCode(prev, "welcome"))) {
-      // Already welcomed with a live code: don't mint another, just record the (possibly new) consent.
-      const c = await upsertContact(email, { first, consent, source });
-      await syncContact({ email, first: c.first, unsubscribed: !canMarket(c) }).catch((e) => console.error("resend contact", e));
-      return json(200, { ok: true, again: true });
+    const offer = await signupOffer(prev);
+    let code = null, expiresAt = null, codeWhat, codeNote;
+    if (offer.state === "none") {
+      const c = await issueCode({ kind: "welcome", email, prefix: "VV-HELLO", percent: 10, days: SIGNUP_DAYS }, token); code = c.code; expiresAt = c.expiresAt;
+    } else if (offer.state === "active") {
+      // already holds the sign-up code: send the same one again (they may have lost the email), never a second
+      code = offer.code; expiresAt = offer.rec.expiresAt;
+      if (offer.kind === "sherpa") { codeWhat = "Your 10% code from the Scent Sherpa"; codeNote = "One per person, so this is the one you already have. One use, on your three Sherpa picks."; }
+      else codeNote = "One per person, so this is the one you already have. One use, on any decant.";
     }
-    let code = null, expiresAt = null;
-    const sherpa = await activeCode(prev, "sherpa");
-    if (!sherpa) { const c = await issueCode({ kind: "welcome", email, prefix: "VV-HELLO", percent: 10, days: 14 }, token); code = c.code; expiresAt = c.expiresAt; }
-    const contact = await upsertContact(email, { first, consent, source, ...(code ? { codes: { welcome: code } } : {}), welcome: { 1: Date.now() } });
+    const contact = await upsertContact(email, { first, consent, source, ...(offer.state === "none" ? { codes: { welcome: code } } : {}), welcome: { 1: prev?.welcome?.[1] || Date.now() } });
     await syncContact({ email, first: contact.first, unsubscribed: !canMarket(contact) }).catch((e) => console.error("resend contact", e));
     const unsubUrl = await unsubscribeUrl(email);
-    const m = welcome1Email({ first: contact.first, code, expiresAt, unsubUrl });
-    await sendMail({ from: MARKETING_FROM, to: email, subject: m.subject, html: m.html, text: m.text, unsubUrl, tags: [{ name: "kind", value: "welcome-1" }] });
-    return json(200, { ok: true });
+    const m = welcome1Email({ first: contact.first, code, expiresAt, unsubUrl, codeWhat, codeNote });
+    await sendMail({ from: MARKETING_FROM, to: email, subject: offer.state === "active" ? "Your Velvet Volute code (again)" : m.subject, html: m.html, text: m.text, unsubUrl, tags: [{ name: "kind", value: "welcome-1" }] });
+    return json(200, { ok: true, code: offer.state !== "spent", again: offer.state !== "none", expiresAt });
   } catch (e) {
     console.error(e);
     return json(502, { error: "Couldn't sign you up right now. Please try again, or email velvetvolute@gmail.com." });

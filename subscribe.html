@@ -23,7 +23,8 @@
 .sub-card label.f{display:block;font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#3A0A17;margin:0 0 6px}
 .sub-card input[type=email],.sub-card input[type=text]{display:block;width:100%;box-sizing:border-box;background:rgba(255,255,255,.22);border:1px solid rgba(74,14,30,.5);border-radius:4px;padding:11px 12px;color:#2C0610;font:400 16px var(--sans);margin-bottom:12px}
 .sub-card input:focus{outline:2px solid #3A0A17;outline-offset:1px}
-.sub-card input::placeholder{color:#5a3a2a;opacity:.7}
+.sub-card input::placeholder{color:#7a5a48;opacity:1}
+.sub-card input[type=email],.sub-card input[type=text]{background:#f4e9d6;border-color:rgba(74,14,30,.55)}
 .cart-dibs{display:flex;align-items:flex-start;gap:9px;margin:4px 0 0;font:400 14px/1.4 var(--sans);color:#3A0A17;cursor:pointer}
 .cart-dibs input{margin:3px 0 0;width:16px;height:16px;accent-color:#4A0E1E;flex:none}
 .sub-card .go{display:block;width:100%;margin-top:14px;padding:14px 0;border:0;border-radius:2px;background:#4A0E1E;color:#E6D3BC;font:600 12.5px var(--sans);letter-spacing:.18em;text-transform:uppercase;cursor:pointer}
@@ -60,7 +61,7 @@
   <label class="cart-dibs"><input type="checkbox" id="sub-dibs">First dibs on new drops, collections &amp; sales</label>
   <div class="et-hp" aria-hidden="true"><label>Website<input id="sub-website" tabindex="-1" autocomplete="off"></label></div>
   <button type="submit" class="go" id="sub-go">Send my code</button>
-  <p class="note">The code arrives by email either way, good for 14 days on any decant in the collection. Unsubscribe any time with one tap.</p>
+  <p class="note">The code arrives by email either way, good for 30 days on any decant in the collection. One per person, one code per order. Unsubscribe any time with one tap.</p>
   <p class="msg" id="sub-msg" hidden></p>
  </form>
  <p class="sub-more">Not sure where to start? <a href="/#quiz">Ask the Scent Sherpa</a> · <a href="/collections/">See the Curated Collections</a> · <a href="/the-real-ones">The Real Ones punch card</a></p>
@@ -84,8 +85,9 @@
   go.disabled=true;go.textContent="Sending…";
   fetch("/.netlify/functions/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:v,first:$("sub-first").value.trim(),consent:$("sub-dibs").checked,source:"bio",website:$("sub-website").value})})
   .then(function(r){return r.json().then(function(d){if(!r.ok||!d.ok)throw new Error(d.error||"Couldn't sign you up");return d})})
-  .then(function(){try{if(window.vvTrack)vvTrack("sign_up",{method:"bio"})}catch(x){}try{localStorage.setItem("vv-email",v);localStorage.setItem("vv-dibs",$("sub-dibs").checked?"1":"0");localStorage.setItem("vv-subscribed","1")}catch(x){}
-   f.innerHTML='<div class="done"><b>Sent.</b>Your code is on its way to '+v.replace(/</g,"&lt;")+'. Check your inbox, and the promotions tab if it hides there.<br><br><a href="/#shop" style="color:#2c0610">Browse the collection &rarr;</a></div>'})
+  .then(function(d){try{if(window.vvTrack)vvTrack("sign_up",{method:"bio"})}catch(x){}try{localStorage.setItem("vv-email",v);localStorage.setItem("vv-dibs",$("sub-dibs").checked?"1":"0");localStorage.setItem("vv-subscribed","1")}catch(x){}
+   var e=v.replace(/</g,"&lt;"),msg=d&&d.code===false?"<b>You're in.</b>The 10% sign-up code is one per person, and yours has already been used or has run out. Your welcome note is on its way to "+e+".":d&&d.again?"<b>You already have a code.</b>I've sent it to "+e+" again. One per person, and it can't be combined with other codes.":"<b>Sent.</b>Your code is on its way to "+e+". It expires in 30 days. Check your inbox, and the promotions tab if it hides there.";
+   f.innerHTML='<div class="done">'+msg+'<br><br><a href="/#shop" style="color:#2c0610">Browse the collection &rarr;</a></div>'})
   .catch(function(x){say((x&&x.message)||"Couldn't sign you up right now. Please try again, or email velvetvolute@gmail.com.");go.disabled=false;go.textContent="Send my code"})});
  try{var s=JSON.parse(localStorage.getItem("vv-cart-v1")||"null"),n=s&&s.lines?s.lines.reduce(function(a,l){return a+(l.q||0)},0):0,b=$("cart-count");if(b){b.textContent=n;b.hidden=!n}}catch(e){}
 })();

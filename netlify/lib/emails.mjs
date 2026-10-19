@@ -9,27 +9,28 @@ const PICKUP = "Pickup is at the Shoppers Drug Mart on Carling Ave in Ottawa. Fr
 const out = (subject, html) => ({ subject, html, text: toText(html) });
 
 // 1. Scent Sherpa picks: the three scents, a line each, the price range, the code.
-export function sherpaPicksEmail({ first, picks, code, expiresAt, shopUrl, unsubUrl, who }) {
+export function sherpaPicksEmail({ first, picks, code, expiresAt, shopUrl, unsubUrl, who, codeKind = "sherpa" }) {
   const rows = picks.map((p, k) => scentRow({ img: p.img, brand: p.brand, name: p.short, line: storyLine(p), price: `${priceRange(p)} · ${famLine(p)} · ${WHO(p)}`, href: absUrl(p.url), tag: k ? "Also on your trail" : "The Sherpa's top pick" })).join("");
   const body = `
    ${h2("Here's where I'd start")}
    ${p(`${hi(first)} the Scent Sherpa went through the collection with your answers${who === "her" ? " for her" : who === "him" ? " for him" : ""}. These three fit. Every one of them has a story, and I wear them myself. If I wouldn't wear it, I wouldn't sell it.`)}
    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${rows}</table>
-   ${codeCard(code, "10% off your top 3, any size", expiresAt, "One use, on these three scents only.")}
+   ${!code ? "" : codeKind === "sherpa" ? codeCard(code, "10% off your top 3, any size", expiresAt, "One use, on these three scents only.")
+     : codeCard(code, "Your 10% code works on these too", expiresAt, "This is the sign-up code you already have (one per person). One use, on any decant, these three included.")}
    ${button(shopUrl || SITE + "/#shop", "Shop your picks")}
    ${small(`Not sure which size? A 2 ml is about 20 sprays, enough for a week of wear. A 5 ml is about 50. A 10 ml is a month of daily wear. ${link(SITE + "/fragrance-101", "Fragrance 101")} has the rest.`)}
    ${small(PICKUP)}`;
-  return out(`Your Sherpa picks${first ? ", " + first : ""}: 3 scents and 10% off them`, layout({ kicker: "Your Sherpa picks", title: "Your Sherpa picks", body, unsubUrl, reason: "you asked the Scent Sherpa to email your picks", preheader: "Three scents that fit your answers, and a one-time code for 10% off." }));
+  return out(`Your Sherpa picks${first ? ", " + first : ""}${code ? ": 3 scents and 10% off them" : ""}`, layout({ kicker: "Your Sherpa picks", title: "Your Sherpa picks", body, unsubUrl, reason: "you asked the Scent Sherpa to email your picks", preheader: "Three scents that fit your answers, and a one-time code for 10% off." }));
 }
 
 // 2. Welcome #1: who Izzi is, the code if they don't already have one.
-export function welcome1Email({ first, code, expiresAt, unsubUrl }) {
+export function welcome1Email({ first, code, expiresAt, unsubUrl, codeWhat = "10% off your first decant", codeNote = "One use, on any decant in the collection." }) {
   const body = `
    ${h2("Welcome to the real ones")}
    ${p(`${hi(first)} I'm Izzi. Velvet Volute is my collection: luxury fragrances I've chosen one at a time, hand-poured into 2, 5 and 10 ml decants in Ottawa.`)}
    ${p(`I don't just sell decants. I curate, very much like putting together the perfect playlist. Some are smooth and sexy, some make you feel like a boss, some make you want to party till 5am. Either way, it's one banger after another.`)}
    ${p(`Every scent on the shelf has a story. If I wouldn't wear it, I wouldn't sell it.`)}
-   ${code ? codeCard(code, "10% off your first decant", expiresAt, "One use.") : p(`Your Sherpa code is already in your inbox, so no second one here. Use it well.`)}
+   ${code ? codeCard(code, codeWhat, expiresAt, codeNote) : p(`The 10% sign-up code is one per person, and yours has already been used or has run out, so there's no new one here. The Real Ones punch card has you covered from your first order on, and lucky #7 is on me.`)}
    ${button(SITE + "/#shop", "Browse the collection")}
    ${rule()}
    ${h3("What's coming")}

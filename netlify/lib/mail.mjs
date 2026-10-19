@@ -49,7 +49,7 @@ export function codeCard(code, what, expiresAt, note = "") {
   return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:18px 0"><tr><td align="center" style="padding:18px 16px;border:1px solid ${C.gold};background:${C.paper}" bgcolor="${C.paper}">
     <div style="font-family:${SANS};font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:${C.goldInk};margin-bottom:6px">${what}</div>
     <div style="font-family:${SANS};font-size:24px;letter-spacing:.1em;font-weight:700;color:${C.ink}">${esc(code)}</div>
-    <div style="font-family:${SANS};font-size:13px;color:${C.soft};margin-top:6px">${expiresAt ? `Good until ${fmtDate(expiresAt)}. ` : ""}Enter it in the cart under “Promo code”.${note ? ` ${note}` : ""}</div>
+    <div style="font-family:${SANS};font-size:13px;color:${C.soft};margin-top:6px">${expiresAt ? `<b style="color:${C.ink}">Expires ${fmtDate(expiresAt)}</b> (${Math.max(1, Math.round((expiresAt - Date.now()) / 864e5))} days). ` : ""}Enter it in the cart under “Promo code”. One code per order; codes can't be combined.${note ? ` ${note}` : ""}</div>
   </td></tr></table>`;
 }
 

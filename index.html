@@ -289,6 +289,7 @@ nav a{white-space:nowrap}
 .cart-row{display:flex;justify-content:space-between;font:400 15.5px var(--sans);color:#e8d3b4;margin:4px 0}
 .cart-promo{margin:6px 0 10px}
 .cart-promo label{display:block;font:500 11px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:#cfa3a9;margin-bottom:6px}
+.cart-promo label small{font-size:11px;letter-spacing:.04em;text-transform:none;font-weight:400;opacity:.85}
 .cart-promo-row{display:flex;gap:8px}
 .cart-promo-row input{flex:1;min-width:0;padding:10px 12px;border:1px solid rgba(181,148,106,.5);border-radius:3px;background:rgba(0,0,0,.18);color:#e8d3b4;font:400 15px var(--sans);text-transform:uppercase}
 .cart-promo-row input::placeholder{text-transform:none;color:#a98a8f}
@@ -821,7 +822,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
     </div>
    </fieldset>
    <p class="cart-free" id="cart-free"></p>
-   <div class="cart-promo"><label for="cart-code">Promo code</label><div class="cart-promo-row"><input id="cart-code" maxlength="30" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="From our Facebook page?"><button type="button" id="cart-code-apply">Apply</button></div><p class="cart-promo-msg" id="cart-promo-msg" hidden></p></div>
+   <div class="cart-promo"><label for="cart-code">Promo code <small>(one per order)</small></label><div class="cart-promo-row"><input id="cart-code" maxlength="30" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="From our Facebook page?"><button type="button" id="cart-code-apply">Apply</button></div><p class="cart-promo-msg" id="cart-promo-msg" hidden></p></div>
    <div class="cart-row"><span>Subtotal</span><span id="cart-sub">$0</span></div>
    <div class="cart-row" id="cart-promo-line" hidden><span>Promo code</span><span id="cart-promo-amt"></span></div>
    <div class="cart-row"><span>Delivery</span><span id="cart-ship">Choose an option</span></div>
@@ -2057,10 +2058,10 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  const capD={email:"",first:"",consent:false,sent:false};
  try{capD.email=localStorage.getItem("vv-email")||"";capD.consent=localStorage.getItem("vv-dibs")==="1";capD.sent=sessionStorage.getItem("vv-sherpa-sent")===JSON.stringify((ans.who||"")+"|")}catch(e){}
  function capHTML(avail){
-  if(capD.sent)return `<div class="qz-cap sent"><div class="qz-step">Sent</div><h4>Your picks are on their way</h4><p>Check your inbox for the three scents, their stories and your one-time code for 10% off any size of them.</p></div>`;
+  if(capD.sent)return `<div class="qz-cap sent"><div class="qz-step">Sent</div><h4>Your picks are on their way</h4><p>${capD.res&&!capD.res.code?"Check your inbox for the three scents and their stories. The 10% sign-up code is one per person, and yours has already been used or has run out.":capD.res&&capD.res.again?"Check your inbox for the three scents and their stories, plus the 10% code you already hold (one per person, so no second one).":"Check your inbox for the three scents, their stories and your one-time code for 10% off any size of them. It expires in 30 days."}</p></div>`;
   const n=avail.length;
   return `<form class="qz-cap" id="qz-cap" novalidate><div class="qz-step">Keep these</div><h4>Email me my picks <span>&rarr; 10% off your top ${n===1?"pick":n}</span></h4>
-   <p>I'll send ${n===1?"this pick":"these "+n+" picks"} with ${n===1?"its":"their"} story and a one-time code for 10% off any size of ${n===1?"it":"them"}. Good for 14 days.</p>
+   <p>I'll send ${n===1?"this pick":"these "+n+" picks"} with ${n===1?"its":"their"} story and a one-time code for 10% off any size of ${n===1?"it":"them"}. Good for 30 days, one per person.</p>
    <div class="qz-cap-row"><input type="email" id="qzc-email" value="${esc(capD.email)}" placeholder="you@example.com" autocomplete="email" inputmode="email" maxlength="254" required spellcheck="false" aria-label="Email"><input type="text" id="qzc-first" value="${esc(capD.first)}" placeholder="First name (optional)" autocomplete="given-name" maxlength="40" aria-label="First name"></div>
    <label class="cart-dibs"><input type="checkbox" id="qzc-consent" ${capD.consent?"checked":""}>First dibs on new drops, collections &amp; sales</label>
    <button type="submit" class="qz-cap-go" id="qzc-go">Email me my picks</button><p class="qz-cap-msg" id="qzc-msg" hidden></p></form>`}
@@ -2073,7 +2074,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
    const ids=picks().filter(x=>inStock(x.p)).map(x=>x.p.sq);go.disabled=true;go.textContent="Sending…";
    fetch("/.netlify/functions/sherpa-picks",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:v,first:capD.first,consent:capD.consent,picks:ids,who:ans.who||""})})
    .then(r=>r.json().then(d=>{if(!r.ok||!d.ok)throw new Error(d.error||"Couldn't send");return d}))
-   .then(()=>{capD.sent=true;try{if(window.vvTrack)vvTrack("sign_up",{method:"sherpa"})}catch(x){}try{localStorage.setItem("vv-email",v);localStorage.setItem("vv-dibs",capD.consent?"1":"0");localStorage.setItem("vv-subscribed","1");sessionStorage.setItem("vv-sherpa-sent",JSON.stringify((ans.who||"")+"|"))}catch(x){}
+   .then(d=>{capD.sent=true;capD.res=d;try{if(window.vvTrack)vvTrack("sign_up",{method:"sherpa"})}catch(x){}try{localStorage.setItem("vv-email",v);localStorage.setItem("vv-dibs",capD.consent?"1":"0");localStorage.setItem("vv-subscribed","1");sessionStorage.setItem("vv-sherpa-sent",JSON.stringify((ans.who||"")+"|"))}catch(x){}
     if(window.Cart&&Cart.setEmail)Cart.setEmail(v,capD.consent);f.outerHTML=capHTML([])})
    .catch(x=>{say((x&&x.message)||"Couldn't send your picks right now. Please try again.");go.disabled=false;go.textContent="Email me my picks"})}}
  const short=n=>n.replace(/ (Extrait de Parfum|Eau de Parfum|Eau de Toilette|Parfum)$/,"");
@@ -2158,8 +2159,8 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   go.disabled=true;go.textContent="Sending…";
   fetch("/.netlify/functions/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:v,consent:ck.checked,source:"card",website:document.getElementById("su-website").value})})
   .then(r=>r.json().then(d=>{if(!r.ok||!d.ok)throw new Error(d.error||"Couldn't sign you up");return d}))
-  .then(()=>{try{if(window.vvTrack)vvTrack("sign_up",{method:"card"})}catch(x){}set("vv-email",v);set("vv-dibs",ck.checked?"1":"0");set("vv-subscribed","1");if(window.Cart&&Cart.setEmail)Cart.setEmail(v,ck.checked);
-   document.getElementById("su-form").innerHTML='<p><b>Sent.</b> Your code is on its way to '+v.replace(/</g,"&lt;")+'. Check your inbox (and promotions tab).</p>';setTimeout(hide,6000)})
+  .then(d=>{try{if(window.vvTrack)vvTrack("sign_up",{method:"card"})}catch(x){}set("vv-email",v);set("vv-dibs",ck.checked?"1":"0");set("vv-subscribed","1");if(window.Cart&&Cart.setEmail)Cart.setEmail(v,ck.checked);
+   var e=v.replace(/</g,"&lt;");document.getElementById("su-form").innerHTML=d&&d.code===false?'<p><b>You\'re in.</b> The 10% sign-up code is one per person, and yours has already been used or has run out. Your welcome note is on its way to '+e+'.</p>':d&&d.again?'<p><b>You already have a code.</b> I\'ve sent it to '+e+' again. One per person, and it can\'t be combined with other codes.</p>':'<p><b>Sent.</b> Your code is on its way to '+e+'. It expires in 30 days. Check your inbox (and promotions tab).</p>';setTimeout(hide,7000)})
   .catch(x=>{say((x&&x.message)||"Couldn't sign you up right now. Please try again.");go.disabled=false;go.textContent="Send my code"})}})();
 </script>
 <script>
@@ -2307,11 +2308,12 @@ var Cart=(function(){
  function applyPromo(){var code=($("cart-code").value||"").trim().toUpperCase().replace(/\s+/g,"");
   if(!code){promo=null;save();draw();promoMsg("");return}
   if(promo&&promo.code===code){promoMsg("Code "+code+" is applied.","ok");return}
+  if(promo)promoMsg("One code per order: "+code+" will replace "+promo.code+" if it's valid.","");
   var b=$("cart-code-apply");b.disabled=true;b.textContent="…";
   fetch("/.netlify/functions/coupon?code="+encodeURIComponent(code),{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
    if(d&&d.ok){promo={code:d.code,pct:d.pct||0,cents:d.cents||0,only:d.only||null};save();draw();var po2=promoOff();promoMsg("Code "+d.code+" applied: "+(d.pct?d.pct+"% off":money(d.cents/100)+" off")+(d.only&&d.only.length?(po2?" the scents it covers.":". It covers specific scents or sizes that aren't in your cart yet."):". It's taken off at checkout."),po2||!(d.only&&d.only.length)?"ok":"err")}
    else{promo=null;save();draw();promoMsg((d&&d.error)||"That promo code isn't valid.","err")}
-  }).catch(function(){promoMsg("Couldn't check that code right now. You can also enter it under “Add coupon” on the payment page.","err")})
+  }).catch(function(){promoMsg("Couldn't check that code right now. Please try again in a moment.","err")})
   .then(function(){b.disabled=false;b.textContent="Apply"})}
  $("cart-code-apply").onclick=applyPromo;$("cart-code").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();applyPromo()}});
  $("cart-code").addEventListener("input",function(){if(promo&&$("cart-code").value.trim().toUpperCase()!==promo.code){promo=null;save();draw();promoMsg("")}});
@@ -2451,6 +2453,10 @@ body.qz-open .su-card,.su-card.quiet{opacity:0;pointer-events:none}
 .qz-cap input[type=email],.qz-cap input[type=text]{display:block;width:100%;box-sizing:border-box;background:rgba(255,255,255,.2);border:1px solid rgba(74,14,30,.5);border-radius:4px;padding:10px 11px;color:#2C0610;font:400 16px var(--sans)}
 .qz-cap input:focus{outline:2px solid #3A0A17;outline-offset:1px}
 .qz-cap input::placeholder{color:#5a3a2a;opacity:.7}
+/* Readable fields on the camel/tan panels: solid cream, wine text, a placeholder dark enough to read (WCAG AA on #f4e9d6) */
+.su-card input[type=email],.qz-cap input[type=email],.qz-cap input[type=text],.cart-email input[type=email],.cart-promo-row input{background:#f4e9d6;border:1px solid rgba(74,14,30,.55);color:#2c0610}
+.su-card input::placeholder,.qz-cap input::placeholder,.cart-email input[type=email]::placeholder,.cart-promo-row input::placeholder{color:#7a5a48;opacity:1}
+.cart-promo-row input:focus{outline:2px solid #3A0A17;outline-offset:1px}
 .qz-cap .cart-dibs{margin:9px 0 0;font-size:13px}
 .qz-cap .qz-cap-go{display:block;width:100%;margin-top:10px;padding:13px 0;border:0;border-radius:2px;background:#4a0e1e;color:#e8d3b4;font:600 12.5px var(--sans);letter-spacing:.18em;text-transform:uppercase;cursor:pointer}
 .qz-cap .qz-cap-go:hover:not(:disabled){background:#2c0610}

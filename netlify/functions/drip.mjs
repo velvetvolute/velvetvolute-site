@@ -2,7 +2,7 @@
 // day 7), the 21-day "loved the 2 ml?" follow-ups queued by the enjoy email, and a sweep that removes
 // expired codes from the Square catalogue. Schedule lives in netlify.toml.
 import { stores, listAll, getJSON, upsertContact, canMarket, forgetCode } from "../lib/store.mjs";
-import { issueCode, activeCode, DAY } from "../lib/codes.mjs";
+import { issueCode, activeCode, DAY, signupOffer, SIGNUP_DAYS } from "../lib/codes.mjs";
 import { deleteCode, itemVariations } from "../lib/square.mjs";
 import { welcome1Email, welcome2Email, welcome3Email, upsizeEmail } from "../lib/emails.mjs";
 import { sendMail, MARKETING_FROM, unsubscribeUrl } from "../lib/mail.mjs";
@@ -26,8 +26,9 @@ async function welcomeSeries(token, now, stats) {
         // Opted in through the Sherpa or the cart: welcome #1 an hour later, with a code only if they hold none.
         if (now - Number(c.consentAt || c.created || 0) < HOUR) continue;
         let code = null, expiresAt = null;
-        if (!(await activeCode(c, "sherpa")) && !(await activeCode(c, "welcome"))) {
-          const k = await issueCode({ kind: "welcome", email: c.email, prefix: "VV-HELLO", percent: 10, days: 14 }, token); code = k.code; expiresAt = k.expiresAt;
+        // one sign-up code per email, ever: only someone who has never had one (and never ordered) gets one here
+        if ((await signupOffer(c)).state === "none") {
+          const k = await issueCode({ kind: "welcome", email: c.email, prefix: "VV-HELLO", percent: 10, days: SIGNUP_DAYS }, token); code = k.code; expiresAt = k.expiresAt;
         }
         await send(c.email, welcome1Email({ first: c.first, code, expiresAt, unsubUrl }), "welcome-1", unsubUrl);
         await upsertContact(c.email, { welcome: { 1: now }, ...(code ? { codes: { welcome: code } } : {}) });

@@ -24,7 +24,7 @@ export default async (req) => {
       redirect_url: `${SITE}/thanks.html`,
       merchant_support_email: "velvetvolute@gmail.com",
       allow_tipping: false,
-      enable_coupon: true, // Square Online coupons can also be entered on the payment page
+      enable_coupon: false, // one code per order: codes go in the site cart only, so nothing can be stacked on Square's payment page
       accepted_payment_methods: { apple_pay: true, google_pay: true },
     };
     if (shipCents > 0) checkout_options.shipping_fee = { name: SHIPPING[ship].label, charge: { amount: shipCents, currency: "CAD" } };
