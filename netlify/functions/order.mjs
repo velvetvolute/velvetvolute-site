@@ -52,6 +52,8 @@ export function summarize(order) {
 async function notify(s) {
   const topic = process.env.NTFY_TOPIC;
   if (!topic) return false;
+  // the Square webhook already sends the full alert (with customer details); don't double-ping
+  if (process.env.SQUARE_WEBHOOK_SIGNATURE_KEY) return true;
   const how = s.method === "pickup" ? "Ottawa pickup" : s.method === "local" ? "Local hand delivery" : s.method === "ship" ? "Shipping" : "";
   const lines = s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""}`);
   try {

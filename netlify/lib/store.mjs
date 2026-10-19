@@ -22,7 +22,8 @@ export const stores = {
   contacts: () => store("vv-contacts"),
   carts: () => store("vv-carts"),
   codes: () => store("vv-codes"),
-  punches: () => store("vv-punches"),
+  // strong: addDrops writes then reads straight back for the order email; an eventual read can come back stale (0 drops)
+  punches: () => getStore({ name: "vv-punches", consistency: "strong" }),
   claims: () => store("vv-claims"),
   followups: () => store("vv-followups"),
   paid: () => store("vv-paid"),
@@ -139,22 +140,24 @@ export async function paidSince(email, sinceMs) {
 export const PUNCHES_FOR_REWARD = 6, DROPS_PER_PUNCH = 2, DROPS_FOR_REWARD = PUNCHES_FOR_REWARD * DROPS_PER_PUNCH;
 export const SIGNUP_DROPS = Number(process.env.SIGNUP_DROPS || 2);   // starter drops for a first-time sign-up ("your first stamp is on us")
 export const dropsFor = (ml) => (ml >= 10 ? 3 : ml >= 5 ? 2 : ml > 0 ? 1 : 0);
-export async function getPunches(email) {
-  email = normEmail(email);
-  const p = (await getJSON(stores.punches(), email)) || { email, drops: 0, rewarded: 0, history: [] };
+function punchView(p) {
   const drops = p.drops || 0, cycleDrops = drops % DROPS_FOR_REWARD;
   const earned = Math.floor(drops / DROPS_FOR_REWARD);
   return { ...p, drops, cycleDrops, cycle: cycleDrops / DROPS_PER_PUNCH, earned, pending: Math.max(0, earned - (p.rewarded || 0)), claim: p.claim || null };
+}
+export async function getPunches(email) {
+  email = normEmail(email);
+  return punchView((await getJSON(stores.punches(), email)) || { email, drops: 0, rewarded: 0, history: [] });
 }
 export async function addDrops(email, n, note) {
   email = normEmail(email);
   const s = stores.punches();
   const p = (await getJSON(s, email)) || { email, drops: 0, rewarded: 0, history: [] };
-  if (note && (p.history || []).some((h) => h.note === note)) return getPunches(email);   // same order twice (webhook retry): count it once
+  if (note && (p.history || []).some((h) => h.note === note)) return punchView(p);   // same order twice (webhook retry): count it once
   p.drops = Math.max(0, (p.drops || 0) + n);
   p.history = [...(p.history || []), { drops: n, note, ts: Date.now() }].slice(-60);
   await s.setJSON(email, p);
-  return getPunches(email);
+  return punchView(p);   // from what was just written, not a re-read
 }
 export async function setPunchClaim(email, claimToken) {
   email = normEmail(email);

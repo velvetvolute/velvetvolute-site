@@ -25,6 +25,22 @@ const MAIL_FROM = process.env.ORDER_EMAIL_FROM || "Velvet Volute <orders@velvetv
 const MAIL_COPY = process.env.ORDER_COPY_TO || SHOP_EMAIL;
 const money = (c) => "$" + (c / 100).toFixed(2);
 
+// Who placed the order, from the checkout's pickup/shipping recipient (Square Online doesn't always
+// create a customer profile). Shop-only: goes in the ntfy alert and the shop copy, never the buyer's email.
+export function contactOf(order, buyer = {}) {
+  let r = {};
+  for (const f of order.fulfillments || []) {
+    r = (f.shipment_details || f.delivery_details || f.pickup_details || {}).recipient || {};
+    if (r.display_name || r.email_address || r.phone_number) break;
+  }
+  const a = r.address || {};
+  const name = [a.first_name, a.last_name].filter(Boolean).join(" ") || r.display_name || buyer.name || "";
+  const phone = String(r.phone_number || "").replace(/^\+1(\d{3})(\d{3})(\d{4})$/, "$1-$2-$3");
+  const address = [a.address_line_1, a.address_line_2, [a.locality, a.administrative_district_level_1].filter(Boolean).join(", "), a.postal_code].filter(Boolean).join(", ");
+  return { name, email: r.email_address || buyer.email || "", phone, address };
+}
+const contactLines = (c) => [c.name && `Name: ${c.name}`, c.email && `Email: ${c.email}`, c.phone && `Phone: ${c.phone}`, c.address && `Address: ${c.address}`].filter(Boolean);
+
 async function validSignature(req, raw) {
   const key = process.env.SQUARE_WEBHOOK_SIGNATURE_KEY;
   if (!key) return false;
@@ -47,7 +63,7 @@ async function firstDelivery(paymentId) {
   }
 }
 
-async function notify(s, picks) {
+async function notify(s, picks, contact = {}) {
   const topic = process.env.NTFY_TOPIC;
   if (!topic) return;
   const lines = s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""}`);
@@ -55,7 +71,7 @@ async function notify(s, picks) {
   await fetch("https://ntfy.sh/" + encodeURIComponent(topic), {
     method: "POST",
     headers: { Title: `New order ${s.no} · ${money(s.total)}`, Priority: "high", Tags: "shopping_bags" },
-    body: [s.method === "pickup" ? "Ottawa pickup" : s.method === "local" ? "LOCAL HAND DELIVERY" : s.method === "ship" ? "Shipping" : "", ...lines, ...sp].filter(Boolean).join("\n"),
+    body: [s.method === "pickup" ? "Ottawa pickup" : s.method === "local" ? "LOCAL HAND DELIVERY" : s.method === "ship" ? "Shipping" : "", ...contactLines(contact), "", ...lines, ...sp].filter((x, k, a) => x || (k > 0 && a[k - 1])).join("\n"),
   }).catch(() => {});
 }
 
@@ -162,18 +178,21 @@ export function emailHTML(s, ref, etransfer = false, extra = "", card = "") {
 // sees what the customer saw plus what to pour. Replies go to the shop's Gmail.
 // etransfer: the payment was recorded by hand in Square (source_type EXTERNAL), e.g. an Interac
 // e-Transfer, so the email reads "Invoice paid" instead of "Order confirmation".
-async function emailBuyer(s, to, ref, etransfer = false, picks = [], punch = null) {
+async function emailBuyer(s, to, ref, etransfer = false, picks = [], punch = null, contact = {}) {
   const key = process.env.RESEND_API_KEY;
   if (!key) return;
   const text = [etransfer ? `Invoice paid. Thank you, your e-Transfer has been received. Order number ${s.no}.` : `Thank you for your order. Order number ${s.no}.`, ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""} ${money(i.total)}`), `Total paid ${money(s.total)}`, s.method === "pickup" ? `Pickup: book your slot at ${BOOKING_URL}` : "I'll email you once your decants ship."].join("\n");
   const subject = etransfer ? `Your Velvet Volute order ${s.no}: invoice paid` : `Your Velvet Volute order ${s.no}`;
   const adminKey = process.env.ADMIN_KEY;
   const admin = (q) => (adminKey ? `${SITE}/.netlify/functions/mark-shipped?order=${encodeURIComponent(s.no)}&key=${encodeURIComponent(adminKey)}${q}` : "");
-  const extras = picks.length || adminKey ? shopExtrasBlock({ picks, method: s.method, markShippedUrl: admin(""), pickUrl: adminKey ? (sqId) => admin(`&pick=${encodeURIComponent(sqId)}&only=pick`) : null }) : "";
+  const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const cl = contactLines(contact);
+  const who = cl.length ? `<div style="margin-top:22px;padding:14px 16px;border:1px dashed #b5946a;background:#fff"><div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#8a6d4b">Shop copy only · Customer</div><p style="margin:8px 0 0;font-size:15px;line-height:1.6">${cl.map((l) => esc(l)).join("<br>")}</p></div>` : "";
+  const extras = who + (picks.length || adminKey ? shopExtrasBlock({ picks, method: s.method, markShippedUrl: admin(""), pickUrl: adminKey ? (sqId) => admin(`&pick=${encodeURIComponent(sqId)}&only=pick`) : null }) : "");
   const sends = [];
   const card = cardBlock(punch);
   if (to) sends.push({ to: [to], html: emailHTML(s, ref, etransfer, "", card) });
-  sends.push({ to: [MAIL_COPY], html: emailHTML(s, ref, etransfer, extras, card), text: text + (picks.length ? `\n\nSherpa's pick (1 ml surprise): ${picks.map((x) => fullName(x.p)).join("; ")}` : "") });
+  sends.push({ to: [MAIL_COPY], html: emailHTML(s, ref, etransfer, extras, card), text: text + (cl.length ? `\n\nCustomer:\n${cl.join("\n")}` : "") + (picks.length ? `\n\nSherpa's pick (1 ml surprise): ${picks.map((x) => fullName(x.p)).join("; ")}` : "") });
   for (const m of sends) {
     const r = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify({ from: MAIL_FROM, to: m.to, reply_to: SHOP_EMAIL, subject: m.to[0] === MAIL_COPY && to ? `[shop copy] ${subject}` : subject, text: m.text || text, html: m.html }) });
     if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
@@ -220,15 +239,16 @@ export default async (req) => {
     const s = summarize(order);
     const buyer = await buyerEmail(order, token).catch(() => ({ email: "", name: "" }));
     if (!buyer.email && pay.buyer_email_address) buyer.email = pay.buyer_email_address;
+    const contact = contactOf(order, buyer);
     const picks = sherpasPick(scentsInOrder(s.items));
     // Record the paid order and release the saved cart (checkout.mjs linked cart id → order number).
     const cartLink = await getJSON(stores.paid(), "cart-" + s.no).catch(() => null);
     await recordPaid(s.no, { email: normEmail(buyer.email), orderId: order.id, paymentId: pay.id, items: s.items, method: s.method, total: s.total, cartId: cartLink?.cartId || null, picks: picks.map((x) => x.p.sq) }).catch((e) => console.error(e));
     if (cartLink?.cartId) await saveCart(cartLink.cartId, { ordered: true, orderNo: s.no }).catch(() => {});
     // drops are added first so the confirmation shows the updated card; the lucky #7 email (if the card filled) follows it
-    const [, usedCodes] = await Promise.all([notify(s, picks), retireCoupon(order, token)]);
+    const [, usedCodes] = await Promise.all([notify(s, picks, contact), retireCoupon(order, token)]);
     const punch = await loyalty(s, buyer, order, usedCodes, token).catch((e) => { console.error("loyalty", e); return null; });
-    await emailBuyer(s, pay.buyer_email_address || buyer.email, pay.receipt_number, pay.source_type === "EXTERNAL", picks, punch);
+    await emailBuyer(s, pay.buyer_email_address || buyer.email, pay.receipt_number, pay.source_type === "EXTERNAL", picks, punch, contact);
     if (punch?.reward) await punch.reward().catch((e) => console.error("punch reward", e));
     for (const name of usedCodes) if (isReferralCode(name)) await creditReferrer(name, buyer, s, token).catch((e) => console.error("referral", e));
     return new Response("ok");
