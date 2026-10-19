@@ -535,6 +535,25 @@ function compareIndex() {
 </section>` + tail();
 }
 
+/* ---------- homepage scent index: static links to every house and scent page ----------
+   The shop grid on the homepage is drawn by JavaScript, so crawlers reading the raw HTML would only find /houses/.
+   This block is regenerated between the vv:index markers in index.html on every build (idempotent). */
+function homeIndex() {
+  const byHouse = Object.entries(PRODUCTS.reduce((m, p) => ((m[p.brand] = m[p.brand] || []).push(p), m), {})).sort((a, b) => a[0].localeCompare(b[0]));
+  const houseHtml = byHouse.map(([brand, items]) => `<div class="house"><a class="h" href="${hUrl(brand)}">${esc(brand)}</a><ul>${items
+    .sort((a, b) => shortName(a).localeCompare(shortName(b)))
+    .map((p) => `<li><a href="${pUrl(p)}">${esc(shortName(p))}</a> <small>${inStock(p) ? `from ${money(low(p))}` : "arriving soon"}</small></li>`).join("")}</ul></div>`).join("");
+  const coll = BUNDLES.bundles.map((b) => `<a href="${cUrl(b)}">${esc(b.name)}</a>`).join(" · ");
+  return `<!-- vv:index --><section class="sidx" aria-labelledby="sidx-h"><div class="wrap"><h2 id="sidx-h">Every scent we carry</h2><p class="sidx-lede">${PRODUCTS.length} fragrances from ${byHouse.length} houses, each with its own page: notes, story, sizes and prices.</p><div class="cols">${houseHtml}</div><p class="more">Collections: ${coll}</p><p class="more"><a href="/houses/">All houses</a> · <a href="/collections/">All collections</a> · <a href="/guides/">Guides</a> · <a href="/compare/">Compare</a></p></div></section><!-- /vv:index -->`;
+}
+{
+  const re = /<!-- vv:index -->[\s\S]*?<!-- \/vv:index -->/;
+  if (re.test(html)) {
+    const next = html.replace(re, () => homeIndex());
+    if (next !== html) writeFileSync(join(ROOT, "index.html"), next);
+  }
+}
+
 /* ---------- write everything ---------- */
 const out = (rel, content) => { const f = join(ROOT, rel); mkdirSync(join(f, ".."), { recursive: true }); writeFileSync(f, content); };
 for (const d of ["fragrance", "houses", "collections", "guides", "compare"]) if (existsSync(join(ROOT, d))) rmSync(join(ROOT, d), { recursive: true });
