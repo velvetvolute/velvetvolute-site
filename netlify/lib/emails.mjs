@@ -94,10 +94,10 @@ export function abandonedCartEmail({ first, lines, subtotal, restoreUrl, unsubUr
 }
 
 // 6. Stamp card: six stamps, pick the free one.
-export function rewardEmail({ first, claimUrl, unsubUrl, capCents = 4500 }) {
+export function rewardEmail({ first, claimUrl, unsubUrl, capCents = 3500 }) {
   const body = `
    ${h2("Lucky #7 is on us")}
-   ${p(`${hi(first)} six stamps in, and that puts you with the real ones. Your seventh is free: any 5 ml in the collection up to $${capCents / 100}, or $${capCents / 100} toward a bigger one.`)}
+   ${p(`${hi(first)} six stamps in, and that puts you with the real ones. Your seventh is a free 5 ml: anything up to $${capCents / 100} is on me, and if you pick a pricier 5 ml you only pay the difference.`)}
    ${cardImg("full")}
    ${button(claimUrl, "Choose your free 5 ml")}
    ${p(`Pick the one you've been circling. I'll email you a one-time code the moment you choose, and it'll show up as 100% off that 5 ml in your cart.`)}
@@ -107,7 +107,7 @@ export function rewardEmail({ first, claimUrl, unsubUrl, capCents = 4500 }) {
 }
 
 // 7. Stamp card: the code for the 5 ml they chose.
-export function punchCodeEmail({ first, code, expiresAt, p: scent, variation, overCap, capCents = 4500, price }) {
+export function punchCodeEmail({ first, code, expiresAt, p: scent, variation, overCap, capCents = 3500, price }) {
   const body = `
    ${h2(overCap ? `$${capCents / 100} toward your ${esc(scent.short)}` : `Your free ${esc(scent.short)}`)}
    ${p(`${hi(first)} good choice.${overCap ? ` This 5 ml is $${price}, so the code takes $${capCents / 100} off and you cover the difference.` : " This one's on the house."}`)}
@@ -155,7 +155,7 @@ export function loyaltyBlock({ returnCode, returnExpires, referralCode, punches,
   if (punches) {
     const line = punches.pending > 0
       ? `<b>6 of 6 stamps · Lucky #7 is on us.</b> ${claimUrl ? `<a href="${esc(claimUrl)}" style="color:#6e1a31">Choose your free 5 ml</a>.` : "Check your inbox for the link to choose your free 5 ml."}`
-      : `<b>${fmtPunch(punches.cycle)} of 6 stamps · Lucky #7 is on us.</b> 2 or 3 ml = 1 drop · 5 ml = 2 drops · 10 ml = 3 drops. 12 drops fill the card; lucky #7 is any 5 ml up to $45.`;
+      : `<b>${fmtPunch(punches.cycle)} of 6 stamps · Lucky #7 is on us.</b> 2 or 3 ml = 1 drop · 5 ml = 2 drops · 10 ml = 3 drops. 12 drops fill the card; lucky #7 is a free 5 ml, up to $35.`;
     parts.push(`${H3("The Real Ones stamp card")}<p style="margin:0 0 4px">${line}</p>${cardImg(punches.pending > 0 ? "full" : punches.cycleDrops ?? Math.round(punches.cycle * 2))}<p style="margin:6px 0 0;font-size:13px;color:#8a6d4b"><a href="${SITE}/the-real-ones" style="color:#6e1a31">See your card and how it works</a></p>`);
   }
   if (sherpaPickName) parts.push(`${H3("Sherpa's pick")}<p style="margin:0">There's a 1 ml of <b>${esc(sherpaPickName)}</b> tucked in with your order. It's close to what you chose, with a twist. Tell me what you think.</p>`);
@@ -168,7 +168,7 @@ export const cardImg = (n) => `<img src="${SITE}/img/punch/card-${n}.png" width=
 export function punchIntro(drops) {
   const row = (a, b, c) => `<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(74,14,30,.2);font-family:${SANS};font-size:14px;color:#2c0610"><b>${a}</b></td><td style="padding:6px 10px;border-bottom:1px solid rgba(74,14,30,.2);font-family:${SANS};font-size:14px;color:#2c0610">${b} <span style="color:#4a0e1e;opacity:.6">=</span> <b style="color:#4a0e1e">${c}</b></td></tr>`;
   return `${rule()}${h3("Your stamp card is already started")}
-   ${p(`Welcome to The Real Ones. Every order fills your card with velvet drops, and 12 drops earn lucky #7: any 5 ml up to $45, free. I've added <b>${drops} drops</b> to get you going${drops === 2 ? ", so your first stamp is on me" : ""}.`)}
+   ${p(`Welcome to The Real Ones. Every order fills your card with velvet drops, and 12 drops earn lucky #7: a free 5 ml, up to $35. I've added <b>${drops} drops</b> to get you going${drops === 2 ? ", so your first stamp is on me" : ""}.`)}
    ${cardImg(drops)}
    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:12px 0 4px;background:#b28a5b;border-radius:8px;border-collapse:separate">${row("2 ml &amp; 3 ml", "1 drop", "½ stamp")}${row("5 ml", "2 drops", "1 stamp")}${row("10 ml", "3 drops", "1½ stamps")}</table>
    ${small(`Tied to this email address. <a href="${SITE}/the-real-ones" style="color:#6e1a31">See your card anytime</a>.`)}`;

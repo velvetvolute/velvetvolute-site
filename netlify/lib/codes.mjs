@@ -8,12 +8,12 @@
 //         referral personal reusable code, $5 off a friend's first order         REF-NAME-XXXX
 //         thanks   $5 off for the referrer each time a friend orders, 60 days   VV-THANKS-XXXXX
 //         upsize   10% off the 10 ml of a scent they tried, 21 days             VV-GO10-XXXXX
-//         punch    free 5 ml (100% off one variation) or $45 toward any 5 ml    VV-FREE5-XXXXX
+//         punch    free 5 ml (100% off one variation) or $35 off a pricier 5 ml VV-FREE5-XXXXX
 import { createOneTimeCode, deleteCode, findCoupon, couponRules, normalizeCode, isReusableCode, randomCode, codesCustomerGroup } from "./square.mjs";
 import { recordCode, getCode, forgetCode, meta, setMeta } from "./store.mjs";
 
 export const DAY = 864e5;
-export const PUNCH_REWARD_CAP_CENTS = Number(process.env.PUNCH_REWARD_CAP_CENTS || 4500);
+export const PUNCH_REWARD_CAP_CENTS = Number(process.env.PUNCH_REWARD_CAP_CENTS || 3500);
 
 async function groupId(token) {
   let id = await meta("square-codes-group").catch(() => null);
