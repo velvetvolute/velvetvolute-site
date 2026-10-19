@@ -40,7 +40,14 @@ Netlify runs `node build.mjs` on every deploy (see netlify.toml). It reads the d
 - `/fragrance/<house>-<scent>/` – one page per scent (photo, story, notes, size picker, add to cart, "you may also like" by shared notes), with Product schema markup
 - `/houses/` and `/houses/<house>/` – fragrance houses: typographic tile grid, "About the house" copy from `content/houses.json`, then every scent we carry from that house
 - `/collections/` and `/collections/<id>/` – special collections with a swipeable bottle carousel and "add the set"
-- `/site.css` (the homepage stylesheet, extracted so all pages share one source) and `/sitemap.xml`
+- `/guides/` and `/guides/<slug>/` – articles written as Markdown in `content/guides/<slug>.md` (front matter: `title`, `slug`, `description`, `summary`, `date`, `updated`, `image`, `imageAlt`, `scents` = Square ids for the "mentioned" rail). A `## FAQ` section with `###` questions becomes FAQPage schema. `{{count}}`, `{{houses}}`, `{{from2}}`, `{{from10}}` are filled from the live product data
+- `/compare/` and `/compare/<slug>/` – the comparison charts: `content/compare/posts.json` is the approved post data (same file the Instagram/Facebook infographics are rendered from), `content/compare/web.json` holds the web copy per slug (`name`, `h1`, `desc`, `intro`, `pick`, `bundle`), and the chart itself is served from `img/compare/<slug>-<hash>.jpg` + `.webp` (converted from the 1080×1350 PNGs; keep the PNGs out of the repo). Each page repeats the chart as an accessible HTML table with live decant prices
+- `/site.css` (the homepage stylesheet, extracted so all pages share one source), `/search.json` and `/sitemap.xml` (every page, with lastmod and images)
 
 The output folders are git-ignored; to preview locally run `node build.mjs` and serve the folder. Product-page "Add to cart" writes to the same saved cart the homepage uses, so checkout is unchanged.
 House copy lives in `content/houses.json` (`about`, `founded`, `city`, `known`; `pre`/`mark` split a long name across the tile).
+
+## SEO conventions
+- Scent pages: title `"<House> <Scent> decant · 2, 5 & 10 ml | Velvet Volute Ottawa"` (the house is dropped when that runs past ~68 characters), description 140–160 characters built from the notes, sizes, lowest price and Ottawa/Canada delivery, Product JSON-LD with one Offer per vial size (CAD, availability, shipping, no-returns policy), BreadcrumbList, canonical, Open Graph + Twitter card with the scent photo, and alt text like "Nishane Kredo extrait bottle with 2, 5 and 10 ml Velvet Volute decants"
+- The homepage carries Organization + Store/LocalBusiness + WebSite schema (Ottawa ON, service area Canada, Facebook + Instagram `sameAs`, no street address); Fragrance 101 and How It Works carry FAQPage schema from the Q&As on the page
+- Every page is `lang="en-CA"` with one `<h1>`; `robots.txt` points at `/sitemap.xml`, and `netlify.toml` serves the sitemap as XML

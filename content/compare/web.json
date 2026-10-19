@@ -1,0 +1,111 @@
+{
+  "_": "Web copy for the /compare/ pages. Keyed by the post slug in posts.json without its number prefix. name = what the comparison is called in titles; h1 = page heading; desc = meta description (140-160 chars); intro = short paragraphs above the table; pick = where to start; bundle = matching collection id, if any.",
+  "time-capsule": {
+    "name": "Nishane Time Capsule",
+    "h1": "Nishane's Time Capsule, compared",
+    "desc": "Kredo, Tempfluo, Papilefiko, Deziro and Tero side by side: notes, intensity, season, retail and Velvet Volute decant prices. Nishane's Time Capsule, in Ottawa.",
+    "intro": [
+      "Five extraits, one collection, five different moods. Nishane built the Time Capsule around big ideas (belief, time, the butterfly effect, desire, earth) and handed each one to a different master perfumer.",
+      "They share a house and a bottle. They don't share a personality. This table is the short version. Tap a name for the full story."
+    ],
+    "pick": "Not sure where to start? Tempfluo is the easiest to love. Kredo if you lean leather and oud, Deziro if you want fresh, Tero if you want warm and earthy, Papilefiko if you want something nobody else is wearing.",
+    "bundle": "time-capsule"
+  },
+  "born-in-roma": {
+    "name": "Valentino Born in Roma",
+    "h1": "Valentino Born in Roma, compared",
+    "desc": "Green Stravaganza, Yellow Dream, Coral Fantasy and Purple Melancholia compared: notes, intensity, season and decant prices. Valentino Born in Roma, from Ottawa.",
+    "intro": [
+      "Four takes on one city. Valentino's Born in Roma line is built for easy wear, and every flanker leans a different direction: green and fresh, sweet and sunny, warm and smooth, moody and late.",
+      "Same bottle shape, four different days. Here's how they line up."
+    ],
+    "pick": "Start with Coral Fantasy if you want one for everything. Green Stravaganza for the office, Yellow Dream for summer, Purple Melancholia for nights out.",
+    "bundle": "born-in-roma"
+  },
+  "leather-suede": {
+    "name": "Leather & Suede",
+    "h1": "Four leathers, compared",
+    "desc": "Tom Ford Ombré Leather, Tuscan Leather, Nishane Suède et Safran and Kredo compared: notes, intensity, season and decant prices. Find your leather in Ottawa.",
+    "intro": [
+      "Leather is a mood, not a note. It can be smooth and worn-in, smoky and loud, sleek and tailored, or deep and calm. These four cover the whole range.",
+      "Two from Tom Ford, two from Nishane. All four are in the Leather & Suede Collection if you'd rather try them together."
+    ],
+    "pick": "Ombré Leather is the easiest first leather. Tuscan Leather if you want to be noticed, Suède et Safran if you want polish, Kredo if you want quiet depth.",
+    "bundle": "leather"
+  },
+  "tom-ford": {
+    "name": "Tom Ford",
+    "h1": "The Tom Ford essentials, compared",
+    "desc": "Tom Ford Black Orchid, Noir, Ombré Leather and Tuscan Leather compared: notes, intensity, season, retail and Velvet Volute decant prices, from Ottawa.",
+    "intro": [
+      "Four Tom Fords, four very different nights. Black Orchid is the dark one, Noir the dressed-up one, Ombré Leather the easy one, Tuscan Leather the loud one.",
+      "A full bottle of any of these is a commitment. A 2 ml decant is not."
+    ],
+    "pick": "Ombré Leather if you're new to the house. Black Orchid if you like them rich and sweet. Tuscan Leather if you already know you love leather.",
+    "bundle": "tom-ford"
+  },
+  "fyf-vs-fyf-x": {
+    "name": "Nishane Fan Your Flames",
+    "h1": "Fan Your Flames vs Fan Your Flames X",
+    "desc": "Nishane Fan Your Flames and Fan Your Flames X compared: the coconut, rum and tobacco original against its woodier 10th-anniversary remix. Notes and prices.",
+    "intro": [
+      "The original is a late night with coconut shisha: coconut, rum and tobacco smoke, warm and addictive. The X is the same night turned down, with thyme and mastic pulling it somewhere greener and more tropical.",
+      "Same idea, two volumes. Hear the original, then the remix."
+    ],
+    "pick": "If you want the one everybody talks about, start with the original. If sweet usually gets too much for you, start with the X.",
+    "bundle": "tea-x-flames"
+  },
+  "warm": {
+    "name": "The Warm Collection",
+    "h1": "The Warm Collection, compared",
+    "desc": "Armani I Will, Margiela Coffee Break, Claude Marsal Or Noir Café and Ferragamo Uomo Signature compared: notes, intensity, season and decant prices in Ottawa.",
+    "intro": [
+      "Your cold-weather rotation. Vanilla and lavender, coffee and milk, toffee and espresso, cinnamon over leather. Four ways to feel warm from first frost to the last snow.",
+      "None of these shout. They're the ones people lean in for."
+    ],
+    "pick": "I Will if you want one scent for the whole season. Coffee Break for the softest, Or Noir Café for the sweetest, Uomo Signature for the sharpest.",
+    "bundle": "warm"
+  },
+  "boozy": {
+    "name": "The Boozy Collection",
+    "h1": "Last call, bottled: the boozy ones, compared",
+    "desc": "Margiela Jazz Club, Nishane Fan Your Flames and Givenchy Gentleman Réserve Privée compared: rum, whisky and smoke. Notes, intensity, season and decant prices.",
+    "intro": [
+      "Rum, whisky and smoke. Jazz Club is the leather armchair in a dim bar, Fan Your Flames is the night out with your people, Réserve Privée is the one glass of good whisky at the end.",
+      "Three different bars. Same closing time."
+    ],
+    "pick": "Jazz Club is the safe first pour. Fan Your Flames if you want sweet and loud, Réserve Privée if you want polished.",
+    "bundle": "boozy"
+  },
+  "vanilla": {
+    "name": "Vanilla",
+    "h1": "Four ways to wear vanilla, compared",
+    "desc": "Nishane Ani, Tempfluo, Armani I Will and Margiela Jazz Club compared: the same vanilla note, four different moods. Notes, intensity, season and decant prices.",
+    "intro": [
+      "Same note, four completely different moods. Vanilla can be spicy and addictive, golden and carefree, confident and clean, or smoky and dark.",
+      "If you've only ever smelled vanilla as a dessert, this is the table to read."
+    ],
+    "pick": "Ani if you want the famous one. Tempfluo if you want bright, I Will if you want everyday, Jazz Club if you want smoke."
+  },
+  "fresh": {
+    "name": "Fresh & Bright",
+    "h1": "The fresh ones, compared",
+    "desc": "Nishane Hacivat, Xerjoff Erba Pura, Nishane Deziro and Valentino Yellow Dream compared: clean, sunny daytime scents. Notes, intensity, season and decant prices.",
+    "intro": [
+      "Clean, sunny and easy to wear. Your daytime rotation. Pineapple and oakmoss, Sicilian orange, mint and sea air, pineapple and gingerbread.",
+      "Fresh doesn't have to mean forgettable. Two of these are among the strongest scents in the shop."
+    ],
+    "pick": "Hacivat is the one to try if you only try one. Erba Pura if you like them juicy, Deziro if you want calm, Yellow Dream if you want sweet."
+  },
+  "nishane-x": {
+    "name": "Nishane X Collection",
+    "h1": "Nishane's remixes, compared",
+    "desc": "Nishane Fan Your Flames X and Wulong Cha X compared: two classics reimagined for the house's 10th anniversary. Notes, intensity, season and decant prices.",
+    "intro": [
+      "For its tenth anniversary Nishane handed two classics to new perfumers with one brief: keep the idea, change the mood. Fan Your Flames X goes greener and more tropical. Wulong Cha X trades oolong for green tea and magnolia.",
+      "Two remixes, two moods."
+    ],
+    "pick": "Wulong Cha X for daytime and warm weather. Fan Your Flames X for everything after.",
+    "bundle": "nishane-x"
+  }
+}
