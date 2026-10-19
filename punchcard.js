@@ -21,7 +21,10 @@
     }
     var sx=W-38;
     s+='<circle cx="'+sx+'" cy="86" r="23" fill="'+(pending?M:"none")+'" stroke="'+M+'" stroke-width="1.4" stroke-dasharray="'+(pending?"0":"3 3")+'"/>'
-     +'<text x="'+sx+'" y="94" text-anchor="middle" font-family="Jost,system-ui,sans-serif" font-weight="500" font-size="22" fill="'+(pending?"#e8d3b4":M)+'">7</text>'
+     +(pending
+       /* lucky #7 earned: a small velvet perfume bottle (cap, neck, shoulders, body with a label) */
+       ? '<g transform="translate('+sx+' 86)" fill="#e8d3b4"><rect x="-4" y="-17" width="8" height="5" rx="1"/><rect x="-2.2" y="-12.5" width="4.4" height="3"/><path d="M-8.5-9.5h17a2.5 2.5 0 0 1 2.5 2.5v17a3 3 0 0 1-3 3h-16a3 3 0 0 1-3-3v-17a2.5 2.5 0 0 1 2.5-2.5z"/><rect x="-5" y="-2" width="10" height="7" rx="1" fill="'+M+'"/></g>'
+       : '<text x="'+sx+'" y="94" text-anchor="middle" font-family="Jost,system-ui,sans-serif" font-weight="500" font-size="22" fill="'+M+'">7</text>')
      +'<text x="'+sx+'" y="'+(86+38)+'" text-anchor="middle" font-family="Jost,system-ui,sans-serif" font-size="8.5" letter-spacing="1.2" fill="'+INK+'" fill-opacity=".75">FREE 5 ML</text>'
      +'</svg>';
     return s;
