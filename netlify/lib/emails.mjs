@@ -31,7 +31,7 @@ export function welcome1Email({ first, code, expiresAt, unsubUrl, codeWhat = "10
    ${p(`${hi(first)} I'm Izzi. Velvet Volute is my collection: luxury fragrances I've chosen one at a time, hand-poured into 2, 5 and 10 ml decants in Ottawa.`)}
    ${p(`I don't just sell decants. I curate, very much like putting together the perfect playlist. Some are smooth and sexy, some make you feel like a boss, some make you want to party till 5am. Either way, it's one banger after another.`)}
    ${p(`Every scent on the shelf has a story. If I wouldn't wear it, I wouldn't sell it.`)}
-   ${code ? codeCard(code, codeWhat, expiresAt, codeNote) : p(`The 10% sign-up code is one per person, and yours has already been used or has run out, so there's no new one here. The Real Ones punch card has you covered from your first order on, and lucky #7 is on me.`)}
+   ${code ? codeCard(code, codeWhat, expiresAt, codeNote) : p(`The 10% sign-up code is one per person, and yours has already been used or has run out, so there's no new one here. The Real Ones stamp card has you covered from your first order on, and lucky #7 is on me.`)}
    ${button(SITE + "/#shop", "Browse the collection")}
    ${starterDrops ? punchIntro(starterDrops) : ""}
    ${rule()}
@@ -93,20 +93,20 @@ export function abandonedCartEmail({ first, lines, subtotal, restoreUrl, unsubUr
   return out("You left these in your cart", layout({ kicker: "Your cart", title: "You left these in your cart", body, unsubUrl, reason: "you left your email in the cart at velvetvolute.ca (this is the only reminder)", preheader: "Your decants are still waiting. The cart is exactly as you left it." }));
 }
 
-// 6. Punch card: six punches, pick the free one.
+// 6. Stamp card: six stamps, pick the free one.
 export function rewardEmail({ first, claimUrl, unsubUrl, capCents = 4500 }) {
   const body = `
    ${h2("Lucky #7 is on us")}
-   ${p(`${hi(first)} six punches in, and that puts you with the real ones. Your seventh is free: any 5 ml in the collection up to $${capCents / 100}, or $${capCents / 100} toward a bigger one.`)}
+   ${p(`${hi(first)} six stamps in, and that puts you with the real ones. Your seventh is free: any 5 ml in the collection up to $${capCents / 100}, or $${capCents / 100} toward a bigger one.`)}
    ${cardImg("full")}
    ${button(claimUrl, "Choose your free 5 ml")}
    ${p(`Pick the one you've been circling. I'll email you a one-time code the moment you choose, and it'll show up as 100% off that 5 ml in your cart.`)}
    ${small(`The link is yours alone. It keeps working until you've used it.`)}
    ${signoff()}`;
-  return out("Lucky #7 is on us: choose your free 5 ml", layout({ kicker: "The Real Ones", title: "Lucky #7 is on us", body, unsubUrl, kind: "transactional", preheader: "Six punches. Your seventh decant is on the house." }));
+  return out("Lucky #7 is on us: choose your free 5 ml", layout({ kicker: "The Real Ones", title: "Lucky #7 is on us", body, unsubUrl, kind: "transactional", preheader: "Six stamps. Your seventh decant is on the house." }));
 }
 
-// 7. Punch card: the code for the 5 ml they chose.
+// 7. Stamp card: the code for the 5 ml they chose.
 export function punchCodeEmail({ first, code, expiresAt, p: scent, variation, overCap, capCents = 4500, price }) {
   const body = `
    ${h2(overCap ? `$${capCents / 100} toward your ${esc(scent.short)}` : `Your free ${esc(scent.short)}`)}
@@ -154,23 +154,23 @@ export function loyaltyBlock({ returnCode, returnExpires, referralCode, punches,
   if (referralCode) parts.push(`${H3("Bring a friend")}<p style="margin:0 0 8px">Your personal code is <b style="letter-spacing:.08em">${esc(referralCode)}</b>. A friend gets $5 off their first order with it, and every time one orders, I email you $5 off too. Reusable, no limit.</p>`);
   if (punches) {
     const line = punches.pending > 0
-      ? `<b>6 of 6 punched · Lucky #7 is on us.</b> ${claimUrl ? `<a href="${esc(claimUrl)}" style="color:#6e1a31">Choose your free 5 ml</a>.` : "Check your inbox for the link to choose your free 5 ml."}`
-      : `<b>${fmtPunch(punches.cycle)} of 6 punches · Lucky #7 is on us.</b> 2 or 3 ml = 1 drop · 5 ml = 2 drops · 10 ml = 3 drops. 12 drops fill the card; lucky #7 is any 5 ml up to $45.`;
-    parts.push(`${H3("The Real Ones punch card")}<p style="margin:0 0 4px">${line}</p>${cardImg(punches.pending > 0 ? "full" : punches.cycleDrops ?? Math.round(punches.cycle * 2))}<p style="margin:6px 0 0;font-size:13px;color:#8a6d4b"><a href="${SITE}/the-real-ones" style="color:#6e1a31">See your card and how it works</a></p>`);
+      ? `<b>6 of 6 stamps · Lucky #7 is on us.</b> ${claimUrl ? `<a href="${esc(claimUrl)}" style="color:#6e1a31">Choose your free 5 ml</a>.` : "Check your inbox for the link to choose your free 5 ml."}`
+      : `<b>${fmtPunch(punches.cycle)} of 6 stamps · Lucky #7 is on us.</b> 2 or 3 ml = 1 drop · 5 ml = 2 drops · 10 ml = 3 drops. 12 drops fill the card; lucky #7 is any 5 ml up to $45.`;
+    parts.push(`${H3("The Real Ones stamp card")}<p style="margin:0 0 4px">${line}</p>${cardImg(punches.pending > 0 ? "full" : punches.cycleDrops ?? Math.round(punches.cycle * 2))}<p style="margin:6px 0 0;font-size:13px;color:#8a6d4b"><a href="${SITE}/the-real-ones" style="color:#6e1a31">See your card and how it works</a></p>`);
   }
   if (sherpaPickName) parts.push(`${H3("Sherpa's pick")}<p style="margin:0">There's a 1 ml of <b>${esc(sherpaPickName)}</b> tucked in with your order. It's close to what you chose, with a twist. Tell me what you think.</p>`);
   return parts.join("");
 }
 // 3.5 → "3½"; dots: ● full punch, ◐ a drop (half), ○ empty
 // The card as an image (img/punch/card-N.png, drawn by punchcard.js); email clients don't show SVG
-export const cardImg = (n) => `<img src="${SITE}/img/punch/card-${n}.png" width="360" height="150" alt="${n === "full" ? "Your punch card is full: lucky #7 is ready" : `${fmtPunch(Number(n) / 2)} of 6 punches`}" style="display:block;width:100%;max-width:360px;height:auto;border:0;margin:8px 0 0">`;
+export const cardImg = (n) => `<img src="${SITE}/img/punch/card-${n}.png" width="360" height="150" alt="${n === "full" ? "Your stamp card is full: lucky #7 is ready" : `${fmtPunch(Number(n) / 2)} of 6 stamps`}" style="display:block;width:100%;max-width:360px;height:auto;border:0;margin:8px 0 0">`;
 // Punch-card intro for the sign-up emails: the card with the starter drops already on it.
 export function punchIntro(drops) {
   const row = (a, b, c) => `<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(74,14,30,.2);font-family:${SANS};font-size:14px;color:#2c0610"><b>${a}</b></td><td style="padding:6px 10px;border-bottom:1px solid rgba(74,14,30,.2);font-family:${SANS};font-size:14px;color:#2c0610">${b}</td><td style="padding:6px 10px;border-bottom:1px solid rgba(74,14,30,.2);font-family:${SANS};font-weight:600;font-size:14px;color:#4a0e1e">${c}</td></tr>`;
-  return `${rule()}${h3("Your punch card is already started")}
-   ${p(`Welcome to The Real Ones. Every order fills your card with velvet drops, and 12 drops earn lucky #7: any 5 ml up to $45, free. I've added <b>${drops} drops</b> to get you going${drops === 2 ? ", so your first punch is on me" : ""}.`)}
+  return `${rule()}${h3("Your stamp card is already started")}
+   ${p(`Welcome to The Real Ones. Every order fills your card with velvet drops, and 12 drops earn lucky #7: any 5 ml up to $45, free. I've added <b>${drops} drops</b> to get you going${drops === 2 ? ", so your first stamp is on me" : ""}.`)}
    ${cardImg(drops)}
-   <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:12px 0 4px;background:#b28a5b;border-radius:8px;border-collapse:separate">${row("2 ml &amp; 3 ml", "1 drop", "½ punch")}${row("5 ml", "2 drops", "1 punch")}${row("10 ml", "3 drops", "1½ punches")}</table>
+   <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:12px 0 4px;background:#b28a5b;border-radius:8px;border-collapse:separate">${row("2 ml &amp; 3 ml", "1 drop", "½ stamp")}${row("5 ml", "2 drops", "1 stamp")}${row("10 ml", "3 drops", "1½ stamps")}</table>
    ${small(`Tied to this email address. <a href="${SITE}/the-real-ones" style="color:#6e1a31">See your card anytime</a>.`)}`;
 }
 export const fmtPunch = (n) => `${Math.floor(n) || (n % 1 ? "" : "0")}${n % 1 ? "½" : ""}`;

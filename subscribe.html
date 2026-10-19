@@ -63,7 +63,7 @@
   <p class="note">The code arrives by email either way, good for 30 days on any decant in the collection. One per person, one code per order. Unsubscribe any time with one tap.</p>
   <p class="msg" id="sub-msg" hidden></p>
  </form>
- <p class="sub-more">Not sure where to start? <a href="/#quiz">Ask the Scent Sherpa</a> · <a href="/collections/">See the Curated Collections</a> · <a href="/the-real-ones">The Real Ones punch card</a></p>
+ <p class="sub-more">Not sure where to start? <a href="/#quiz">Ask the Scent Sherpa</a> · <a href="/collections/">See the Curated Collections</a> · <a href="/the-real-ones">The Real Ones stamp card</a></p>
  <p class="sub-fine">Ottawa pickup at Shoppers Drug Mart on Carling Ave. Free local hand delivery on $65+ (Orléans, Kanata, Barrhaven included). Shipping across Canada $9, free over $85.</p>
 </section>
 </main>
@@ -85,7 +85,7 @@
   fetch("/.netlify/functions/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:v,first:$("sub-first").value.trim(),consent:$("sub-dibs").checked,source:"bio",website:$("sub-website").value})})
   .then(function(r){return r.json().then(function(d){if(!r.ok||!d.ok)throw new Error(d.error||"Couldn't sign you up");return d})})
   .then(function(d){try{if(window.vvTrack)vvTrack("sign_up",{method:"bio"})}catch(x){}try{localStorage.setItem("vv-email",v);localStorage.setItem("vv-dibs",$("sub-dibs").checked?"1":"0");localStorage.setItem("vv-subscribed","1")}catch(x){}
-   var e=v.replace(/</g,"&lt;"),msg=d&&d.code===false?"<b>You're in.</b>The 10% sign-up code is one per person, and yours has already been used or has run out. Your welcome note is on its way to "+e+".":d&&d.again?"<b>You already have a code.</b>I've sent it to "+e+" again. One per person, and it can't be combined with other codes.":"<b>Sent.</b>Your code is on its way to "+e+". It expires in 30 days. Your punch card starts with 2 velvet drops, so your first punch is on me.";
+   var e=v.replace(/</g,"&lt;"),msg=d&&d.code===false?"<b>You're in.</b>The 10% sign-up code is one per person, and yours has already been used or has run out. Your welcome note is on its way to "+e+".":d&&d.again?"<b>You already have a code.</b>I've sent it to "+e+" again. One per person, and it can't be combined with other codes.":"<b>Sent.</b>Your code is on its way to "+e+". It expires in 30 days. Your stamp card starts with 2 velvet drops, so your first stamp is on me.";
    f.innerHTML='<div class="done">'+msg+'<br><br><a href="/#shop" style="color:#2c0610">Browse the collection &rarr;</a></div>'})
   .catch(function(x){say((x&&x.message)||"Couldn't sign you up right now. Please try again, or email velvetvolute@gmail.com.");go.disabled=false;go.textContent="Send my code"})});
  try{var s=JSON.parse(localStorage.getItem("vv-cart-v1")||"null"),n=s&&s.lines?s.lines.reduce(function(a,l){return a+(l.q||0)},0):0,b=$("cart-count");if(b){b.textContent=n;b.hidden=!n}}catch(e){}

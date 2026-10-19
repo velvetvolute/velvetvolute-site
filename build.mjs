@@ -558,8 +558,9 @@ function homeIndex() {
   const houseHtml = byHouse.map(([brand, items]) => `<div class="house"><a class="h" href="${hUrl(brand)}">${esc(brand)}</a><ul>${items
     .sort((a, b) => shortName(a).localeCompare(shortName(b)))
     .map((p) => `<li><a href="${pUrl(p)}">${esc(shortName(p))}</a> <small>${inStock(p) ? `from ${money(low(p))}` : "arriving soon"}</small></li>`).join("")}</ul></div>`).join("");
-  const coll = BUNDLES.bundles.map((b) => `<a href="${cUrl(b)}">${esc(b.name)}</a>`).join(" · ");
-  return `<!-- vv:index --><section class="sidx" aria-labelledby="sidx-h"><div class="wrap"><h2 id="sidx-h">Every scent we carry</h2><p class="sidx-lede">${PRODUCTS.length} fragrances from ${byHouse.length} houses, each with its own page: notes, story, sizes and prices.</p><div class="cols">${houseHtml}</div><p class="more">Collections: ${coll}</p><p class="more"><a href="/houses/">All houses</a> · <a href="/collections/">All collections</a> · <a href="/guides/">Guides</a> · <a href="/compare/">Compare</a> · <a href="/the-real-ones">The Real Ones punch card</a></p></div></section><!-- /vv:index -->`;
+  const coll = `<ul class="clist">${BUNDLES.bundles.map((b) => `<li><a href="${cUrl(b)}">${esc(b.name.replace(/^The /, ""))}</a></li>`).join("")}</ul>`;
+  // collapsed by default: the links are in the HTML for search engines, the homepage stays short for shoppers
+  return `<!-- vv:index --><section class="sidx" aria-label="Browse everything we carry"><div class="wrap"><details class="sidx-d"><summary><span>Browse all ${PRODUCTS.length} scents</span><small>${byHouse.length} fragrance houses</small></summary><div class="cols">${houseHtml}</div></details><details class="sidx-d"><summary><span>Browse ${BUNDLES.bundles.length} curated collections</span><small>${BUNDLES.pct}% off sets</small></summary>${coll}</details><p class="more"><a href="/houses/">All houses</a> · <a href="/collections/">All collections</a> · <a href="/guides/">Guides</a> · <a href="/compare/">Compare</a> · <a href="/the-real-ones">The Real Ones stamp card</a></p></div></section><!-- /vv:index -->`;
 }
 {
   const re = /<!-- vv:index -->[\s\S]*?<!-- \/vv:index -->/;

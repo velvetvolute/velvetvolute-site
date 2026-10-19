@@ -5,7 +5,7 @@
 // On a paid order it: 1) pings Justin's phone (NTFY_TOPIC) with the Sherpa's pick, 2) retires a
 // one-time promo code (and credits the referrer when a REF- code was used), 3) emails the buyer a
 // Velvet Volute order confirmation via Resend (RESEND_API_KEY) and the shop its own copy with the
-// Sherpa's pick and the mark-shipped link, 4) updates the contact's segments and punch card.
+// Sherpa's pick and the mark-shipped link, 4) updates the contact's segments and stamp card.
 // Each of those is skipped silently when its env vars are missing.
 import { getStore } from "@netlify/blobs";
 import { sq, LOCATION_ID, isReusableCode, isReferralCode } from "../lib/square.mjs";
@@ -91,9 +91,9 @@ async function creditReferrer(codeName, buyer, s, token) {
   await upsertContact(rec.email, { referrals: (referrer?.referrals || 0) + 1 }).catch(() => {});
 }
 
-// Segments + punch card for the buyer. Punches go by size (store.mjs dropsFor): 2/3 ml a drop (half a punch),
-// 5 ml a punch, 10 ml a punch and a half. A free 5 ml paid for with a punch code doesn't punch itself.
-// At six punches (12 drops), a claim link goes out.
+// Segments + stamp card for the buyer. Punches go by size (store.mjs dropsFor): 2/3 ml a drop (half a stamp),
+// 5 ml a punch, 10 ml a stamp and a half. A free 5 ml paid for with a punch code doesn't earn its own drops.
+// At six stamps (12 drops), a claim link goes out.
 async function loyalty(s, buyer, order, usedCodes, token) {
   const email = normEmail(buyer.email);
   if (!EMAIL_RE.test(email)) return;
@@ -130,8 +130,8 @@ export function cardBlock(punch) {
   const full = punch.p.pending > 0, n = punch.earned;
   const line = full
     ? `This order added <b>${n} velvet drop${n > 1 ? "s" : ""}</b> and filled your card. Lucky #7 is on us: the link to choose your free 5 ml is on its way in a separate email.`
-    : `This order added <b>${n} velvet drop${n > 1 ? "s" : ""}</b>. You're at <b>${fmtPunch(punch.p.cycle)} of 6 punches</b>; ${fmtPunch(6 - punch.p.cycle)} more and lucky #7, a free 5 ml, is on us.`;
-  return `<h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:22px 0 6px">The Real Ones punch card</h3><p style="margin:0">${line}</p>${cardImg(full ? "full" : punch.p.cycleDrops)}<p style="margin:6px 0 0;font-size:13px"><a href="${SITE}/the-real-ones" style="color:#6e1a31">See your card and how it works</a></p>`;
+    : `This order added <b>${n} velvet drop${n > 1 ? "s" : ""}</b>. You're at <b>${fmtPunch(punch.p.cycle)} of 6 stamps</b>; ${fmtPunch(6 - punch.p.cycle)} more and lucky #7, a free 5 ml, is on us.`;
+  return `<h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:22px 0 6px">The Real Ones stamp card</h3><p style="margin:0">${line}</p>${cardImg(full ? "full" : punch.p.cycleDrops)}<p style="margin:6px 0 0;font-size:13px"><a href="${SITE}/the-real-ones" style="color:#6e1a31">See your card and how it works</a></p>`;
 }
 
 export function emailHTML(s, ref, etransfer = false, extra = "", card = "") {

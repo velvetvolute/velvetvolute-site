@@ -4,7 +4,7 @@
 //  vv-contacts   email → contact (consent, segments, welcome-series progress, codes issued, picks)
 //  vv-carts      cart id → saved cart (email, lines, timestamps, reminder state)
 //  vv-codes      CODE → { kind, email, discountId, productSetId, pricingRuleId, variationIds, expiresAt }
-//  vv-punches    email → { drops, rewarded, history[] }   (The Real Ones punch card; 2 drops = 1 punch)
+//  vv-punches    email → { drops, rewarded, history[] }   (The Real Ones stamp card; 2 drops = 1 punch)
 //  vv-claims     claim token → { email, created, used, code }
 //  vv-followups  job id → { type, due, ... }                 (21-day "loved the 2 ml?" etc.)
 //  vv-paid       VV order number → { email, orderId, ts, cartId }
@@ -133,11 +133,11 @@ export async function paidSince(email, sinceMs) {
   return false;
 }
 
-// ---- punch card ----
-// Counted in DROPS: 2 ml / 3 ml = 1 drop (half a punch), 5 ml = 2 drops (a punch), 10 ml = 3 drops (a punch and a half).
-// Six punches = 12 drops fills the card; lucky #7 is the free 5 ml. Everything customer-facing shows punches.
+// ---- stamp card ----
+// Counted in DROPS: 2 ml / 3 ml = 1 drop (half a stamp), 5 ml = 2 drops (a punch), 10 ml = 3 drops (a stamp and a half).
+// Six stamps = 12 drops fills the card; lucky #7 is the free 5 ml. Everything customer-facing shows punches.
 export const PUNCHES_FOR_REWARD = 6, DROPS_PER_PUNCH = 2, DROPS_FOR_REWARD = PUNCHES_FOR_REWARD * DROPS_PER_PUNCH;
-export const SIGNUP_DROPS = Number(process.env.SIGNUP_DROPS || 2);   // starter drops for a first-time sign-up ("your first punch is on us")
+export const SIGNUP_DROPS = Number(process.env.SIGNUP_DROPS || 2);   // starter drops for a first-time sign-up ("your first stamp is on us")
 export const dropsFor = (ml) => (ml >= 10 ? 3 : ml >= 5 ? 2 : ml > 0 ? 1 : 0);
 export async function getPunches(email) {
   email = normEmail(email);
