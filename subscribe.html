@@ -12,7 +12,7 @@
 <meta property="og:image" content="https://velvetvolute.ca/img/og-velvetvolute-bb4b0b5447.jpg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="10% off your first decant · Velvet Volute"><meta name="twitter:image" content="https://velvetvolute.ca/img/og-velvetvolute-bb4b0b5447.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/pages.css"><link rel="stylesheet" href="/nav.css"><script src="/nav.js" defer></script>
+<link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/pages.css"><link rel="stylesheet" href="/nav.css"><script src="/nav.js" defer></script><script src="/track.js" defer></script>
 <style>
 /* /subscribe: the same "10% off your first decant" form as the homepage card, as a page for the link in bio */
 .sub{max-width:560px;margin:0 auto;padding:34px 24px 70px;text-align:center}
@@ -84,7 +84,7 @@
   go.disabled=true;go.textContent="Sending…";
   fetch("/.netlify/functions/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:v,first:$("sub-first").value.trim(),consent:$("sub-dibs").checked,source:"bio",website:$("sub-website").value})})
   .then(function(r){return r.json().then(function(d){if(!r.ok||!d.ok)throw new Error(d.error||"Couldn't sign you up");return d})})
-  .then(function(){try{localStorage.setItem("vv-email",v);localStorage.setItem("vv-dibs",$("sub-dibs").checked?"1":"0");localStorage.setItem("vv-subscribed","1")}catch(x){}
+  .then(function(){try{if(window.vvTrack)vvTrack("sign_up",{method:"bio"})}catch(x){}try{localStorage.setItem("vv-email",v);localStorage.setItem("vv-dibs",$("sub-dibs").checked?"1":"0");localStorage.setItem("vv-subscribed","1")}catch(x){}
    f.innerHTML='<div class="done"><b>Sent.</b>Your code is on its way to '+v.replace(/</g,"&lt;")+'. Check your inbox, and the promotions tab if it hides there.<br><br><a href="/#shop" style="color:#2c0610">Browse the collection &rarr;</a></div>'})
   .catch(function(x){say((x&&x.message)||"Couldn't sign you up right now. Please try again, or email velvetvolute@gmail.com.");go.disabled=false;go.textContent="Send my code"})});
  try{var s=JSON.parse(localStorage.getItem("vv-cart-v1")||"null"),n=s&&s.lines?s.lines.reduce(function(a,l){return a+(l.q||0)},0):0,b=$("cart-count");if(b){b.textContent=n;b.hidden=!n}}catch(e){}

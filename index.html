@@ -2055,7 +2055,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
    const ids=picks().filter(x=>inStock(x.p)).map(x=>x.p.sq);go.disabled=true;go.textContent="Sending…";
    fetch("/.netlify/functions/sherpa-picks",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:v,first:capD.first,consent:capD.consent,picks:ids,who:ans.who||""})})
    .then(r=>r.json().then(d=>{if(!r.ok||!d.ok)throw new Error(d.error||"Couldn't send");return d}))
-   .then(()=>{capD.sent=true;try{localStorage.setItem("vv-email",v);localStorage.setItem("vv-dibs",capD.consent?"1":"0");localStorage.setItem("vv-subscribed","1");sessionStorage.setItem("vv-sherpa-sent",JSON.stringify((ans.who||"")+"|"))}catch(x){}
+   .then(()=>{capD.sent=true;try{if(window.vvTrack)vvTrack("sign_up",{method:"sherpa"})}catch(x){}try{localStorage.setItem("vv-email",v);localStorage.setItem("vv-dibs",capD.consent?"1":"0");localStorage.setItem("vv-subscribed","1");sessionStorage.setItem("vv-sherpa-sent",JSON.stringify((ans.who||"")+"|"))}catch(x){}
     if(window.Cart&&Cart.setEmail)Cart.setEmail(v,capD.consent);f.outerHTML=capHTML([])})
    .catch(x=>{say((x&&x.message)||"Couldn't send your picks right now. Please try again.");go.disabled=false;go.textContent="Email me my picks"})}}
  const short=n=>n.replace(/ (Extrait de Parfum|Eau de Parfum|Eau de Toilette|Parfum)$/,"");
@@ -2140,7 +2140,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   go.disabled=true;go.textContent="Sending…";
   fetch("/.netlify/functions/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:v,consent:ck.checked,source:"card",website:document.getElementById("su-website").value})})
   .then(r=>r.json().then(d=>{if(!r.ok||!d.ok)throw new Error(d.error||"Couldn't sign you up");return d}))
-  .then(()=>{set("vv-email",v);set("vv-dibs",ck.checked?"1":"0");set("vv-subscribed","1");if(window.Cart&&Cart.setEmail)Cart.setEmail(v,ck.checked);
+  .then(()=>{try{if(window.vvTrack)vvTrack("sign_up",{method:"card"})}catch(x){}set("vv-email",v);set("vv-dibs",ck.checked?"1":"0");set("vv-subscribed","1");if(window.Cart&&Cart.setEmail)Cart.setEmail(v,ck.checked);
    document.getElementById("su-form").innerHTML='<p><b>Sent.</b> Your code is on its way to '+v.replace(/</g,"&lt;")+'. Check your inbox (and promotions tab).</p>';setTimeout(hide,6000)})
   .catch(x=>{say((x&&x.message)||"Couldn't sign you up right now. Please try again.");go.disabled=false;go.textContent="Send my code"})}})();
 </script>
