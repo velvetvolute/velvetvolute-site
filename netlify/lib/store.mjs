@@ -149,6 +149,7 @@ export async function addDrops(email, n, note) {
   email = normEmail(email);
   const s = stores.punches();
   const p = (await getJSON(s, email)) || { email, drops: 0, rewarded: 0, history: [] };
+  if (note && (p.history || []).some((h) => h.note === note)) return getPunches(email);   // same order twice (webhook retry): count it once
   p.drops = Math.max(0, (p.drops || 0) + n);
   p.history = [...(p.history || []), { drops: n, note, ts: Date.now() }].slice(-60);
   await s.setJSON(email, p);

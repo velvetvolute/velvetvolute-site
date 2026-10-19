@@ -559,7 +559,7 @@ function homeIndex() {
     .sort((a, b) => shortName(a).localeCompare(shortName(b)))
     .map((p) => `<li><a href="${pUrl(p)}">${esc(shortName(p))}</a> <small>${inStock(p) ? `from ${money(low(p))}` : "arriving soon"}</small></li>`).join("")}</ul></div>`).join("");
   const coll = BUNDLES.bundles.map((b) => `<a href="${cUrl(b)}">${esc(b.name)}</a>`).join(" · ");
-  return `<!-- vv:index --><section class="sidx" aria-labelledby="sidx-h"><div class="wrap"><h2 id="sidx-h">Every scent we carry</h2><p class="sidx-lede">${PRODUCTS.length} fragrances from ${byHouse.length} houses, each with its own page: notes, story, sizes and prices.</p><div class="cols">${houseHtml}</div><p class="more">Collections: ${coll}</p><p class="more"><a href="/houses/">All houses</a> · <a href="/collections/">All collections</a> · <a href="/guides/">Guides</a> · <a href="/compare/">Compare</a></p></div></section><!-- /vv:index -->`;
+  return `<!-- vv:index --><section class="sidx" aria-labelledby="sidx-h"><div class="wrap"><h2 id="sidx-h">Every scent we carry</h2><p class="sidx-lede">${PRODUCTS.length} fragrances from ${byHouse.length} houses, each with its own page: notes, story, sizes and prices.</p><div class="cols">${houseHtml}</div><p class="more">Collections: ${coll}</p><p class="more"><a href="/houses/">All houses</a> · <a href="/collections/">All collections</a> · <a href="/guides/">Guides</a> · <a href="/compare/">Compare</a> · <a href="/the-real-ones">The Real Ones punch card</a></p></div></section><!-- /vv:index -->`;
 }
 {
   const re = /<!-- vv:index -->[\s\S]*?<!-- \/vv:index -->/;
