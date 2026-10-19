@@ -153,7 +153,7 @@ export function loyaltyBlock({ returnCode, returnExpires, referralCode, punches,
   if (punches) {
     const line = punches.pending > 0
       ? `<b>6 of 6 punched · Lucky #7 is on us.</b> ${claimUrl ? `<a href="${esc(claimUrl)}" style="color:#6e1a31">Choose your free 5 ml</a>.` : "Check your inbox for the link to choose your free 5 ml."}`
-      : `<b>${fmtPunch(punches.cycle)} of 6 punches · Lucky #7 is on us.</b> A 2 or 3 ml is a drop (half a punch), a 5 ml is a punch, a 10 ml is a punch and a half. At six, the seventh is free: any 5 ml up to $45, or $45 toward a bigger one.`;
+      : `<b>${fmtPunch(punches.cycle)} of 6 punches · Lucky #7 is on us.</b> 2 or 3 ml = 1 drop · 5 ml = 2 drops · 10 ml = 3 drops. 12 drops fill the card; lucky #7 is any 5 ml up to $45.`;
     parts.push(`${H3("The Real Ones punch card")}<p style="margin:0 0 4px">${line}</p>${cardImg(punches.pending > 0 ? "full" : punches.cycleDrops ?? Math.round(punches.cycle * 2))}<p style="margin:6px 0 0;font-size:13px;color:#8a6d4b"><a href="${SITE}/the-real-ones" style="color:#6e1a31">See your card and how it works</a></p>`);
   }
   if (sherpaPickName) parts.push(`${H3("Sherpa's pick")}<p style="margin:0">There's a 1 ml of <b>${esc(sherpaPickName)}</b> tucked in with your order. It's close to what you chose, with a twist. Tell me what you think.</p>`);

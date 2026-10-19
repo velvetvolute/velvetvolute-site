@@ -18,6 +18,15 @@
 .ro .hero-mono{margin:0 auto 18px}
 .ro .eyebrow,.ro h1,.ro .lede{text-align:center}
 .ro .lede{margin:0 auto 24px}
+.drops-t{margin:18px auto 6px;border-collapse:collapse;background:linear-gradient(135deg,#b28a5b,#9c7449);border-radius:12px;overflow:hidden;color:#2c0610;font:400 15px var(--sans);min-width:min(100%,340px)}
+.drops-t th,.drops-t td{padding:10px 14px;text-align:left;border-bottom:1px solid rgba(74,14,30,.25);white-space:nowrap}
+.drops-t tr:last-child th,.drops-t tr:last-child td{border-bottom:0}
+.drops-t th{font-weight:600}
+.drops-t td:nth-child(2){min-width:58px}
+.drops-t td:last-child{color:#4a0e1e;font-style:italic;font-family:var(--serif);font-size:16.5px}
+.drops-t .dr{width:13px;height:18px;fill:#4a0e1e;margin-right:3px;vertical-align:-3px}
+.drops-fine{text-align:center;font-size:14px;opacity:.85;margin:8px 0 0}
+@media(max-width:420px){.drops-t th,.drops-t td{padding:9px 9px;font-size:14px}.drops-t td:last-child{font-size:15px}}
 .vvcard{max-width:420px;margin:20px auto 8px}.vvcard svg{display:block;width:100%;height:auto;filter:drop-shadow(0 8px 18px rgba(0,0,0,.28))}
 .punches{display:flex;justify-content:center;gap:10px;margin:18px 0 6px}
 .punches i{width:34px;height:34px;border-radius:50%;border:1px solid #d6b077;display:grid;place-items:center;font:italic 15px var(--serif);color:#d6b077}
@@ -71,7 +80,13 @@
 <section class="ro" id="the-real-ones">
  <div class="hero-mono" aria-hidden="true">VV</div>
  <h1>The Real Ones: lucky #7 is on us</h1>
- <p class="lede">Every 5 ml is a punch, every 10 ml a punch and a half, and every 2 or 3 ml is a drop: half a punch. Twelve velvet drops fill your card, and the seventh is free: any 5 ml in the collection up to $45, or $45 toward a bigger one. No card to carry, no app. It's tied to the email you order with.</p>
+ <p class="lede">Fill your card with <b>12 velvet drops</b>.</p>
+ <table class="drops-t">
+  <tr><th scope="row">2 ml &amp; 3 ml</th><td><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg></td><td>1 drop</td><td>½ punch</td></tr>
+  <tr><th scope="row">5 ml</th><td><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg></td><td>2 drops</td><td>1 punch</td></tr>
+  <tr><th scope="row">10 ml</th><td><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg><svg class="dr" viewBox="-7 -10 14 19" aria-hidden="true"><path d="M0-9C0-9-6.2-1.6-6.2 2.2A6.2 6.2 0 0 0 6.2 2.2C6.2-1.6 0-9 0-9Z"/></svg></td><td>3 drops</td><td>1½ punches</td></tr>
+ </table>
+ <p class="drops-fine">Lucky #7: any 5 ml up to $45, or $45 off a bigger one. Tied to the email you order with.</p>
  <div class="vvcard" id="hero-card" aria-hidden="true"></div>
 
  <!-- claim flow: /the-real-ones?claim=TOKEN -->
