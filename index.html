@@ -566,6 +566,8 @@ section.x-spot{padding:var(--x-s4) 0;color:var(--x-text);
 .x-pick .x-img{display:block}
 .tlink{color:inherit;text-decoration:none}
 .tlink:hover{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.card .brand .tlink{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.card .brand .tlink:hover{opacity:.75}
 .x-pick .house{display:block;font:500 14px/1 var(--sans);color:var(--x-gold2)}
 .x-pick h3{font:500 30px/1.1 var(--serif);color:var(--x-gold);margin:10px 0 12px}
 .x-pick p{font:italic 400 17px/1.6 var(--x-italic);color:var(--x-text);margin:0}
@@ -1804,7 +1806,7 @@ function strip(track,N,onIdx,onTap){const SL=[...track.children];let vi=+track.d
 function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v],sp=isSpot(p);
  return `<article class="card${sp?" spot":""}" data-i="${i}">
    <div class="photo">${sp?`<div class="spot-rib"><span class="rib-vv">VV</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?photoStrip(p,st):bottleArt(p,i)}</div>
-   <div class="body"><div class="brand"><a class="tlink" href="${hUrl(p.brand)}">${p.brand}</a><span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name"><a class="tlink" href="${pUrl(p)}">${p.name}</a></div><a class="pp-link" href="${pUrl(p)}">See the full page &rarr;</a>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
+   <div class="body"><div class="brand"><a class="tlink" href="${hUrl(p.brand)}">${p.brand}</a><span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name"><a class="tlink" href="${pUrl(p)}">${p.name}</a></div>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
    <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}${k==="luxe"?'<span class="vup">+$3</span>':k==="roll"?'<span class="vup">+$4</span>':""}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
    <div class="sizes">${V.sizes.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml<span class="pml-b">${pml(p,st.v,z)}</span></button>`).join("")}</div>
