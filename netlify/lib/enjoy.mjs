@@ -165,7 +165,7 @@ export async function loyaltyExtras(s, email, first, token) {
     if (!ref) { const c = await issueReferralCode(email, first || contact.first, token); ref = { code: c.code }; }
     await upsertContact(email, { first, codes: { return: ret.code, ref: ref.code } });
     const punches = await getPunches(email);
-    const claimUrl = punches.pending > 0 && punches.claim ? `${SITE}/the-real-ones?claim=${punches.claim}` : "";
+    const claimUrl = punches.pending > 0 && punches.claim ? `${SITE}/rewards?claim=${punches.claim}` : "";
     const paid = await getJSON(stores.paid(), s.no);
     const pick = paid?.pick ? byName(paid.pick) || { short: paid.pick, brand: "" } : null;
     // 21-day follow-up: a 2 ml (classic) or 3 ml (luxury) of a scent, with no 10 ml of it in this order or earlier

@@ -16,10 +16,20 @@
   from = "/subscribe"
   to = "/subscribe.html"
   status = 200
+# The Real Ones stamp card lives at velvetvolute.ca/rewards ("Rewards" in the side menu)
+[[redirects]]
+  from = "/rewards"
+  to = "/rewards.html"
+  status = 200
+# Old address (already in sent emails, incl. ?claim= links): forward to /rewards, query string kept
 [[redirects]]
   from = "/the-real-ones"
-  to = "/the-real-ones.html"
-  status = 200
+  to = "/rewards"
+  status = 301
+[[redirects]]
+  from = "/the-real-ones.html"
+  to = "/rewards"
+  status = 301
 # Link page the business-card QR code opens (velvetvolute.ca/card)
 [[redirects]]
   from = "/card"

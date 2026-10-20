@@ -1,4 +1,4 @@
-// The Real Ones punch card: "Choose your free 5 ml" (/the-real-ones?claim=TOKEN).
+// The Real Ones punch card: "Choose your free 5 ml" (/rewards?claim=TOKEN).
 // GET  ?claim=TOKEN         → { first, capCents, used, options: [{ vid, sq, brand, name, img, vial, label, cents, overCap }] }
 //                             every in-stock 5 ml (Classic, Luxury, Roll-on), prices from Square
 // POST { claim, vid }       → creates the one-time code (100% off that variation, or $CAP off it when it

@@ -133,7 +133,7 @@ async function loyalty(s, buyer, order, usedCodes, token) {
     await setPunchClaim(email, tokenId);
     // sent after the order confirmation, so the confirmation (with the full card) lands first
     reward = async () => {
-      const m = rewardEmail({ first, claimUrl: `${SITE}/the-real-ones?claim=${tokenId}`, unsubUrl: await unsubscribeUrl(email), capCents: PUNCH_REWARD_CAP_CENTS });
+      const m = rewardEmail({ first, claimUrl: `${SITE}/rewards?claim=${tokenId}`, unsubUrl: await unsubscribeUrl(email), capCents: PUNCH_REWARD_CAP_CENTS });
       await sendMail({ from: MARKETING_FROM, to: email, bcc: [MAIL_COPY], subject: m.subject, html: m.html, text: m.text, tags: [{ name: "kind", value: "punch-reward" }] });
     };
   }
@@ -147,7 +147,7 @@ export function cardBlock(punch) {
   const line = full
     ? `This order added <b>${n} velvet drop${n > 1 ? "s" : ""}</b> and filled your card. Lucky #7 is on us: the link to choose your free 5 ml is on its way in a separate email.`
     : `This order added <b>${n} velvet drop${n > 1 ? "s" : ""}</b>. You're at <b>${fmtPunch(punch.p.cycle)} of 6 stamps</b>; ${fmtPunch(6 - punch.p.cycle)} more and lucky #7, a free 5 ml, is on us.`;
-  return `<h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:22px 0 6px">The Real Ones stamp card</h3><p style="margin:0">${line}</p>${cardImg(full ? "full" : punch.p.cycleDrops)}<p style="margin:6px 0 0;font-size:13px"><a href="${SITE}/the-real-ones" style="color:#6e1a31">See your card and how it works</a></p>`;
+  return `<h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:22px 0 6px">The Real Ones stamp card</h3><p style="margin:0">${line}</p>${cardImg(full ? "full" : punch.p.cycleDrops)}<p style="margin:6px 0 0;font-size:13px"><a href="${SITE}/rewards" style="color:#6e1a31">See your card and how it works</a></p>`;
 }
 
 export function emailHTML(s, ref, etransfer = false, extra = "", card = "") {

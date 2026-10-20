@@ -31,7 +31,7 @@ const files = {
     { img: fyf.img, brand: fyf.brand, name: fyf.short, variation: "Classic · 5 ml", qty: 1, price: 32, url: fyf.url },
     { img: tuscan.imgL, brand: tuscan.brand, name: tuscan.short, variation: "Luxury · 3 ml", qty: 2, price: 32, url: tuscan.url },
   ], subtotal: 96, restoreUrl: "https://velvetvolute.ca/?cart=k3j4h5g6f7d8s9a0q1w2#cart-page", unsubUrl }),
-  "06-punch-reward": E.rewardEmail({ first, claimUrl: "https://velvetvolute.ca/the-real-ones?claim=abcdefghij1234567890abcd", unsubUrl }),
+  "06-punch-reward": E.rewardEmail({ first, claimUrl: "https://velvetvolute.ca/rewards?claim=abcdefghij1234567890abcd", unsubUrl }),
   "07-punch-code": E.punchCodeEmail({ first, code: "VV-FREE5-R8T2W", expiresAt: now + 90 * DAY, p: kredo, variation: "Classic, 5 ml", overCap: false, price: 40 }),
   "07b-punch-code-over-cap": E.punchCodeEmail({ first, code: "VV-FREE5-X2Y9Z", expiresAt: now + 90 * DAY, p: tuscan, variation: "Luxury, 5 ml", overCap: true, price: 46 }),
   "08-referral-thanks": E.referralThanksEmail({ first, code: "VV-THANKS-H6J2K", expiresAt: now + 60 * DAY, unsubUrl }),
@@ -39,7 +39,7 @@ const files = {
 };
 // enjoy + on-its-way (existing templates, now with the loyalty block and sender identity)
 const loyalty = E.loyaltyBlock({ returnCode: "VV-BACK-P4Q8R", returnExpires: now + 30 * DAY, referralCode: "REF-JUSTIN-A7K2", punches: { punches: 3, cycle: 3, earned: 0, pending: 0 }, sherpaPickName: "Nishane Ani", claimUrl: "" });
-const loyalty6 = E.loyaltyBlock({ returnCode: "VV-BACK-P4Q8R", returnExpires: now + 30 * DAY, referralCode: "REF-JUSTIN-A7K2", punches: { punches: 6, cycle: 0, earned: 1, pending: 1 }, sherpaPickName: "", claimUrl: "https://velvetvolute.ca/the-real-ones?claim=abcdefghij1234567890abcd" });
+const loyalty6 = E.loyaltyBlock({ returnCode: "VV-BACK-P4Q8R", returnExpires: now + 30 * DAY, referralCode: "REF-JUSTIN-A7K2", punches: { punches: 6, cycle: 0, earned: 1, pending: 1 }, sherpaPickName: "", claimUrl: "https://velvetvolute.ca/rewards?claim=abcdefghij1234567890abcd" });
 files["10-enjoy-with-loyalty"] = { subject: `Enjoy your Velvet Volute order ${order.no}`, html: enjoyHTML(order, first, loyalty) };
 files["10b-enjoy-six-punches"] = { subject: `Enjoy your Velvet Volute order ${order.no}`, html: enjoyHTML(order, first, loyalty6) };
 files["11-on-its-way"] = { subject: `Your Velvet Volute order ${order.no} is on its way`, html: shippedHTML({ ...order, method: "ship" }, first, { no: "7023 2100 0012 3456", url: "https://www.canadapost-postescanada.ca/track-reperage/en#/search?searchFor=7023210000123456", carrier: "Canada Post" }) };

@@ -156,7 +156,7 @@ export function loyaltyBlock({ returnCode, returnExpires, referralCode, punches,
     const line = punches.pending > 0
       ? `<b>6 of 6 stamps · Lucky #7 is on us.</b> ${claimUrl ? `<a href="${esc(claimUrl)}" style="color:#6e1a31">Choose your free 5 ml</a>.` : "Check your inbox for the link to choose your free 5 ml."}`
       : `<b>${fmtPunch(punches.cycle)} of 6 stamps · Lucky #7 is on us.</b> 2 or 3 ml = 1 drop · 5 ml = 2 drops · 10 ml = 3 drops. 12 drops fill the card; lucky #7 is a free 5 ml, up to $35.`;
-    parts.push(`${H3("The Real Ones stamp card")}<p style="margin:0 0 4px">${line}</p>${cardImg(punches.pending > 0 ? "full" : punches.cycleDrops ?? Math.round(punches.cycle * 2))}<p style="margin:6px 0 0;font-size:13px;color:#8a6d4b"><a href="${SITE}/the-real-ones" style="color:#6e1a31">See your card and how it works</a></p>`);
+    parts.push(`${H3("The Real Ones stamp card")}<p style="margin:0 0 4px">${line}</p>${cardImg(punches.pending > 0 ? "full" : punches.cycleDrops ?? Math.round(punches.cycle * 2))}<p style="margin:6px 0 0;font-size:13px;color:#8a6d4b"><a href="${SITE}/rewards" style="color:#6e1a31">See your card and how it works</a></p>`);
   }
   if (sherpaPickName) parts.push(`${H3("Sherpa's pick")}<p style="margin:0">There's a 1 ml of <b>${esc(sherpaPickName)}</b> tucked in with your order. It's close to what you chose, with a twist. Tell me what you think.</p>`);
   return parts.join("");
@@ -171,7 +171,7 @@ export function punchIntro(drops) {
    ${p(`Welcome to The Real Ones. Every order fills your card with velvet drops, and 12 drops earn lucky #7: a free 5 ml, up to $35. I've added <b>${drops} drops</b> to get you going${drops === 2 ? ", so your first stamp is on me" : ""}.`)}
    ${cardImg(drops)}
    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:12px 0 4px;background:#b28a5b;border-radius:8px;border-collapse:separate">${row("2 ml &amp; 3 ml", "1 drop", "½ stamp")}${row("5 ml", "2 drops", "1 stamp")}${row("10 ml", "3 drops", "1½ stamps")}</table>
-   ${small(`Tied to this email address. <a href="${SITE}/the-real-ones" style="color:#6e1a31">See your card anytime</a>.`)}`;
+   ${small(`Tied to this email address. <a href="${SITE}/rewards" style="color:#6e1a31">See your card anytime</a>.`)}`;
 }
 export const fmtPunch = (n) => `${Math.floor(n) || (n % 1 ? "" : "0")}${n % 1 ? "½" : ""}`;
 export const punchDots = (n) => Array.from({ length: 6 }, (_, i) => (i + 1 <= n ? "●" : i + 0.5 <= n ? "◐" : "○")).join(" ");
