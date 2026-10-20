@@ -392,11 +392,11 @@ nav a{white-space:nowrap}
 :root[data-palette="camel-m"] .qz-fam p{color:#2c0610;border-left-color:#4a0e1e;background:rgba(74,14,30,.05)}
 :root[data-palette="camel-m"] .qz-fam b{font-weight:600}
 :root[data-palette="camel-m"] .qz-fam .ex{color:#4a0e1e;font-size:12.5px;margin-top:7px;padding-top:6px;border-top:1px solid rgba(74,14,30,.22)}
-/* Warm & spicy and Floral & powdery cards: inverted to merlot with camel type */
-:root[data-palette="camel-m"] .qz-fam p:is([data-c="Spicy"],[data-c="Floral"]){background:#4a0e1e;color:#cdb38c;border-left:0;padding-left:19px;position:relative}
-:root[data-palette="camel-m"] .qz-fam p:is([data-c="Spicy"],[data-c="Floral"])::before{content:"";position:absolute;left:6px;top:10px;bottom:10px;width:2px;border-radius:2px;background:#b5946a}
-:root[data-palette="camel-m"] .qz-fam p:is([data-c="Spicy"],[data-c="Floral"]) b{color:#d9c19c}
-:root[data-palette="camel-m"] .qz-fam p:is([data-c="Spicy"],[data-c="Floral"]) .ex{color:#b5946a;border-top-color:rgba(181,148,106,.3)}
+/* Family cards: merlot with camel type, matching the result cards */
+:root[data-palette="camel-m"] .qz-fam p{background:#4a0e1e;color:#cdb38c;border-left:0;padding-left:19px;position:relative}
+:root[data-palette="camel-m"] .qz-fam p::before{content:"";position:absolute;left:6px;top:10px;bottom:10px;width:2px;border-radius:2px;background:#b5946a}
+:root[data-palette="camel-m"] .qz-fam p b{color:#d9c19c}
+:root[data-palette="camel-m"] .qz-fam p .ex{color:#b5946a;border-top-color:rgba(181,148,106,.3)}
 .qz-live{border-top:1px solid var(--line);padding-top:14px}
 .qz-live .qz-step{margin-bottom:8px}
 /* filters & sort: inline on desktop, bottom sheet on phones */
@@ -2143,8 +2143,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   const fit=[];for(const c of cands){if(fit.length>=3)break;const pick=(Array.isArray(c)?c:[c]).find(o=>!(used&&runs(o).some(r=>used.has(r)))&&!kw(o).some(w=>seen.has(w)));if(!pick)continue;fit.push(cap(pick));kw(pick).forEach(w=>seen.add(w))}
   let out=[sh.vibe,...fit,sh.when].join(" ");
   if(se&&se!=="a"&&p.sea!==se&&p.sea!=="a"){const cv=CAVEAT[p.sea],pick=cv.slice(k%4).concat(cv.slice(0,k%4)).find(c=>!kw(c).some(w=>seen.has(w)))||cv[k%4];out+=" "+pick}
-  const av=(ans.avoid||[]).filter(v=>v!=="any"&&AV_TXT[v]).map(v=>AV_TXT[v]);
-  if(!k&&av.length)out+=` None of my picks lean on ${list(av)}.`;
+
   if(!inStock(p))out+=" It's arriving soon, so you can't order it today, but it's worth the wait.";
   out=out.replace(/\s+/g," ").trim();
   if(used)runs(out).forEach(r=>used.add(r));
@@ -2152,8 +2151,8 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  function resultsHTML(r){
   if(!r.length)return `<p class="qz-none">Nothing fits all of that yet. Try fewer "avoid" picks, or a different scent family or season.</p>`;
   const avail=r.filter(x=>inStock(x.p)),setPrice=avail.reduce((a,x)=>a+unit(x.p,"p",2),0);
-  const used=new Set();
-  return `<div class="qz-res">${r.map((x,k)=>{const p=x.p,soon=!inStock(p);return `<div class="qz-r ${k||soon?"":"best"}${soon?" qz-soon":""}"><img class="qz-thumb" src="${p.img}" alt="" width="72" height="72" loading="lazy"><div class="tag">${soon?"Arriving soon · worth the wait":k?"Also on your trail":"The Sherpa’s top pick"}</div>
+  const used=new Set(),av=(ans.avoid||[]).filter(v=>v!=="any"&&AV_TXT[v]).map(v=>AV_TXT[v]);
+  return `${av.length?`<p class="qz-hint qz-avoid-note">Leaving out ${esc(list(av))}, as you asked.</p>`:""}<div class="qz-res">${r.map((x,k)=>{const p=x.p,soon=!inStock(p);return `<div class="qz-r ${k||soon?"":"best"}${soon?" qz-soon":""}"><img class="qz-thumb" src="${p.img}" alt="" width="72" height="72" loading="lazy"><div class="tag">${soon?"Arriving soon · worth the wait":k?"Also on your trail":"The Sherpa’s top pick"}</div>
     <h4>${esc(p.brand)} ${esc(p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Eau de Toilette|Parfum)$/,""))}</h4>
     <p class="why">${FAM_LABEL[p.cat]||p.cat}${p.cat2?" with "+(FAM_LABEL[p.cat2]||p.cat2).toLowerCase():""} · ${SEA_TXT[p.sea]} · ${TM_TXT[p.tm]} · ${STR_TXT[p.str||2]}</p><p class="n">${whyText(p,k,used)}</p>${ans.who==="her"&&p.herWhy?`<p class="n qz-her"><b>Why it <em>also</em> works for her:</b> ${esc(p.herWhy)}</p>`:""}
     ${p.n?`<details class="qz-pyr"${openNotes.has(x.i)?" open":""} data-i="${x.i}"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.map(esc).join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.map(esc).join(", ")}</dd><dt>Base</dt><dd>${p.n.b.map(esc).join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.map(esc).join(", ")}</dd>`}</dl></details>`:""}
@@ -2195,7 +2194,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   box.innerHTML=toggleHTML()+`<div class="qz-step">Scent Sherpa</div><h3 class="qz-q" id="qz-title">Let’s find your scent</h3><p class="qz-hint">${who?"Tell me what you like and I’ll point the way. Your picks update as you tap.":"Start with who’s wearing it, then tell me what you like. Your picks update as you tap."}</p>
    <div class="qz-groups">${Q.map((q,qi)=>{const sel=q.multi?(ans[q.k]||[]):[ans[q.k]];
     if(q.text)return `<div class="qz-g"><div class="qz-gl">${q.short} <span>up to 5</span></div>${lovesHTML("qz-lv-q")}</div>`;
-    return `<div class="qz-g${q.k==="who"&&!who?" qz-first":""}"><div class="qz-gl">${q.short}${q.multi?` <span>${q.multi>5?"pick any":"up to "+q.multi}</span>`:""}</div><div class="qz-chips">${q.o.map(([v,l])=>`<button type="button" class="qz-c ${sel.includes(v)?"on":""}" aria-pressed="${sel.includes(v)}" data-q="${qi}" data-v="${v}">${q.k==="fam"&&DOT[v]?`<span class="dot" style="--c:${DOT[v]}"></span>`:""}${q.k==="avoid"&&v==="any"?"Nothing":q.k==="love"&&v==="any"?"Not sure":q.k==="like"&&v==="any"?"None of these":q.k==="str"&&v==="any"?"No preference":(SHORT[v]||l)}</button>`).join("")}</div>${q.k==="fam"?famInfo(q):""}</div>`}).join("")}</div>
+    return `<div class="qz-g${q.k==="who"&&!who?" qz-first":""}"><div class="qz-gl">${q.short}${q.multi?` <span>${q.multi>5?"pick any":"up to "+q.multi}</span>`:""}</div><div class="qz-chips">${q.o.map(([v,l])=>`<button type="button" class="qz-c ${sel.includes(v)?"on":""}" aria-pressed="${sel.includes(v)}" data-q="${qi}" data-v="${v}">${q.k==="fam"&&DOT[v]?`<span class="dot" style="--c:${DOT[v]}"></span>`:""}${q.k==="avoid"&&v==="any"?"Nothing":q.k==="fam"&&v==="any"?"Not sure":(q.k==="vibe"||q.k==="occ")&&v==="any"?"Any":q.k==="str"&&v==="any"?"No preference":(SHORT[v]||l)}</button>`).join("")}</div>${q.k==="fam"?famInfo(q):""}</div>`}).join("")}</div>
    <div class="qz-live" aria-live="polite">${!who?`<p class="qz-none">Pick who’s wearing it to see your matches.</p>`:`<div class="qz-step">The Sherpa’s picks</div>`+resultsHTML(picks())}</div>
    ${any?`<div class="qz-links"><button type="button" data-a="clear">Clear choices</button>${who?`<button type="button" data-a="shop">Show all matches</button>`:""}</div>${who?`<button type="button" class="qz-jump">See my ${picks().length} matches &darr;</button>`:""}`:""}`;
   const jb=box.querySelector(".qz-jump");if(jb){jb.onclick=()=>box.querySelector(".qz-live").scrollIntoView({behavior:"smooth",block:"start"});
@@ -2642,7 +2641,7 @@ body.qz-open .su-card,.su-card.quiet{opacity:0;pointer-events:none}
  addEventListener("scroll",pill,{passive:true});addEventListener("pageshow",function(){lastY=scrollY;fab.classList.toggle("compact",scrollY>320)});pill();
  document.getElementById("sh-x").onclick=function(){hide();set(K,"1")};
  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&bub.classList.contains("on"))hide()});
- function refresh(){var p=hasPicks();document.getElementById("sh-dot").hidden=!p;var t=p?"See your Scent Sherpa picks":"Ask the Scent Sherpa";fab.setAttribute("aria-label",t);fab.title=t;document.getElementById("sh-lbl").textContent=p?"Your picks":"Ask the Scent Sherpa"}
+ function refresh(){var p=hasPicks();document.getElementById("sh-dot").hidden=!p;var t=p?"See your Scent Sherpa picks":"Ask the Scent Sherpa";fab.setAttribute("aria-label",t);fab.title=t;document.getElementById("sh-lbl").textContent="Ask the Scent Sherpa"}
  refresh();window.VVSherpaRefresh=refresh;
  if(!get(K)&&location.hash!=="#quiz"){setTimeout(function(){if(!document.body.classList.contains("sh-hide")){show();set(K,"1")}},2500);setTimeout(function(){if(bub.classList.contains("on")){hide();set(K,"1")}},20000)}
 })();
