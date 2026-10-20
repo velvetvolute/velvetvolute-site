@@ -1956,15 +1956,24 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
    ["Woody","Woody & earthy","Cedar, vetiver, sandalwood, oakmoss, patchouli"],
    ["Leather","Leather & smoky","Leather, suede, tobacco, oud, saffron"],
    ["any","Not sure yet","Surprise me"]]},
-  {k:"love",multi:12,q:"Any notes you love?",short:"Notes I love",hint:"Pick any. The Sherpa will look for them.",o:[
-   ["vanilla","Vanilla & tonka"],["boozy","Boozy","Rum, whisky"],["tobacco","Tobacco"],["leather","Leather & suede"],["coffee","Coffee"],
-   ["citrus","Citrus"],["spice","Warm spices"],["woods","Woods & moss"],["floral","Florals"],["fruity","Fruity"],["marine","Sea & mint"],["oud","Oud"],["lavender","Lavender"],["any","Not sure, skip this"]]},
+  {k:"loves",text:true,q:"Already have favourites?",short:"Scents I love",hint:"Up to five fragrances you already wear or love, one per comma. Brand is optional and spelling doesn’t have to be perfect.",ph:"Sauvage, Baccarat Rouge, Aventus\u2026",o:[]},
+  {k:"vibe",multi:2,q:"What’s the vibe?",short:"Vibe",hint:"Pick up to two.",o:[
+   ["sexy","Smooth & sexy","Warm, close, a little dangerous"],
+   ["boss","Boss mode","Polished, confident, in charge"],
+   ["party","Party ’til 5am","Loud, sweet, impossible to ignore"],
+   ["adventure","Adventurous & outdoorsy","Fresh air, open roads, salt and green"],
+   ["cozy","Cozy & comforting","A sweater, a coffee, a slow Sunday"],
+   ["dark","Dark & mysterious","Smoke, leather, oud, after midnight"],
+   ["clean","Clean & effortless","Fresh out of the shower, no fuss"],
+   ["sunny","Sunny & playful","Fruit, citrus, good moods"],
+   ["quiet","Quiet luxury","Refined, understated, unmistakably expensive"],
+   ["any","Surprise me"]]},
   {k:"sea",q:"When will you wear it most?",short:"Season",o:[["c","Fall & winter"],["w","Spring & summer"],["a","All year round"]]},
   {k:"occ",q:"What's the occasion?",short:"Occasion",o:[["work","Work & daytime","Office, class, errands"],["gym","Gym & active","Workouts, sports, on the move"],["date","Date night","Dinner, drinks, close company"],["night","Night out","Bars, parties, late nights"],["special","A special occasion","Weddings, celebrations, the big night"],["any","A bit of everything"]]},
   {k:"str",q:"How much presence do you want?",short:"Presence",o:[["1","Soft & close","Stays near the skin"],["2","Noticeable","Present without taking over"],["3","Bold","Fills the room"],["any","No preference"]]},
-  {k:"avoid",multi:9,q:"Anything you'd rather avoid?",short:"Skip anything with",hint:"Pick any that apply, and we'll leave them out.",o:[
-   ["floral","Strong florals","Rose, jasmine, tuberose"],["coffee","Coffee"],["smoke","Tobacco or smoke"],["leather","Leather"],
-   ["oud","Oud"],["lavender","Lavender"],["coconut","Coconut"],["sweet","Very sweet scents"],["any","Nothing, I'm open"]]}
+  {k:"avoid",multi:6,q:"Anything you’d rather steer clear of?",short:"Steer clear of",hint:"Pick any that apply, and I’ll leave them out.",o:[
+   ["sweet","Dessert-level sweet","Vanilla, caramel, candy"],["loud","Room-filling","Anything people smell before they see you"],["fresh","Soapy or shower-gel fresh","Aquatic, sporty, clean-laundry"],
+   ["dark","Dark, smoky or leathery","Oud, tobacco, leather, incense"],["floral","Too flowery","Rose, jasmine, big bouquets"],["powdery","Powdery or old-fashioned","Barbershop, talc, grandpa’s cologne"],["any","Nothing, I’m open"]]}
  ];
  /* Popular scents → closest matches in the collection (verified against Fragrantica "reminds me of" data and reviews). */
  const LIKE={"aventus": [["Hacivat Extrait de Parfum", 4], ["Ani Extrait de Parfum", 1], ["Uomo Born in Roma Yellow Dream", 1]], "bleu": [["Deziro Extrait de Parfum", 4], ["Le Piano Eau de Parfum", 1], ["Uomo Born in Roma Green Stravaganza", 1]], "sauvage": [["Deziro Extrait de Parfum", 2.5]], "adg": [["Deziro Extrait de Parfum", 2.5]], "libre": [["Tempfluo Extrait de Parfum", 4]], "blackopium": [["Hundred Silent Ways X Extrait de Parfum", 4], ["Replica Coffee Break", 1], ["Black Orchid Eau de Parfum", 1]], "lemale": [["Le Male Elixir Parfum", 4], ["I Will Eau de Parfum", 2.5]], "lebeau": [["Uomo Born in Roma Purple Melancholia", 4], ["Fan Your Flames X Extrait de Parfum", 1]], "eros": [["Eros Najim Parfum", 2.5], ["Uomo Born in Roma Yellow Dream", 2.5], ["Le Male Elixir Parfum", 1]], "invictus": [["La Mélodie Maximal Parfum", 4], ["Uomo Born in Roma Yellow Dream", 2.5]], "swy": [["I Will Eau de Parfum", 2.5], ["Eros Najim Parfum", 2.5], ["Uomo Born in Roma Yellow Dream", 2.5], ["Le Male Elixir Parfum", 1]], "mostwanted": [["Uomo Born in Roma Yellow Dream", 2.5], ["Tempfluo Extrait de Parfum", 2.5], ["Eros Najim Parfum", 1]], "layton": [["I Will Eau de Parfum", 4], ["Uomo Born in Roma Coral Fantasy", 3], ["Althaïr Eau de Parfum", 2.5], ["Uomo Signature Eau de Parfum", 2.5], ["Tero Extrait de Parfum", 1], ["Ani Extrait de Parfum", 1]], "diorhomme": [["Uomo (2021)", 4], ["Gentleman Réserve Privée Eau de Parfum", 4], ["La Nuit de L'Homme Eau de Toilette", 2.5], ["Noir Eau de Parfum", 2.5], ["Uomo Signature Eau de Parfum", 1]], "tobvan": [["Replica Jazz Club", 2.5], ["Fan Your Flames Extrait de Parfum", 2.5], ["Le Male Elixir Parfum", 1]], "oudwood": [["Kredo Extrait de Parfum", 2.5], ["Nefs Extrait de Parfum", 1]], "tuscan": [["Tuscan Leather Eau de Parfum", 4], ["Suède et Safran Extrait de Parfum", 4], ["Ombre Leather Eau de Parfum", 4]], "br540": [["Baccarat Rouge 540 Eau de Parfum", 4], ["Tempfluo Extrait de Parfum", 1], ["Erba Pura Eau de Parfum", 1], ["Hundred Silent Ways X Extrait de Parfum", 1]], "spicebomb": [["Le Male Elixir Parfum", 2.5], ["Replica Jazz Club", 2.5], ["Or Noir Café Parfum", 1], ["Zoltan Extrait de Parfum", 1]], "jazzclub": [["Replica Jazz Club", 4], ["Fan Your Flames Extrait de Parfum", 2.5]]};
@@ -1972,30 +1981,97 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  let mode="steps",step=0,ans={},last=null;const openNotes=new Set();
  try{const sv=JSON.parse(sessionStorage.getItem("vv-scent")||"null");if(sv){mode=sv.mode||mode;step=sv.step||0;ans=sv.ans||{}}}catch(e){}
  const saveQ=()=>{try{sessionStorage.setItem("vv-scent",JSON.stringify({mode,step,ans}))}catch(e){}};
- const hasAns=()=>Object.values(ans).some(v=>Array.isArray(v)?v.length:v!==undefined);
+ const hasAns=()=>Object.values(ans).some(v=>Array.isArray(v)?v.length:v!==undefined&&v!=="");
  const SHORT={a:"All year",any:"Either"};
  const has=(p,re)=>re.test(allNotes(p));
- const AVOID={floral:p=>has(p,/rose|jasmine|tuberose|gardenia|orchid|iris|orris|osmanthus|orange blossom|orange flower|neroli|magnolia|florals/i),coffee:p=>has(p,/coffee/i),
-  smoke:p=>has(p,/tobacco|smok|incense|styrax/i),leather:p=>has(p,/leather|suede/i),oud:p=>has(p,/\boud|agarwood/i),lavender:p=>has(p,/lavender|lavandin/i),coconut:p=>has(p,/coconut/i),sweet:p=>p.cat==="Sweet"||(p.x||[]).includes("gourmand")};
+ const AVOID={sweet:p=>p.cat==="Sweet"||(p.x||[]).includes("gourmand"),loud:p=>(p.str||2)===3,fresh:p=>p.cat==="Fresh"||(p.x||[]).includes("aquatic"),
+  dark:p=>p.cat==="Leather"||(p.x||[]).some(t=>/oud|smoky|animalic/.test(t)),floral:p=>p.cat==="Floral"||p.cat2==="Floral",powdery:p=>(p.x||[]).includes("powdery")};
  const allNotes=p=>p._all||(p._all=[p.notes].concat(p.n?[...p.n.t,...p.n.h,...p.n.b]:[]).concat(p.x||[]).join(", "));
- const LOVE={vanilla:/vanilla|tonka|benzoin|ethyl maltol/i,boozy:/\brum\b|whisk|cognac|bourbon|boozy/i,tobacco:/tobacco/i,leather:/leather|suede/i,coffee:/coffee/i,
-  citrus:/bergamot|mandarin|lemon|grapefruit|orange(?! blossom| flower)|lime|citrus|yuzu|litsea/i,spice:/cardamom|cinnamon|pepper|nutmeg|ginger|saffron|anise/i,
-  woods:/cedar|sandalwood|vetiver|guaiac|oakmoss|\bmoss|fir|timberwood|clearwood|dry woods/i,floral:/rose|jasmine|tuberose|iris|orris|osmanthus|gardenia|neroli|orange blossom|orange flower|violet|orchid|magnolia|heliotrope/i,
-  fruity:/pineapple|apple|peach|raspberry|fig|currant|coconut|plum|fruit/i,marine:/\bsea\b|marine|aquatic|ambergris|mint/i,oud:/\boud|agarwood/i,lavender:/lavender|lavandin/i};
- const LOVE_TXT={vanilla:"vanilla",boozy:"boozy rum or whisky",tobacco:"tobacco",leather:"leather",coffee:"coffee",citrus:"citrus",spice:"warm spice",woods:"woods",floral:"florals",fruity:"fruit",marine:"sea-and-mint notes",oud:"oud",lavender:"lavender"};
  const OCC_TM={work:"d",gym:"d",date:"n",night:"n",special:"n",any:"b"};
+ /* ===== Vibes: each returns a score for a product from its family, descriptors, presence and time of day ===== */
+ const xs=(p,re)=>(p.x||[]).some(t=>re.test(t)),fam2=(p,...c)=>c.includes(p.cat)||c.includes(p.cat2),st=p=>p.str||2;
+ const VIBE={
+  sexy:p=>((xs(p,/amber|musky|boozy/)&&p.cat!=="Fresh")||fam2(p,"Sweet","Leather")?3:0)+(p.tm==="n"?1:0)+(p.cat==="Fresh"?-2.5:0)+(xs(p,/fruity|green|tea/)?-1:0)+(st(p)===1&&!xs(p,/musky/)?-.5:0),
+  boss:p=>(["Woody","Leather","Spicy"].includes(p.cat)&&st(p)>=2?3:p.cat==="Leather"||p.cat2==="Leather"?2.5:["Woody","Spicy"].includes(p.cat2)&&st(p)>=2&&p.cat!=="Sweet"?1.5:0)+(xs(p,/oud|smoky|leather|aromatic/)&&p.cat!=="Fresh"?1:0)+(xs(p,/gourmand|fruity/)?-1.5:0)+(p.cat==="Fresh"?-2:0)+(st(p)===1?-1:0),
+  party:p=>(st(p)===3?3:st(p)===2?.5:-3)+(p.cat==="Sweet"||xs(p,/boozy|gourmand/)?1:0)+(p.tm==="n"?1:0)+(xs(p,/powdery/)&&p.cat!=="Sweet"?-1:0),
+  adventure:p=>(fam2(p,"Fresh")||xs(p,/green|aquatic|tea/)?3:xs(p,/aromatic/)&&p.cat==="Woody"?1.5:0)+(p.tm==="d"?1:0)+(fam2(p,"Leather")||xs(p,/oud|smoky|gourmand/)?-3:0)+(st(p)===3&&p.cat!=="Fresh"?-1:0),
+  cozy:p=>(xs(p,/gourmand|boozy/)||p.cat==="Sweet"?3:p.cat2==="Sweet"?1.5:0)+(st(p)<=2?1:0)+(p.cat==="Fresh"?-2.5:0)+(xs(p,/aquatic|green/)?-1:0),
+  dark:p=>(fam2(p,"Leather")||xs(p,/oud|smoky|animalic/)?3:0)+(p.tm==="n"?1:0)+(st(p)===3?.5:0)+(p.cat==="Fresh"?-3:0)+(xs(p,/fruity/)&&!fam2(p,"Leather")?-1:0)+(p.cat==="Sweet"&&!xs(p,/oud|smoky|animalic/)?-1.5:0),
+  clean:p=>(p.cat==="Fresh"||xs(p,/aquatic|musky|green|tea/)?3:0)+(st(p)<=2?1:0)+(xs(p,/gourmand|boozy|oud|smoky|animalic/)?-3:0)+(fam2(p,"Leather")?-2:0),
+  sunny:p=>(xs(p,/fruity/)||(p.cat==="Fresh"&&fam2(p,"Sweet"))?3:p.sea==="w"?2:0)+(p.sea==="w"?1:0)+(p.sea==="c"?-2:0)+(fam2(p,"Leather")||xs(p,/oud|smoky/)?-2:0),
+  quiet:p=>((xs(p,/powdery/)||(xs(p,/aromatic/)&&["Woody","Floral"].includes(p.cat)))&&st(p)<=2?3:0)+(xs(p,/boozy|amber|musky/)&&st(p)===2&&!xs(p,/gourmand/)?1.5:0)+(st(p)===1?.5:0)+(st(p)===3?-2.5:0)+(xs(p,/fruity|aquatic/)&&p.cat==="Fresh"?-2:0)+(p.cat==="Sweet"&&xs(p,/gourmand/)?-2:0)};
+ const VIBE_TXT={sexy:"smooth & sexy",boss:"boss mode",party:"party ’til 5am",adventure:"adventurous & outdoorsy",cozy:"cozy & comforting",dark:"dark & mysterious",clean:"clean & effortless",sunny:"sunny & playful",quiet:"quiet luxury"};
+ const VIBE_FIT={
+  sexy:["Smooth & sexy is exactly its lane: warm, close to the skin, the kind people lean in for.","For a smooth & sexy brief, this is the one that does the leaning in for you.","It wears like a low voice in a quiet room, which is what smooth & sexy means here."],
+  boss:["Boss mode suits it: composed, a little sharp, and it never raises its voice to be heard.","This is a shoulders-back scent, the sort that walks into the meeting already decided.","For boss mode it has the posture: polished, dry and quietly in charge."],
+  party:["Built for the long night: it projects, it lasts and it doesn’t apologise for either.","Party ’til 5am wants volume and sweetness, and this brings both to the dance floor.","It’s the loud one in the best way, still going when the lights come up."],
+  adventure:["Adventurous & outdoorsy fits: it smells like open air and somewhere to be.","It has the fresh, green pull of a day spent outside, which is the brief you gave me.","For the outdoorsy vibe it stays crisp and easy, mile after mile."],
+  cozy:["Cozy & comforting is its natural habitat: soft, warm and close as a favourite sweater.","It wraps around you rather than announcing itself, which is what cozy should do.","For a cozy brief this is the slow-Sunday pick, warm without the weight."],
+  dark:["Dark & mysterious suits it: there’s shadow in the base and it keeps a secret or two.","For the dark vibe it has the smoke and depth, with none of the harshness.","It leans moody and after-hours, the way you asked for."],
+  clean:["Clean & effortless is its whole personality: fresh, tidy and never trying too hard.","It reads as just-showered and well put together, which is the clean brief exactly.","For an effortless vibe it stays light and polished from the first spray to the last."],
+  sunny:["Sunny & playful suits it: bright fruit and citrus with a grin on its face.","It’s the good-mood pick, the one that smells like the weekend started early.","For a playful brief it keeps things juicy and light, no brooding allowed."],
+  quiet:["Quiet luxury is the brief, and this has the discreet polish of something expensive worn casually.","It never shouts; it just smells a grade better than everything around it.","For quiet luxury it has the refined, understated finish you asked for."]};
+ const vibeScore=p=>{const v=(ans.vibe||[]).filter(x=>x!=="any"&&VIBE[x]);if(!v.length)return 0;return v.reduce((a,x)=>a+VIBE[x](p),0)/v.length};
+ const vibeHit=p=>(ans.vibe||[]).filter(x=>x!=="any"&&VIBE[x]&&VIBE[x](p)>=3);
+
+ /* ===== Already-love matcher: free text against /sherpa-db.json (brand, name, families, descriptors, aliases) =====
+    The file is fetched only when the Sherpa opens. Matching is forgiving: accents, hyphens and punctuation are ignored,
+    partial words and one-letter typos still match, and a name typed without spaces (baccaratrouge540) is read correctly. */
+ let DB=null,DBp=null,DBi=null;
+ const GENERIC=new Set("eau de parfum edp edt toilette parfum cologne extrait intense pour homme femme men man women woman for the a and by le la les l d du des of".split(" "));
+ const nrm=t=>String(t).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/&/g," and ").replace(/['’]/g,"").replace(/[^a-z0-9]+/g," ").trim();
+ const toks=t=>nrm(t).split(" ").filter(Boolean);
+ function loadDB(){if(DBp)return DBp;DBp=fetch("/sherpa-db.json").then(r=>r.ok?r.json():[]).then(d=>{DB=Array.isArray(d)?d:(d.f||[]);
+   DBi=DB.map((r,i)=>{const bt=toks(r[0]),nt=toks(r[1]),al=(r[4]||"").split("|").filter(Boolean).map(toks);return {i,bt,nt,al,c:nt.join(""),cb:bt.join("")+nt.join(""),ca:al.map(a=>a.join(""))}});
+   if(ans.loves)draw()}).catch(()=>{DB=[];DBi=[]});return DBp}
+ function lev(a,b,max){if(Math.abs(a.length-b.length)>max)return max+1;let prev=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){const cur=[i];let best=i;for(let j=1;j<=b.length;j++){const v=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));cur.push(v);if(v<best)best=v}if(best>max)return max+1;prev=cur}return prev[b.length]}
+ const tokMatch=(q,t)=>{if(q===t)return 1;if(q.length>=3&&(t.startsWith(q)||(q.length>=5&&q.startsWith(t)&&t.length>=4)))return .85;const m=q.length>=8?2:q.length>=5?1:0;return m&&lev(q,t,m)<=m?.7:0};
+ const wgt=t=>GENERIC.has(t)?.25:/^\d+$/.test(t)?.6:1;
+ function matchOne(raw){if(!DBi||!DBi.length)return null;const q=toks(raw);if(!q.length)return null;const qc=q.join("");const qw=q.reduce((a,t)=>a+wgt(t),0);let best=null;
+  for(const e of DBi){let got=0,used=new Set(),nameHit=false;
+   for(const t of q){let bm=0,bk=null;const cands=[[e.nt,1],[e.bt,.8]];for(const a of e.al)cands.push([a,.95]);
+    for(const [arr,f] of cands)for(let k=0;k<arr.length;k++){const key=f+":"+arr[k];if(used.has(key))continue;const m=tokMatch(t,arr[k])*f;if(m>bm){bm=m;bk=key}}
+    if(bm){got+=bm*wgt(t);used.add(bk);if(bk&&!bk.startsWith(".8:"))nameHit=true}}
+   let sc=got/qw;
+   if(qc.length>=7){const c=[e.c,e.cb,...e.ca];if(c.some(x=>x===qc))sc=Math.max(sc,1),nameHit=true;else if(c.some(x=>x.length>=6&&(x.startsWith(qc)||qc.startsWith(x)&&x.length>=qc.length-2)))sc=Math.max(sc,.9),nameHit=true;else if(qc.length>=9&&c.some(x=>lev(qc,x,2)<=2))sc=Math.max(sc,.8),nameHit=true}
+   if(!nameHit)continue;
+   const extra=e.nt.filter(t=>!GENERIC.has(t)).length-Math.min(q.length,e.nt.length);sc-=Math.max(0,extra)*.08;
+   if(sc>0.58&&(!best||sc>best.sc))best={sc,e,r:DB[e.i]}}
+  return best}
+ let lovesCache={key:"",hits:[],miss:[]};
+ function loves(){const raw=String(ans.loves||"");const key=raw+"|"+(DB?DB.length:0);if(lovesCache.key===key)return lovesCache;
+  const hits=[],miss=[],seen=new Set();const add=(q,m)=>{if(m&&!seen.has(m.e.i)){seen.add(m.e.i);hits.push({q,r:m.r,sc:m.sc})}else if(!m)miss.push(q)};
+  const parts=raw.split(/[,;\n\/]+|\s+(?:and|&|\+)\s+/i).map(x=>x.trim()).filter(Boolean);
+  for(const pt of parts){if(hits.length>=5)break;const m=matchOne(pt);const w=toks(pt);
+   if(m&&(w.length<=4||m.sc>=.95)){add(pt,m);continue}
+   /* No commas: walk the words and take the best-scoring run of 1–4 words at each step */
+   let i=0,found=false;while(i<w.length&&hits.length<5){let best=null;for(let n=Math.min(4,w.length-i);n>=1;n--){const seg=w.slice(i,i+n).join(" "),mm=matchOne(seg);if(mm&&mm.sc>=.8&&(!best||mm.sc+n*.03>best.sc+best.n*.03))best={...mm,n,seg}}
+    if(best){add(best.seg,best);i+=best.n;found=true}else i++}
+   if(!found&&!m)miss.push(pt);else if(!found&&m)add(pt,m)}
+  return lovesCache={key,hits,miss}}
+ /* How close one database entry is to one of our scents: shared families first, then shared descriptors and notes. */
+ const TAG_RE={vanilla:/vanilla|tonka|benzoin/i,boozy:/\brum\b|whisk|cognac|bourbon|boozy/i,tobacco:/tobacco/i,leather:/leather|suede/i,coffee:/coffee/i,citrus:/bergamot|mandarin|lemon|grapefruit|orange(?! blossom| flower)|lime|citrus|yuzu|litsea/i,
+  spice:/cardamom|cinnamon|pepper|nutmeg|ginger|saffron|anise/i,woods:/cedar|sandalwood|vetiver|guaiac|oakmoss|\bmoss|fir|timberwood|clearwood|dry woods/i,floral:/rose|jasmine|tuberose|iris|orris|osmanthus|gardenia|neroli|orange blossom|orange flower|violet|orchid|magnolia|heliotrope/i,
+  fruity:/pineapple|apple|peach|raspberry|fig|currant|coconut|plum|fruit/i,marine:/\bsea\b|marine|aquatic|ambergris|mint/i,oud:/\boud|agarwood/i,lavender:/lavender|lavandin/i,tea:/\btea\b|oolong|matcha/i,
+  amber:/amber|labdanum|resin/i,musky:/musk/i,powdery:/iris|orris|violet|heliotrope|powder/i,green:/green|galbanum|sage|basil|thyme|rosemary|bay leaf|vetiver/i,smoky:/smok|incense|birch|styrax|tar/i,gourmand:/caramel|toffee|praline|chocolate|cacao|honey|coffee|vanilla|almond|milk/i,aromatic:/lavender|sage|rosemary|thyme|mint|geranium|clary/i,animalic:/castoreum|civet|animalic|leather/i,aquatic:/\bsea\b|marine|aquatic|calone/i,resinous:/benzoin|labdanum|styrax|resin|incense|balsam/i};
+ function simTo(r,p){const f=(r[2]||"").split("|").filter(Boolean),t=(r[3]||"").split(" ").filter(Boolean),notes=allNotes(p);let s=0;
+  if(f[0]){s+=f[0]===p.cat?5:f[0]===p.cat2?3:0}if(f[1]){s+=f[1]===p.cat?3:f[1]===p.cat2?2:0}
+  let th=0;for(const tag of t){if((p.x||[]).includes(tag))th+=1.5;else if(TAG_RE[tag]&&TAG_RE[tag].test(notes))th+=1}s+=Math.min(5,th);
+  if(f.length&&!f.includes(p.cat)&&!f.includes(p.cat2))s-=2;return s}
+ function lovesScore(p){const h=loves().hits;if(!h.length)return 0;return h.reduce((a,x)=>a+simTo(x.r,p),0)/h.length}
+ const lovesHit=p=>loves().hits.filter(x=>simTo(x.r,p)>=6);
+ const dbName=r=>r[0]+" "+r[1];
  const famOf=p=>[p.cat,p.cat2].filter(Boolean);
- const wantsFloral=()=>(ans.fam||[]).includes("Floral")||(ans.love||[]).includes("floral");
+ const wantsFloral=()=>(ans.fam||[]).includes("Floral")||(ans.vibe||[]).includes("sunny")&&false;
  function whoOk(p){if(ans.who==="her")return !!p.her;if(ans.who==="him")return !(p.her===1&&p.cat==="Floral"&&p.cat2==="Sweet")||wantsFloral();return true}
  function likeHits(p){return (ans.like||[]).filter(a=>LIKE[a]&&LIKE[a].some(m=>m[0]===p.name))}
  function likeWeight(a,p){const m=(LIKE[a]||[]).find(m=>m[0]===p.name);return m?m[1]:0}
- function fits(p){const f=(ans.fam||[]).filter(v=>v!=="any"),lv=(ans.love||[]).filter(v=>v!=="any");
-  const famOk=!f.length||f.some(c=>famOf(p).includes(c))||lv.some(a=>LOVE[a]&&LOVE[a].test(allNotes(p)))||likeHits(p).length;
-  const loveOk=!lv.length||lv.some(a=>LOVE[a]&&LOVE[a].test(allNotes(p)))||likeHits(p).length;
+ function fits(p){const f=(ans.fam||[]).filter(v=>v!=="any");
+  const famOk=!f.length||f.some(c=>famOf(p).includes(c))||likeHits(p).length||lovesScore(p)>=6;
   const seaOk=!ans.sea||ans.sea==="a"||p.sea===ans.sea||p.sea==="a";
   const tm=OCC_TM[ans.occ||"any"];const tmOk=tm==="b"||p.tm===tm||p.tm==="b";
   const avOk=!(ans.avoid||[]).some(a=>AVOID[a]&&AVOID[a](p));
-  return famOk&&loveOk&&seaOk&&tmOk&&avOk&&whoOk(p)}
+  return famOk&&seaOk&&tmOk&&avOk&&whoOk(p)}
  function score(p){let s=0;const f=(ans.fam||[]).filter(v=>v!=="any");
   if(f.length)s+=f.includes(p.cat)?5:(p.cat2&&f.includes(p.cat2))?3.5:0;
   const se=ans.sea||"a";if(se==="a")s+=1;else s+=p.sea===se?3:p.sea==="a"?2:-3;
@@ -2004,7 +2080,8 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   if(ans.occ==="work")s+=st<=2?1:-1;if(ans.occ==="gym"){s+=st<=2?1.5:-2;s+=(p.x||[]).some(t=>/aquatic|green|tea|fruity|aromatic/.test(t))||p.cat==="Fresh"||p.cat2==="Fresh"?2:0;s-=(p.x||[]).some(t=>/gourmand|boozy|oud|animalic|smoky/.test(t))||p.cat==="Leather"?1.5:0}if(ans.occ==="special")s+=st===3?1.5:0;if(ans.occ==="date")s+=(p.x||[]).some(t=>/gourmand|boozy|amber|musky|leather/.test(t))?1:0;if(ans.occ==="night")s+=st>=2?1:0;
   if(ans.str&&ans.str!=="any"){const d=Math.abs(st-Number(ans.str));s+=d===0?2:d===1?.5:-2}
   (ans.avoid||[]).forEach(a=>{if(AVOID[a]&&AVOID[a](p))s-=8});
-  const lv=(ans.love||[]).filter(a=>LOVE[a]&&LOVE[a].test(allNotes(p)));s+=Math.min(3,lv.length)*2.5;
+  s+=vibeScore(p)*1.6;
+  s+=lovesScore(p)*0.9;
   (ans.like||[]).forEach(a=>{s+=likeWeight(a,p)});
   if(ans.who&&ans.who!=="all"&&!whoOk(p))s-=100;
   if(ans.who==="her")s+=p.her===1?4:1;
@@ -2026,7 +2103,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  function bindToggle(){box.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{if(mode===b.dataset.mode)return;mode=b.dataset.mode;step=0;draw()})}
  const lc=a=>a.map(x=>x.split(" ").map(w=>/^(Italian|Chinese|Madagascar|Turkish|Haitian|Australian|Calabrian|Indian|Java|Sicilian|Bulgarian|Egyptian|Virginia|Mysore|Tahitian|Bourbon|Indonesian|Sri|Florentine|Mediterranean|Iranian)$/.test(w)?w:w.toLowerCase()).join(" "));
  const list=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+" and "+a[a.length-1];
- const AV_TXT={floral:"strong florals",coffee:"coffee",smoke:"tobacco and smoke",leather:"leather",oud:"oud",lavender:"lavender",coconut:"coconut",sweet:"heavy sweetness"};
+ const AV_TXT={sweet:"heavy sweetness",loud:"room-filling projection",fresh:"soapy freshness",dark:"dark, smoky notes",floral:"big florals",powdery:"powdery, old-school notes"};
  const SEA_TXT={c:"Fall & winter",w:"Spring & summer",a:"All year"},TM_TXT={d:"Daytime",n:"Evenings",b:"Day or night"},STR_TXT={1:"Soft & close",2:"Noticeable",3:"Bold"};
  /* The write-up: this scent's own story line (SHERPA.vibe), then up to three hand-written FIT sentences for the exact
     reasons it matched (closest-to, family, loved notes, occasion, season, presence; most specific first), then when to wear it.
@@ -2051,7 +2128,8 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   const f=(ans.fam||[]).filter(v=>v!=="any"),cands=[];
   const lk=likeHits(p).map(a=>LIKE_TXT[a]);if(lk.length&&ft.like)cands.push(ft.like.replace("{s}",slot(list(lk))));
   if(f.length){if(f.includes(p.cat)&&ft.fam)cands.push(ft.fam);else if(p.cat2&&f.includes(p.cat2)&&ft.fam2)cands.push(ft.fam2)}
-  const lh=(ans.love||[]).filter(a=>LOVE[a]&&LOVE[a].test(allNotes(p))).map(a=>LOVE_TXT[a]);if(lh.length&&ft.love)cands.push(ft.love.replace("{n}",slot(list(lh.slice(0,3)))));
+  const lvh=lovesHit(p).map(x=>dbName(x.r));if(lvh.length&&!lk.length&&ft.like)cands.push(ft.like.replace("{s}",slot(list(lvh.slice(0,2)))));
+  const vh=vibeHit(p);if(vh.length){const v=vh[0],g=PRODUCTS.indexOf(p)%VIBE_FIT[v].length;cands.push(VIBE_FIT[v].slice(g).concat(VIBE_FIT[v].slice(0,g)))}
   if(ans.occ==="gym"){if(p.tm!=="n"){const g=PRODUCTS.indexOf(p)%GYM_TXT.length;cands.push(GYM_TXT.slice(g).concat(GYM_TXT.slice(0,g)))}}else if(ans.occ&&ans.occ!=="any"){const o=OCC_TXT[ans.occ],tm=OCC_TM[ans.occ];if(p.tm===tm&&ft.occ)cands.push(ft.occ.replace("{o}",slot(o)));else if(p.tm==="b"&&ft.occB)cands.push(ft.occB.replace("{o}",slot(o)))}
   const se=ans.sea;if(se&&se!=="a"){if(p.sea===se&&ft.sea)cands.push(ft.sea);else if(p.sea==="a"&&ft.seaAll)cands.push(ft.seaAll)}
   if(ans.str&&ans.str!=="any"&&(p.str||2)===Number(ans.str)&&ft.str)cands.push(ft.str);
@@ -2110,15 +2188,29 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   const who=!!ans.who,any=hasAns();
   box.innerHTML=toggleHTML()+`<div class="qz-step">Scent Sherpa</div><h3 class="qz-q" id="qz-title">Let’s find your scent</h3><p class="qz-hint">${who?"Tell me what you like and I’ll point the way. Your picks update as you tap.":"Start with who’s wearing it, then tell me what you like. Your picks update as you tap."}</p>
    <div class="qz-groups">${Q.map((q,qi)=>{const sel=q.multi?(ans[q.k]||[]):[ans[q.k]];
+    if(q.text)return `<div class="qz-g"><div class="qz-gl">${q.short} <span>up to 5, comma-separated</span></div><input type="text" class="qz-in" id="qz-loves-q" value="${esc(ans.loves||"")}" placeholder="${esc(q.ph)}" autocomplete="off" autocapitalize="words" spellcheck="false" maxlength="200" aria-label="${esc(q.q)}"><div class="qz-read" id="qz-read-q">${readHTML()}</div></div>`;
     return `<div class="qz-g${q.k==="who"&&!who?" qz-first":""}"><div class="qz-gl">${q.short}${q.multi?` <span>${q.multi>5?"pick any":"up to "+q.multi}</span>`:""}</div><div class="qz-chips">${q.o.map(([v,l])=>`<button type="button" class="qz-c ${sel.includes(v)?"on":""}" aria-pressed="${sel.includes(v)}" data-q="${qi}" data-v="${v}">${q.k==="fam"&&DOT[v]?`<span class="dot" style="--c:${DOT[v]}"></span>`:""}${q.k==="avoid"&&v==="any"?"Nothing":q.k==="love"&&v==="any"?"Not sure":q.k==="like"&&v==="any"?"None of these":q.k==="str"&&v==="any"?"No preference":(SHORT[v]||l)}</button>`).join("")}</div>${q.k==="fam"?famInfo(q):""}</div>`}).join("")}</div>
    <div class="qz-live" aria-live="polite">${!who?`<p class="qz-none">Pick who’s wearing it to see your matches.</p>`:`<div class="qz-step">The Sherpa’s picks</div>`+resultsHTML(picks())}</div>
    ${any?`<div class="qz-links"><button type="button" data-a="clear">Clear choices</button>${who?`<button type="button" data-a="shop">Show all matches</button>`:""}</div>${who?`<button type="button" class="qz-jump">See my ${picks().length} matches &darr;</button>`:""}`:""}`;
   const jb=box.querySelector(".qz-jump");if(jb){jb.onclick=()=>box.querySelector(".qz-live").scrollIntoView({behavior:"smooth",block:"start"});
    const io="IntersectionObserver" in window&&new IntersectionObserver(es=>{jb.hidden=es[0].isIntersecting});if(io)io.observe(box.querySelector(".qz-live"))}
   box.querySelectorAll(".qz-c").forEach(b=>b.onclick=()=>{pick(Q[+b.dataset.q],b.dataset.v,true);const y=box.parentElement.scrollTop;quick();moreLinks();box.parentElement.scrollTop=y;const nb=box.querySelector(`.qz-c[data-q="${b.dataset.q}"][data-v="${b.dataset.v}"]`);if(nb)nb.focus({preventScroll:true})});
+  const qi=box.querySelector("#qz-loves-q");if(qi){loadDB();let tmr;qi.oninput=()=>{ans.loves=qi.value;saveQ();clearTimeout(tmr);tmr=setTimeout(()=>{const rd=box.querySelector("#qz-read-q");if(rd)rd.innerHTML=readHTML();const lv=box.querySelector(".qz-live");if(lv&&ans.who){lv.innerHTML=`<div class="qz-step">The Sherpa’s picks</div>`+resultsHTML(picks());bindRes();moreLinks()}},350)}}
   bindToggle();bindRes()}
+ /* What the Sherpa understood from the favourites box */
+ function readHTML(){const raw=String(ans.loves||"").trim();if(!raw)return "";if(!DB)return `<span class="qz-rd-wait">Looking those up…</span>`;const l=loves();
+  return (l.hits.length?`<span class="qz-rd-l">I read that as:</span> ${l.hits.map(h=>`<span class="qz-rd">${esc(dbName(h.r))}</span>`).join(" ")}`:"")+(l.miss.length?`<span class="qz-rd-miss">${l.hits.length?"Couldn’t place":"I couldn’t place"} ${l.miss.map(m=>`“${esc(m)}”`).join(", ")}. Try the full name, or add the brand.</span>`:"")}
  function steps(){
   const q=Q[step],sel=ans[q.k],multi=!!q.multi,chosen=multi?(sel||[]):[sel];
+  if(q.text){loadDB();box.innerHTML=toggleHTML()+`<div class="qz-step">Question ${step+1} of ${Q.length}</div><div class="qz-bar"><i style="width:${(step/Q.length)*100}%"></i></div>
+   <h3 class="qz-q" id="qz-title">${q.q}</h3><p class="qz-hint">${q.hint}</p>
+   <input type="text" class="qz-in" id="qz-loves" value="${esc(ans.loves||"")}" placeholder="${esc(q.ph)}" autocomplete="off" autocapitalize="words" spellcheck="false" maxlength="200" aria-label="${esc(q.q)}" enterkeyhint="next"><div class="qz-read" id="qz-read">${readHTML()}</div>
+   <div class="qz-nav">${step?`<button type="button" class="qz-back">Back</button>`:"<span></span>"}<button type="button" class="btn qz-next">${String(ans.loves||"").trim()?"Next":"Skip for now"}</button></div>`;
+   const inp=box.querySelector("#qz-loves"),nx=box.querySelector(".qz-next"),bk=box.querySelector(".qz-back");let tmr;
+   inp.oninput=()=>{ans.loves=inp.value;saveQ();nx.textContent=inp.value.trim()?"Next":"Skip for now";clearTimeout(tmr);tmr=setTimeout(()=>{box.querySelector("#qz-read").innerHTML=readHTML()},300)};
+   inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();step++;draw()}};
+   nx.onclick=()=>{step++;draw()};if(bk)bk.onclick=()=>{step--;draw()};
+   bindToggle();box.parentElement.scrollTop=0;if(!ans.loves)setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(e){}},350);return}
   box.innerHTML=toggleHTML()+`<div class="qz-step">Question ${step+1} of ${Q.length}</div><div class="qz-bar"><i style="width:${(step/Q.length)*100}%"></i></div>
    <h3 class="qz-q" id="qz-title">${q.q}</h3>${q.hint?`<p class="qz-hint">${q.hint}</p>`:""}
    <div class="qz-opts${q.o.length>8?" dense":""}">${q.o.map(([v,l,sub])=>`<button type="button" class="qz-opt ${chosen.includes(v)?"on":""}" data-v="${v}" aria-pressed="${chosen.includes(v)}">${q.k==="fam"&&DOT[v]?`<span class="dot" style="--c:${DOT[v]}"></span>`:""}<span>${l}${sub?`<small>${sub}</small>`:""}</span></button>`).join("")}</div>
@@ -2478,6 +2570,12 @@ body.qz-open .su-card,.su-card.quiet{opacity:0;pointer-events:none}
 .qz-cap input[type=email],.qz-cap input[type=text]{display:block;width:100%;box-sizing:border-box;background:rgba(255,255,255,.2);border:1px solid rgba(74,14,30,.5);border-radius:4px;padding:10px 11px;color:#2C0610;font:400 16px var(--sans)}
 .qz-cap input:focus{outline:2px solid #3A0A17;outline-offset:1px}
 .qz-cap input::placeholder{color:#5a3a2a;opacity:.7}
+.qz-in{display:block;width:100%;box-sizing:border-box;background:rgba(255,255,255,.22);border:1px solid rgba(74,14,30,.55);border-radius:6px;padding:13px 14px;color:#2C0610;font:400 16px var(--sans);margin:0 0 10px}
+.qz-in:focus{outline:2px solid #3A0A17;outline-offset:1px}.qz-in::placeholder{color:#5a3a2a;opacity:.7}
+.qz-read{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-height:18px;margin:0 0 6px;font:400 13.5px var(--sans);color:#3A0A17}
+.qz-read .qz-rd{display:inline-block;border:1px solid rgba(74,14,30,.45);border-radius:30px;padding:3px 10px;background:rgba(255,255,255,.18)}
+.qz-read .qz-rd-l{font-weight:500}.qz-read .qz-rd-miss{flex-basis:100%;color:#5a3a2a}.qz-read .qz-rd-wait{color:#5a3a2a;font-style:italic}
+.qz-g .qz-in{margin-bottom:6px}
 /* Readable fields on the camel/tan panels: solid cream, wine text, a placeholder dark enough to read (WCAG AA on #f4e9d6) */
 .su-card input[type=email],.qz-cap input[type=email],.qz-cap input[type=text],.cart-email input[type=email],.cart-promo-row input{background:#f4e9d6;border:1px solid rgba(74,14,30,.55);color:#2c0610}
 .su-card input::placeholder,.qz-cap input::placeholder,.cart-email input[type=email]::placeholder,.cart-promo-row input::placeholder{color:#7a5a48;opacity:1}
