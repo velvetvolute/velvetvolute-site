@@ -2188,7 +2188,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
    return `<p data-c="${c}"><span class="dot" style="--c:${DOT[c]}"></span><b>${o[1]}</b> notes like ${o[2].toLowerCase()}. <span class="ex">In the collection: ${esc(list(names))}.${also.length?` With a ${o[1].toLowerCase()} side: ${esc(list(also))}.`:""}</span></p>`}).join("")}</div>`}
  /* The why-text is clipped to a few lines on phones; a Read more link opens it when it overflows. */
  window.addEventListener("resize",()=>{if(!ov.hidden)moreLinks()});
- function moreLinks(){if(ov.hidden)return;box.querySelectorAll(".qz-r p.n:not(.qz-her):not(.open)").forEach(p=>{if(p.nextElementSibling&&p.nextElementSibling.classList.contains("qz-more"))return;if(p.scrollHeight>p.clientHeight+2){const b=document.createElement("button");b.type="button";b.className="qz-more";b.textContent="Read more";b.onclick=()=>{p.classList.add("open");b.remove()};p.after(b)}})}
+ function moreLinks(){if(ov.hidden)return;box.querySelectorAll(".qz-r p.n:not(.qz-her):not(.open)").forEach(p=>{if(p.nextElementSibling&&p.nextElementSibling.classList.contains("qz-more"))return;if(p.scrollHeight>p.clientHeight+2){const b=document.createElement("button");b.type="button";b.className="qz-more";b.textContent="Read more";b.setAttribute("aria-expanded","false");b.onclick=()=>{const o=p.classList.toggle("open");b.textContent=o?"Show less":"Read more";b.setAttribute("aria-expanded",o);if(!o)p.scrollIntoView({block:"nearest"})};p.after(b)}})}
  function draw(){saveQ();const ov=document.getElementById("qz-ov");if(ov)ov.scrollTop=0;if(mode==="quick")quick();else if(step>=Q.length)results();else steps();moreLinks()}
  function quick(){
   const who=!!ans.who,any=hasAns();
