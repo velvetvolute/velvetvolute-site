@@ -2153,7 +2153,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   const avail=r.filter(x=>inStock(x.p)),setPrice=avail.reduce((a,x)=>a+unit(x.p,"p",2),0);
   const used=new Set(),av=(ans.avoid||[]).filter(v=>v!=="any"&&AV_TXT[v]).map(v=>AV_TXT[v]);
   return `${av.length?`<p class="qz-hint qz-avoid-note">Leaving out ${esc(list(av))}, as you asked.</p>`:""}<div class="qz-res">${r.map((x,k)=>{const p=x.p,soon=!inStock(p);return `<div class="qz-r ${k||soon?"":"best"}${soon?" qz-soon":""}"><img class="qz-thumb" src="${p.img}" alt="" width="72" height="72" loading="lazy"><div class="tag">${soon?"Arriving soon · worth the wait":k?"Also on your trail":"The Sherpa’s top pick"}</div>
-    <h4>${esc(p.brand)} ${esc(p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Eau de Toilette|Parfum)$/,""))}</h4>
+    <h4><a class="qz-tl" href="${pUrl(p)}">${esc(p.brand)} ${esc(p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Eau de Toilette|Parfum)$/,""))}</a></h4>
     <p class="why">${FAM_LABEL[p.cat]||p.cat}${p.cat2?" with "+(FAM_LABEL[p.cat2]||p.cat2).toLowerCase():""} · ${SEA_TXT[p.sea]} · ${TM_TXT[p.tm]} · ${STR_TXT[p.str||2]}</p><p class="n">${whyText(p,k,used)}</p>${ans.who==="her"&&p.herWhy?`<p class="n qz-her"><b>Why it <em>also</em> works for her:</b> ${esc(p.herWhy)}</p>`:""}
     ${p.n?`<details class="qz-pyr"${openNotes.has(x.i)?" open":""} data-i="${x.i}"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.map(esc).join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.map(esc).join(", ")}</dd><dt>Base</dt><dd>${p.n.b.map(esc).join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.map(esc).join(", ")}</dd>`}</dl></details>`:""}
     <div class="row"><span class="from">From $${low(p)}${soon?`<span class="soon">${esc(p.limited||"Arriving soon")}</span>`:""}</span><button type="button" class="qz-view" data-i="${x.i}">View</button></div></div>`}).join("")}</div>
@@ -2594,7 +2594,8 @@ body.qz-open .su-card,.su-card.quiet{opacity:0;pointer-events:none}
 .qz-read{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-height:18px;margin:0 0 6px;font:400 13.5px var(--sans);color:#3A0A17}
 .qz-read .qz-rd{display:inline-block;border:1px solid rgba(74,14,30,.45);border-radius:30px;padding:3px 10px;background:rgba(255,255,255,.18);color:#3A0A17;font:inherit;cursor:pointer}
 .qz-read .qz-rd:hover,.qz-read .qz-rd:focus-visible{background:#4a0e1e;color:#e8d3b4;border-color:#4a0e1e;outline:none}
-.qz-read .qz-rd-l{font-weight:500}.qz-read .qz-rd-miss{flex-basis:100%;color:#5a3a2a}.qz-read .qz-rd-wait{color:#5a3a2a;font-style:italic}
+.qz-read .qz-rd-l{font-weight:500}
+.qz-r h4 .qz-tl{color:inherit;text-decoration:none;border-bottom:1px solid rgba(181,148,106,.45)}.qz-r h4 .qz-tl:hover,.qz-r h4 .qz-tl:focus-visible{border-bottom-color:currentColor;outline:none}.qz-read .qz-rd-miss{flex-basis:100%;color:#5a3a2a}.qz-read .qz-rd-wait{color:#5a3a2a;font-style:italic}
 .qz-g .qz-in{margin-bottom:6px}
 .qz-lv-have{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 10px;font:400 13.5px var(--sans);color:#3A0A17}
 .qz-lv-have .qz-rd{display:inline-flex;align-items:center;gap:4px;border:1px solid #4a0e1e;border-radius:30px;padding:3px 11px 3px 4px;background:#4a0e1e;color:#e8d3b4}
