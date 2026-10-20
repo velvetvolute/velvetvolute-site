@@ -2198,11 +2198,19 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   const jb=box.querySelector(".qz-jump");if(jb){jb.onclick=()=>box.querySelector(".qz-live").scrollIntoView({behavior:"smooth",block:"start"});
    const io="IntersectionObserver" in window&&new IntersectionObserver(es=>{jb.hidden=es[0].isIntersecting});if(io)io.observe(box.querySelector(".qz-live"))}
   box.querySelectorAll(".qz-c").forEach(b=>b.onclick=()=>{pick(Q[+b.dataset.q],b.dataset.v,true);const y=box.parentElement.scrollTop;quick();moreLinks();box.parentElement.scrollTop=y;const nb=box.querySelector(`.qz-c[data-q="${b.dataset.q}"][data-v="${b.dataset.v}"]`);if(nb)nb.focus({preventScroll:true})});
-  const qi=box.querySelector("#qz-loves-q");if(qi){loadDB();let tmr;qi.oninput=()=>{ans.loves=qi.value;saveQ();clearTimeout(tmr);tmr=setTimeout(()=>{const rd=box.querySelector("#qz-read-q");if(rd)rd.innerHTML=readHTML();const lv=box.querySelector(".qz-live");if(lv&&ans.who){lv.innerHTML=`<div class="qz-step">The Sherpa’s picks</div>`+resultsHTML(picks());bindRes();moreLinks()}},350)}}
+  const qi=box.querySelector("#qz-loves-q");if(qi){loadDB();let tmr;const rdq=()=>{const rd=box.querySelector("#qz-read-q");if(rd){rd.innerHTML=readHTML();bindRead(rd,qi,rdq)}const lv=box.querySelector(".qz-live");if(lv&&ans.who){lv.innerHTML=`<div class="qz-step">The Sherpa’s picks</div>`+resultsHTML(picks());bindRes();moreLinks()}};
+   qi.oninput=()=>{ans.loves=qi.value;saveQ();clearTimeout(tmr);tmr=setTimeout(rdq,350)};bindRead(box.querySelector("#qz-read-q"),qi,rdq)}
   bindToggle();bindRes()}
+ /* Tapping a pill replaces what was typed with the clean name and readies the box for the next one */
+ function bindRead(wrap,inp,after){wrap.querySelectorAll(".qz-rd").forEach(b=>b.onclick=()=>{const q=b.dataset.q,n=b.dataset.n;let v=inp.value;
+   const parts=v.split(/(,|;|\n)/);let done=false;
+   for(let i=0;i<parts.length;i++){if(!done&&parts[i].trim().toLowerCase()===q.trim().toLowerCase()){parts[i]=(parts[i].match(/^\s*/)||[""])[0]+n;done=true}}
+   v=done?parts.join(""):v.replace(q,n);
+   v=v.replace(/\s*,\s*/g,", ").replace(/,\s*$/,"").trim();if(v&&loves().hits.length<5)v+=", ";
+   inp.value=v;ans.loves=v;saveQ();lovesCache.key="";after();try{inp.focus({preventScroll:true});inp.setSelectionRange(v.length,v.length)}catch(e){}})}
  /* What the Sherpa understood from the favourites box */
  function readHTML(){const raw=String(ans.loves||"").trim();if(!raw)return "";if(!DB)return `<span class="qz-rd-wait">Looking those up…</span>`;const l=loves();
-  return (l.hits.length?`<span class="qz-rd-l">I read that as:</span> ${l.hits.map(h=>`<span class="qz-rd">${esc(dbName(h.r))}</span>`).join(" ")}`:"")+(l.miss.length?`<span class="qz-rd-miss">${l.hits.length?"Couldn’t place":"I couldn’t place"} ${l.miss.map(m=>`“${esc(m)}”`).join(", ")}. Try the full name, or add the brand.</span>`:"")}
+  return (l.hits.length?`<span class="qz-rd-l">I read that as:</span> ${l.hits.map(h=>`<button type="button" class="qz-rd" data-q="${esc(h.q)}" data-n="${esc(dbName(h.r))}" title="Use this name">${esc(dbName(h.r))}</button>`).join(" ")}`:"")+(l.miss.length?`<span class="qz-rd-miss">${l.hits.length?"Couldn’t place":"I couldn’t place"} ${l.miss.map(m=>`“${esc(m)}”`).join(", ")}. Try the full name, or add the brand.</span>`:"")}
  function steps(){
   const q=Q[step],sel=ans[q.k],multi=!!q.multi,chosen=multi?(sel||[]):[sel];
   if(q.text){loadDB();box.innerHTML=toggleHTML()+`<div class="qz-step">Question ${step+1} of ${Q.length}</div><div class="qz-bar"><i style="width:${(step/Q.length)*100}%"></i></div>
@@ -2210,7 +2218,9 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
    <input type="text" class="qz-in" id="qz-loves" value="${esc(ans.loves||"")}" placeholder="${esc(q.ph)}" autocomplete="off" autocapitalize="words" spellcheck="false" maxlength="200" aria-label="${esc(q.q)}" enterkeyhint="next"><div class="qz-read" id="qz-read">${readHTML()}</div>
    <div class="qz-nav">${step?`<button type="button" class="qz-back">Back</button>`:"<span></span>"}<button type="button" class="btn qz-next">${String(ans.loves||"").trim()?"Next":"Skip for now"}</button></div>`;
    const inp=box.querySelector("#qz-loves"),nx=box.querySelector(".qz-next"),bk=box.querySelector(".qz-back");let tmr;
-   inp.oninput=()=>{ans.loves=inp.value;saveQ();nx.textContent=inp.value.trim()?"Next":"Skip for now";clearTimeout(tmr);tmr=setTimeout(()=>{box.querySelector("#qz-read").innerHTML=readHTML()},300)};
+   const rd=()=>{const w=box.querySelector("#qz-read");w.innerHTML=readHTML();bindRead(w,inp,rd);nx.textContent=inp.value.trim()?"Next":"Skip for now"};
+   inp.oninput=()=>{ans.loves=inp.value;saveQ();nx.textContent=inp.value.trim()?"Next":"Skip for now";clearTimeout(tmr);tmr=setTimeout(rd,300)};
+   bindRead(box.querySelector("#qz-read"),inp,rd);
    inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();step++;draw()}};
    nx.onclick=()=>{step++;draw()};if(bk)bk.onclick=()=>{step--;draw()};
    bindToggle();box.parentElement.scrollTop=0;if(!ans.loves)setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(e){}},350);return}
@@ -2576,7 +2586,8 @@ body.qz-open .su-card,.su-card.quiet{opacity:0;pointer-events:none}
 .qz-in{display:block;width:100%;box-sizing:border-box;background:rgba(255,255,255,.22);border:1px solid rgba(74,14,30,.55);border-radius:6px;padding:13px 14px;color:#2C0610;font:400 16px var(--sans);margin:0 0 10px}
 .qz-in:focus{outline:2px solid #3A0A17;outline-offset:1px}.qz-in::placeholder{color:#5a3a2a;opacity:.7}
 .qz-read{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-height:18px;margin:0 0 6px;font:400 13.5px var(--sans);color:#3A0A17}
-.qz-read .qz-rd{display:inline-block;border:1px solid rgba(74,14,30,.45);border-radius:30px;padding:3px 10px;background:rgba(255,255,255,.18)}
+.qz-read .qz-rd{display:inline-block;border:1px solid rgba(74,14,30,.45);border-radius:30px;padding:3px 10px;background:rgba(255,255,255,.18);color:#3A0A17;font:inherit;cursor:pointer}
+.qz-read .qz-rd:hover,.qz-read .qz-rd:focus-visible{background:#4a0e1e;color:#e8d3b4;border-color:#4a0e1e;outline:none}
 .qz-read .qz-rd-l{font-weight:500}.qz-read .qz-rd-miss{flex-basis:100%;color:#5a3a2a}.qz-read .qz-rd-wait{color:#5a3a2a;font-style:italic}
 .qz-g .qz-in{margin-bottom:6px}
 /* Readable fields on the camel/tan panels: solid cream, wine text, a placeholder dark enough to read (WCAG AA on #f4e9d6) */
