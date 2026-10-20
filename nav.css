@@ -88,3 +88,8 @@ body.mnav-lock{overflow:hidden}
 .vvs-none a{color:#e8d3b4}
 body.vvs-lock{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.mnav-back,.mnav-panel,.vvs,.vvs-box{transition:none}}
+
+/* VV monogram (Oct 2026): the letters are drawn from the logo outline, first V raised, so every
+   .mono badge and Spotlight ribbon matches the official logo; the "VV" text stays for screen readers. */
+.mono,.rib-vv{position:relative;font-size:0!important;letter-spacing:0!important}
+.mono::before,.rib-vv::before{content:"";position:absolute;inset:0;background:currentColor;-webkit-mask:url(/img/vv-letters-25.svg) center/100% 100% no-repeat;mask:url(/img/vv-letters-25.svg) center/100% 100% no-repeat}

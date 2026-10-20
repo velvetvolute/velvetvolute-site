@@ -20,6 +20,11 @@
   from = "/the-real-ones"
   to = "/the-real-ones.html"
   status = 200
+# Link page the business-card QR code opens (velvetvolute.ca/card)
+[[redirects]]
+  from = "/card"
+  to = "/card.html"
+  status = 200
 
 [[headers]]
   for = "/img/*"
