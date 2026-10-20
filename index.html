@@ -1956,7 +1956,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
    ["Woody","Woody & earthy","Cedar, vetiver, sandalwood, oakmoss, patchouli"],
    ["Leather","Leather & smoky","Leather, suede, tobacco, oud, saffron"],
    ["any","Not sure yet","Surprise me"]]},
-  {k:"loves",text:true,q:"Already have favourites?",short:"Scents I love",hint:"Up to five fragrances you already wear or love, one per comma. Brand is optional and spelling doesn’t have to be perfect.",ph:"Sauvage, Baccarat Rouge, Aventus\u2026",o:[]},
+  {k:"loves",text:true,q:"Already have favourites?",short:"Scents I love",hint:"Type a fragrance you already wear or love and tap it when it comes up. Up to five; brand optional, spelling doesn’t have to be perfect.",ph:"Sauvage, Baccarat Rouge, Aventus\u2026",o:[]},
   {k:"vibe",multi:2,q:"What’s the vibe?",short:"Vibe",hint:"Pick up to two.",o:[
    ["sexy","Smooth & sexy","Warm, close, a little dangerous"],
    ["boss","Boss mode","Polished, confident, in charge"],
@@ -1981,7 +1981,8 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  let mode="steps",step=0,ans={},last=null;const openNotes=new Set();
  try{const sv=JSON.parse(sessionStorage.getItem("vv-scent")||"null");if(sv){mode=sv.mode||mode;step=sv.step||0;ans=sv.ans||{}}}catch(e){}
  const saveQ=()=>{try{sessionStorage.setItem("vv-scent",JSON.stringify({mode,step,ans}))}catch(e){}};
- const hasAns=()=>Object.values(ans).some(v=>Array.isArray(v)?v.length:v!==undefined&&v!=="");
+ const hasAns=()=>Object.entries(ans).some(([k,v])=>k!=="lovesTyped"&&(Array.isArray(v)?v.length:v!==undefined&&v!==""));
+ if(typeof ans.loves==="string"){ans.lovesTyped=ans.loves;ans.loves=[]}
  const SHORT={a:"All year",any:"Either"};
  const has=(p,re)=>re.test(allNotes(p));
  const AVOID={sweet:p=>p.cat==="Sweet"||(p.x||[]).includes("gourmand"),loud:p=>(p.str||2)===3,fresh:p=>p.cat==="Fresh"||(p.x||[]).includes("aquatic"),
@@ -2027,29 +2028,31 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  function lev(a,b,max){if(Math.abs(a.length-b.length)>max)return max+1;let prev=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){const cur=[i];let best=i;for(let j=1;j<=b.length;j++){const v=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));cur.push(v);if(v<best)best=v}if(best>max)return max+1;prev=cur}return prev[b.length]}
  const tokMatch=(q,t)=>{if(q===t)return 1;if(q.length>=3&&(t.startsWith(q)||(q.length>=5&&q.startsWith(t)&&t.length>=4)))return .85;const m=q.length>=8?2:q.length>=5?1:0;return m&&lev(q,t,m)<=m?.7:0};
  const wgt=t=>GENERIC.has(t)?.25:/^\d+$/.test(t)?.6:1;
- function matchOne(raw){if(!DBi||!DBi.length)return null;const q=toks(raw);if(!q.length||q.every(t=>GENERIC.has(t)))return null;const qs=q.join(" "),qc=q.join("");const qw=q.reduce((a,t)=>a+wgt(t),0);let best=null;
+ function matchMany(raw,n){const out=[];matchOne(raw,out);out.sort((a,b)=>b.sc-a.sc||a.e.i-b.e.i);const seen=new Set(),res=[],top=out.length?out[0].sc:0;for(const m of out){if(m.sc<top-.22)break;const k=dbName(m.r);if(seen.has(k))continue;seen.add(k);res.push(m);if(res.length>=(n||4))break}return res}
+ function matchOne(raw,all){if(!DBi||!DBi.length)return null;const q=toks(raw);if(!q.length||q.every(t=>GENERIC.has(t)))return null;const qs=q.join(" "),qc=q.join("");const qw=q.reduce((a,t)=>a+wgt(t),0);let best=null;
   for(const e of DBi){let got=0,used=new Set(),nameHit=false;
    for(const t of q){let bm=0,bk=null;const cands=[[e.nt,1],[e.bt,.8]];for(const a of e.al)cands.push([a,1]);
     for(const [arr,f] of cands)for(let k=0;k<arr.length;k++){const key=f+":"+arr[k];if(used.has(key))continue;const m=tokMatch(t,arr[k])*f;if(m>bm){bm=m;bk=key}}
-    if(bm){got+=bm*wgt(t);used.add(bk);if(bk&&!bk.startsWith(".8:"))nameHit=true}}
+    if(bm){got+=bm*wgt(t);used.add(bk);if(bk&&!bk.startsWith(".8:")&&!e.bt.includes(bk.slice(bk.indexOf(":")+1)))nameHit=true}}
    let sc=got/qw;
    if(qc.length>=7){const c=[e.c,e.cb,...e.ca];if(c.some(x=>x===qc))sc=Math.max(sc,1),nameHit=true;else if(c.some(x=>x.length>=6&&(x.startsWith(qc)||qc.startsWith(x)&&x.length>=qc.length-2)))sc=Math.max(sc,.9),nameHit=true;else if(qc.length>=9&&c.some(x=>lev(qc,x,2)<=2))sc=Math.max(sc,.8),nameHit=true}
    if(!nameHit)continue;
    const extra=e.nt.filter(t=>!GENERIC.has(t)).length-Math.min(q.length,e.nt.length);sc-=Math.max(0,extra)*.08;
    if(e.al.some(a=>a.join(" ")===qs)||e.nt.join(" ")===qs)sc+=.12;else if(e.nt.filter(t=>!GENERIC.has(t)).join(" ")===qs)sc+=.06;else if(e.nt[0]&&q[0]===e.nt[0])sc+=.03;
-   if(sc>0.58&&(!best||sc>best.sc))best={sc,e,r:DB[e.i]}}
+   sc+=(1-e.i/DBi.length)*.02+(DB[e.i][5]?.01:0);
+   if(sc>0.58){if(all)all.push({sc,e,r:DB[e.i]});if(!best||sc>best.sc)best={sc,e,r:DB[e.i]}}}
   return best}
+ const DBidx=()=>{if(!DB)return null;if(!DB._ix){DB._ix=new Map();DB.forEach((r,i)=>DB._ix.set(r[0]+"|"+r[1],i))}return DB._ix};
+ const lovesSel=()=>Array.isArray(ans.loves)?ans.loves:[];
  let lovesCache={key:"",hits:[],miss:[]};
- function loves(){const raw=String(ans.loves||"");const key=raw+"|"+(DB?DB.length:0);if(lovesCache.key===key)return lovesCache;
-  const hits=[],miss=[],seen=new Set();const add=(q,m)=>{if(m&&!seen.has(m.e.i)){seen.add(m.e.i);hits.push({q,r:m.r,sc:m.sc})}else if(!m)miss.push(q)};
-  const parts=raw.split(/[,;\n\/]+|\s+(?:and|&|\+)\s+/i).map(x=>x.trim()).filter(Boolean);
-  for(const pt of parts){if(hits.length>=5)break;const m=matchOne(pt);const w=toks(pt);
-   if(m&&(w.length<=4||m.sc>=.95)){add(pt,m);continue}
-   /* No commas: walk the words and take the best-scoring run of 1–4 words at each step */
-   let i=0,found=false;while(i<w.length&&hits.length<5){let best=null;for(let n=Math.min(4,w.length-i);n>=1;n--){const seg=w.slice(i,i+n).join(" "),mm=matchOne(seg);if(mm&&mm.sc>=.8&&(!best||mm.sc+n*.03>best.sc+best.n*.03))best={...mm,n,seg}}
-    if(best){add(best.seg,best);i+=best.n;found=true}else i++}
-   if(!found&&!m)miss.push(pt);else if(!found&&m)add(pt,m)}
+ function loves(){const sel=lovesSel(),raw=String(ans.lovesTyped||"");const key=sel.join("\u0001")+"|"+raw+"|"+(DB?DB.length:0);if(lovesCache.key===key)return lovesCache;
+  const hits=[],miss=[],seen=new Set(),ix=DBidx();
+  for(const k of sel){const i=ix?ix.get(k):undefined;if(i!==undefined&&!seen.has(i)){seen.add(i);hits.push({q:k,r:DB[i],sc:1})}}
+  /* Text typed but not yet tapped still counts, best guess, so a shopper who skips the pill isn't ignored */
+  if(raw.trim()&&hits.length<5){const m=matchOne(raw);if(m&&!seen.has(m.e.i)){seen.add(m.e.i);hits.push({q:raw,r:m.r,sc:m.sc,typed:true})}else if(!m)miss.push(raw)}
   return lovesCache={key,hits,miss}}
+ function addLove(k){const sel=lovesSel().slice();if(sel.includes(k)||sel.length>=5)return false;sel.push(k);ans.loves=sel;ans.lovesTyped="";lovesCache.key="";saveQ();return true}
+ function dropLove(k){ans.loves=lovesSel().filter(x=>x!==k);lovesCache.key="";saveQ()}
  /* How close one database entry is to one of our scents: shared families first, then shared descriptors and notes. */
  const TAG_RE={vanilla:/vanilla|tonka|benzoin/i,boozy:/\brum\b|whisk|cognac|bourbon|boozy/i,tobacco:/tobacco/i,leather:/leather|suede/i,coffee:/coffee/i,citrus:/bergamot|mandarin|lemon|grapefruit|orange(?! blossom| flower)|lime|citrus|yuzu|litsea/i,
   spice:/cardamom|cinnamon|pepper|nutmeg|ginger|saffron|anise/i,woods:/cedar|sandalwood|vetiver|guaiac|oakmoss|\bmoss|fir|timberwood|clearwood|dry woods/i,floral:/rose|jasmine|tuberose|iris|orris|osmanthus|gardenia|neroli|orange blossom|orange flower|violet|orchid|magnolia|heliotrope/i,
@@ -2062,7 +2065,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   if(f.length&&!f.includes(p.cat)&&!f.includes(p.cat2))s-=2;return s}
  function lovesScore(p){const h=loves().hits;if(!h.length)return 0;const v=h.map(x=>simTo(x.r,p)).sort((a,b)=>b-a);return v[0]+v.slice(1).reduce((a,x)=>a+(x>0?x*.35:x*.2),0)}
  const lovesHit=p=>loves().hits.filter(x=>simTo(x.r,p)>=6);
- const dbName=r=>r[0]+" "+r[1];
+ const dbName=r=>{const b=toks(r[0]).filter(t=>t.length>2&&!GENERIC.has(t)),n=toks(r[1]);return (n.length&&b.some(t=>n.includes(t)))?r[1]:r[0]+" "+r[1]};
  const dbShort=r=>{const n=r[1].replace(/\s*\|\s*/g," ").replace(/\s+(Eau de Parfum|Eau de Toilette|Extrait de Parfum|Eau de Cologne)$/i,"");return (r[0]+" "+n).replace(/^Giorgio Armani /,"Armani ").replace(/^Yves Saint Laurent /,"YSL ").replace(/^Maison Francis Kurkdjian /,"MFK ").replace(/^Parfums de Marly /,"PdM ").replace(/^Jean Paul Gaultier /,"JPG ").replace(/^Maison Margiela /,"")}
  const famOf=p=>[p.cat,p.cat2].filter(Boolean);
  const wantsFloral=()=>(ans.fam||[]).includes("Floral")||(ans.vibe||[]).includes("sunny")&&false;
@@ -2191,39 +2194,42 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   const who=!!ans.who,any=hasAns();
   box.innerHTML=toggleHTML()+`<div class="qz-step">Scent Sherpa</div><h3 class="qz-q" id="qz-title">Let’s find your scent</h3><p class="qz-hint">${who?"Tell me what you like and I’ll point the way. Your picks update as you tap.":"Start with who’s wearing it, then tell me what you like. Your picks update as you tap."}</p>
    <div class="qz-groups">${Q.map((q,qi)=>{const sel=q.multi?(ans[q.k]||[]):[ans[q.k]];
-    if(q.text)return `<div class="qz-g"><div class="qz-gl">${q.short} <span>up to 5, comma-separated</span></div><input type="text" class="qz-in" id="qz-loves-q" value="${esc(ans.loves||"")}" placeholder="${esc(q.ph)}" autocomplete="off" autocapitalize="words" spellcheck="false" maxlength="200" aria-label="${esc(q.q)}"><div class="qz-read" id="qz-read-q">${readHTML()}</div></div>`;
+    if(q.text)return `<div class="qz-g"><div class="qz-gl">${q.short} <span>up to 5</span></div>${lovesHTML("qz-lv-q")}</div>`;
     return `<div class="qz-g${q.k==="who"&&!who?" qz-first":""}"><div class="qz-gl">${q.short}${q.multi?` <span>${q.multi>5?"pick any":"up to "+q.multi}</span>`:""}</div><div class="qz-chips">${q.o.map(([v,l])=>`<button type="button" class="qz-c ${sel.includes(v)?"on":""}" aria-pressed="${sel.includes(v)}" data-q="${qi}" data-v="${v}">${q.k==="fam"&&DOT[v]?`<span class="dot" style="--c:${DOT[v]}"></span>`:""}${q.k==="avoid"&&v==="any"?"Nothing":q.k==="love"&&v==="any"?"Not sure":q.k==="like"&&v==="any"?"None of these":q.k==="str"&&v==="any"?"No preference":(SHORT[v]||l)}</button>`).join("")}</div>${q.k==="fam"?famInfo(q):""}</div>`}).join("")}</div>
    <div class="qz-live" aria-live="polite">${!who?`<p class="qz-none">Pick who’s wearing it to see your matches.</p>`:`<div class="qz-step">The Sherpa’s picks</div>`+resultsHTML(picks())}</div>
    ${any?`<div class="qz-links"><button type="button" data-a="clear">Clear choices</button>${who?`<button type="button" data-a="shop">Show all matches</button>`:""}</div>${who?`<button type="button" class="qz-jump">See my ${picks().length} matches &darr;</button>`:""}`:""}`;
   const jb=box.querySelector(".qz-jump");if(jb){jb.onclick=()=>box.querySelector(".qz-live").scrollIntoView({behavior:"smooth",block:"start"});
    const io="IntersectionObserver" in window&&new IntersectionObserver(es=>{jb.hidden=es[0].isIntersecting});if(io)io.observe(box.querySelector(".qz-live"))}
   box.querySelectorAll(".qz-c").forEach(b=>b.onclick=()=>{pick(Q[+b.dataset.q],b.dataset.v,true);const y=box.parentElement.scrollTop;quick();moreLinks();box.parentElement.scrollTop=y;const nb=box.querySelector(`.qz-c[data-q="${b.dataset.q}"][data-v="${b.dataset.v}"]`);if(nb)nb.focus({preventScroll:true})});
-  const qi=box.querySelector("#qz-loves-q");if(qi){loadDB();let tmr;const rdq=()=>{const rd=box.querySelector("#qz-read-q");if(rd){rd.innerHTML=readHTML();bindRead(rd,qi,rdq)}const lv=box.querySelector(".qz-live");if(lv&&ans.who){lv.innerHTML=`<div class="qz-step">The Sherpa’s picks</div>`+resultsHTML(picks());bindRes();moreLinks()}};
-   qi.oninput=()=>{ans.loves=qi.value;saveQ();clearTimeout(tmr);tmr=setTimeout(rdq,350)};bindRead(box.querySelector("#qz-read-q"),qi,rdq)}
+  if(box.querySelector("#qz-lv-q")){loadDB();bindLoves("qz-lv-q",()=>{const lv=box.querySelector(".qz-live");if(lv&&ans.who){lv.innerHTML=`<div class="qz-step">The Sherpa’s picks</div>`+resultsHTML(picks());bindRes();moreLinks()}})}
   bindToggle();bindRes()}
- /* Tapping a pill replaces what was typed with the clean name and readies the box for the next one */
- function bindRead(wrap,inp,after){wrap.querySelectorAll(".qz-rd").forEach(b=>b.onclick=()=>{const q=b.dataset.q,n=b.dataset.n;let v=inp.value;
-   const parts=v.split(/(,|;|\n)/);let done=false;
-   for(let i=0;i<parts.length;i++){if(!done&&parts[i].trim().toLowerCase()===q.trim().toLowerCase()){parts[i]=(parts[i].match(/^\s*/)||[""])[0]+n;done=true}}
-   v=done?parts.join(""):v.replace(q,n);
-   v=v.replace(/\s*,\s*/g,", ").replace(/,\s*$/,"").trim();if(v&&loves().hits.length<5)v+=", ";
-   inp.value=v;ans.loves=v;saveQ();lovesCache.key="";after();try{inp.focus({preventScroll:true});inp.setSelectionRange(v.length,v.length)}catch(e){}})}
- /* What the Sherpa understood from the favourites box */
- function readHTML(){const raw=String(ans.loves||"").trim();if(!raw)return "";if(!DB)return `<span class="qz-rd-wait">Looking those up…</span>`;const l=loves();
-  return (l.hits.length?`<span class="qz-rd-l">I read that as:</span> ${l.hits.map(h=>`<button type="button" class="qz-rd" data-q="${esc(h.q)}" data-n="${esc(dbName(h.r))}" title="Use this name">${esc(dbName(h.r))}</button>`).join(" ")}`:"")+(l.miss.length?`<span class="qz-rd-miss">${l.hits.length?"Couldn’t place":"I couldn’t place"} ${l.miss.map(m=>`“${esc(m)}”`).join(", ")}. Try the full name, or add the brand.</span>`:"")}
+ /* Favourites widget: a list of what they already love (tap × to remove), a clear box, and suggestions while typing.
+    Tapping a suggestion adds it to the list and empties the box; Enter or Next adds the top suggestion. */
+ function lovesHTML(id){const sel=lovesSel(),raw=String(ans.lovesTyped||""),full=sel.length>=5;
+  return `<div class="qz-lv" id="${id}">${sel.length?`<div class="qz-lv-have"><span class="qz-rd-l">I already love:</span> ${sel.map(k=>{const i=DBidx()&&DBidx().get(k);const nm=i!==undefined?dbName(DB[i]):k.replace("|"," ");return `<span class="qz-rd on"><button type="button" class="qz-rd-x" data-k="${esc(k)}" aria-label="Remove ${esc(nm)}">&times;</button>${esc(nm)}</span>`}).join(" ")}</div>`:""}
+   ${full?`<p class="qz-lv-full">That’s five, plenty for the Sherpa to work with. Remove one to swap it.</p>`:`<input type="text" class="qz-in" id="${id}-in" value="${esc(raw)}" placeholder="${sel.length?"Add another…":"Sauvage, Baccarat Rouge, Aventus…"}" autocomplete="off" autocapitalize="words" spellcheck="false" maxlength="80" aria-label="Fragrances you already love" enterkeyhint="done"><div class="qz-read" id="${id}-sg">${suggHTML(raw)}</div>`}</div>`}
+ function suggHTML(raw){raw=String(raw||"").trim();if(!raw)return "";if(!DB)return `<span class="qz-rd-wait">Looking that up…</span>`;
+  const sel=lovesSel(),ms=matchMany(raw,4).filter(m=>!sel.includes(m.r[0]+"|"+m.r[1]));
+  if(!ms.length)return `<span class="qz-rd-miss">I couldn’t place “${esc(raw)}”. Try the full name, or add the brand.</span>`;
+  return `<span class="qz-rd-l">${ms.length>1?"Did you mean:":"Tap to add:"}</span> ${ms.map(m=>`<button type="button" class="qz-rd" data-k="${esc(m.r[0]+"|"+m.r[1])}">${esc(dbName(m.r))}</button>`).join(" ")}`}
+ function bindLoves(id,onChange){const w=box.querySelector("#"+id);if(!w)return;const inp=w.querySelector("input");
+  const redraw=(focus)=>{const y=box.parentElement.scrollTop;w.outerHTML=lovesHTML(id);bindLoves(id,onChange);box.parentElement.scrollTop=y;if(focus){const i2=box.querySelector("#"+id+" input");if(i2)try{i2.focus({preventScroll:true})}catch(e){}}onChange&&onChange()};
+  w.querySelectorAll(".qz-rd-x").forEach(b=>b.onclick=()=>{dropLove(b.dataset.k);redraw(false)});
+  w.querySelectorAll(".qz-read .qz-rd").forEach(b=>b.onclick=()=>{addLove(b.dataset.k);redraw(true)});
+  if(!inp)return;let tmr;
+  inp.oninput=()=>{ans.lovesTyped=inp.value;lovesCache.key="";saveQ();clearTimeout(tmr);tmr=setTimeout(()=>{const sg=w.querySelector(".qz-read");if(sg){sg.innerHTML=suggHTML(inp.value);w.querySelectorAll(".qz-read .qz-rd").forEach(b=>b.onclick=()=>{addLove(b.dataset.k);redraw(true)})}onChange&&onChange()},250)};
+  inp.onkeydown=e=>{if(e.key==="Enter"||e.key===","){e.preventDefault();commitTyped();redraw(true)}};}
+ /* Enter, comma or Next: take the top suggestion for whatever is still in the box */
+ function commitTyped(){const raw=String(ans.lovesTyped||"").trim();if(!raw)return;const m=matchMany(raw,1)[0];if(m)addLove(m.r[0]+"|"+m.r[1]);else{ans.lovesTyped="";lovesCache.key="";saveQ()}}
  function steps(){
   const q=Q[step],sel=ans[q.k],multi=!!q.multi,chosen=multi?(sel||[]):[sel];
   if(q.text){loadDB();box.innerHTML=toggleHTML()+`<div class="qz-step">Question ${step+1} of ${Q.length}</div><div class="qz-bar"><i style="width:${(step/Q.length)*100}%"></i></div>
-   <h3 class="qz-q" id="qz-title">${q.q}</h3><p class="qz-hint">${q.hint}</p>
-   <input type="text" class="qz-in" id="qz-loves" value="${esc(ans.loves||"")}" placeholder="${esc(q.ph)}" autocomplete="off" autocapitalize="words" spellcheck="false" maxlength="200" aria-label="${esc(q.q)}" enterkeyhint="next"><div class="qz-read" id="qz-read">${readHTML()}</div>
-   <div class="qz-nav">${step?`<button type="button" class="qz-back">Back</button>`:"<span></span>"}<button type="button" class="btn qz-next">${String(ans.loves||"").trim()?"Next":"Skip for now"}</button></div>`;
-   const inp=box.querySelector("#qz-loves"),nx=box.querySelector(".qz-next"),bk=box.querySelector(".qz-back");let tmr;
-   const rd=()=>{const w=box.querySelector("#qz-read");w.innerHTML=readHTML();bindRead(w,inp,rd);nx.textContent=inp.value.trim()?"Next":"Skip for now"};
-   inp.oninput=()=>{ans.loves=inp.value;saveQ();nx.textContent=inp.value.trim()?"Next":"Skip for now";clearTimeout(tmr);tmr=setTimeout(rd,300)};
-   bindRead(box.querySelector("#qz-read"),inp,rd);
-   inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();step++;draw()}};
-   nx.onclick=()=>{step++;draw()};if(bk)bk.onclick=()=>{step--;draw()};
-   bindToggle();box.parentElement.scrollTop=0;if(!ans.loves)setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(e){}},350);return}
+   <h3 class="qz-q" id="qz-title">${q.q}</h3><p class="qz-hint">${q.hint}</p>${lovesHTML("qz-lv-s")}
+   <div class="qz-nav">${step?`<button type="button" class="qz-back">Back</button>`:"<span></span>"}<button type="button" class="btn qz-next">${lovesSel().length||String(ans.lovesTyped||"").trim()?"Next":"Skip for now"}</button></div>`;
+   const nx=box.querySelector(".qz-next"),bk=box.querySelector(".qz-back");
+   bindLoves("qz-lv-s",()=>{nx.textContent=lovesSel().length||String(ans.lovesTyped||"").trim()?"Next":"Skip for now"});
+   nx.onclick=()=>{commitTyped();step++;draw()};if(bk)bk.onclick=()=>{step--;draw()};
+   bindToggle();box.parentElement.scrollTop=0;if(!lovesSel().length)setTimeout(()=>{const i=box.querySelector("#qz-lv-s input");if(i)try{i.focus({preventScroll:true})}catch(e){}},350);return}
   box.innerHTML=toggleHTML()+`<div class="qz-step">Question ${step+1} of ${Q.length}</div><div class="qz-bar"><i style="width:${(step/Q.length)*100}%"></i></div>
    <h3 class="qz-q" id="qz-title">${q.q}</h3>${q.hint?`<p class="qz-hint">${q.hint}</p>`:""}
    <div class="qz-opts${q.o.length>8?" dense":""}">${q.o.map(([v,l,sub])=>`<button type="button" class="qz-opt ${chosen.includes(v)?"on":""}" data-v="${v}" aria-pressed="${chosen.includes(v)}">${q.k==="fam"&&DOT[v]?`<span class="dot" style="--c:${DOT[v]}"></span>`:""}<span>${l}${sub?`<small>${sub}</small>`:""}</span></button>`).join("")}</div>
@@ -2590,6 +2596,11 @@ body.qz-open .su-card,.su-card.quiet{opacity:0;pointer-events:none}
 .qz-read .qz-rd:hover,.qz-read .qz-rd:focus-visible{background:#4a0e1e;color:#e8d3b4;border-color:#4a0e1e;outline:none}
 .qz-read .qz-rd-l{font-weight:500}.qz-read .qz-rd-miss{flex-basis:100%;color:#5a3a2a}.qz-read .qz-rd-wait{color:#5a3a2a;font-style:italic}
 .qz-g .qz-in{margin-bottom:6px}
+.qz-lv-have{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 10px;font:400 13.5px var(--sans);color:#3A0A17}
+.qz-lv-have .qz-rd{display:inline-flex;align-items:center;gap:4px;border:1px solid #4a0e1e;border-radius:30px;padding:3px 11px 3px 4px;background:#4a0e1e;color:#e8d3b4}
+.qz-rd-x{border:0;background:rgba(232,211,180,.18);color:#e8d3b4;width:20px;height:20px;border-radius:50%;font:500 15px/1 var(--sans);cursor:pointer;padding:0}
+.qz-rd-x:hover,.qz-rd-x:focus-visible{background:#e8d3b4;color:#4a0e1e;outline:none}
+.qz-lv-full{margin:4px 0 8px;font:400 13.5px var(--sans);color:#3A0A17}
 /* Readable fields on the camel/tan panels: solid cream, wine text, a placeholder dark enough to read (WCAG AA on #f4e9d6) */
 .su-card input[type=email],.qz-cap input[type=email],.qz-cap input[type=text],.cart-email input[type=email],.cart-promo-row input{background:#f4e9d6;border:1px solid rgba(74,14,30,.55);color:#2c0610}
 .su-card input::placeholder,.qz-cap input::placeholder,.cart-email input[type=email]::placeholder,.cart-promo-row input::placeholder{color:#7a5a48;opacity:1}
