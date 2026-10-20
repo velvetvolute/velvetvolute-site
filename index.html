@@ -2187,7 +2187,8 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   return `<div class="qz-fam">${sel.map(c=>{const o=q.o.find(x=>x[0]===c),nm=p=>{const n=short(p.name);return n.split(" ").length>2?n:p.brand+" "+n},names=PRODUCTS.filter(p=>p.cat===c).map(nm),also=PRODUCTS.filter(p=>p.cat2===c).map(nm);
    return `<p data-c="${c}"><span class="dot" style="--c:${DOT[c]}"></span><b>${o[1]}</b> notes like ${o[2].toLowerCase()}. <span class="ex">In the collection: ${esc(list(names))}.${also.length?` With a ${o[1].toLowerCase()} side: ${esc(list(also))}.`:""}</span></p>`}).join("")}</div>`}
  /* The why-text is clipped to a few lines on phones; a Read more link opens it when it overflows. */
- function moreLinks(){box.querySelectorAll(".qz-r p.n:not(.qz-her):not(.open)").forEach(p=>{if(p.nextElementSibling&&p.nextElementSibling.classList.contains("qz-more"))return;if(p.scrollHeight>p.clientHeight+2){const b=document.createElement("button");b.type="button";b.className="qz-more";b.textContent="Read more";b.onclick=()=>{p.classList.add("open");b.remove()};p.after(b)}})}
+ window.addEventListener("resize",()=>{if(!ov.hidden)moreLinks()});
+ function moreLinks(){if(ov.hidden)return;box.querySelectorAll(".qz-r p.n:not(.qz-her):not(.open)").forEach(p=>{if(p.nextElementSibling&&p.nextElementSibling.classList.contains("qz-more"))return;if(p.scrollHeight>p.clientHeight+2){const b=document.createElement("button");b.type="button";b.className="qz-more";b.textContent="Read more";b.onclick=()=>{p.classList.add("open");b.remove()};p.after(b)}})}
  function draw(){saveQ();const ov=document.getElementById("qz-ov");if(ov)ov.scrollTop=0;if(mode==="quick")quick();else if(step>=Q.length)results();else steps();moreLinks()}
  function quick(){
   const who=!!ans.who,any=hasAns();
@@ -2258,7 +2259,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  function showPill(){pill.hidden=!(hasAns()&&(mode==="quick"||step>=Q.length))}
  /* keep keyboard focus inside the dialog while it is open */
  function trap(e){if(ov.hidden||e.key!=="Tab")return;const f=[...ov.querySelectorAll("button,[href],input,select,textarea,summary,[tabindex]:not([tabindex='-1'])")].filter(el=>!el.disabled&&el.offsetParent!==null);if(!f.length)return;const first=f[0],lastEl=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();lastEl.focus()}else if(!e.shiftKey&&document.activeElement===lastEl){e.preventDefault();first.focus()}}
- function open(){loadDB();last=document.activeElement;pill.hidden=true;if(mode==="steps"&&step<Q.length&&!hasAns())step=0;draw();ov.hidden=false;document.body.style.overflow="hidden";document.body.classList.add("qz-open");setTimeout(()=>{const t=box.querySelector(".qz-m.on");if(t)t.focus({preventScroll:true})},30)}
+ function open(){loadDB();last=document.activeElement;pill.hidden=true;if(mode==="steps"&&step<Q.length&&!hasAns())step=0;draw();ov.hidden=false;document.body.style.overflow="hidden";document.body.classList.add("qz-open");moreLinks();setTimeout(()=>{moreLinks();const t=box.querySelector(".qz-m.on");if(t)t.focus({preventScroll:true})},30)}
  function close(){ov.hidden=true;document.body.style.overflow="";document.body.classList.remove("qz-open");showPill();if(window.VVSherpaRefresh)window.VVSherpaRefresh();if(last&&last.focus)last.focus({preventScroll:true})}
  document.querySelectorAll("[data-quiz]").forEach(b=>b.onclick=open);
  document.getElementById("qz-x").onclick=close;
