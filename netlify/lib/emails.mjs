@@ -194,7 +194,7 @@ export function shopExtrasBlock({ picks, markShippedUrl, pickUrl, method }) {
 export function unsubscribePage({ ok, email, already }) {
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${ok ? "Unsubscribed" : "Hmm"} | Velvet Volute</title>
 <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#4a0e1e;color:#e8d3b4;font:300 16px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:24px}main{max-width:460px;text-align:center}.vv{width:60px;height:60px;margin:0 auto 18px;border:1px solid #d6b077;border-radius:50%;display:grid;place-items:center;font:italic 24px Georgia,serif;color:#d6b077}h1{font:400 34px/1.1 Georgia,'Times New Roman',serif;margin:0 0 10px}a{color:#d6b077}</style></head>
-<body><main><div class="vv">VV</div>
+<body><main><img class="vv-img" src="/img/vv-email-25.png" width="60" height="60" alt="VV" style="display:block;margin:0 auto 18px">
 <h1>${ok ? (already ? "You were already off the list" : "You're off the list") : "That link didn't work"}</h1>
 <p>${ok ? `No more first-dibs emails to <b>${esc(email)}</b>. You'll still get order emails if you buy something.` : `The unsubscribe link looks incomplete. Reply to any email from me or write to <a href="mailto:${SHOP_EMAIL}">${SHOP_EMAIL}</a> and I'll take you off by hand.`}</p>
 <p><a href="${SITE}">velvetvolute.ca</a></p></main></body></html>`;

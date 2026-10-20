@@ -5,7 +5,7 @@ description: What a fragrance decant is, how Velvet Volute pours them from seale
 summary: What a decant is, how we pour, what it costs, and how to get it: pickup on Carling, hand delivery across Ottawa, or Canada Post.
 date: 2026-10-18
 updated: 2026-10-18
-image: img/tf-tuscan-leather-095cff0f2c.jpg
+image: img/tf-tuscan-leather-e121df05c0.jpg
 imageAlt: Tom Ford Tuscan Leather eau de parfum bottle with 2, 5 and 10 ml Velvet Volute decants
 scents: Q6IFTTHV75EK3RJTB474ZTI5, ZWRPIQIHVK7HZA2GOFV7NRE2, JQWKMPNXK3MMHWNFVD3RZVTW, 6RRUWMTR6HR57YISIVFICWM3
 ---

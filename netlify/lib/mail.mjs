@@ -86,7 +86,7 @@ ${preheader ? `<div style="display:none;max-height:0;overflow:hidden;font-size:1
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#efe6d8" style="background:#efe6d8"><tr><td align="center" style="padding:18px 10px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;width:100%">
  <tr><td align="center" bgcolor="${C.wine}" style="background:${C.wine};padding:26px 24px 22px;border-bottom:1px solid ${C.gold}">
-   <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 10px"><tr><td align="center" style="width:46px;height:46px;border:1px solid ${C.gold};border-radius:50%;font-family:${SERIF};font-style:italic;font-size:19px;line-height:46px;color:${C.gold}">VV</td></tr></table>
+   <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 10px"><tr><td align="center" style="width:46px;height:46px"><img src="${SITE}/img/vv-email-25.png" width="46" height="46" alt="VV" style="display:block;width:46px;height:46px;border:0"></td></tr></table>
    <div style="font-family:${SERIF};font-size:27px;letter-spacing:.14em;color:#e8d3b4">VELVET VOLUTE</div>
    ${kicker ? `<div style="font-family:${SANS};font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:${C.gold};margin-top:8px">${kicker}</div>` : ""}
  </td></tr>

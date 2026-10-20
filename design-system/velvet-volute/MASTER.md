@@ -48,3 +48,10 @@ Subtle: 150–350 ms ease-out; transforms and opacity only; `prefers-reduced-mot
 
 ## Checks before any deploy
 `node .claude/skills/design-taste-frontend/scripts/lint.mjs index.html about.html how-it-works.html pages.css` and `inspect.mjs` on the home, a product page and /houses/; contrast 4.5:1; no horizontal scroll at 1440 and 390; Sherpa and cart flows in headless Chromium.
+
+## Logo (Oct 2026)
+The VV monogram: two Lora SemiBold V's, the first sitting 25% of the type size higher than the second (so it never reads as a W), serifs just touching, centred in a thin ring. Never typeset "VV" in a font for the logo; use the outline files:
+- `img/vv-letters-25.svg` — letters only, used as a CSS mask by every `.mono` badge and `.rib-vv` ribbon (nav.css), so they take the element's `color`
+- `img/vv-monogram-25.svg` — ring + letters in camel; `img/vv-logo-25.png` — 1080 px merlot profile tile; `img/vv-email-25.png` — email header badge
+- `favicon.svg`, `favicon.ico`, `apple-touch-icon.png` — merlot tile with the camel monogram
+- Product photos carry the filled badge (merlot disc, camel ring + letters) top-right; re-badge with the same position (centre 927,71 on 1000 px images, radius 39.5).
