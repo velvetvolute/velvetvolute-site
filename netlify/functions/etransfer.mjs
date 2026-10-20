@@ -13,6 +13,7 @@ import { priceCart, isCartError, newOrderNumber, refFor, SHIPPING, BOOKING_URL, 
 import { summarize } from "./order.mjs";
 import { saveCart, upsertContact, CART_ID_RE } from "../lib/store.mjs";
 import { segmentsFromOrder } from "../lib/scents.mjs";
+import { emailSignature, SIG_TEXT } from "../lib/mail.mjs";
 
 const SITE = process.env.SITE_URL || "https://velvetvolute.ca";
 const SHOP_EMAIL = "velvetvolute@gmail.com";
@@ -96,7 +97,8 @@ function emailHTML(s, c, ship) {
    <h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:22px 0 6px">Your details</h3>
    <p style="margin:0">${esc(c.name)} · ${esc(c.email)}${c.phone ? ` · ${esc(c.phone)}` : ""}<br>${where}</p>
    <p style="margin-top:22px">Questions or a change to your order? Reply to this email and include ${esc(s.no)}.</p>
-   <p style="color:#8a6d4b;font-size:13px">Peace &amp; Love, Izzi · <a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
+   <p style="margin-top:22px">Peace &amp; Love,<br>Izzi</p>
+   ${emailSignature()}
   </div></div>`;
 }
 
@@ -109,6 +111,9 @@ async function sendEmail(s, c, ship) {
     ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""} ${money(i.total)}`),
     `Total to send ${money(s.total)}`,
     "I'll email you as soon as your e-Transfer arrives.",
+    "",
+    "Peace & Love, Izzi",
+    SIG_TEXT,
   ].join("\n");
   const r = await fetch("https://api.resend.com/emails", {
     method: "POST",

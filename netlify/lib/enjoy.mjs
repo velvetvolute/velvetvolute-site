@@ -9,6 +9,7 @@ import { getContact, upsertContact, getPunches, queueFollowup, stores, getJSON, 
 import { issueCode, issueReferralCode, activeCode, DAY } from "./codes.mjs";
 import { loyaltyBlock, fmtPunch } from "./emails.mjs";
 import { byName, parseVariation } from "./scents.mjs";
+import { emailSignature, SIG_TEXT } from "./mail.mjs";
 
 const SITE = process.env.SITE_URL || "https://velvetvolute.ca";
 const SHOP_EMAIL = "velvetvolute@gmail.com";
@@ -99,7 +100,7 @@ export function enjoyHTML(s, firstName, extra = "") {
    <p style="margin:24px 0 8px">Want to go deeper? <a href="${SITE}/fragrance-101.html" style="color:#6e1a31">Fragrance 101</a> covers it all. When you're ready for your next find, the <a href="${SITE}" style="color:#6e1a31">Scent Sherpa</a> can help you curate your own playlist.</p>
    <p style="margin:0">Fell for one? Reply and tell me which, I'd love to hear it.</p>
    <p style="margin-top:22px">Peace &amp; Love,<br>Izzi</p>
-   <p style="color:#8a6d4b;font-size:13px">Velvet Volute · Ottawa, ON · <a href="mailto:${SHOP_EMAIL}" style="color:#6e1a31">${SHOP_EMAIL}</a> · <a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
+   ${emailSignature()}
   </div></div>`;
 }
 
@@ -112,7 +113,7 @@ export function enjoyText(s, firstName) {
     "Give it an hour: the dry-down is the real scent.",
     "Storage: cool and dark, cap on. Not the bathroom.",
     `More: ${SITE}/fragrance-101.html`,
-    "Peace & Love, Izzi",
+    "Peace & Love, Izzi", SIG_TEXT,
   ].join("\n");
 }
 
@@ -144,7 +145,7 @@ export function shippedHTML(s, firstName, track) {
    <p style="margin:18px 0 0">Once they land, I'll send you a little guide on how to wear and store them so you get the most out of every spray.</p>
    <p style="margin:12px 0 0;font-size:13px;color:#8a6d4b">Something arrive damaged? Reply within 24 hours of delivery with a photo and your order number.</p>
    <p style="margin-top:22px">Peace &amp; Love,<br>Izzi</p>
-   <p style="color:#8a6d4b;font-size:13px">Velvet Volute · Ottawa, ON · <a href="mailto:${SHOP_EMAIL}" style="color:#6e1a31">${SHOP_EMAIL}</a> · <a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
+   ${emailSignature()}
   </div></div>`;
 }
 
@@ -210,7 +211,7 @@ export async function sendEnjoy(orderId, token, { delivered = false } = {}) {
     reply_to: SHOP_EMAIL,
     subject: onItsWay ? `Your Velvet Volute order ${s.no} is on its way` : `Enjoy your Velvet Volute order ${s.no}`,
     text: onItsWay
-      ? [`Your Velvet Volute order ${s.no} is on its way.`, ...(track?.url ? [`Track it: ${track.url}`] : []), ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""}`), "Once it lands, I'll send you a guide on how to wear and store your decants.", "Peace & Love, Izzi"].join("\n")
+      ? [`Your Velvet Volute order ${s.no} is on its way.`, ...(track?.url ? [`Track it: ${track.url}`] : []), ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""}`), "Once it lands, I'll send you a guide on how to wear and store your decants.", "Peace & Love, Izzi", SIG_TEXT].join("\n")
       : enjoyText(s, first) + (extra.text ? "\n\n" + extra.text : ""),
     html: onItsWay ? shippedHTML(s, first, track) : enjoyHTML(s, first, extra.html),
   };

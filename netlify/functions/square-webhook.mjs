@@ -15,7 +15,7 @@ import { stores, getJSON, getCode, recordPaid, saveCart, getContact, upsertConta
 import { retireCode, issueCode, PUNCH_REWARD_CAP_CENTS } from "../lib/codes.mjs";
 import { scentsInOrder, sherpasPick, segmentsFromOrder, parseVariation, byName, fullName } from "../lib/scents.mjs";
 import { shopExtrasBlock, rewardEmail, referralThanksEmail, cardImg, fmtPunch } from "../lib/emails.mjs";
-import { sendMail, MARKETING_FROM, unsubscribeUrl } from "../lib/mail.mjs";
+import { sendMail, MARKETING_FROM, unsubscribeUrl, emailSignature, SIG_TEXT } from "../lib/mail.mjs";
 
 const SITE = process.env.SITE_URL || "https://velvetvolute.ca";
 const BOOKING_URL = "https://calendar.app.google/9Gg9gioRktiA5eocA";
@@ -169,7 +169,9 @@ export function emailHTML(s, ref, etransfer = false, extra = "", card = "") {
    ${card}
    <p style="margin-top:22px">Questions? Reply to this email or write to ${SHOP_EMAIL} and include ${esc(s.no)}.</p>
    ${extra}
-   <p style="color:#8a6d4b;font-size:13px">Peace &amp; Love, Izzi · Velvet Volute · Ottawa, ON · <a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
+   <p style="margin-top:22px">Peace &amp; Love,<br>Izzi</p>
+   ${emailSignature()}
+   <p style="color:#8a6d4b;font-size:13px">Velvet Volute · Ottawa, ON · <a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
   </div></div>`;
 }
 
@@ -181,7 +183,7 @@ export function emailHTML(s, ref, etransfer = false, extra = "", card = "") {
 async function emailBuyer(s, to, ref, etransfer = false, picks = [], punch = null, contact = {}) {
   const key = process.env.RESEND_API_KEY;
   if (!key) return;
-  const text = [etransfer ? `Invoice paid. Thank you, your e-Transfer has been received. Order number ${s.no}.` : `Thank you for your order. Order number ${s.no}.`, ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""} ${money(i.total)}`), `Total paid ${money(s.total)}`, s.method === "pickup" ? `Pickup: book your slot at ${BOOKING_URL}` : "I'll email you once your decants ship."].join("\n");
+  const text = [etransfer ? `Invoice paid. Thank you, your e-Transfer has been received. Order number ${s.no}.` : `Thank you for your order. Order number ${s.no}.`, ...s.items.map((i) => `${i.qty}× ${i.name}${i.variation ? ` (${i.variation})` : ""} ${money(i.total)}`), `Total paid ${money(s.total)}`, s.method === "pickup" ? `Pickup: book your slot at ${BOOKING_URL}` : "I'll email you once your decants ship.", "", "Peace & Love, Izzi", SIG_TEXT].join("\n");
   const subject = etransfer ? `Your Velvet Volute order ${s.no}: invoice paid` : `Your Velvet Volute order ${s.no}`;
   const adminKey = process.env.ADMIN_KEY;
   const admin = (q) => (adminKey ? `${SITE}/.netlify/functions/mark-shipped?order=${encodeURIComponent(s.no)}&key=${encodeURIComponent(adminKey)}${q}` : "");

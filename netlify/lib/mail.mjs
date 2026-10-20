@@ -74,6 +74,19 @@ export function orderRows(items, { showPrice = true, right } = {}) {
 
 export const signoff = () => p(`Peace &amp; Love,<br><span style="font-family:${SERIF};font-size:20px">Izzi</span>`, "margin-top:22px");
 
+// Justin's branded email signature (same block as his Gmail signature): the merlot banner image
+// (img/email-signature-1.png, links to the site) over a row of live links. Goes under "Peace & Love, Izzi"
+// in every customer email. Widths are percentages so it shrinks with the email column on phones.
+export const SIG_TEXT = "Justin Izzi · Founder, Velvet Volute · 647-821-4994 · velvetvolute.ca · @velvetvolute.ca";
+export function emailSignature() {
+  const L = "color:#EAD7BC;text-decoration:none", K = "color:#D6B48A;font-size:10px;letter-spacing:2px";
+  const item = (k, href, label) => `<span style="${K}">${k}</span>&nbsp;&nbsp;<a href="${href}" style="${L}">${label}</a>`;
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#4A1121" style="width:100%;max-width:600px;border-collapse:collapse;background:#4A1121;margin:18px 0 4px">
+ <tr><td colspan="2" style="padding:0"><a href="${SITE}"><img src="${SITE}/img/email-signature-1.png" width="600" alt="Justin Izzi, Founder · Velvet Volute" style="display:block;width:100%;max-width:600px;height:auto;border:0"></a></td></tr>
+ <tr><td width="28%" style="width:28%;padding:0;font-size:0;line-height:0">&nbsp;</td><td style="padding:0 12px 14px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:20px;color:#EAD7BC">${item("T", "tel:+16478214994", "647-821-4994")}&nbsp;&nbsp;&nbsp; ${item("W", SITE, "velvetvolute.ca")}<br>${item("E", `mailto:${SHOP_EMAIL}`, SHOP_EMAIL)}&nbsp;&nbsp;&nbsp; ${item("IG", "https://www.instagram.com/velvetvolute.ca/", "@velvetvolute.ca")}</td></tr>
+</table>`;
+}
+
 // The frame: dark wine header with the monogram and VELVET VOLUTE, gold rules, cream body, footer.
 // kind: "marketing" (CASL footer with the one-click unsubscribe link) or "transactional" (sender identity only).
 export function layout({ kicker, title, body, kind = "marketing", unsubUrl = "", preheader = "", reason = "" }) {
@@ -92,6 +105,7 @@ ${preheader ? `<div style="display:none;max-height:0;overflow:hidden;font-size:1
  </td></tr>
  <tr><td bgcolor="${C.cream}" style="background:${C.cream};padding:28px 26px 24px">
    ${body}
+   ${emailSignature()}
  </td></tr>
  <tr><td bgcolor="${C.wineDeep}" style="background:${C.wineDeep};padding:16px 24px;border-top:1px solid ${C.gold};font-family:${SANS};font-size:12px;line-height:1.6;color:#cdb08a;text-align:center">${footer}</td></tr>
 </table></td></tr></table></body></html>`;
