@@ -6,17 +6,29 @@ from PIL import Image, ImageFilter, ImageDraw, ImageEnhance
 os.chdir(os.path.join(os.path.dirname(__file__), ".."))
 h = open("index.html", encoding="utf-8").read()
 IMG = json.loads(re.search(r"const IMG=(\{.*?\});\n", h).group(1))
-img_of = {sq: IMG[k] for sq, k in re.findall(r'sq:"([A-Z0-9]+)".*?img:IMG\["([^"]+)"\]', h)}
+img_of = {sq: k for sq, k in re.findall(r'sq:"([A-Z0-9]+)".*?img:IMG\["([^"]+)"\]', h)}
+# Bottle centre (x), table line (y) and zoom (bottle size vs. the original shot) in the 1000 px Classic photo, for photos framed differently
+# from the default (bottle centred at x=300, standing at y=830). Re-measure if one of these photos changes.
+CROP = {"givenchy-gentleman-rp.jpg": (280, 815, 1.0), "u-coffee.jpg": (243, 815, 1.014), "u-ferragamo.jpg": (288, 815, 1.007),
+        "u-iwill.jpg": (255, 815, 1.094), "u-jazz.jpg": (247, 815, 1.014), "u-lanuit.jpg": (293, 815, 1.12),
+        "u-zoltan.jpg": (267, 815, 1.111), "u-najim.jpg": (294, 815, 0.958), "u-althair.jpg": (268, 815, 0.823),
+        "mfk-br540.jpg": (247, 815, 0.972), "u-pmatin.jpg": (239, 815, 1.045), "u-lemale.jpg": (269, 815, 0.866),
+        "u-nefs.jpg": (278, 815, 0.935), "u-hswx.jpg": (290, 815, 1.014), "u-fyfx.jpg": (247, 815, 1.078),
+        "u-wulong.jpg": (276, 815, 0.959)}
 B = json.load(open("bundles.json"))
 S, TABLE_Y = 1200, 1060
 lerp = lambda a, b, t: tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
 for b in B["bundles"]:
     srcs = [img_of[s] for s in b["sq"] if s in img_of]; n = len(srcs)
     crops = []
-    for f in srcs:
-        im = Image.open(f).convert("RGB")
+    for k in srcs:
+        im = Image.open(IMG[k]).convert("RGB")
         if im.size != (1000, 1000): im = im.resize((1000, 1000))
-        crops.append(im.crop((100, 0, 500, 940)))           # bottle + the full backdrop above it; table at y≈830 of 940 (400 px wide: bottles read 20% larger)
+        cx, ty, z = CROP.get(k, (300, 830, 1))
+        pad = Image.new("RGB", (1600, 1600)); pad.paste(im, (300, 300))
+        for y in range(300): pad.paste(im.crop((0, 0, 1000, 1)), (300, y))          # extend the wall upward
+        box = (cx - 200 * z + 300, ty - 830 * z + 300, cx + 200 * z + 300, ty + 110 * z + 300)
+        crops.append(pad.crop(tuple(int(round(b)) for b in box)).resize((400, 940), Image.LANCZOS))           # bottle + the full backdrop above it; table at y≈830 of 940 (400 px wide: bottles read 20% larger)
     stride = 0.82
     w = int(S / (1 + (n - 1) * stride)); scale = w / 400; hgt = int(940 * scale); base = int(830 * scale)
     top = TABLE_Y - base
