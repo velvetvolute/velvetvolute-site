@@ -77,7 +77,7 @@ function similar(p, n = 8) {
 /* ---------- shared chrome ---------- */
 const styleBlock = [...html.matchAll(/<style>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join("\n");
 const FONTS = html.match(/<link href="https:\/\/fonts\.googleapis\.com[^>]+>/)[0];
-const OG_DEFAULT = { src: "img/og-velvetvolute-7541383504.jpg", w: 1200, h: 630, alt: "Tom Ford Tuscan Leather bottle beside Velvet Volute decant vials, with the VV logo" };
+const OG_DEFAULT = { src: "img/og-velvetvolute-cc70d7e8db.jpg", w: 1200, h: 630, alt: "Tom Ford Tuscan Leather bottle beside Velvet Volute decant vials, with the VV logo" };
 /* image: { src, w, h, alt } for the social card (defaults to the site card); type: og:type (product, article, website);
    dates: { published, modified } for articles; jsonld: one object or an array, each written as its own script tag. */
 function head({ title, desc, url, image, jsonld, current, type, dates }) {
@@ -92,7 +92,7 @@ function head({ title, desc, url, image, jsonld, current, type, dates }) {
 <title>${esc(title)}</title>
 <meta name="description" content="${attr(desc)}">
 <link rel="canonical" href="${SITE}${url}">
-<meta name="theme-color" content="#4a0e1e">
+<meta name="theme-color" content="#6b1e2e">
 <link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:type" content="${ogType}"><meta property="og:site_name" content="Velvet Volute"><meta property="og:title" content="${attr(title)}"><meta property="og:description" content="${attr(desc)}"><meta property="og:url" content="${SITE}${url}"><meta property="og:locale" content="en_CA">
 <meta property="og:image" content="${SITE}/${im.src}"><meta property="og:image:width" content="${im.w || 1000}"><meta property="og:image:height" content="${im.h || 1000}"><meta property="og:image:alt" content="${attr(im.alt || title)}">${dates ? `<meta property="article:published_time" content="${dates.published}"><meta property="article:modified_time" content="${dates.modified || dates.published}">` : ""}

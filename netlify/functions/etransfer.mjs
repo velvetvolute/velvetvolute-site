@@ -68,33 +68,33 @@ function readContact(input, ship) {
 
 function nextStep(method) {
   return method === "pickup"
-    ? `<p>Once it's in, I'll hand-pour your decants for pickup at the Shoppers Drug Mart on Carling Ave, Ottawa. <a href="${BOOKING_URL}" style="color:#6e1a31">Book your 15-minute slot here</a> (24 hours' notice).</p>`
+    ? `<p>Once it's in, I'll hand-pour your decants for pickup at the Shoppers Drug Mart on Carling Ave, Ottawa. <a href="${BOOKING_URL}" style="color:#912b42">Book your 15-minute slot here</a> (24 hours' notice).</p>`
     : method === "local"
-      ? `<p>Once it's in, I'll hand-pour your decants and bring them to your door myself. <a href="${DELIVERY_BOOKING_URL}" style="color:#6e1a31">Pick a delivery window here</a> (24 hours' notice).</p>`
+      ? `<p>Once it's in, I'll hand-pour your decants and bring them to your door myself. <a href="${DELIVERY_BOOKING_URL}" style="color:#912b42">Pick a delivery window here</a> (24 hours' notice).</p>`
       : `<p>Once it's in, I'll hand-pour your decants, ship them with Canada Post and email you when they're on the way.</p>`;
 }
 
 function emailHTML(s, c, ship) {
-  const rows = s.items.map((i) => `<tr><td style="padding:6px 0;border-bottom:1px solid #eadfcd">${i.qty > 1 ? i.qty + "× " : ""}${esc(i.name)}${i.variation ? `<br><span style="color:#8a6d4b;font-size:13px">${esc(i.variation)}</span>` : ""}</td><td style="padding:6px 0;border-bottom:1px solid #eadfcd;text-align:right;white-space:nowrap">${money(i.total)}</td></tr>`).join("");
+  const rows = s.items.map((i) => `<tr><td style="padding:6px 0;border-bottom:1px solid #f8e6cf">${i.qty > 1 ? i.qty + "× " : ""}${esc(i.name)}${i.variation ? `<br><span style="color:#95734c;font-size:13px">${esc(i.variation)}</span>` : ""}</td><td style="padding:6px 0;border-bottom:1px solid #f8e6cf;text-align:right;white-space:nowrap">${money(i.total)}</td></tr>`).join("");
   const charges = s.charges.map((x) => `<tr><td style="padding:6px 0">${esc(x.name)}</td><td style="padding:6px 0;text-align:right">${money(x.total)}</td></tr>`).join("");
   const where = ship === "pickup" ? "Ottawa pickup (Shoppers Drug Mart, Carling Ave)"
     : `${esc(c.street)}, ${esc(c.city)}, ${esc(c.prov)} ${esc(c.postal)}${ship === "local" ? " (local hand delivery)" : " (Canada Post)"}`;
-  return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#2c0610">
-  <div style="background:#4a0e1e;color:#e8d3b4;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">ORDER RECEIVED · AWAITING E-TRANSFER</div></div>
+  return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#3e1019">
+  <div style="background:#6b1e2e;color:#f5d9b5;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">ORDER RECEIVED · AWAITING E-TRANSFER</div></div>
   <div style="padding:24px;background:#fbf6ee">
    <p style="font-size:18px;margin:0 0 6px">Thank you, ${esc(c.name.split(" ")[0])}.</p>
    <p style="margin:0 0 18px">Order number <b style="letter-spacing:.06em">${esc(s.no)}</b></p>
-   <div style="border:1px solid #b5946a;padding:14px 16px;margin:0 0 20px;background:#fff">
-    <div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin-bottom:8px">How to pay</div>
+   <div style="border:1px solid #c6a070;padding:14px 16px;margin:0 0 20px;background:#fff">
+    <div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#95734c;margin-bottom:8px">How to pay</div>
     <p style="margin:0 0 8px"><b>1.</b> Send an Interac e-Transfer of <b>${money(s.total)}</b> to <b>${esc(PAY_TO)}</b></p>
     <p style="margin:0 0 8px"><b>2.</b> In the e-Transfer <b>message / notes</b> box, enter your order ID:</p>
-    <p style="margin:0 0 8px;text-align:center"><span style="display:inline-block;padding:8px 16px;border:1px dashed #6e1a31;font-size:22px;letter-spacing:.08em;font-weight:bold">${esc(s.no)}</span></p>
-    <p style="margin:0;font-size:13px;color:#8a6d4b">This is how I match your payment to your order, so please don't skip it.</p>
+    <p style="margin:0 0 8px;text-align:center"><span style="display:inline-block;padding:8px 16px;border:1px dashed #912b42;font-size:22px;letter-spacing:.08em;font-weight:bold">${esc(s.no)}</span></p>
+    <p style="margin:0;font-size:13px;color:#95734c">This is how I match your payment to your order, so please don't skip it.</p>
    </div>
-   <table style="width:100%;border-collapse:collapse;font-size:15px">${rows}${charges}${s.method === "ship" && !s.charges.length ? `<tr><td style="padding:6px 0">Shipping</td><td style="padding:6px 0;text-align:right">Free</td></tr>` : ""}${s.discount ? `<tr><td style="padding:6px 0">Discounts</td><td style="padding:6px 0;text-align:right">−${money(s.discount)}</td></tr>` : ""}${s.tax ? `<tr><td style="padding:6px 0">Tax</td><td style="padding:6px 0;text-align:right">${money(s.tax)}</td></tr>` : ""}<tr><td style="padding:10px 0;border-top:1px solid #b5946a;font-weight:bold">Total to send</td><td style="padding:10px 0;border-top:1px solid #b5946a;text-align:right;font-weight:bold">${money(s.total)}</td></tr></table>
-   <h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:22px 0 6px">What happens next</h3>
+   <table style="width:100%;border-collapse:collapse;font-size:15px">${rows}${charges}${s.method === "ship" && !s.charges.length ? `<tr><td style="padding:6px 0">Shipping</td><td style="padding:6px 0;text-align:right">Free</td></tr>` : ""}${s.discount ? `<tr><td style="padding:6px 0">Discounts</td><td style="padding:6px 0;text-align:right">−${money(s.discount)}</td></tr>` : ""}${s.tax ? `<tr><td style="padding:6px 0">Tax</td><td style="padding:6px 0;text-align:right">${money(s.tax)}</td></tr>` : ""}<tr><td style="padding:10px 0;border-top:1px solid #c6a070;font-weight:bold">Total to send</td><td style="padding:10px 0;border-top:1px solid #c6a070;text-align:right;font-weight:bold">${money(s.total)}</td></tr></table>
+   <h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#95734c;margin:22px 0 6px">What happens next</h3>
    <p>I'll email you as soon as your e-Transfer arrives.</p>${nextStep(s.method)}
-   <h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:22px 0 6px">Your details</h3>
+   <h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#95734c;margin:22px 0 6px">Your details</h3>
    <p style="margin:0">${esc(c.name)} · ${esc(c.email)}${c.phone ? ` · ${esc(c.phone)}` : ""}<br>${where}</p>
    <p style="margin-top:22px">Questions or a change to your order? Reply to this email and include ${esc(s.no)}.</p>
    <p style="margin-top:22px">Peace &amp; Love,<br>Izzi</p>

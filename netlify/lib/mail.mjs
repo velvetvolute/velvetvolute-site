@@ -19,7 +19,7 @@ export const absUrl = (p) => (/^https?:/.test(p) ? p : `${SITE}/${String(p).repl
 export const fmtDate = (ms) => new Date(ms).toLocaleDateString("en-CA", { month: "long", day: "numeric", year: "numeric", timeZone: "America/Toronto" });
 
 // Palette (the site's: deep wine, cream, gold)
-export const C = { wine: "#4a0e1e", wineDeep: "#2c0610", cream: "#fbf6ee", gold: "#d6b077", goldInk: "#8a6d4b", ink: "#2c0610", soft: "#5a3a2a", rule: "#eadfcd", link: "#6e1a31", paper: "#ffffff" };
+export const C = { wine: "#6b1e2e", wineDeep: "#3e1019", cream: "#fbf6ee", gold: "#e2b678", goldInk: "#95734c", ink: "#3e1019", soft: "#5a3a2a", rule: "#f8e6cf", link: "#912b42", paper: "#ffffff" };
 export const SERIF = "'GFS Didot','Cormorant Garamond',Didot,'Bodoni MT',Georgia,'Times New Roman',serif";
 export const SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 
@@ -75,15 +75,15 @@ export function orderRows(items, { showPrice = true, right } = {}) {
 export const signoff = () => p(`Peace &amp; Love,<br><span style="font-family:${SERIF};font-size:20px">Izzi</span>`, "margin-top:22px");
 
 // Justin's branded email signature (same block as his Gmail signature): the merlot banner image
-// (img/email-signature-1.png, links to the site) over a row of live links. Goes under "Peace & Love, Izzi"
+// (img/email-signature-2.png, links to the site) over a row of live links. Goes under "Peace & Love, Izzi"
 // in every customer email. Widths are percentages so it shrinks with the email column on phones.
 export const SIG_TEXT = "Justin Izzi · Founder, Velvet Volute · 647-821-4994 · velvetvolute.ca · @velvetvolute.ca";
 export function emailSignature() {
-  const L = "color:#EAD7BC;text-decoration:none", K = "color:#D6B48A;font-size:10px;letter-spacing:2px";
+  const L = "color:#F7DDBD;text-decoration:none", K = "color:#c6a070;font-size:10px;letter-spacing:2px";
   const item = (k, href, label) => `<span style="${K}">${k}</span>&nbsp;&nbsp;<a href="${href}" style="${L}">${label}</a>`;
-  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#4A1121" style="width:100%;max-width:600px;border-collapse:collapse;background:#4A1121;margin:18px 0 4px">
- <tr><td colspan="2" style="padding:0"><a href="${SITE}"><img src="${SITE}/img/email-signature-1.png" width="600" alt="Justin Izzi, Founder · Velvet Volute" style="display:block;width:100%;max-width:600px;height:auto;border:0"></a></td></tr>
- <tr><td width="28%" style="width:28%;padding:0;font-size:0;line-height:0">&nbsp;</td><td style="padding:0 12px 14px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:20px;color:#EAD7BC">${item("T", "tel:+16478214994", "647-821-4994")}&nbsp;&nbsp;&nbsp; ${item("W", SITE, "velvetvolute.ca")}<br>${item("E", `mailto:${SHOP_EMAIL}`, SHOP_EMAIL)}&nbsp;&nbsp;&nbsp; ${item("IG", "https://www.instagram.com/velvetvolute.ca/", "@velvetvolute.ca")}</td></tr>
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#6B1E2E" style="width:100%;max-width:600px;border-collapse:collapse;background:#6B1E2E;margin:18px 0 4px">
+ <tr><td colspan="2" style="padding:0"><a href="${SITE}"><img src="${SITE}/img/email-signature-2.png" width="600" alt="Justin Izzi, Founder · Velvet Volute" style="display:block;width:100%;max-width:600px;height:auto;border:0"></a></td></tr>
+ <tr><td width="28%" style="width:28%;padding:0;font-size:0;line-height:0">&nbsp;</td><td style="padding:0 12px 14px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:20px;color:#F7DDBD">${item("T", "tel:+16478214994", "647-821-4994")}&nbsp;&nbsp;&nbsp; ${item("W", SITE, "velvetvolute.ca")}<br>${item("E", `mailto:${SHOP_EMAIL}`, SHOP_EMAIL)}&nbsp;&nbsp;&nbsp; ${item("IG", "https://www.instagram.com/velvetvolute.ca/", "@velvetvolute.ca")}</td></tr>
 </table>`;
 }
 
@@ -100,14 +100,14 @@ ${preheader ? `<div style="display:none;max-height:0;overflow:hidden;font-size:1
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;width:100%">
  <tr><td align="center" bgcolor="${C.wine}" style="background:${C.wine};padding:26px 24px 22px;border-bottom:1px solid ${C.gold}">
    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 10px"><tr><td align="center" style="width:46px;height:46px"><img src="${SITE}/img/vv-email-25.png" width="46" height="46" alt="VV" style="display:block;width:46px;height:46px;border:0"></td></tr></table>
-   <div style="font-family:${SERIF};font-size:27px;letter-spacing:.14em;color:#e8d3b4">VELVET VOLUTE</div>
+   <div style="font-family:${SERIF};font-size:27px;letter-spacing:.14em;color:#f5d9b5">VELVET VOLUTE</div>
    ${kicker ? `<div style="font-family:${SANS};font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:${C.gold};margin-top:8px">${kicker}</div>` : ""}
  </td></tr>
  <tr><td bgcolor="${C.cream}" style="background:${C.cream};padding:28px 26px 24px">
    ${body}
    ${emailSignature()}
  </td></tr>
- <tr><td bgcolor="${C.wineDeep}" style="background:${C.wineDeep};padding:16px 24px;border-top:1px solid ${C.gold};font-family:${SANS};font-size:12px;line-height:1.6;color:#cdb08a;text-align:center">${footer}</td></tr>
+ <tr><td bgcolor="${C.wineDeep}" style="background:${C.wineDeep};padding:16px 24px;border-top:1px solid ${C.gold};font-family:${SANS};font-size:12px;line-height:1.6;color:#dab68b;text-align:center">${footer}</td></tr>
 </table></td></tr></table></body></html>`;
 }
 

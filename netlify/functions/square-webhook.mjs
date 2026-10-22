@@ -147,31 +147,31 @@ export function cardBlock(punch) {
   const line = full
     ? `This order added <b>${n} velvet drop${n > 1 ? "s" : ""}</b> and filled your card. Lucky #7 is on us: the link to choose your free 5 ml is on its way in a separate email.`
     : `This order added <b>${n} velvet drop${n > 1 ? "s" : ""}</b>. You're at <b>${fmtPunch(punch.p.cycle)} of 6 stamps</b>; ${fmtPunch(6 - punch.p.cycle)} more and lucky #7, a free 5 ml, is on us.`;
-  return `<h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:22px 0 6px">The Real Ones stamp card</h3><p style="margin:0">${line}</p>${cardImg(full ? "full" : punch.p.cycleDrops)}<p style="margin:6px 0 0;font-size:13px"><a href="${SITE}/rewards" style="color:#6e1a31">See your card and how it works</a></p>`;
+  return `<h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#95734c;margin:22px 0 6px">The Real Ones stamp card</h3><p style="margin:0">${line}</p>${cardImg(full ? "full" : punch.p.cycleDrops)}<p style="margin:6px 0 0;font-size:13px"><a href="${SITE}/rewards" style="color:#912b42">See your card and how it works</a></p>`;
 }
 
 export function emailHTML(s, ref, etransfer = false, extra = "", card = "") {
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  const rows = s.items.map((i) => `<tr><td style="padding:6px 0;border-bottom:1px solid #eadfcd">${i.qty > 1 ? i.qty + "× " : ""}${esc(i.name)}${i.variation ? `<br><span style="color:#8a6d4b;font-size:13px">${esc(i.variation)}</span>` : ""}</td><td style="padding:6px 0;border-bottom:1px solid #eadfcd;text-align:right;white-space:nowrap">${money(i.total)}</td></tr>`).join("");
+  const rows = s.items.map((i) => `<tr><td style="padding:6px 0;border-bottom:1px solid #f8e6cf">${i.qty > 1 ? i.qty + "× " : ""}${esc(i.name)}${i.variation ? `<br><span style="color:#95734c;font-size:13px">${esc(i.variation)}</span>` : ""}</td><td style="padding:6px 0;border-bottom:1px solid #f8e6cf;text-align:right;white-space:nowrap">${money(i.total)}</td></tr>`).join("");
   const charges = s.charges.map((c) => `<tr><td style="padding:6px 0">${esc(c.name)}</td><td style="padding:6px 0;text-align:right">${money(c.total)}</td></tr>`).join("");
   const next = s.method === "pickup"
-    ? `<p>Pickup is at the Shoppers Drug Mart on Carling Ave, Ottawa. <a href="${BOOKING_URL}" style="color:#6e1a31">Book your 15-minute slot here</a> (24 hours' notice). I'll confirm by email.</p>`
+    ? `<p>Pickup is at the Shoppers Drug Mart on Carling Ave, Ottawa. <a href="${BOOKING_URL}" style="color:#912b42">Book your 15-minute slot here</a> (24 hours' notice). I'll confirm by email.</p>`
     : s.method === "local"
-      ? `<p>Your order qualifies for free local hand delivery: I bring it to your door myself, no courier. <a href="${DELIVERY_BOOKING_URL}" style="color:#6e1a31">Pick a delivery window here</a> (24 hours' notice) and I'll bring your decants to the address you gave at checkout. I'll confirm by email.</p>`
+      ? `<p>Your order qualifies for free local hand delivery: I bring it to your door myself, no courier. <a href="${DELIVERY_BOOKING_URL}" style="color:#912b42">Pick a delivery window here</a> (24 hours' notice) and I'll bring your decants to the address you gave at checkout. I'll confirm by email.</p>`
       : `<p>I'll hand-pour your decants and ship them with Canada Post, and email you once they're on the way.</p>`;
-  return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#2c0610">
-  <div style="background:#4a0e1e;color:#e8d3b4;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">${etransfer ? "ORDER CONFIRMATION / INVOICE PAID" : "ORDER CONFIRMATION"}</div></div>
+  return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#3e1019">
+  <div style="background:#6b1e2e;color:#f5d9b5;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">${etransfer ? "ORDER CONFIRMATION / INVOICE PAID" : "ORDER CONFIRMATION"}</div></div>
   <div style="padding:24px;background:#fbf6ee">
    <p style="font-size:18px;margin:0 0 6px">${etransfer ? "Thank you, your e-Transfer has been received." : "Thank you for your order."}</p>
    <p style="margin:0 0 18px">Order number <b style="letter-spacing:.06em">${esc(s.no)}</b>${ref ? ` · Square reference ${esc(ref)}` : ""}</p>
-   <table style="width:100%;border-collapse:collapse;font-size:15px">${rows}${charges}${s.method === "ship" && !s.charges.length ? `<tr><td style="padding:6px 0">Shipping</td><td style="padding:6px 0;text-align:right">Free</td></tr>` : ""}${s.discount ? `<tr><td style="padding:6px 0">Discounts</td><td style="padding:6px 0;text-align:right">−${money(s.discount)}</td></tr>` : ""}${s.tax ? `<tr><td style="padding:6px 0">Tax</td><td style="padding:6px 0;text-align:right">${money(s.tax)}</td></tr>` : ""}<tr><td style="padding:10px 0;border-top:1px solid #b5946a;font-weight:bold">Total paid</td><td style="padding:10px 0;border-top:1px solid #b5946a;text-align:right;font-weight:bold">${money(s.total)}</td></tr></table>
-   <h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:22px 0 6px">What happens next</h3>${next}
+   <table style="width:100%;border-collapse:collapse;font-size:15px">${rows}${charges}${s.method === "ship" && !s.charges.length ? `<tr><td style="padding:6px 0">Shipping</td><td style="padding:6px 0;text-align:right">Free</td></tr>` : ""}${s.discount ? `<tr><td style="padding:6px 0">Discounts</td><td style="padding:6px 0;text-align:right">−${money(s.discount)}</td></tr>` : ""}${s.tax ? `<tr><td style="padding:6px 0">Tax</td><td style="padding:6px 0;text-align:right">${money(s.tax)}</td></tr>` : ""}<tr><td style="padding:10px 0;border-top:1px solid #c6a070;font-weight:bold">Total paid</td><td style="padding:10px 0;border-top:1px solid #c6a070;text-align:right;font-weight:bold">${money(s.total)}</td></tr></table>
+   <h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#95734c;margin:22px 0 6px">What happens next</h3>${next}
    ${card}
    <p style="margin-top:22px">Questions? Reply to this email or write to ${SHOP_EMAIL} and include ${esc(s.no)}.</p>
    ${extra}
    <p style="margin-top:22px">Peace &amp; Love,<br>Izzi</p>
    ${emailSignature()}
-   <p style="color:#8a6d4b;font-size:13px">Velvet Volute · Ottawa, ON · <a href="${SITE}" style="color:#6e1a31">velvetvolute.ca</a></p>
+   <p style="color:#95734c;font-size:13px">Velvet Volute · Ottawa, ON · <a href="${SITE}" style="color:#912b42">velvetvolute.ca</a></p>
   </div></div>`;
 }
 
@@ -189,7 +189,7 @@ async function emailBuyer(s, to, ref, etransfer = false, picks = [], punch = nul
   const admin = (q) => (adminKey ? `${SITE}/.netlify/functions/mark-shipped?order=${encodeURIComponent(s.no)}&key=${encodeURIComponent(adminKey)}${q}` : "");
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const cl = contactLines(contact);
-  const who = cl.length ? `<div style="margin-top:22px;padding:14px 16px;border:1px dashed #b5946a;background:#fff"><div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#8a6d4b">Shop copy only · Customer</div><p style="margin:8px 0 0;font-size:15px;line-height:1.6">${cl.map((l) => esc(l)).join("<br>")}</p></div>` : "";
+  const who = cl.length ? `<div style="margin-top:22px;padding:14px 16px;border:1px dashed #c6a070;background:#fff"><div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#95734c">Shop copy only · Customer</div><p style="margin:8px 0 0;font-size:15px;line-height:1.6">${cl.map((l) => esc(l)).join("<br>")}</p></div>` : "";
   const extras = who + (picks.length || adminKey ? shopExtrasBlock({ picks, method: s.method, markShippedUrl: admin(""), pickUrl: adminKey ? (sqId) => admin(`&pick=${encodeURIComponent(sqId)}&only=pick`) : null }) : "");
   const sends = [];
   const card = cardBlock(punch);

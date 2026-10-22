@@ -46,7 +46,7 @@ files["11-on-its-way"] = { subject: `Your Velvet Volute order ${order.no} is on 
 // shop-copy extras block (as it appears inside the order confirmation sent to the shop)
 const { sherpasPick, scentsInOrder } = await import("../netlify/lib/scents.mjs");
 const picks = sherpasPick(scentsInOrder(order.items));
-files["12-shop-copy-extras"] = { subject: "[shop copy] Sherpa's pick block", html: `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;padding:24px;background:#fbf6ee;color:#2c0610">${E.shopExtrasBlock({ picks, method: "ship", markShippedUrl: "https://velvetvolute.ca/.netlify/functions/mark-shipped?order=VV-K7Q4M2&key=ADMIN_KEY", pickUrl: (sq) => `https://velvetvolute.ca/.netlify/functions/mark-shipped?order=VV-K7Q4M2&key=ADMIN_KEY&pick=${sq}&only=pick` })}</div>` };
+files["12-shop-copy-extras"] = { subject: "[shop copy] Sherpa's pick block", html: `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;padding:24px;background:#fbf6ee;color:#3e1019">${E.shopExtrasBlock({ picks, method: "ship", markShippedUrl: "https://velvetvolute.ca/.netlify/functions/mark-shipped?order=VV-K7Q4M2&key=ADMIN_KEY", pickUrl: (sq) => `https://velvetvolute.ca/.netlify/functions/mark-shipped?order=VV-K7Q4M2&key=ADMIN_KEY&pick=${sq}&only=pick` })}</div>` };
 files["13-unsubscribe-page"] = { subject: "Unsubscribe landing page", html: E.unsubscribePage({ ok: true, email: "justin@example.com" }) };
 
 const index = [];

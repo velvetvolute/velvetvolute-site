@@ -10,7 +10,7 @@ import { sendEnjoy } from "../lib/enjoy.mjs";
 import { stores, getJSON } from "../lib/store.mjs";
 import { bySq, fullName } from "../lib/scents.mjs";
 
-const page = (status, title, body) => new Response(`<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title><body style="margin:0;min-height:100vh;display:grid;place-items:center;background:#4a0e1e;color:#e8d3b4;font:300 17px/1.6 -apple-system,system-ui,sans-serif;padding:24px"><main style="max-width:440px;text-align:center"><img src="/img/vv-email-25.png" width="56" height="56" alt="VV" style="display:block;margin:0 auto 16px"><h1 style="font:400 30px/1.15 Georgia,serif;margin:0 0 10px">${title}</h1><p>${body}</p></main>`, { status, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
+const page = (status, title, body) => new Response(`<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title><body style="margin:0;min-height:100vh;display:grid;place-items:center;background:#6b1e2e;color:#f5d9b5;font:300 17px/1.6 -apple-system,system-ui,sans-serif;padding:24px"><main style="max-width:440px;text-align:center"><img src="/img/vv-email-25.png" width="56" height="56" alt="VV" style="display:block;margin:0 auto 16px"><h1 style="font:400 30px/1.15 Georgia,serif;margin:0 0 10px">${title}</h1><p>${body}</p></main>`, { status, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
 
 // Find the Square order for a VV number: the webhook's record first, then the last 90 days of orders.
 async function findOrder(no, token) {

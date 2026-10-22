@@ -58,21 +58,21 @@ export async function buyerEmail(order, token) {
   return { email: "", name: "" };
 }
 
-const H3 = (t) => `<h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:24px 0 6px">${t}</h3>`;
+const H3 = (t) => `<h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#95734c;margin:24px 0 6px">${t}</h3>`;
 
 export function enjoyHTML(s, firstName, extra = "") {
   const hi = firstName ? `, ${esc(firstName)}` : "";
   const rows = s.items.map((i) => {
     const sprays = vialSprays(i.variation);
-    return `<tr><td style="padding:6px 0;border-bottom:1px solid #eadfcd">${i.qty > 1 ? i.qty + "× " : ""}${esc(i.name)}${i.variation ? `<br><span style="color:#8a6d4b;font-size:13px">${esc(i.variation)}</span>` : ""}</td><td style="padding:6px 0;border-bottom:1px solid #eadfcd;text-align:right;white-space:nowrap;color:#6e1a31">${sprays}</td></tr>`;
+    return `<tr><td style="padding:6px 0;border-bottom:1px solid #f8e6cf">${i.qty > 1 ? i.qty + "× " : ""}${esc(i.name)}${i.variation ? `<br><span style="color:#95734c;font-size:13px">${esc(i.variation)}</span>` : ""}</td><td style="padding:6px 0;border-bottom:1px solid #f8e6cf;text-align:right;white-space:nowrap;color:#912b42">${sprays}</td></tr>`;
   }).join("");
-  return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#2c0610">
-  <div style="background:#4a0e1e;color:#e8d3b4;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">ENJOY YOUR ORDER</div></div>
+  return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#3e1019">
+  <div style="background:#6b1e2e;color:#f5d9b5;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">ENJOY YOUR ORDER</div></div>
   <div style="padding:24px;background:#fbf6ee;line-height:1.55">
    <p style="font-size:18px;margin:0 0 6px">Your decants are officially yours${hi}.</p>
    <p style="margin:0 0 16px">Thank you for choosing Velvet Volute. Here's a little guide so you get the most out of every spray.</p>
-   <table style="width:100%;border-collapse:collapse;font-size:15px"><tr><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a6d4b">Order ${esc(s.no)}</td><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a6d4b;text-align:right">Sprays in your vial</td></tr>${rows}</table>
-   <div style="border:1px solid #b5946a;background:#fff;padding:12px 16px;margin:16px 0 0">
+   <table style="width:100%;border-collapse:collapse;font-size:15px"><tr><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#95734c">Order ${esc(s.no)}</td><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#95734c;text-align:right">Sprays in your vial</td></tr>${rows}</table>
+   <div style="border:1px solid #c6a070;background:#fff;padding:12px 16px;margin:16px 0 0">
     <p style="margin:0 0 4px;font-size:16px"><b>You only need 2 to 4 sprays per use.</b></p>
     <p style="margin:0;font-size:14px;color:#5a3a2a">Extraits and Parfums: 2 sprays. Eau de Parfum: 3 to 4. Eau de Toilette: 4. Roll-ons: 2 or 3 light swipes. The higher the oil, the less you need, and an Extrait can still be there the next morning.</p>
    </div>
@@ -97,7 +97,7 @@ export function enjoyHTML(s, firstName, extra = "") {
    <p style="margin:0">&bull; The trail you leave when you walk past is called <b>sillage</b>, pronounced <i>see-yazh</i>.</p>
 
    ${extra}
-   <p style="margin:24px 0 8px">Want to go deeper? <a href="${SITE}/fragrance-101.html" style="color:#6e1a31">Fragrance 101</a> covers it all. When you're ready for your next find, the <a href="${SITE}" style="color:#6e1a31">Scent Sherpa</a> can help you curate your own playlist.</p>
+   <p style="margin:24px 0 8px">Want to go deeper? <a href="${SITE}/fragrance-101.html" style="color:#912b42">Fragrance 101</a> covers it all. When you're ready for your next find, the <a href="${SITE}" style="color:#912b42">Scent Sherpa</a> can help you curate your own playlist.</p>
    <p style="margin:0">Fell for one? Reply and tell me which, I'd love to hear it.</p>
    <p style="margin-top:22px">Peace &amp; Love,<br>Izzi</p>
    ${emailSignature()}
@@ -131,19 +131,19 @@ export function trackingFor(order) {
 
 export function shippedHTML(s, firstName, track) {
   const hi = firstName ? `, ${esc(firstName)}` : "";
-  const rows = s.items.map((i) => `<tr><td style="padding:6px 0;border-bottom:1px solid #eadfcd">${i.qty > 1 ? i.qty + "× " : ""}${esc(i.name)}${i.variation ? `<br><span style="color:#8a6d4b;font-size:13px">${esc(i.variation)}</span>` : ""}</td></tr>`).join("");
+  const rows = s.items.map((i) => `<tr><td style="padding:6px 0;border-bottom:1px solid #f8e6cf">${i.qty > 1 ? i.qty + "× " : ""}${esc(i.name)}${i.variation ? `<br><span style="color:#95734c;font-size:13px">${esc(i.variation)}</span>` : ""}</td></tr>`).join("");
   const trackBlock = track
-    ? `<div style="border:1px solid #b5946a;padding:14px 16px;margin:18px 0;background:#fff;text-align:center"><div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin-bottom:6px">${esc(track.carrier)} tracking</div>${track.no ? `<div style="font-size:18px;letter-spacing:.06em;font-weight:bold;margin-bottom:8px">${esc(track.no)}</div>` : ""}${track.url ? `<a href="${esc(track.url)}" style="display:inline-block;background:#4a0e1e;color:#e8d3b4;padding:9px 18px;text-decoration:none;letter-spacing:.1em">TRACK YOUR ORDER</a>` : ""}</div>`
+    ? `<div style="border:1px solid #c6a070;padding:14px 16px;margin:18px 0;background:#fff;text-align:center"><div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#95734c;margin-bottom:6px">${esc(track.carrier)} tracking</div>${track.no ? `<div style="font-size:18px;letter-spacing:.06em;font-weight:bold;margin-bottom:8px">${esc(track.no)}</div>` : ""}${track.url ? `<a href="${esc(track.url)}" style="display:inline-block;background:#6b1e2e;color:#f5d9b5;padding:9px 18px;text-decoration:none;letter-spacing:.1em">TRACK YOUR ORDER</a>` : ""}</div>`
     : "";
-  return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#2c0610">
-  <div style="background:#4a0e1e;color:#e8d3b4;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">YOUR ORDER IS ON ITS WAY</div></div>
+  return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#3e1019">
+  <div style="background:#6b1e2e;color:#f5d9b5;padding:22px 24px;text-align:center"><div style="font-size:26px;letter-spacing:.08em">VELVET VOLUTE</div><div style="font-size:13px;letter-spacing:.2em;margin-top:4px">YOUR ORDER IS ON ITS WAY</div></div>
   <div style="padding:24px;background:#fbf6ee;line-height:1.55">
    <p style="font-size:18px;margin:0 0 6px">Your decants are on their way${hi}.</p>
    <p style="margin:0 0 4px">Hand-poured, labelled and packed with care, now in Canada Post's hands.</p>
    ${trackBlock}
-   <table style="width:100%;border-collapse:collapse;font-size:15px"><tr><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a6d4b">Order ${esc(s.no)}</td></tr>${rows}</table>
+   <table style="width:100%;border-collapse:collapse;font-size:15px"><tr><td style="padding:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#95734c">Order ${esc(s.no)}</td></tr>${rows}</table>
    <p style="margin:18px 0 0">Once they land, I'll send you a little guide on how to wear and store them so you get the most out of every spray.</p>
-   <p style="margin:12px 0 0;font-size:13px;color:#8a6d4b">Something arrive damaged? Reply within 24 hours of delivery with a photo and your order number.</p>
+   <p style="margin:12px 0 0;font-size:13px;color:#95734c">Something arrive damaged? Reply within 24 hours of delivery with a photo and your order number.</p>
    <p style="margin-top:22px">Peace &amp; Love,<br>Izzi</p>
    ${emailSignature()}
   </div></div>`;

@@ -147,16 +147,16 @@ export function upsizeEmail({ first, p: scent, ml, price10, code, expiresAt, uns
 // 10. Blocks appended to the "Enjoy your order" email: review link, return code, referral code,
 // punch-card status, Sherpa's pick note. Rendered inline in enjoy.mjs's existing template.
 export function loyaltyBlock({ returnCode, returnExpires, referralCode, punches, sherpaPickName, claimUrl, email }) {
-  const H3 = (t) => `<h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:24px 0 6px">${t}</h3>`;
+  const H3 = (t) => `<h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#95734c;margin:24px 0 6px">${t}</h3>`;
   const parts = [];
-  parts.push(`${H3("Tell the next real one")}<p style="margin:0 0 8px">A review takes a minute and does more for a small shop than any ad. <a href="${esc(GOOGLE_REVIEW_URL)}" style="color:#6e1a31">${REVIEW_IS_GOOGLE ? "Leave a Google review" : "Recommend Velvet Volute on Facebook"}</a>.</p>`);
+  parts.push(`${H3("Tell the next real one")}<p style="margin:0 0 8px">A review takes a minute and does more for a small shop than any ad. <a href="${esc(GOOGLE_REVIEW_URL)}" style="color:#912b42">${REVIEW_IS_GOOGLE ? "Leave a Google review" : "Recommend Velvet Volute on Facebook"}</a>.</p>`);
   if (returnCode) parts.push(`${H3("Your next one")}${codeCard(returnCode, "10% off your next order", returnExpires, "One use.")}`);
   if (referralCode) parts.push(`${H3("Bring a friend")}<p style="margin:0 0 8px">Your personal code is <b style="letter-spacing:.08em">${esc(referralCode)}</b>. A friend gets $5 off their first order with it, and every time one orders, I email you $5 off too. Reusable, no limit.</p>`);
   if (punches) {
     const line = punches.pending > 0
-      ? `<b>6 of 6 stamps · Lucky #7 is on us.</b> ${claimUrl ? `<a href="${esc(claimUrl)}" style="color:#6e1a31">Choose your free 5 ml</a>.` : "Check your inbox for the link to choose your free 5 ml."}`
+      ? `<b>6 of 6 stamps · Lucky #7 is on us.</b> ${claimUrl ? `<a href="${esc(claimUrl)}" style="color:#912b42">Choose your free 5 ml</a>.` : "Check your inbox for the link to choose your free 5 ml."}`
       : `<b>${fmtPunch(punches.cycle)} of 6 stamps · Lucky #7 is on us.</b> 2 or 3 ml = 1 drop · 5 ml = 2 drops · 10 ml = 3 drops. 12 drops fill the card; lucky #7 is a free 5 ml, up to $35.`;
-    parts.push(`${H3("The Real Ones stamp card")}<p style="margin:0 0 4px">${line}</p>${cardImg(punches.pending > 0 ? "full" : punches.cycleDrops ?? Math.round(punches.cycle * 2))}<p style="margin:6px 0 0;font-size:13px;color:#8a6d4b"><a href="${SITE}/rewards" style="color:#6e1a31">See your card and how it works</a></p>`);
+    parts.push(`${H3("The Real Ones stamp card")}<p style="margin:0 0 4px">${line}</p>${cardImg(punches.pending > 0 ? "full" : punches.cycleDrops ?? Math.round(punches.cycle * 2))}<p style="margin:6px 0 0;font-size:13px;color:#95734c"><a href="${SITE}/rewards" style="color:#912b42">See your card and how it works</a></p>`);
   }
   if (sherpaPickName) parts.push(`${H3("Sherpa's pick")}<p style="margin:0">There's a 1 ml of <b>${esc(sherpaPickName)}</b> tucked in with your order. It's close to what you chose, with a twist. Tell me what you think.</p>`);
   return parts.join("");
@@ -166,12 +166,12 @@ export function loyaltyBlock({ returnCode, returnExpires, referralCode, punches,
 export const cardImg = (n) => `<img src="${SITE}/img/punch/card-${n}.png" width="360" height="150" alt="${n === "full" ? "Your stamp card is full: lucky #7 is ready" : `${fmtPunch(Number(n) / 2)} of 6 stamps`}" style="display:block;width:100%;max-width:360px;height:auto;border:0;margin:8px 0 0">`;
 // Punch-card intro for the sign-up emails: the card with the starter drops already on it.
 export function punchIntro(drops) {
-  const row = (a, b, c) => `<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(74,14,30,.2);font-family:${SANS};font-size:14px;color:#2c0610"><b>${a}</b></td><td style="padding:6px 10px;border-bottom:1px solid rgba(74,14,30,.2);font-family:${SANS};font-size:14px;color:#2c0610">${b} <span style="color:#4a0e1e;opacity:.6">=</span> <b style="color:#4a0e1e">${c}</b></td></tr>`;
+  const row = (a, b, c) => `<tr><td style="padding:6px 10px;border-bottom:1px solid rgba(107,30,46,.2);font-family:${SANS};font-size:14px;color:#3e1019"><b>${a}</b></td><td style="padding:6px 10px;border-bottom:1px solid rgba(107,30,46,.2);font-family:${SANS};font-size:14px;color:#3e1019">${b} <span style="color:#6b1e2e;opacity:.6">=</span> <b style="color:#6b1e2e">${c}</b></td></tr>`;
   return `${rule()}${h3("Your stamp card is already started")}
    ${p(`Welcome to The Real Ones. Every order fills your card with velvet drops, and 12 drops earn lucky #7: a free 5 ml, up to $35. I've added <b>${drops} drops</b> to get you going${drops === 2 ? ", so your first stamp is on me" : ""}.`)}
    ${cardImg(drops)}
-   <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:12px 0 4px;background:#b28a5b;border-radius:8px;border-collapse:separate">${row("2 ml &amp; 3 ml", "1 drop", "½ stamp")}${row("5 ml", "2 drops", "1 stamp")}${row("10 ml", "3 drops", "1½ stamps")}</table>
-   ${small(`Tied to this email address. <a href="${SITE}/rewards" style="color:#6e1a31">See your card anytime</a>.`)}`;
+   <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:12px 0 4px;background:#be905c;border-radius:8px;border-collapse:separate">${row("2 ml &amp; 3 ml", "1 drop", "½ stamp")}${row("5 ml", "2 drops", "1 stamp")}${row("10 ml", "3 drops", "1½ stamps")}</table>
+   ${small(`Tied to this email address. <a href="${SITE}/rewards" style="color:#912b42">See your card anytime</a>.`)}`;
 }
 export const fmtPunch = (n) => `${Math.floor(n) || (n % 1 ? "" : "0")}${n % 1 ? "½" : ""}`;
 export const punchDots = (n) => Array.from({ length: 6 }, (_, i) => (i + 1 <= n ? "●" : i + 0.5 <= n ? "◐" : "○")).join(" ");
@@ -179,21 +179,21 @@ export const punchDots = (n) => Array.from({ length: 6 }, (_, i) => (i + 1 <= n 
 // 11. Shop-copy extras for the order confirmation: Sherpa's pick (top 3 to pour as a 1 ml surprise)
 // and the mark-shipped link.
 export function shopExtrasBlock({ picks, markShippedUrl, pickUrl, method }) {
-  const H3 = (t) => `<h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#8a6d4b;margin:24px 0 6px">${t}</h3>`;
-  const rows = picks.map((x, k) => `<tr><td style="padding:8px 0;border-bottom:1px solid #eadfcd;vertical-align:top"><img src="${esc(absUrl(x.p.img))}" width="48" height="48" alt="" style="display:block;border-radius:4px"></td><td style="padding:8px 10px;border-bottom:1px solid #eadfcd;vertical-align:top"><b>${k + 1}. ${esc(fullName(x.p))}</b><br><span style="font-size:13px;color:#5a3a2a">${esc(x.why)}</span>${pickUrl ? `<br><a href="${esc(pickUrl(x.p.sq))}" style="font-size:13px;color:#6e1a31">I poured this one</a>` : ""}</td></tr>`).join("");
-  return `<div style="margin-top:22px;padding:14px 16px;border:1px dashed #b5946a;background:#fff">
-   <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#8a6d4b">Shop copy only</div>
+  const H3 = (t) => `<h3 style="font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#95734c;margin:24px 0 6px">${t}</h3>`;
+  const rows = picks.map((x, k) => `<tr><td style="padding:8px 0;border-bottom:1px solid #f8e6cf;vertical-align:top"><img src="${esc(absUrl(x.p.img))}" width="48" height="48" alt="" style="display:block;border-radius:4px"></td><td style="padding:8px 10px;border-bottom:1px solid #f8e6cf;vertical-align:top"><b>${k + 1}. ${esc(fullName(x.p))}</b><br><span style="font-size:13px;color:#5a3a2a">${esc(x.why)}</span>${pickUrl ? `<br><a href="${esc(pickUrl(x.p.sq))}" style="font-size:13px;color:#912b42">I poured this one</a>` : ""}</td></tr>`).join("");
+  return `<div style="margin-top:22px;padding:14px 16px;border:1px dashed #c6a070;background:#fff">
+   <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#95734c">Shop copy only</div>
    ${H3("Sherpa's pick: 1 ml surprise")}
    <p style="margin:0 0 6px;font-size:14px">Top 3 to tuck in, closest to what they bought. Pour one and tap "I poured this one" so the enjoy email can name it.</p>
    <table style="width:100%;border-collapse:collapse;font-size:14px">${rows}</table>
-   ${method === "ship" && markShippedUrl ? `${H3("When it's in the mail")}<p style="margin:0;font-size:14px"><a href="${esc(markShippedUrl)}" style="color:#6e1a31">Mark as shipped</a> sends the customer the "on its way" email and queues "enjoy" for five days later. Marking the fulfillment complete in Square does the same.</p>` : ""}
+   ${method === "ship" && markShippedUrl ? `${H3("When it's in the mail")}<p style="margin:0;font-size:14px"><a href="${esc(markShippedUrl)}" style="color:#912b42">Mark as shipped</a> sends the customer the "on its way" email and queues "enjoy" for five days later. Marking the fulfillment complete in Square does the same.</p>` : ""}
   </div>`;
 }
 
 // 12. Unsubscribe landing page (not an email).
 export function unsubscribePage({ ok, email, already }) {
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${ok ? "Unsubscribed" : "Hmm"} | Velvet Volute</title>
-<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#4a0e1e;color:#e8d3b4;font:300 16px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:24px}main{max-width:460px;text-align:center}.vv{width:60px;height:60px;margin:0 auto 18px;border:1px solid #d6b077;border-radius:50%;display:grid;place-items:center;font:italic 24px Georgia,serif;color:#d6b077}h1{font:400 34px/1.1 Georgia,'Times New Roman',serif;margin:0 0 10px}a{color:#d6b077}</style></head>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#6b1e2e;color:#f5d9b5;font:300 16px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:24px}main{max-width:460px;text-align:center}.vv{width:60px;height:60px;margin:0 auto 18px;border:1px solid #e2b678;border-radius:50%;display:grid;place-items:center;font:italic 24px Georgia,serif;color:#e2b678}h1{font:400 34px/1.1 Georgia,'Times New Roman',serif;margin:0 0 10px}a{color:#e2b678}</style></head>
 <body><main><img class="vv-img" src="/img/vv-email-25.png" width="60" height="60" alt="VV" style="display:block;margin:0 auto 18px">
 <h1>${ok ? (already ? "You were already off the list" : "You're off the list") : "That link didn't work"}</h1>
 <p>${ok ? `No more first-dibs emails to <b>${esc(email)}</b>. You'll still get order emails if you buy something.` : `The unsubscribe link looks incomplete. Reply to any email from me or write to <a href="mailto:${SHOP_EMAIL}">${SHOP_EMAIL}</a> and I'll take you off by hand.`}</p>
