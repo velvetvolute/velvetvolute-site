@@ -31,7 +31,7 @@
 .mnav.on .mnav-back{opacity:1}
 .mnav.on .mnav-panel{transform:none}
 .mnav-head{display:flex;align-items:center;justify-content:space-between;padding:4px 8px 10px 14px;border-bottom:1px solid rgba(198,160,112,.3)}
-.mnav-head .mono{width:34px;height:34px;border:1px solid #c6a070;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font:italic 500 14px 'Cormorant Garamond',Georgia,serif;color:#c6a070}
+.mnav-head .mono{width:34px;height:34px;border:1px solid #c6a070;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font:500 14px 'Cormorant Garamond',Georgia,serif;color:#c6a070}
 .mnav-x{width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:#dab68b;font-size:28px;line-height:1;cursor:pointer}
 .mnav-x:hover,.mnav-x:focus-visible{background:rgba(198,160,112,.14);outline:none;color:#f5d9b5}
 .mnav-links{display:flex;flex-direction:column;padding:8px 6px 0;overflow-y:auto;flex:1}
@@ -79,7 +79,7 @@ body.mnav-lock{overflow:hidden}
 .vvs-res li a{display:flex;align-items:center;gap:14px;padding:9px 10px;border-radius:8px;color:#f5d9b5;text-decoration:none}
 .vvs-res li a:hover,.vvs-res li a:focus-visible,.vvs-res li.sel a{background:rgba(198,160,112,.14);outline:none}
 .vvs-th{flex:none;width:52px;height:52px;border-radius:6px;object-fit:cover;background:#6b1e2e}
-.vvs-th.ico{display:flex;align-items:center;justify-content:center;border:1px solid #9e3b4f;color:#c6a070;font:italic 500 16px 'Cormorant Garamond',Georgia,serif}
+.vvs-th.ico{display:flex;align-items:center;justify-content:center;border:1px solid #9e3b4f;color:#c6a070;font:500 16px 'Cormorant Garamond',Georgia,serif}
 .vvs-t{min-width:0;flex:1}
 .vvs-b{display:block;font:600 10.5px 'Jost',system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#c6a070}
 .vvs-n{display:block;font:500 18px/1.2 'Cormorant Garamond',Georgia,serif;color:#f5d9b5;overflow-wrap:anywhere}
@@ -97,3 +97,5 @@ body.vvs-lock{overflow:hidden}
 /* Wordmark: same slightly thickened hairlines as the VV logo (0.7/56 em), Oct 22 2026 */
 .logo{-webkit-text-stroke:.0125em currentColor}
 .logo .mono{-webkit-text-stroke:0}
+/* no italics anywhere on the site */
+em,i,cite,dfn,var,address{font-style:normal}
