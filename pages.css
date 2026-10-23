@@ -53,7 +53,7 @@ h1{font:500 clamp(30px,4.2vw,46px)/1.08 var(--serif);letter-spacing:.01em;color:
 .pp-story h2 em{font-style:italic;text-transform:none;letter-spacing:.12em;font-family:var(--serif);font-size:15px}
 .pp-story h2{text-align:left;font:500 13px var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin:30px 0 8px}
 .pp-story p{font:300 16.5px/1.7 var(--sans);color:#f5d9b5;margin:0}
-.pp-story p.mood{font:400 18px/1.65 var(--serif)}
+.pp-story p.mood{font:400 16px/1.8 var(--story)}
 .pp-story a{color:var(--gold)}
 .pyr3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0}
 .pyr3.flat{grid-template-columns:1fr}
