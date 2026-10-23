@@ -27,10 +27,10 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://velvetvolute.ca/#org", "name": "Velvet Volute", "url": "https://velvetvolute.ca/", "logo": "https://velvetvolute.ca/apple-touch-icon.png", "image": "https://velvetvolute.ca/img/og-velvetvolute-cc70d7e8db.jpg", "email": "velvetvolute@gmail.com", "founder": {"@type": "Person", "name": "Justin Izzi"}, "sameAs": ["https://www.facebook.com/share/19pYKmRDYj/", "https://www.instagram.com/velvetvolute.ca/"]}, {"@type": ["Store", "LocalBusiness"], "@id": "https://velvetvolute.ca/#store", "name": "Velvet Volute", "url": "https://velvetvolute.ca/", "image": "https://velvetvolute.ca/img/og-velvetvolute-cc70d7e8db.jpg", "email": "velvetvolute@gmail.com", "parentOrganization": {"@id": "https://velvetvolute.ca/#org"}, "description": "Fragrance decants in Ottawa: Tom Ford, Nishane, Margiela, Valentino and more, 2 to 10 ml, poured from sealed bottles. Ottawa pickup or shipping across Canada.", "priceRange": "$8–$114", "currenciesAccepted": "CAD", "paymentAccepted": "Credit card, Apple Pay, Google Pay, Interac e-Transfer", "address": {"@type": "PostalAddress", "addressLocality": "Ottawa", "addressRegion": "ON", "addressCountry": "CA"}, "areaServed": [{"@type": "City", "name": "Ottawa"}, {"@type": "Country", "name": "Canada"}], "sameAs": ["https://www.facebook.com/share/19pYKmRDYj/", "https://www.instagram.com/velvetvolute.ca/"], "makesOffer": {"@type": "Offer", "itemOffered": {"@type": "Product", "name": "Fragrance decants, 2 to 10 ml"}, "priceCurrency": "CAD", "availableDeliveryMethod": ["https://schema.org/OnSitePickup", "https://schema.org/ParcelService"], "areaServed": {"@type": "Country", "name": "Canada"}}}, {"@type": "WebSite", "@id": "https://velvetvolute.ca/#website", "url": "https://velvetvolute.ca/", "name": "Velvet Volute", "publisher": {"@id": "https://velvetvolute.ca/#org"}, "inLanguage": "en-CA"}]}</script>
 <script>document.documentElement.setAttribute("data-palette","camel-m")</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Libre+Baskerville:ital,wght@0,400;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;--sans:'Jost',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;--story:'Libre Baskerville',Georgia,serif;--sans:'Jost',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
   box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
   --bg:#6b1e2e;--surface:#7c2538;--ink:#c6a070;--muted:#cfa3a9;--line:#9e3b4f;--gold:#c6a070;--on-gold:#481620;
   --hero:#3e1019;--hero-glow:#912b42;--hero-ink:#dab68b;--bar-bg:#ac8153;--bar-ink:#3e1019;--photo-a:#912b42;--photo-b:#3e1019;--btn-ink:#dab68b;--cap:#c6a070;
@@ -444,7 +444,7 @@ a.cart-open{text-decoration:none}
 .spot-rib{position:absolute;top:12px;left:12px;z-index:2;padding:5px 12px;border-radius:20px;background:linear-gradient(135deg,#ffe3ab,#d5a667);color:#3e1019;font:600 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase}
 .rib-vv{display:inline-block;font:600 9.5px/1 var(--serif);letter-spacing:.04em;color:#6b1e2e;border:1.2px solid #6b1e2e;border-radius:50%;width:16px;height:16px;line-height:14px;text-align:center;margin-right:3px;vertical-align:-3px}
 .spot-rib span{font-size:11px}
-.spot-why{margin:6px 0 10px;padding-left:0;border-left:0;font:italic 500 16.5px/1.55 var(--serif);color:#481620;letter-spacing:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-wrap:pretty}
+.spot-why{margin:6px 0 10px;padding-left:0;border-left:0;font:400 14.5px/1.75 var(--story);color:#481620;letter-spacing:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-wrap:pretty}
 @media(prefers-reduced-motion:reduce){.card.spot .photo::after{animation:none}}
 /* zodiac season pick */
 .zod-tag{align-self:flex-start;margin:2px 0 4px;padding:3px 11px;border-radius:30px;background:#5a1927;color:#f5d9b5;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
@@ -503,7 +503,7 @@ a.cart-open{text-decoration:none}
 .qz-pill-go{background:none;border:0;color:#f5d9b5;font:500 13px var(--sans);letter-spacing:.06em;padding:11px 6px 11px 18px;cursor:pointer}
 .qz-pill-x{background:none;border:0;color:#dab68b;font-size:20px;line-height:1;padding:8px 14px 8px 8px;cursor:pointer}
 .qz-jump{position:sticky;bottom:0;display:block;width:100%;margin-top:14px;padding:12px 0;border:0;border-radius:30px;background:#c6a070;color:#3e1019;font:600 12.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;box-shadow:0 -8px 18px rgba(20,4,8,.6)}
-.mood{margin:6px 0 10px;font:italic 400 16.5px/1.5 var(--serif);color:#481620;letter-spacing:0;text-wrap:pretty;flex:0 0 auto;-webkit-font-smoothing:antialiased}
+.mood{margin:6px 0 10px;font:400 14.5px/1.75 var(--story);color:#481620;letter-spacing:0;text-wrap:pretty;flex:0 0 auto;-webkit-font-smoothing:antialiased}
 .story{flex:0 0 auto}
 .mood.clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .pp-link{display:inline-block;align-self:flex-start;margin:2px 0 8px;font:400 13.5px var(--sans);letter-spacing:0;text-transform:none;color:#6b1e2e;text-decoration:none;border-bottom:1px solid currentColor}
