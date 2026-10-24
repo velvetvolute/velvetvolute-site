@@ -89,10 +89,10 @@ body.mnav-lock{overflow:hidden}
 body.vvs-lock{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.mnav-back,.mnav-panel,.vvs,.vvs-box{transition:none}}
 
-/* VV monogram (Oct 2026): the letters are drawn from the logo outline, first V raised, so every
+/* VV monogram (Oct 2026): the letters are drawn from the logo outline, first V raised, centred in the ring, so every
    .mono badge and Spotlight ribbon matches the official logo; the "VV" text stays for screen readers. */
 .mono,.rib-vv{position:relative;font-size:0!important;letter-spacing:0!important}
-.mono::before,.rib-vv::before{content:"";position:absolute;inset:0;background:currentColor;-webkit-mask:url(/img/vv-letters-25.svg) center/100% 100% no-repeat;mask:url(/img/vv-letters-25.svg) center/100% 100% no-repeat}
+.mono::before,.rib-vv::before{content:"";position:absolute;inset:0;background:currentColor;-webkit-mask:url(/img/vv-letters-26.svg) center/100% 100% no-repeat;mask:url(/img/vv-letters-26.svg) center/100% 100% no-repeat}
 
 /* Wordmark: same slightly thickened hairlines as the VV logo (0.7/56 em), Oct 22 2026 */
 .logo{-webkit-text-stroke:.0125em currentColor}
