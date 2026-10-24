@@ -331,7 +331,7 @@ a.sh-fab{text-decoration:none}
 .mc-s{font:400 12.5px var(--sans);letter-spacing:.04em;color:#d9bf9a}
 .mc-card:hover .mc-n{text-decoration:underline;text-underline-offset:4px}
 /* house tiles: slimmer name panel so more of the bottle and label shows */
-.htile.has-bottle .txt{height:31%;padding:4px 10px 6px}
-.htile .bottle{height:69%;object-position:50% 38%}
+.htile.has-bottle .txt{height:auto;min-height:29%;padding:6px 10px 8px}
+.htile .bottle{height:74%;object-position:50% 38%}
 .htile.has-bottle .rule{margin:4px auto 2px}
 .htile.has-bottle .cnt{margin-top:1px}
