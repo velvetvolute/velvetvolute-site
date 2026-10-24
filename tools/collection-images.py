@@ -1,5 +1,6 @@
 # Builds one square group shot per collection from the full-quality product photos (classic shot of each scent).
-# Each bottle keeps its own real backdrop as a vertical panel; panels melt into each other at the seams.
+# Every bottle is cut out of its own photo and stood on one table line; the backdrops behind them glow into each other.
+# Masks: tools/coll-masks/m_<photo>.png (re-make with tools/coll-masks/make-masks.py after changing a photo or its BOX).
 # Re-run after swapping a bottle photo:  python3 tools/collection-images.py   (needs Pillow + numpy)
 # BOX = the bottle (cap to base) in that scent's classic photo, as fractions of the photo: left, top, right, bottom.
 import json, re, hashlib, os
@@ -19,44 +20,56 @@ BOX = {"givenchy-gentleman-rp.jpg": (.01, 0.071, .47, 0.928), "tf-black-orchid.j
        "u-tero.jpg": (.02, 0.263, .41, 0.9), "u-tfnoir.jpg": (.02, 0.338, .57, 0.926), "u-wulong.jpg": (.04, 0.188, .445, 0.83),
        "u-wulongx.jpg": (.015, 0.242, .44, 0.917), "u-yellow.jpg": (.04, 0.064, .48, 0.852)}
 B = json.load(open("bundles.json"))
-S, TABLE_Y, HB = 1200, 1040, 600          # canvas, where bottles stand, target bottle height
+import cv2
+S, TABLE_Y, HB = 1200, 1000, 640            # canvas, where every bottle stands, tallest bottle height
 def full(k): return re.sub(r"\.w1080\.jpg$", ".jpg", IMG[k])
-def panel(k, w):
-    im = Image.open(full(k)).convert("RGB"); W, H = im.size
-    l, t, r, b = BOX[k]; bx0, by0, bx1, by1 = l * W, t * H, r * W, b * H; bw, bh = bx1 - bx0, by1 - by0
-    s = min(HB / bh, 0.86 * w / bw)                      # canvas px per photo px
-    cx = (bx0 + bx1) / 2; cw = w / s
-    left = int(round(min(max(0, cx - cw / 2), W - cw)))  # stay inside the photo sideways
-    top = by1 - TABLE_Y / s; bot = by1 + (S - TABLE_Y) / s
-    t0, b0 = int(max(0, top)), int(min(H, bot))
-    real = im.crop((left, t0, int(left + cw), b0))
-    sw = w; sh_top = int(round((t0 - top) * s)); sh_real = int(round((b0 - t0) * s)); sh_bot = S - sh_top - sh_real
-    real = real.resize((sw, max(1, sh_real)), Image.LANCZOS)
-    out = Image.new("RGB", (sw, S))
-    out.paste(real, (0, sh_top))
-    a = np.asarray(out).astype(np.float32)
-    if sh_top > 0:                                         # continue the wall upward: smooth, a little lighter toward the top
-        row = a[sh_top:sh_top + 12].mean(0); row = np.asarray(Image.fromarray(row[None].clip(0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(25))).astype(np.float32)[0]
-        g = np.linspace(1, 0, sh_top)[:, None, None]
-        a[:sh_top] = row[None] * (1 - g) + (row[None] * 0.82 + np.array([255, 250, 240]) * 0.18) * g
-    if sh_bot > 0:                                         # table continues into the merlot base
-        row = a[S - sh_bot - 6:S - sh_bot].mean(0)
-        g = np.linspace(0, 1, sh_bot)[:, None, None]
-        a[S - sh_bot:] = row[None] * (1 - g) + np.array([40, 6, 14]) * g
-    return Image.fromarray(a.clip(0, 255).astype(np.uint8))
+def render(k, s, cx_c):
+    """the whole photo mapped onto the canvas: bottle centred at cx_c, its base on TABLE_Y, scale s (canvas px per photo px)"""
+    im = cv2.imread(full(k)); H, W = im.shape[:2]
+    l, t, r, b = BOX[k]; cx, by1 = (l + r) / 2 * W, b * H
+    M = np.float32([[s, 0, cx_c - cx * s], [0, s, TABLE_Y - by1 * s]])
+    out = cv2.warpAffine(im, M, (S, S), flags=cv2.INTER_AREA, borderMode=cv2.BORDER_REPLICATE).astype(np.float32)
+    top = int(round(TABLE_Y - by1 * s))                      # canvas row of the photo's top edge
+    if top > 0:                                              # above the photo: a smooth, slightly lighter wall
+        row = cv2.GaussianBlur(out[top:top + 1], (0, 0), 40)[0]
+        g = np.linspace(1, 0, top)[:, None, None]
+        out[:top] = row[None] * (1 - g * .5) + (row[None] * .8 + np.array([240, 248, 255]) * .2) * (g * .5)
+    bot = int(round(TABLE_Y + (H - by1) * s))
+    if bot < S:                                              # below the photo: the table fades into merlot
+        row = cv2.GaussianBlur(out[bot - 1:bot], (0, 0), 40)[0]
+        g = np.linspace(0, 1, S - bot)[:, None, None]
+        out[bot:] = row[None] * (1 - g) + np.array([14, 6, 40]) * g
+    m = cv2.imread(f"tools/coll-masks/m_{k[:-4]}.png", 0)
+    m = cv2.resize(m, (W, H), interpolation=cv2.INTER_LINEAR)
+    m = cv2.warpAffine(m, M, (S, S), flags=cv2.INTER_LINEAR, borderValue=0).astype(np.float32) / 255
+    m = cv2.GaussianBlur(cv2.dilate(m, np.ones((3, 3), np.uint8)), (0, 0), 1.2)
+    return out, m
 for b in B["bundles"]:
     srcs = [img_of[s] for s in b["sq"] if s in img_of and img_of[s] in BOX]; n = len(srcs)
-    stride = 0.84; w = int(S / (1 + (n - 1) * stride))
-    canvas = Image.new("RGB", (S, S), (74, 14, 30))
-    mask = Image.new("L", (w, S), 255); md = ImageDraw.Draw(mask); fe = int(w * 0.2)
-    for x in range(fe):
-        aa = int(255 * (x / fe) ** 1.4); md.line([(x, 0), (x, S)], fill=aa); md.line([(w - 1 - x, 0), (w - 1 - x, S)], fill=aa)
-    ps = [panel(k, w) for k in srcs]
-    xs = [int(i * w * stride) + (S - int((n - 1) * w * stride) - w) // 2 for i in range(n)]
-    for p, x in zip(ps, xs): canvas.paste(p, (x, 0))
-    for i, (p, x) in enumerate(zip(ps, xs)):
-        if i: canvas.paste(p, (x, 0), mask)
-    out = canvas
+    dims = []
+    for k in srcs:
+        im = cv2.imread(full(k)); H, W = im.shape[:2]; l, t, r, bb = BOX[k]
+        dims.append(((r - l) * W, (bb - t) * H))
+    # every bottle the same height, packed side by side with an even gap, the row centred
+    gap = S * 0.035; ratios = [bw / bh for bw, bh in dims]
+    Ht = min(HB, (S * 0.9 - gap * (n - 1)) / sum(ratios))
+    widths = [Ht * q for q in ratios]; x = (S - sum(widths) - gap * (n - 1)) / 2; xs = []
+    for w_ in widths: xs.append(x + w_ / 2); x += w_ + gap
+    layers = [render(k, Ht / bh, xc) for k, (bw, bh), xc in zip(srcs, dims, xs)]
+    X = np.arange(S, dtype=np.float32); sig = max(widths) * 0.55
+    wts = [np.exp(-0.5 * ((X - xc) / sig) ** 2) for xc in xs]
+    tot = np.sum(wts, axis=0) + 1e-6
+    bg = sum(L[0] * (w / tot)[None, :, None] for L, w in zip(layers, wts))
+    bg = cv2.GaussianBlur(bg, (0, 0), 14)                    # a soft, glowing blend of every bottle's own backdrop
+    out = bg.copy()
+    for (img, m) in layers:                                   # a soft reflection of each bottle in the glossy table
+        rr = np.flipud(img[TABLE_Y - (S - TABLE_Y):TABLE_Y]); rm = np.flipud(m[TABLE_Y - (S - TABLE_Y):TABLE_Y])
+        fade = np.linspace(0.32, 0, S - TABLE_Y)[:, None]
+        a = cv2.GaussianBlur(rm * fade, (0, 0), 3)[..., None]
+        out[TABLE_Y:] = out[TABLE_Y:] * (1 - a) + cv2.GaussianBlur(rr, (0, 0), 2) * a
+    for (img, m) in layers: out = out * (1 - m[..., None]) + img * m[..., None]
+    out = out.clip(0, 255).astype(np.uint8)
+    out = Image.fromarray(cv2.cvtColor(out, cv2.COLOR_BGR2RGB))
     vig = Image.new("L", (S, S), 0); ImageDraw.Draw(vig).ellipse((-S * .25, -S * .35, S * 1.25, S * 1.3), fill=255); vig = vig.filter(ImageFilter.GaussianBlur(160))
     out = Image.composite(out, Image.blend(out, Image.new("RGB", (S, S), (30, 4, 10)), 0.35), vig)
     tmp = f"/tmp/coll-{b['id']}.jpg"; out.save(tmp, quality=92, optimize=True, subsampling=0)
