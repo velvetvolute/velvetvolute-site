@@ -1,62 +1,151 @@
 {
-  "pct": 10,
-  "sizes": [2, 5],
-  "bundles": [
-    {
-      "id": "time-capsule",
-      "name": "The Time Capsule Collection",
-      "house": "Nishane",
-      "blurb": "Five extraits from one Nishane collection, each with its own mood: Kredo's quiet conviction, Tempfluo's slow golden afternoon, Papilefiko's deep balsam and moss by the legendary Dominique Ropion, Deziro's fresh sea air and Tero's salted caramel over warm earth. Find your favourite, then go big on a 10 ml.",
-      "sq": ["AW3KVJLCAKI7SLNFDO6J7WPV", "6RRUWMTR6HR57YISIVFICWM3", "HAQDGYJNCWMIHP5A5GJJSRHJ", "NIBHBS673EEIIPPGJSAEI7JY", "LIIP3QVKFSAXBVJPFFAID37G"]
-    },
-    {
-      "id": "born-in-roma",
-      "name": "The Born in Roma Collection",
-      "house": "Valentino",
-      "blurb": "Four takes on one city. Green Stravaganza's gardens at sunrise, Yellow Dream's sunlit streets, Coral Fantasy's golden hour and Purple Melancholia's late night in a Roman palace. A full day in Rome, from first light to last call.",
-      "sq": ["E7TWUA2IZR65TXSYDMQKSHIL", "XRZWTFEH4VB5LESUQKZ2ZWWU", "WFC3PXWORS5A6XAMKWG7PGMJ", "4R5LGTZLZQUWDBINL746IB7P"]
-    },
-    {
-      "id": "leather",
-      "name": "The Leather & Suede Collection",
-      "house": "Tom Ford & Nishane",
-      "blurb": "Four ways to wear leather and suede, from smooth to unapologetic. Ombre Leather's worn saddle, Tuscan Leather's smoky raspberry, Suède et Safran's tailored suede jacket and Kredo's oud-and-suede conviction.",
-      "sq": ["LMHN6IFHQPUTAW4H22NTVQKY", "Q6IFTTHV75EK3RJTB474ZTI5", "TC2TRWOK25KG3ZSUULU3PTSO", "AW3KVJLCAKI7SLNFDO6J7WPV"]
-    },
-    {
-      "id": "tom-ford",
-      "name": "The Tom Ford Collection",
-      "house": "Tom Ford",
-      "blurb": "The house essentials, side by side. Black Orchid's dark opulence, Noir's sensual evening classic, Ombre Leather's open-road ease and Tuscan Leather, one of the original Private Blends and still one of the boldest.",
-      "sq": ["6IXPDR425PPISJBHT2OAGJZY", "IEIPT6KIEZLX3W3U3CRDMOD6", "LMHN6IFHQPUTAW4H22NTVQKY", "Q6IFTTHV75EK3RJTB474ZTI5"]
-    },
-    {
-      "id": "nishane-x",
-      "name": "The Nishane X Collection",
-      "house": "Nishane",
-      "blurb": "Nishane's X line reimagines three of its classics. Fan Your Flames X adds thyme and mastic to the coconut-and-rum original, Hundred Silent Ways X turns its white florals toward vanilla and leather after dark, and Wulong Cha X softens the oolong-tea original with magnolia, green tea and creamy fig.",
-      "sq": ["PE33TD43HYRTTZC5A6JHU25A", "RIDSP2UTX5Z3YD5AFG2WQ5LQ", "BABPMMILE54ZYB5JFIJY34IK"]
-    },
-    {
-      "id": "tea-x-flames",
-      "name": "The Tea \"X\" Flames Collection",
-      "house": "Nishane",
-      "blurb": "Two Nishane icons and their X remixes, side by side. Fan Your Flames' coconut, rum and tobacco smoke, then Fan Your Flames X turned down to a softer, more tropical glow; Wulong Cha's bright oolong tea, then Wulong Cha X with magnolia, green tea and creamy fig. Hear the originals, then the remix.",
-      "sq": ["ZXPCML5QU6DKV5U2OFSVHC4Y", "PE33TD43HYRTTZC5A6JHU25A", "V55WG46EP3VHSPNRPSWAJKOV", "BABPMMILE54ZYB5JFIJY34IK"]
-    },
-    {
-      "id": "boozy",
-      "name": "The Boozy Collection",
-      "house": "Margiela, Nishane & Givenchy",
-      "blurb": "Last call, bottled. Jazz Club's rum and tobacco, Fan Your Flames' coconut and rum, Réserve Privée's whisky and chestnut, and Nefs, honeyed whiskey poured over oud. For the nights that run 'til 5am.",
-      "sq": ["JQWKMPNXK3MMHWNFVD3RZVTW", "ZXPCML5QU6DKV5U2OFSVHC4Y", "CPQZVESNT2M27ETVZCOK7U6U", "OZ5Z33WF6IPMP7W6MNJWE47G"]
-    },
-    {
-      "id": "warm",
-      "name": "The Warm Collection",
-      "house": "Armani, Margiela, Claude Marsal & Ferragamo",
-      "blurb": "Your cold-weather rotation. I Will's vanilla and lavender, Coffee Break's warm café, Or Noir Café's toffee and espresso, and Ferragamo Signature's cinnamon over soft leather. Smooth and cozy from first frost to the last snow.",
-      "sq": ["2SLX3E67ZUQTY7XT2OI2PLNR", "R6RQ2KN46KOJNXXLIK3Y5UHT", "IGK65TSUCPCGLTA7O7OP7XMT", "CENIOXSZE3IM2XDDFTHGCQBE"]
-    }
-  ]
+ "pct": 10,
+ "sizes": [
+  2,
+  5
+ ],
+ "bundles": [
+  {
+   "id": "time-capsule",
+   "name": "The Time Capsule Collection",
+   "house": "Nishane",
+   "blurb": "Five extraits from one Nishane collection, and five very different trips. Deziro is sea air and mandarin on a clean morning. Tempfluo slows the afternoon down with orange blossom and praline. Papilefiko heads into the forest, fir balsam, styrax and moss. Tero is salted caramel over warm earth, and Kredo closes the set with quiet confidence: cardamom and osmanthus over oud and suede. Find your favourite, then go big on a 10 ml.",
+   "sq": [
+    "NIBHBS673EEIIPPGJSAEI7JY",
+    "6RRUWMTR6HR57YISIVFICWM3",
+    "HAQDGYJNCWMIHP5A5GJJSRHJ",
+    "LIIP3QVKFSAXBVJPFFAID37G",
+    "AW3KVJLCAKI7SLNFDO6J7WPV"
+   ]
+  },
+  {
+   "id": "tea-x-flames",
+   "name": "The Tea \"X\" Flames Collection",
+   "house": "Nishane",
+   "blurb": "Two Nishane icons and the remixes they inspired, poured side by side. Fan Your Flames is coconut, rum and tobacco by a late-night fire; Fan Your Flames X keeps the smoke and adds thyme and mastic for something woodier and more herbal. Wulong Cha is bright oolong tea with orange and nutmeg; Wulong Cha X brings in green tea, magnolia and soft fig. Wear the original, then the remix, and pick a side.",
+   "sq": [
+    "BABPMMILE54ZYB5JFIJY34IK",
+    "V55WG46EP3VHSPNRPSWAJKOV",
+    "ZXPCML5QU6DKV5U2OFSVHC4Y",
+    "PE33TD43HYRTTZC5A6JHU25A"
+   ]
+  },
+  {
+   "id": "nishane-x",
+   "name": "The Nishane XXX Collection",
+   "house": "Nishane",
+   "blurb": "Three classics, crossed out and rewritten. Nishane's X line takes a scent you already know and sends it somewhere new. Wulong Cha X softens oolong into green tea, magnolia and fig. Hundred Silent Ways X takes tuberose and gardenia after dark with vanilla, leather and patchouli. Fan Your Flames X adds thyme and mastic to coconut, rum and tobacco. Three Xs, one set, no repeats.",
+   "sq": [
+    "BABPMMILE54ZYB5JFIJY34IK",
+    "RIDSP2UTX5Z3YD5AFG2WQ5LQ",
+    "PE33TD43HYRTTZC5A6JHU25A"
+   ]
+  },
+  {
+   "id": "born-in-roma",
+   "name": "The Born in Roma Collection",
+   "house": "Valentino",
+   "blurb": "A full day in Rome, four bottles long. Green Stravaganza is the morning espresso: bergamot and coffee over green vetiver. Yellow Dream is the sunny afternoon, mandarin and pineapple over gingerbread and vanilla. Coral Fantasy is golden hour, red apple, sage and a little tobacco. Purple Melancholia is the night that runs long, creamy coconut with lavender and cardamom. Same studded bottle, four completely different moods.",
+   "sq": [
+    "WFC3PXWORS5A6XAMKWG7PGMJ",
+    "E7TWUA2IZR65TXSYDMQKSHIL",
+    "4R5LGTZLZQUWDBINL746IB7P",
+    "XRZWTFEH4VB5LESUQKZ2ZWWU"
+   ]
+  },
+  {
+   "id": "boozy",
+   "name": "The Boozy Collection",
+   "house": "Margiela, Nishane & Givenchy",
+   "blurb": "Last call, bottled. Jazz Club pours rum and tobacco leaf in a dim little lounge. Fan Your Flames brings coconut and rum out to the fire. Gentleman Réserve Privée is whisky and chestnut in a good suit, and Nefs is the nightcap: honeyed whiskey poured over rose and oud. For the nights that run 'til 5am.",
+   "sq": [
+    "CPQZVESNT2M27ETVZCOK7U6U",
+    "JQWKMPNXK3MMHWNFVD3RZVTW",
+    "OZ5Z33WF6IPMP7W6MNJWE47G",
+    "ZXPCML5QU6DKV5U2OFSVHC4Y"
+   ]
+  },
+  {
+   "id": "coffeehouse",
+   "name": "The Coffeehouse Collection",
+   "house": "Claude Marsal, Valentino, Margiela & Ferragamo",
+   "blurb": "Four cups, four moods. Coffee Break is the slow Sunday latte, steamed milk and lavender. Or Noir Café is dessert at the counter: coffee, toffee and cinnamon. Green Stravaganza is an espresso on a sunny terrace, fresh bergamot over coffee and vetiver. Uomo Signature is the last cup by the window, cinnamon and cardamom over soft leather and a touch of coffee. Pull up a chair and stay a while.",
+   "sq": [
+    "IGK65TSUCPCGLTA7O7OP7XMT",
+    "E7TWUA2IZR65TXSYDMQKSHIL",
+    "R6RQ2KN46KOJNXXLIK3Y5UHT",
+    "CENIOXSZE3IM2XDDFTHGCQBE"
+   ]
+  },
+  {
+   "id": "vanilla",
+   "name": "The Vanilla Collection",
+   "house": "Nishane, Parfums de Marly, Armani & Jean Paul Gaultier",
+   "blurb": "Vanilla four ways, and none of them boring. Ani spices it up with blue ginger and cardamom. Althaïr goes for Bourbon vanilla and praline with a little cinnamon. I Will keeps it soft, Madagascar vanilla with lavender. Le Male Elixir turns it honeyed, with tonka, benzoin and a touch of tobacco. Warm, smooth and made for sweater weather.",
+   "sq": [
+    "5QQ4SJTXANHQPQIU7ORYBAJB",
+    "BIOLOUFPWNNQQ2BOBZSMYZI5",
+    "2SLX3E67ZUQTY7XT2OI2PLNR",
+    "XLJ4LPB4VDJPEJKLLWRUDVS5"
+   ]
+  },
+  {
+   "id": "leather",
+   "name": "The Leather & Suede Collection",
+   "house": "Tom Ford, Nishane & Sospiro",
+   "blurb": "Leather and suede, from smooth to unapologetic. Ombré Leather is a worn-in black jacket with cardamom and jasmine. Tuscan Leather is the bold one, raspberry and saffron over rich leather and black suede. Suède et Safran is the tailored one, saffron and ginger over soft suede. Sospiro Erba Leather is on its way to complete the set, bright citrus and passion fruit over smooth leather. Pour the three now and save a spot for the fourth.",
+   "sq": [
+    "LMHN6IFHQPUTAW4H22NTVQKY",
+    "Q6IFTTHV75EK3RJTB474ZTI5",
+    "TC2TRWOK25KG3ZSUULU3PTSO"
+   ]
+  },
+  {
+   "id": "tom-ford",
+   "name": "The Tom Ford Collection",
+   "house": "Tom Ford",
+   "blurb": "The dark side of Tom Ford. Noir is the original evening classic, violet, iris and pink pepper over vanilla, amber and leather. Noir Extreme takes it richer with cardamom, saffron and a creamy kulfi accord. Ombré Leather is black leather and cardamom for the open road, and Oud Minérale is smoky oud washed in sea salt. Four ways to wear black.",
+   "sq": [
+    "LMHN6IFHQPUTAW4H22NTVQKY",
+    "BHTPR3LHPBN22W4MQTXAKWUF",
+    "DPS3PDI4VSIKJ5BJA6YYQ6LL",
+    "IEIPT6KIEZLX3W3U3CRDMOD6"
+   ]
+  },
+  {
+   "id": "flower-and-stone",
+   "name": "The Flower & Stone Collection",
+   "house": "Tom Ford & Hermès",
+   "blurb": "Two flowers, two stones. Café Rose wraps Turkish rose in dark coffee and frankincense, and Black Orchid grows its bloom out of black truffle and patchouli, like damp earth after rain. Terre d'Hermès Intense is fiery pepper and roasted coffee over a hot lava-stone accord, and Oud Minérale is smoky oud on wet rock and sea salt. Flowers rooted in the ground they grow from: dark, earthy and nothing like a bouquet.",
+   "sq": [
+    "BHTPR3LHPBN22W4MQTXAKWUF",
+    "6IXPDR425PPISJBHT2OAGJZY",
+    "WE3AYJUS5PPXVY3UKXPGE6SJ",
+    "OFGHAYPNNVQGBPZN7N5DPKQF"
+   ]
+  },
+  {
+   "id": "saffron",
+   "name": "The Saffron Collection",
+   "house": "Nishane, Tom Ford, Maison Francis Kurkdjian & Versace",
+   "blurb": "Saffron is the most expensive spice in the world, and these four wear it like it. Suède et Safran wraps it in soft suede and ginger. Noir Extreme folds it into cardamom and a creamy kulfi accord. Baccarat Rouge 540 lifts it with jasmine over airy ambergris and cedar, and Eros Najim melts it into caramel, oud and incense. Golden, rich and quietly expensive.",
+   "sq": [
+    "TC2TRWOK25KG3ZSUULU3PTSO",
+    "DPS3PDI4VSIKJ5BJA6YYQ6LL",
+    "H3H6KYWKL24KR6EEZM7B7MIR",
+    "VATMWQOVHP5T5Y6NATNYLUIA"
+   ]
+  },
+  {
+   "id": "holiday-spice",
+   "name": "The Holiday Spice Collection",
+   "house": "Valentino & Nishane",
+   "blurb": "The whole house smells like the holidays. Yellow Dream is gingerbread fresh out of the oven, cinnamon, cardamom and nutmeg over vanilla. Tero is salted caramel with cinnamon bark and warm earth. Ani brings blue ginger, cardamom and a soft vanilla glow. Xerjoff Erba Gold arrives soon to finish the table with ginger, citrus and warm spice. Light a candle and stay in.",
+   "sq": [
+    "XRZWTFEH4VB5LESUQKZ2ZWWU",
+    "LIIP3QVKFSAXBVJPFFAID37G",
+    "5QQ4SJTXANHQPQIU7ORYBAJB"
+   ]
+  }
+ ]
 }

@@ -160,7 +160,7 @@ ${extraScript}
 </html>`;
 
 /* ---------- tiles ---------- */
-const collArt = (b) => { const f = readdirSync(join(ROOT, "img")).find((n) => n.startsWith(`coll-${b.id}-`) && n.endsWith(".jpg")); return f ? "img/" + f : null; };
+const collArt = (b) => { const f = readdirSync(join(ROOT, "img")).find((n) => n.startsWith(`coll-${b.id}-`) && n.endsWith(".w1080.jpg")); return f ? "img/" + f : null; };
 const houseArt = (brand) => ["svg", "png"].map((e) => `content/houses/${hSlug(brand)}.${e}`).find((f) => existsSync(join(ROOT, f)));
 // Bottle shown on each house tile: Justin's pick per house (first entry that has a real photo), else the first scent with a real photo, else none.
 const HOUSE_BOTTLE = { "Armani": ["I Will"], "Claude Marsal": ["Or Noir"], "Ferragamo": ["Uomo Signature"], "Gabriella Antosh": ["Zoltan"], "Givenchy": ["Gentleman"], "Maison Francis Kurkdjian": ["Baccarat Rouge"], "Maison Margiela": ["Jazz Club"], "Nishane": ["Tempfluo"], "Tom Ford": ["Tuscan Leather"], "Valentino": ["Green Stravaganza"], "Xerjoff": ["Erba Pura"], "Yves Saint Laurent": ["La Nuit"] };
@@ -357,9 +357,9 @@ function collectionPage(b) {
  <p class="lede">${esc(b.blurb)}</p></div>
  </div>
  <div class="coll-right">
- <div class="carousel" id="car"><div class="track" role="link" title="Open the full page" aria-label="Scents in this collection, swipe to change">${items.map((p, i) => `<figure class="slide" id="s${i}" data-href="${pUrl(p)}"><img src="/${p.img}"${ss(p.img) ? ` srcset="${ss(p.img)}" sizes="(min-width:900px) 46vw, 100vw"` : ""} width="720" height="720" alt="${attr(bottleAlt(p, "classic"))}" loading="${i ? "lazy" : "eager"}" decoding="async"><figcaption><b>${esc(shortName(p))}</b><span>${esc(p.brand)} · ${inStock(p) ? `from ${money(low(p))}` : esc(p.limited || "arriving soon")}</span><a class="more" href="${pUrl(p)}">Full page →</a></figcaption></figure>`).join("")}</div>
+ <div class="carousel" id="car"><div class="track" role="link" title="Open the full page" aria-label="Scents in this collection, swipe to change">${collArt(b) ? `<figure class="slide" id="sg" data-href=""><img src="/${collArt(b)}" srcset="${ss(collArt(b))}" sizes="(min-width:900px) 46vw, 100vw" width="720" height="720" alt="${attr(b.name)}: ${attr(items.map(shortName).join(", "))}" decoding="async"><figcaption><b>The whole set</b><span>${items.length} scents · ${BUNDLES.pct}% off</span></figcaption></figure>` : ""}${items.map((p, i) => `<figure class="slide" id="s${i}" data-href="${pUrl(p)}"><img src="/${p.img}"${ss(p.img) ? ` srcset="${ss(p.img)}" sizes="(min-width:900px) 46vw, 100vw"` : ""} width="720" height="720" alt="${attr(bottleAlt(p, "classic"))}" loading="${i || collArt(b) ? "lazy" : "eager"}" decoding="async"><figcaption><b>${esc(shortName(p))}</b><span>${esc(p.brand)} · ${inStock(p) ? `from ${money(low(p))}` : esc(p.limited || "arriving soon")}</span><a class="more" href="${pUrl(p)}">Full page →</a></figcaption></figure>`).join("")}</div>
   <button type="button" class="car-btn prev" aria-label="Previous scent">‹</button><button type="button" class="car-btn next" aria-label="Next scent">›</button>
-  <div class="dots" role="tablist" aria-label="Scents in this collection">${items.map((p, i) => `<button type="button" role="tab" data-i="${i}" aria-label="${attr(shortName(p))}"${i ? "" : ' aria-selected="true" class="on"'}></button>`).join("")}</div>
+  <div class="dots" role="tablist" aria-label="Scents in this collection">${(collArt(b) ? ["The whole set", ...items.map(shortName)] : items.map(shortName)).map((t, i) => `<button type="button" role="tab" data-i="${i}" aria-label="${attr(t)}"${i ? "" : ' aria-selected="true" class="on"'}></button>`).join("")}</div>
  </div>
  </div>
  <div class="coll-left coll-left-2">
@@ -377,7 +377,7 @@ var add=$("cadd");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.pa
  add.textContent="Added ✓";add.classList.add("done");var t=document.createElement("div");t.className="cart-toast on";t.innerHTML='Added '+B.name+' · '+z+' ml each <a href="/#cart-page">View cart</a>';document.body.appendChild(t);setTimeout(function(){add.textContent="Add the set";add.classList.remove("done")},1400);setTimeout(function(){t.remove()},3200)};
 /* the photos are a swipeable strip: one swipe moves one slide, it wraps around, the dots and arrows step it, a tap opens that scent's page */
 var tr=document.querySelector("#car .track"),dots=document.querySelectorAll("#car .dots button"),HREF=[].slice.call(tr.children).map(function(f){return f.dataset.href});
-var S=vvStrip(tr,HREF.length,function(i){dots.forEach(function(d,k){d.classList.toggle("on",k===i);d.setAttribute("aria-selected",k===i)})},function(i){location.href=HREF[i]});
+var S=vvStrip(tr,HREF.length,function(i){dots.forEach(function(d,k){d.classList.toggle("on",k===i);d.setAttribute("aria-selected",k===i)})},function(i){if(HREF[i])location.href=HREF[i]});
 dots.forEach(function(d){d.onclick=function(){S.go(+d.dataset.i)}});
 document.querySelector("#car .prev").onclick=function(){S.step(-1)};document.querySelector("#car .next").onclick=function(){S.step(1)};
 tr.tabIndex=0;tr.addEventListener("keydown",function(e){if(e.key==="ArrowLeft"){S.step(-1);e.preventDefault()}if(e.key==="ArrowRight"){S.step(1);e.preventDefault()}});
@@ -391,7 +391,7 @@ function collectionsIndex() {
 <section class="colls wrap">
  <h1>Curated Collections</h1>
  <p class="lede">Several scents from one house or one idea, poured as a matching set and ${BUNDLES.pct}% off together. Try the whole story, then go big on the one you love.</p>
- <div class="ctiles">${BUNDLES.bundles.map((b) => { const items = bItems(b); return `<a class="ctile" href="${cUrl(b)}"><span class="ph${collArt(b) ? " one" : ""}">${collArt(b) ? `<img src="/${collArt(b)}" width="1200" height="1200" alt="${attr(b.name)}: ${attr(items.map(shortName).join(", "))}" loading="lazy">` : items.slice(0, 4).map((p) => `<img src="/${p.img}" width="360" height="360" alt="${attr(p.brand + " " + nameNoConc(p))} bottle" loading="lazy">`).join("")}</span><span class="t"><span class="b">${esc(b.house)} · ${items.length} scents</span><span class="nm">${esc(b.name)}</span><span class="pr">${bReady(b) ? `Set from ${money(bPrice(b, BUNDLES.sizes[0]))}` : "<em>Arriving soon</em>"}</span></span></a>`; }).join("")}</div>
+ <div class="ctiles">${BUNDLES.bundles.map((b) => { const items = bItems(b); return `<a class="ctile" href="${cUrl(b)}"><span class="ph${collArt(b) ? " one" : ""}">${collArt(b) ? `<img src="/${collArt(b)}" srcset="${ss(collArt(b))}" sizes="(max-width:640px) 94vw, 400px" width="1200" height="1200" alt="${attr(b.name)}: ${attr(items.map(shortName).join(", "))}" loading="lazy">` : items.slice(0, 4).map((p) => `<img src="/${p.img}" width="360" height="360" alt="${attr(p.brand + " " + nameNoConc(p))} bottle" loading="lazy">`).join("")}</span><span class="t"><span class="b">${esc(b.house)} · ${items.length} scents</span><span class="nm">${esc(b.name)}</span><span class="pr">${bReady(b) ? `Set from ${money(bPrice(b, BUNDLES.sizes[0]))}` : "<em>Arriving soon</em>"}</span></span></a>`; }).join("")}</div>
 </section>` + tail();
 }
 

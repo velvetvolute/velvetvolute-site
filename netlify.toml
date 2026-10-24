@@ -103,3 +103,13 @@
   to = "/not-found"
   status = 404
   force = true
+
+# the Warm Collection became the Coffeehouse Collection
+[[redirects]]
+  from = "/collections/warm/*"
+  to = "/collections/coffeehouse/"
+  status = 301
+[[redirects]]
+  from = "/collections/warm"
+  to = "/collections/coffeehouse/"
+  status = 301
