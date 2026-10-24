@@ -243,7 +243,7 @@ a.sh-fab{text-decoration:none}
 .guide-body a{color:#fde3b9;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(198,160,112,.6)}
 .guide-body a:hover{color:var(--gold)}
 .guide-body b{font-weight:500;color:#fde3b9}
-.guide-body blockquote{margin:0 0 18px;padding:4px 0 4px 18px;border-left:2px solid var(--gold);font:italic 400 19px/1.55 var(--serif);color:#fde3b9}
+.guide-body blockquote{margin:0 0 18px;padding:4px 0 4px 18px;border-left:2px solid var(--gold);font:400 16.5px/1.7 var(--story);color:#fde3b9}
 .guide-body .tbl table{min-width:360px}
 @media(min-width:900px){.guide{grid-template-columns:320px minmax(0,1fr);column-gap:56px;align-items:start}.guide-side{position:sticky;top:90px}.guide-body{grid-column:2}}
 .gtiles{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:26px}
@@ -280,7 +280,7 @@ a.sh-fab{text-decoration:none}
 .cmp-tbl td{font:400 14.5px/1.4 var(--sans)}
 .cmp-tbl td small{display:block;font:400 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:2px}
 .cmp-tbl td a{color:#fde3b9;font-weight:500}
-.cmp-tbl td em{font:italic 400 15.5px/1.4 var(--serif);color:#fde3b9}
+.cmp-tbl td em{font:400 14px/1.5 var(--story);color:#fde3b9}
 .cmp-tbl .dots-i{display:block;letter-spacing:.12em;font-size:11px;color:var(--gold);margin-top:2px}
 .cmp-links{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px}
 .cmp-links li{display:grid;gap:2px}
