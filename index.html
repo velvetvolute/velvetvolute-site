@@ -750,7 +750,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .bundle{display:flex;flex-direction:column;padding:28px;border-radius:4px;color:#521924;
   background:radial-gradient(60% 40% at 18% 22%,rgba(92,52,24,.30),transparent 70%),radial-gradient(45% 35% at 82% 58%,rgba(70,38,16,.26),transparent 72%),#ac8153} /* taste-skill-ignore: camel card texture, matches shop cards */
 .bundle .house{font:500 13px/1 var(--sans);letter-spacing:.02em;text-transform:none;color:#3e1019}
-.bundle .bshot{display:block;width:calc(100% + 56px);height:auto;margin:-28px -28px 20px;aspect-ratio:16/9;object-fit:cover;object-position:50% 88%;border-radius:4px 4px 0 0}
+.bundle .bshot{display:block;width:calc(100% + 56px);height:auto;margin:-28px -28px 20px;aspect-ratio:5/4;object-fit:cover;object-position:50% 40%;border-radius:4px 4px 0 0}
 @media (max-width:768px){.bundle .bshot{width:calc(100% + 44px);margin:-22px -22px 16px}}
 .bundle h3{font:500 clamp(26px,2.6vw,32px)/1.1 var(--serif);color:#3e1019;margin:10px 0 14px}
 /* the collection name is the link to its page: always underlined so it reads as clickable */
@@ -2034,6 +2034,8 @@ fetch("zodiac.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
    so the set price shown here is the price charged. A set can be bought once every scent in it is in stock. */
 let BUNDLES=null;
 const COLL_ART={"boozy": "img/coll-boozy-a532321cdd-3024.w1080.jpg", "born-in-roma": "img/coll-born-in-roma-6339d891ca-3024.w1080.jpg", "coffeehouse": "img/coll-coffeehouse-70c3f2ae02-3024.w1080.jpg", "flower-and-stone": "img/coll-flower-and-stone-f598927101-3024.w1080.jpg", "holiday-spice": "img/coll-holiday-spice-91fae2f492-3024.w1080.jpg", "leather": "img/coll-leather-2fddb71748-3024.w1080.jpg", "nishane-x": "img/coll-nishane-x-6abb6d9e90-3024.w1080.jpg", "saffron": "img/coll-saffron-0274ebd12d-3024.w1080.jpg", "tea-x-flames": "img/coll-tea-x-flames-adff95768e-4284.w1080.jpg", "time-capsule": "img/coll-time-capsule-04ee5c1bb3-4284.w1080.jpg", "tom-ford": "img/coll-tom-ford-df29a889d5-3024.w1080.jpg", "vanilla": "img/coll-vanilla-bddc3e5a32-3024.w1080.jpg"};
+/* where each group shot sits in its 5:4 frame (object-position y %), so every bottle shows cap to base with the bases just above the bottom edge */
+const COLL_POS={"boozy": 30, "born-in-roma": 40, "coffeehouse": 25, "flower-and-stone": 80, "holiday-spice": 40, "leather": 15, "nishane-x": 40, "saffron": 25, "tea-x-flames": 0, "time-capsule": 20, "tom-ford": 30, "vanilla": 25};
 const bItems=b=>b.sq.map(id=>PRODUCTS.find(p=>p.sq===id)).filter(Boolean);
 const bReady=b=>bItems(b).length===b.sq.length&&bItems(b).every(inStock);
 const bBase=(b,z)=>bItems(b).reduce((a,p)=>a+p.p[z],0);
@@ -2045,7 +2047,7 @@ function collections(){
  const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
  document.getElementById("coll-pct").textContent=BUNDLES.pct+"%";
  box.innerHTML=BUNDLES.bundles.map((b,bi)=>{const ps=bItems(b),ready=bReady(b);
-  return `<article class="bundle" data-b="${bi}">${COLL_ART[b.id]?`<a class="bshot-link" href="/collections/${esc(b.id)}/" aria-label="See the ${esc(b.name)}"><img class="bshot" src="${COLL_ART[b.id]}" srcset="${vvSet(COLL_ART[b.id])}" sizes="(max-width:700px) 94vw, 560px" alt="${esc(b.name)} bottles side by side" width="1200" height="1200" loading="lazy" decoding="async"></a>`:""}<span class="house">${esc(b.house)} · ${ps.length} scents</span><h3><a class="tlink bname" href="/collections/${esc(b.id)}/">${esc(b.name)}</a></h3>
+  return `<article class="bundle" data-b="${bi}">${COLL_ART[b.id]?`<a class="bshot-link" href="/collections/${esc(b.id)}/" aria-label="See the ${esc(b.name)}"><img class="bshot" src="${COLL_ART[b.id]}"${b.id in COLL_POS?` style="object-position:50% ${COLL_POS[b.id]}%"`:""} srcset="${vvSet(COLL_ART[b.id])}" sizes="(max-width:700px) 94vw, 560px" alt="${esc(b.name)} bottles side by side" width="1200" height="1200" loading="lazy" decoding="async"></a>`:""}<span class="house">${esc(b.house)} · ${ps.length} scents</span><h3><a class="tlink bname" href="/collections/${esc(b.id)}/">${esc(b.name)}</a></h3>
   <p class="blurb">${esc(b.blurb)}</p>
   <ul>${ps.map(p=>`<li><a href="${pUrl(p)}">${esc(shortName(p))}${inStock(p)?"":` <span class="soon">· arriving soon</span>`}</a></li>`).join("")}</ul>
   <div class="buy"><div class="sizes" role="group" aria-label="Vial size">${BUNDLES.sizes.map((z,k)=>`<button type="button" data-z="${z}" class="${k?"":"on"}" aria-pressed="${!k}">${z} ml each</button>`).join("")}</div>
