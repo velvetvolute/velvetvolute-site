@@ -312,3 +312,21 @@ a.sh-fab{text-decoration:none}
 .stile .tdeal.zod{background:#5a1927;color:#f5d9b5;border:1px solid rgba(213,166,103,.55)}
 .stile .tdeal .rib-vv{display:inline-block;font:600 8px/1 var(--serif);color:#6b1e2e;border:1.1px solid #6b1e2e;border-radius:50%;width:13px;height:13px;line-height:11px;text-align:center}
 .stile .pr s{opacity:.6;font-weight:400;margin-right:2px}
+
+/* collection page: "Other Curated Collections" strip */
+.more-colls{padding-block:8px 56px}
+.mc-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px}
+.mc-head h2{margin:0;text-align:left;font:400 clamp(26px,3vw,34px)/1.1 var(--serif);color:#fde3b9}
+.mc-nav{display:flex;gap:8px}
+.mc-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(74,21,32,.75);color:#f5d9b5;font:300 26px/1 var(--serif);cursor:pointer;padding:0 0 3px}
+.mc-btn:hover{border-color:var(--gold)}
+@media(hover:none){.mc-nav{display:none}}
+.mc-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.mc-track::-webkit-scrollbar{display:none}
+.mc-card{flex:0 0 clamp(200px,24%,280px);scroll-snap-align:start;text-decoration:none;color:inherit;border:1px solid var(--line);background:#3e1019;display:flex;flex-direction:column}
+@media(max-width:640px){.mc-card{flex-basis:68%}}
+.mc-ph img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover}
+.mc-t{display:flex;flex-direction:column;gap:4px;padding:12px 14px 14px;background:#4a1520}
+.mc-n{font:500 18px/1.25 var(--serif);color:#fde3b9}
+.mc-s{font:400 12.5px var(--sans);letter-spacing:.04em;color:#d9bf9a}
+.mc-card:hover .mc-n{text-decoration:underline;text-underline-offset:4px}

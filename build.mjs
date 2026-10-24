@@ -369,6 +369,10 @@ function collectionPage(b) {
   <ul class="coll-list">${items.map((p) => `<li><a href="${pUrl(p)}">${esc(p.brand)} ${esc(p.name)}</a>${inStock(p) ? "" : ` <em>· ${esc(p.limited || "arriving soon")}</em>`}</li>`).join("")}</ul>
  </div>
  </div>
+</section>
+<section class="more-colls wrap" aria-labelledby="more-colls-h">
+ <div class="mc-head"><h2 id="more-colls-h">Other Curated Collections</h2><div class="mc-nav"><button type="button" class="mc-btn" data-d="-1" aria-label="Scroll back">‹</button><button type="button" class="mc-btn" data-d="1" aria-label="Scroll forward">›</button></div></div>
+ <div class="mc-track" id="mctrack">${(() => { const all = BUNDLES.bundles, k = all.findIndex((x) => x.id === b.id); return [...all.slice(k + 1), ...all.slice(0, k)]; })().map((o) => { const its = bItems(o), art = collArt(o) || its[0]?.img; return `<a class="mc-card" href="${cUrl(o)}">${art ? `<span class="mc-ph"><img src="/${art}"${ss(art) ? ` srcset="${ss(art)}" sizes="(max-width:640px) 70vw, 280px"` : ""} width="400" height="400" alt="${attr(o.name)}" loading="lazy" decoding="async"></span>` : ""}<span class="mc-t"><span class="mc-n">${esc(o.name)}</span><span class="mc-s">${its.length} scents · ${bReady(o) ? `set from ${money(bPrice(o, BUNDLES.sizes[0]))}` : "arriving soon"}</span></span></a>`; }).join("")}</div>
 </section>` + tail(`
 (function(){var B=${JSON.stringify({ id: b.id, name: b.name, base: Object.fromEntries(BUNDLES.sizes.map((z) => [z, bBase(b, z)])), price: Object.fromEntries(BUNDLES.sizes.map((z) => [z, bPrice(b, z)])), n: items.length })},z=${BUNDLES.sizes[0]},$=function(i){return document.getElementById(i)};
 function draw(){$("cprice").innerHTML='<s class="was">$'+B.base[z]+'</s>$'+B.price[z]+'<small>CAD · '+B.n+' × '+z+' ml classic · save $'+(B.base[z]-B.price[z])+'</small>';document.querySelectorAll(".coll-buy .sz").forEach(function(b){b.classList.toggle("on",+b.dataset.z===z);b.setAttribute("aria-pressed",+b.dataset.z===z)})}
@@ -381,6 +385,7 @@ var S=vvStrip(tr,HREF.length,function(i){dots.forEach(function(d,k){d.classList.
 dots.forEach(function(d){d.onclick=function(){S.go(+d.dataset.i)}});
 document.querySelector("#car .prev").onclick=function(){S.step(-1)};document.querySelector("#car .next").onclick=function(){S.step(1)};
 tr.tabIndex=0;tr.addEventListener("keydown",function(e){if(e.key==="ArrowLeft"){S.step(-1);e.preventDefault()}if(e.key==="ArrowRight"){S.step(1);e.preventDefault()}});
+(function(){var t=document.getElementById("mctrack");if(!t)return;document.querySelectorAll(".mc-btn").forEach(function(b){b.onclick=function(){t.scrollBy({left:+b.dataset.d*t.clientWidth*.8,behavior:"smooth"})}})})();
 draw()})();`);
 }
 function collectionsIndex() {
