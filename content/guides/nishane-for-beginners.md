@@ -40,7 +40,7 @@ Coconut and rum open sweet, tobacco smoke and tonka melt in, and cedar and oakmo
 
 Bergamot, orange and mandarin over a cup of oolong tea, then fig and clean musk. Nishane calls [Wulong Cha](/fragrance/nishane-wulong-cha/) one of the strongest fresh scents on the market, and it is. Calm and bright, like the first cup of a slow morning.
 
-**For:** summer, mornings, anyone who wants fresh without citrus-cologne obvious. The original is arriving soon; [Wulong Cha X](/fragrance/nishane-wulong-cha-x/), which swaps the oolong for green tea and magnolia, is in stock now and even softer.
+**For:** summer, mornings, anyone who wants fresh without citrus-cologne obvious. Its remix, [Wulong Cha X](/fragrance/nishane-wulong-cha-x/), swaps the oolong for green tea and magnolia and is even softer.
 
 ## The Time Capsule: five moods, one collection
 
