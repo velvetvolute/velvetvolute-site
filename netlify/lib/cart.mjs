@@ -49,7 +49,7 @@ async function loadZodiac(req) {
 }
 
 // Special Collections: same bundles.json the site shows. A set is charged as its scents' Classic
-// prices minus pct, rounded down to whole dollars, exactly as the site displays it.
+// (sizes) or Luxury (lux_sizes) prices minus pct, rounded down to whole dollars, exactly as the site displays it.
 async function loadBundles(req) {
   try {
     const r = await fetch(new URL("/bundles.json", req.url), { headers: { "cache-control": "no-cache" } });
@@ -57,7 +57,8 @@ async function loadBundles(req) {
     const j = await r.json();
     const pct = Math.max(0, Math.min(50, Number(j.pct) || 0));
     const sizes = (j.sizes || [2, 5]).map(Number);
-    return { pct, sizes, list: Array.isArray(j.bundles) ? j.bundles : [] };
+    const luxSizes = (j.lux_sizes || []).map(Number);
+    return { pct, sizes, luxSizes, list: Array.isArray(j.bundles) ? j.bundles : [] };
   } catch { return null; }
 }
 
@@ -97,7 +98,8 @@ export async function priceCart(req, input, token) {
   for (const it of items) {
     if (!it.bundle) continue;
     const b = setOf(it);
-    if (!b || !bundles.sizes.includes(Number(it.z))) fail(`"${it.label || it.bundle}" is no longer available. Please remove it and try again.`);
+    const lux = it.s === "luxe";
+    if (!b || !(lux ? bundles.luxSizes : bundles.sizes).includes(Number(it.z))) fail(`"${it.label || it.bundle}" is no longer available. Please remove it and try again.`);
   }
   const allSq = items.flatMap((i) => (i.bundle ? setOf(i).sq : [i.sq]));
   const ids = [...new Set(allSq.map((s) => String(s || "")).filter((s) => /^[A-Z0-9]{10,40}$/.test(s)))];
@@ -120,7 +122,7 @@ export async function priceCart(req, input, token) {
     if (it.bundle) {
       const b = setOf(it), z = Number(it.z);
       const qty = Math.max(1, Math.min(10, parseInt(it.q, 10) || 1));
-      const vs = b.sq.map((id) => variations[`${id}|classic, ${z} ml`]);
+      const vs = b.sq.map((id) => variations[`${id}|${it.s === "luxe" ? "luxury" : "classic"}, ${z} ml`]);
       if (vs.some((v) => !v)) fail(`"${b.name}" is no longer available. Please remove it and try again.`);
       const sum = vs.reduce((a, v) => a + v.cents, 0);
       const sale = Math.floor((sum * (100 - bundles.pct)) / 100 / 100) * 100;

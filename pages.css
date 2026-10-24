@@ -174,7 +174,8 @@ html[data-tiles="camel"] .htile .rule{background:#521924}
 .dots button{width:9px;height:9px;border-radius:50%;border:1px solid var(--gold);background:transparent;padding:0;cursor:pointer}
 .dots button.on{background:var(--gold)}
 .coll-buy{margin-top:0;padding:18px 20px 16px;max-width:620px}
-.coll-buy .sizes{margin-top:0}
+.coll-buy .vials{margin-top:0}
+.coll-buy .vdesc{min-height:0}
 .coll-buy .order{display:block;padding:14px 8px;text-align:center;background:#6b1e2e;color:#f5d9b5;border:0;font:500 13px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;border-radius:2px;cursor:pointer;flex:0 0 52%}
 .coll-buy .order:hover,.coll-buy .order.done{background:#3e1019}
 .coll-list{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:6px}

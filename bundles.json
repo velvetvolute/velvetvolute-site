@@ -4,6 +4,10 @@
   2,
   5
  ],
+ "lux_sizes": [
+  3,
+  5
+ ],
  "bundles": [
   {
    "id": "time-capsule",

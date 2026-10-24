@@ -33,9 +33,10 @@ function describe(lines) {
       const b = (BUNDLES.bundles || []).find((x) => x.id === l.b);
       if (!b) continue;
       const items = b.sq.map(bySq).filter(Boolean);
-      const base = items.reduce((a, p) => a + (p.p?.[l.z] || 0), 0);
+      const lux = l.s === "luxe";
+      const base = items.reduce((a, p) => a + ((lux ? p.l : p.p)?.[l.z] || 0), 0);
       const price = Math.floor((base * (100 - BUNDLES.pct)) / 100);
-      out.push({ img: items[0]?.img, brand: b.house, name: b.name, variation: `${items.length} × ${l.z} ml classic`, qty: l.q, price, url: `/collections/${b.id}/` });
+      out.push({ img: (lux && items[0]?.imgL) || items[0]?.img, brand: b.house, name: b.name, variation: `${items.length} × ${l.z} ml ${lux ? "luxury" : "classic"}`, qty: l.q, price, url: `/collections/${b.id}/` });
       subtotal += price * l.q;
       continue;
     }

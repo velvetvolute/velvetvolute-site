@@ -770,6 +770,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .bundle .buy{margin-top:auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:14px 18px}
 .bundle .sizes{display:inline-flex;border-radius:999px;background:rgba(107,30,46,.12);padding:3px}
 .bundle .sizes button{border:0;background:transparent;border-radius:999px;padding:8px 14px;font:500 13px/1 var(--sans);color:#521924;cursor:pointer}
+.bundle .opts{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 .bundle .sizes button.on{background:#6b1e2e;color:#f5d9b5}
 .bundle .price{justify-self:end;text-align:right;font:600 22px/1.1 var(--sans);color:#3e1019}
 .bundle .price s{font-weight:400;font-size:15px;opacity:.7;margin-right:6px}
@@ -2049,8 +2050,10 @@ function collFrame(bi){const id=BUNDLES.bundles[bi].id,o=BUNDLES.bundles[bi^1],H
  return `--ar:1/${H.toFixed(3)};--py:${collY(id,H)}%;--ard:1/${Hd.toFixed(3)};--pyd:${collY(id,Hd)}%`}
 const bItems=b=>b.sq.map(id=>PRODUCTS.find(p=>p.sq===id)).filter(Boolean);
 const bReady=b=>bItems(b).length===b.sq.length&&bItems(b).every(inStock);
-const bBase=(b,z)=>bItems(b).reduce((a,p)=>a+p.p[z],0);
-const bPrice=(b,z)=>Math.floor(bBase(b,z)*(100-BUNDLES.pct)/100);
+/* a set can be poured as Classic vials ("p" prices, BUNDLES.sizes) or Luxury bottles ("l" prices, BUNDLES.lux_sizes) */
+const SETV={classic:{label:"Classic",key:"p",sizes:()=>BUNDLES.sizes},luxe:{label:"Luxury",key:"l",sizes:()=>BUNDLES.lux_sizes||[]}};
+const bBase=(b,z,v)=>bItems(b).reduce((a,p)=>a+p[SETV[v||"classic"].key][z],0);
+const bPrice=(b,z,v)=>Math.floor(bBase(b,z,v)*(100-BUNDLES.pct)/100);
 const bundleById=id=>BUNDLES&&BUNDLES.bundles.find(b=>b.id===id);
 const shortName=p=>p.name.replace(/^Uomo Born in Roma /,"").replace(/^Gentleman /,"").replace(/^Replica /,"").replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"");
 function collections(){
@@ -2061,19 +2064,23 @@ function collections(){
   return `<article class="bundle" data-b="${bi}">${COLL_ART[b.id]?`<a class="bshot-link" href="/collections/${esc(b.id)}/" aria-label="See the ${esc(b.name)}"><img class="bshot" src="${COLL_ART[b.id]}" style="${collFrame(bi)}" srcset="${vvSet(COLL_ART[b.id])}" sizes="(max-width:700px) 94vw, 560px" alt="${esc(b.name)} bottles side by side" width="1200" height="1200" loading="lazy" decoding="async"><img class="bstamp" src="/img/vv-stamp.svg" alt="" width="113" height="113"></a>`:""}<span class="house">${esc(b.house)} · ${ps.length} scents</span><h3><a class="tlink bname" href="/collections/${esc(b.id)}/">${esc(b.name)}</a></h3>
   <p class="blurb">${esc(b.blurb)}</p>
   <ul>${ps.map(p=>`<li><a href="${pUrl(p)}">${esc(shortName(p))}${inStock(p)?"":` <span class="soon">· arriving soon</span>`}</a></li>`).join("")}</ul>
-  <div class="buy"><div class="sizes" role="group" aria-label="Vial size">${BUNDLES.sizes.map((z,k)=>`<button type="button" data-z="${z}" class="${k?"":"on"}" aria-pressed="${!k}">${z} ml each</button>`).join("")}</div>
+  <div class="buy"><div class="opts"><div class="sizes vstyle" role="group" aria-label="Vial type">${Object.entries(SETV).filter(([,o])=>o.sizes().length).map(([k,o],i)=>`<button type="button" data-v="${k}" class="${i?"":"on"}" aria-pressed="${!i}">${o.label}</button>`).join("")}</div><div class="sizes vsize" role="group" aria-label="Size"></div></div>
   <div class="price"></div>
   <button type="button" class="add" ${ready?"":"disabled"}>${ready?"Add the collection":"Arriving soon"}</button></div></article>`}).join("");
- box.querySelectorAll(".bundle").forEach(el=>{const b=BUNDLES.bundles[+el.dataset.b];let z=BUNDLES.sizes[0];
-  const show=()=>{el.querySelector(".price").innerHTML=`<s>$${bBase(b,z)}</s>$${bPrice(b,z)}<small>Save $${bBase(b,z)-bPrice(b,z)} · ${bItems(b).length} × ${z} ml classic</small>`};
-  el.querySelectorAll("[data-z]").forEach(t=>t.onclick=()=>{z=+t.dataset.z;el.querySelectorAll("[data-z]").forEach(x=>{x.classList.toggle("on",x===t);x.setAttribute("aria-pressed",x===t)});show()});
-  el.querySelector(".add").onclick=()=>{if(bReady(b)&&window.Cart)Cart.addBundle(b,z)};
+ box.querySelectorAll(".bundle").forEach(el=>{const b=BUNDLES.bundles[+el.dataset.b];let v="classic",z=BUNDLES.sizes[0];
+  const show=()=>{const S=SETV[v].sizes();if(S.indexOf(z)<0)z=S[0];
+   el.querySelector(".vsize").innerHTML=S.map(s=>`<button type="button" data-z="${s}" class="${s===z?"on":""}" aria-pressed="${s===z}">${s} ml each</button>`).join("");
+   el.querySelectorAll("[data-z]").forEach(t=>t.onclick=()=>{z=+t.dataset.z;show()});
+   el.querySelectorAll("[data-v]").forEach(x=>{x.classList.toggle("on",x.dataset.v===v);x.setAttribute("aria-pressed",x.dataset.v===v)});
+   el.querySelector(".price").innerHTML=`<s>$${bBase(b,z,v)}</s>$${bPrice(b,z,v)}<small>Save $${bBase(b,z,v)-bPrice(b,z,v)} · ${bItems(b).length} × ${z} ml ${SETV[v].label.toLowerCase()}</small>`};
+  el.querySelectorAll("[data-v]").forEach(t=>t.onclick=()=>{v=t.dataset.v;show()});
+  el.querySelector(".add").onclick=()=>{if(bReady(b)&&window.Cart)Cart.addBundle(b,z,v)};
   el.querySelectorAll("[data-jump]").forEach(t=>t.onclick=()=>vvJump(+t.dataset.jump));
   show()});
  sec.hidden=false;
 }
 fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(!j||!Array.isArray(j.bundles))return;
- BUNDLES={pct:Math.max(0,Math.min(50,Number(j.pct)||0)),sizes:(j.sizes||[2,5]).map(Number),bundles:j.bundles};
+ BUNDLES={pct:Math.max(0,Math.min(50,Number(j.pct)||0)),sizes:(j.sizes||[2,5]).map(Number),lux_sizes:(j.lux_sizes||[]).map(Number),bundles:j.bundles};
  collections();if(window.Cart&&Cart.refresh)Cart.refresh()}).catch(()=>{});
 
 /* ===== SCENT SHERPA =====
@@ -2465,10 +2472,10 @@ var Cart=(function(){
  function priceOf(p,v,z){return unit(p,VIALS[v].key,z)}
  function find(sq){return PRODUCTS.find(function(p){return p.sq===sq})}
  function bun(id){return typeof bundleById==="function"?bundleById(id):null}
- function linePrice(l){if(l.b){var b=bun(l.b);return b?bPrice(b,l.z):0}var p=find(l.sq);return p?priceOf(p,l.v,l.z):0}
+ function linePrice(l){if(l.b){var b=bun(l.b);return b?bPrice(b,l.z,l.s):0}var p=find(l.sq);return p?priceOf(p,l.v,l.z):0}
  /* analytics (track.js): never let a tracking hiccup break the cart */
  function track(n,d){try{if(window.vvTrack)vvTrack(n,d)}catch(e){}}
- function trackItems(){return lines.map(function(l){if(l.b){var b=bun(l.b);return {name:b?b.name:l.b,brand:"Velvet Volute collection",variant:l.z+" ml each",price:linePrice(l),qty:l.q}}var p=find(l.sq);return {name:p?p.name:l.sq,brand:p?p.brand:"",variant:VN[l.v]+" "+l.z+" ml",price:linePrice(l),qty:l.q}})}
+ function trackItems(){return lines.map(function(l){if(l.b){var b=bun(l.b);return {name:b?b.name:l.b,brand:"Velvet Volute collection",variant:l.z+" ml "+(l.s==="luxe"?"luxury":"classic")+" each",price:linePrice(l),qty:l.q}}var p=find(l.sq);return {name:p?p.name:l.sq,brand:p?p.brand:"",variant:VN[l.v]+" "+l.z+" ml",price:linePrice(l),qty:l.q}})}
  function keep(l){return l.b?(typeof BUNDLES==="undefined"||!BUNDLES||!!bun(l.b)):!!find(l.sq)}
  function count(){return lines.reduce(function(a,l){return a+l.q},0)}
  function subtotal(){return lines.reduce(function(a,l){return a+linePrice(l)*l.q},0)}
@@ -2479,18 +2486,18 @@ var Cart=(function(){
  function add(p,v,z){var l=lines.find(function(x){return x.sq===p.sq&&x.v===v&&x.z===z});
   if(l)l.q=Math.min(10,l.q+1);else lines.push({sq:p.sq,v:v,z:z,q:1});save();badge();draw();toast("Added "+p.name.split(" Eau")[0].split(" Extrait")[0]+" · "+z+" ml "+VN[v].toLowerCase());
   track("add_to_cart",{value:priceOf(p,v,z),items:[{name:p.name,brand:p.brand,variant:VN[v]+" "+z+" ml",price:priceOf(p,v,z),qty:1}]})}
- function addBundle(b,z){var l=lines.find(function(x){return x.b===b.id&&x.z===z});
-  if(l)l.q=Math.min(10,l.q+1);else lines.push({b:b.id,z:z,q:1});save();badge();draw();toast("Added "+b.name+" · "+z+" ml each");
-  track("add_to_cart",{value:bPrice(b,z),items:[{name:b.name,brand:"Velvet Volute collection",variant:z+" ml each",price:bPrice(b,z),qty:1}]})}
+ function addBundle(b,z,v){v=v==="luxe"?"luxe":"classic";var vl=SETV[v].label.toLowerCase(),l=lines.find(function(x){return x.b===b.id&&x.z===z&&(x.s||"classic")===v});
+  if(l)l.q=Math.min(10,l.q+1);else lines.push(v==="luxe"?{b:b.id,z:z,s:v,q:1}:{b:b.id,z:z,q:1});save();badge();draw();toast("Added "+b.name+" · "+z+" ml "+vl+" each");
+  track("add_to_cart",{value:bPrice(b,z,v),items:[{name:b.name,brand:"Velvet Volute collection",variant:z+" ml "+vl+" each",price:bPrice(b,z,v),qty:1}]})}
  function draw(){
   var box=$("cart-lines"),foot=$("cart-foot");
   lines=lines.filter(keep);
   if(!lines.length){box.innerHTML='<p class="cart-empty">Your cart is empty.</p>';foot.hidden=true;badge();return}
   foot.hidden=false;
   box.innerHTML=lines.map(function(l,i){
-   if(l.b){var b=bun(l.b);if(!b)return "";var ps=bItems(b),ub=bPrice(b,l.z),im=ps[0]&&ps[0].img;
+   if(l.b){var b=bun(l.b);if(!b)return "";var ps=bItems(b),ub=bPrice(b,l.z,l.s),im=ps[0]&&(l.s==="luxe"?ps[0].imgL||ps[0].img:ps[0].img);
     var bu="/collections/"+encodeURIComponent(b.id)+"/";
-    return '<div class="cl"><a class="cl-pic" href="'+bu+'" aria-label="View '+b.name+'" tabindex="-1">'+(im?'<img class="cl-img" src="'+im+'" width="120" height="120" alt="" loading="lazy">':'<span class="cl-img"></span>')+'</a><div class="cl-name"><a class="cl-link" href="'+bu+'">'+b.name+'</a><small>'+ps.length+' × '+l.z+' ml classic · '+money(ub)+' per set</small><span class="cl-sub">'+ps.map(shortName).join(", ")+'</span>'+
+    return '<div class="cl"><a class="cl-pic" href="'+bu+'" aria-label="View '+b.name+'" tabindex="-1">'+(im?'<img class="cl-img" src="'+im+'" width="120" height="120" alt="" loading="lazy">':'<span class="cl-img"></span>')+'</a><div class="cl-name"><a class="cl-link" href="'+bu+'">'+b.name+'</a><small>'+ps.length+' × '+l.z+' ml '+(l.s==="luxe"?"luxury":"classic")+' · '+money(ub)+' per set</small><span class="cl-sub">'+ps.map(shortName).join(", ")+'</span>'+
     '<div class="cl-qty"><button type="button" data-i="'+i+'" data-d="-1" aria-label="One fewer">−</button><span>'+l.q+'</span><button type="button" data-i="'+i+'" data-d="1" aria-label="One more">+</button></div></div>'+
     '<div class="cl-price">'+money(ub*l.q)+'</div><button type="button" class="cl-rm" data-rm="'+i+'">Remove</button></div>'}
    var p=find(l.sq),u=priceOf(p,l.v,l.z);
@@ -2540,7 +2547,7 @@ var Cart=(function(){
   .then(function(d){location.href=d.url})
   .catch(function(e){msg((e&&e.message)||"Checkout couldn't be started. Please try again, or email velvetvolute@gmail.com.");btn.disabled=false;btn.textContent="Checkout"});
  }
- function items(){return lines.map(function(l){if(l.b){var b=bun(l.b);return {bundle:l.b,z:l.z,q:l.q,label:b?b.name:l.b}}var p=find(l.sq);return {sq:l.sq,v:VN[l.v]+", "+l.z+" ml",q:l.q,label:p.name+" "+l.z+" ml"}})}
+ function items(){return lines.map(function(l){if(l.b){var b=bun(l.b);return {bundle:l.b,z:l.z,s:l.s==="luxe"?"luxe":"classic",q:l.q,label:b?b.name:l.b}}var p=find(l.sq);return {sq:l.sq,v:VN[l.v]+", "+l.z+" ml",q:l.q,label:p.name+" "+l.z+" ml"}})}
  function ready(say){say=say||msg;
   if(!lines.length)return false;
   if(!ship){say("Please choose pickup, hand delivery or shipping first.");return false}
@@ -2601,7 +2608,7 @@ var Cart=(function(){
  /* "Finish checkout" link from the reminder email: /?cart=<id> restores the saved cart */
  (function(){var m=/[?&]cart=([a-z0-9]{12,40})/.exec(location.search);if(!m)return;
   fetch("/.netlify/functions/cart-save?id="+m[1],{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(d){if(!d||!d.lines)return;
-   lsSet("vv-cart-id",m[1]);d.lines.forEach(function(nl){if(!lines.some(function(l){return nl.b?l.b===nl.b&&l.z===nl.z:l.sq===nl.sq&&l.v===nl.v&&l.z===nl.z}))lines.push(nl)});
+   lsSet("vv-cart-id",m[1]);d.lines.forEach(function(nl){if(!lines.some(function(l){return nl.b?l.b===nl.b&&l.z===nl.z&&(l.s||"classic")===(nl.s||"classic"):l.sq===nl.sq&&l.v===nl.v&&l.z===nl.z}))lines.push(nl)});
    if(d.ship&&!ship)ship=d.ship;save();badge();history.replaceState(null,"",location.pathname+"#cart-page");open();setFull(true)}).catch(function(){})})();
  /* returning visitor with a cart older than an hour: a small bar, dismissed for the session */
  (function(){var n=count();if(!n||!ts||Date.now()-ts<36e5)return;try{if(sessionStorage.getItem("vv-cartbar"))return}catch(e){}

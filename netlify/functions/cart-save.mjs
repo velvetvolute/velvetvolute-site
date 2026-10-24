@@ -1,5 +1,5 @@
 // Saves the cart once the shopper has typed their email (abandoned-cart reminders, cart-reminders.mjs).
-// POST { id, email, first?, consent, lines: [{sq,v,z,q}|{b,z,q}], ship, promo }  → { ok }
+// POST { id, email, first?, consent, lines: [{sq,v,z,q}|{b,z,s?,q}], ship, promo }  → { ok }
 // GET  ?id=<cart id>  → { lines, ship, promo }  (restores a cart from the "Finish checkout" link; no email is returned)
 // The cart id is a random 20-character string the browser makes and keeps in localStorage.
 import { allowed, saveCart, getCart, upsertContact, EMAIL_RE, normEmail, firstName, CART_ID_RE } from "../lib/store.mjs";
@@ -10,7 +10,7 @@ const json = (status, body) => new Response(JSON.stringify(body), { status, head
 function cleanLines(lines) {
   return (Array.isArray(lines) ? lines : []).slice(0, 40).map((l) => {
     const q = Math.max(1, Math.min(10, parseInt(l.q, 10) || 1)), z = Number(l.z) || 0;
-    if (l.b) return /^[a-z0-9-]{2,40}$/.test(String(l.b)) ? { b: String(l.b), z, q } : null;
+    if (l.b) return /^[a-z0-9-]{2,40}$/.test(String(l.b)) ? (l.s === "luxe" ? { b: String(l.b), z, s: "luxe", q } : { b: String(l.b), z, q }) : null;
     if (!/^[A-Z0-9]{10,40}$/.test(String(l.sq || ""))) return null;
     return { sq: String(l.sq), v: ["classic", "luxe", "roll"].includes(l.v) ? l.v : "classic", z, q };
   }).filter(Boolean);

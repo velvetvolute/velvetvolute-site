@@ -36,8 +36,10 @@ const BUNDLES = JSON.parse(readFileSync(join(ROOT, "bundles.json"), "utf8"));
 const HOUSES = JSON.parse(readFileSync(join(ROOT, "content", "houses.json"), "utf8"));
 const bItems = (b) => b.sq.map((id) => PRODUCTS.find((p) => p.sq === id)).filter(Boolean);
 const bReady = (b) => bItems(b).length === b.sq.length && bItems(b).every(inStock);
-const bBase = (b, z) => bItems(b).reduce((a, p) => a + p.p[z], 0);
-const bPrice = (b, z) => Math.floor(bBase(b, z) * (100 - BUNDLES.pct) / 100);
+/* a set is priced from its scents' Classic ("p") or Luxury ("l") prices, minus BUNDLES.pct, rounded down */
+const SET_VIALS = { classic: { label: "Classic", key: "p", sizes: BUNDLES.sizes }, luxe: { label: "Luxury", key: "l", sizes: BUNDLES.lux_sizes || [] } };
+const bBase = (b, z, v = "classic") => bItems(b).reduce((a, p) => a + p[SET_VIALS[v].key][z], 0);
+const bPrice = (b, z, v = "classic") => Math.floor(bBase(b, z, v) * (100 - BUNDLES.pct) / 100);
 
 /* ---------- helpers ---------- */
 const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -338,6 +340,7 @@ function housesIndex(groups) {
 }
 
 /* ---------- collection pages ---------- */
+const setOpts = (b) => Object.entries(SET_VIALS).flatMap(([v, o]) => o.sizes.map((z) => ({ v, z, base: bBase(b, z, v), price: bPrice(b, z, v) })));
 function collectionPage(b) {
   const items = bItems(b), url = cUrl(b), ready = bReady(b);
   const title = `${b.name} | ${b.house} decant set | Velvet Volute`;
@@ -349,7 +352,7 @@ function collectionPage(b) {
     `${b.name}: ${joinAnd(items.map(shortName))} as 2 or 5 ml decants, ${BUNDLES.pct}% off the set. Ottawa pickup or shipped in Canada.`,
     `${b.name}: ${items.length} ${b.house} scents as a matching set of 2 ml or 5 ml decants, ${BUNDLES.pct}% off. Poured from sealed bottles. Ottawa pickup or shipping across Canada.`,
     `${b.name}: ${items.length} scents as a matching set of 2 ml or 5 ml decants, ${BUNDLES.pct}% off. Poured from sealed bottles. Ottawa pickup or shipped across Canada.`]);
-  const ld = [crumbLD([{ name: "Shop", href: "/" }, { name: "Curated Collections", href: "/collections/" }, { name: b.name }]), { "@context": "https://schema.org", "@type": "Product", name: b.name, description: desc, url: SITE + url, image: items.map((p) => `${SITE}/${p.img}`), brand: { "@type": "Brand", name: b.house }, offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: bPrice(b, BUNDLES.sizes[0]), highPrice: bPrice(b, BUNDLES.sizes[BUNDLES.sizes.length - 1]), offerCount: BUNDLES.sizes.length, availability: ready ? "https://schema.org/InStock" : "https://schema.org/PreOrder" } }];
+  const ld = [crumbLD([{ name: "Shop", href: "/" }, { name: "Curated Collections", href: "/collections/" }, { name: b.name }]), { "@context": "https://schema.org", "@type": "Product", name: b.name, description: desc, url: SITE + url, image: items.map((p) => `${SITE}/${p.img}`), brand: { "@type": "Brand", name: b.house }, offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: Math.min(...setOpts(b).map((o) => o.price)), highPrice: Math.max(...setOpts(b).map((o) => o.price)), offerCount: setOpts(b).length, availability: ready ? "https://schema.org/InStock" : "https://schema.org/PreOrder" } }];
   return head({ title, desc, url, image: collArt(b) || items[0]?.img, jsonld: ld, current: "collections" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Curated Collections", href: "/collections/" }, { name: b.name }]) + `
 <section class="coll wrap">
  <div class="coll-left">
@@ -357,14 +360,16 @@ function collectionPage(b) {
  <p class="lede">${esc(b.blurb)}</p></div>
  </div>
  <div class="coll-right">
- <div class="carousel" id="car"><div class="track" role="link" title="Open the full page" aria-label="Scents in this collection, swipe to change">${collArt(b) ? `<figure class="slide" id="sg" data-href=""><img src="/${collArt(b)}" srcset="${ss(collArt(b))}" sizes="(min-width:900px) 46vw, 100vw" width="720" height="720" alt="${attr(b.name)}: ${attr(items.map(shortName).join(", "))}" decoding="async"><figcaption><b>The whole set</b><span>${items.length} scents · ${BUNDLES.pct}% off</span></figcaption></figure>` : ""}${items.map((p, i) => `<figure class="slide" id="s${i}" data-href="${pUrl(p)}"><img src="/${p.img}"${ss(p.img) ? ` srcset="${ss(p.img)}" sizes="(min-width:900px) 46vw, 100vw"` : ""} width="720" height="720" alt="${attr(bottleAlt(p, "classic"))}" loading="${i || collArt(b) ? "lazy" : "eager"}" decoding="async"><figcaption><b>${esc(shortName(p))}</b><span>${esc(p.brand)} · ${inStock(p) ? `from ${money(low(p))}` : esc(p.limited || "arriving soon")}</span><a class="more" href="${pUrl(p)}">Full page →</a></figcaption></figure>`).join("")}</div>
+ <div class="carousel" id="car"><div class="track" role="link" title="Open the full page" aria-label="Scents in this collection, swipe to change">${collArt(b) ? `<figure class="slide" id="sg" data-href=""><img src="/${collArt(b)}" srcset="${ss(collArt(b))}" sizes="(min-width:900px) 46vw, 100vw" width="720" height="720" alt="${attr(b.name)}: ${attr(items.map(shortName).join(", "))}" decoding="async"><figcaption><b>The whole set</b><span>${items.length} scents · ${BUNDLES.pct}% off</span></figcaption></figure>` : ""}${items.map((p, i) => `<figure class="slide" id="s${i}" data-href="${pUrl(p)}"><img src="/${p.img}"${ss(p.img) ? ` srcset="${ss(p.img)}" sizes="(min-width:900px) 46vw, 100vw"` : ""} data-classic="/${p.img}|${ss(p.img)}|${attr(bottleAlt(p, "classic"))}" data-luxe="/${p.imgL || p.img}|${ss(p.imgL || p.img)}|${attr(bottleAlt(p, "luxe"))}" width="720" height="720" alt="${attr(bottleAlt(p, "classic"))}" loading="${i || collArt(b) ? "lazy" : "eager"}" decoding="async"><figcaption><b>${esc(shortName(p))}</b><span>${esc(p.brand)} · ${inStock(p) ? `from ${money(low(p))}` : esc(p.limited || "arriving soon")}</span><a class="more" href="${pUrl(p)}">Full page →</a></figcaption></figure>`).join("")}</div>
   <button type="button" class="car-btn prev" aria-label="Previous scent">‹</button><button type="button" class="car-btn next" aria-label="Next scent">›</button>
   <div class="dots" role="tablist" aria-label="Scents in this collection">${(collArt(b) ? ["The whole set", ...items.map(shortName)] : items.map(shortName)).map((t, i) => `<button type="button" role="tab" data-i="${i}" aria-label="${attr(t)}"${i ? "" : ' aria-selected="true" class="on"'}></button>`).join("")}</div>
  </div>
  </div>
  <div class="coll-left coll-left-2">
  <div class="coll-buy">
-  <div class="sizes" role="group" aria-label="Vial size">${BUNDLES.sizes.map((z, k) => `<button type="button" class="sz${k ? "" : " on"}" data-z="${z}" aria-pressed="${!k}">${z} ml each</button>`).join("")}</div>
+  <div class="vials" role="group" aria-label="Vial type">${Object.entries(SET_VIALS).filter(([, o]) => o.sizes.length).map(([k, o], i) => `<button type="button" class="vt${i ? "" : " on"}" data-v="${k}" aria-pressed="${!i}">${o.label}</button>`).join("")}</div>
+  <p class="vdesc" id="cvdesc"></p>
+  <div class="sizes" role="group" aria-label="Size" id="csizes"></div>
   <div class="buyrow"><div class="price" id="cprice"></div>${ready ? `<button type="button" class="order add" id="cadd">Add the set</button>` : `<span class="soon-tag">Available once every scent in the set is in stock</span>`}</div>
   <ul class="coll-list">${items.map((p) => `<li><a href="${pUrl(p)}">${esc(p.brand)} ${esc(p.name)}</a>${inStock(p) ? "" : ` <em>· ${esc(p.limited || "arriving soon")}</em>`}</li>`).join("")}</ul>
  </div>
@@ -374,15 +379,26 @@ function collectionPage(b) {
  <div class="mc-head"><h2 id="more-colls-h">Other Curated Collections</h2><div class="mc-nav"><button type="button" class="mc-btn" data-d="-1" aria-label="Scroll back">‹</button><button type="button" class="mc-btn" data-d="1" aria-label="Scroll forward">›</button></div></div>
  <div class="mc-track" id="mctrack">${(() => { const all = BUNDLES.bundles, k = all.findIndex((x) => x.id === b.id); return [...all.slice(k + 1), ...all.slice(0, k)]; })().map((o) => { const its = bItems(o), art = collArt(o) || its[0]?.img; return `<a class="mc-card" href="${cUrl(o)}">${art ? `<span class="mc-ph"><img src="/${art}"${ss(art) ? ` srcset="${ss(art)}" sizes="(max-width:640px) 70vw, 280px"` : ""} width="400" height="400" alt="${attr(o.name)}" loading="lazy" decoding="async"></span>` : ""}<span class="mc-t"><span class="mc-n">${esc(o.name)}</span><span class="mc-s">${its.length} scents · ${bReady(o) ? `set from ${money(bPrice(o, BUNDLES.sizes[0]))}` : "arriving soon"}</span></span></a>`; }).join("")}</div>
 </section>` + tail(`
-(function(){var B=${JSON.stringify({ id: b.id, name: b.name, base: Object.fromEntries(BUNDLES.sizes.map((z) => [z, bBase(b, z)])), price: Object.fromEntries(BUNDLES.sizes.map((z) => [z, bPrice(b, z)])), n: items.length })},z=${BUNDLES.sizes[0]},$=function(i){return document.getElementById(i)};
-function draw(){$("cprice").innerHTML='<s class="was">$'+B.base[z]+'</s>$'+B.price[z]+'<small>CAD · '+B.n+' × '+z+' ml classic · save $'+(B.base[z]-B.price[z])+'</small>';document.querySelectorAll(".coll-buy .sz").forEach(function(b){b.classList.toggle("on",+b.dataset.z===z);b.setAttribute("aria-pressed",+b.dataset.z===z)})}
-document.querySelectorAll(".coll-buy .sz").forEach(function(b){b.onclick=function(){z=+b.dataset.z;draw()}});
-var add=$("cadd");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.parse(localStorage.getItem(K)||"null")||{lines:[],ship:null,promo:null};s.lines=s.lines||[];var l=s.lines.find(function(x){return x.b===B.id&&x.z===z});if(l)l.q=Math.min(10,l.q+1);else s.lines.push({b:B.id,z:z,q:1});s.ts=Date.now();localStorage.setItem(K,JSON.stringify(s));var n=s.lines.reduce(function(a,l){return a+l.q},0),c=$("cart-count");c.textContent=n;c.hidden=false}catch(e){}
- add.textContent="Added ✓";add.classList.add("done");var t=document.createElement("div");t.className="cart-toast on";t.innerHTML='Added '+B.name+' · '+z+' ml each <a href="/#cart-page">View cart</a>';document.body.appendChild(t);setTimeout(function(){add.textContent="Add the set";add.classList.remove("done")},1400);setTimeout(function(){t.remove()},3200)};
+(function(){var B=${JSON.stringify({ id: b.id, name: b.name, n: items.length, opt: Object.fromEntries(Object.entries(SET_VIALS).filter(([, o]) => o.sizes.length).map(([v, o]) => [v, { label: o.label, sizes: o.sizes, base: Object.fromEntries(o.sizes.map((z) => [z, bBase(b, z, v)])), price: Object.fromEntries(o.sizes.map((z) => [z, bPrice(b, z, v)])) }])) })},v="classic",z=B.opt.classic.sizes[0],ZS={},cur=0,$=function(i){return document.getElementById(i)};
+var VD={classic:"Clear glass vials with a fine-mist atomizer. Our everyday decants.",luxe:"Weighted glass bottles with gold caps and a fine-mist atomizer. The gift-ready set."};
+function draw(){var o=B.opt[v];$("csizes").innerHTML=o.sizes.map(function(s){return '<button type="button" class="sz'+(s===z?" on":"")+'" data-z="'+s+'" aria-pressed="'+(s===z)+'">'+s+' ml each</button>'}).join("");
+ $("cprice").innerHTML='<s class="was">$'+o.base[z]+'</s>$'+o.price[z]+'<small>CAD · '+B.n+' × '+z+' ml '+o.label.toLowerCase()+' · save $'+(o.base[z]-o.price[z])+'</small>';
+ $("cvdesc").textContent=VD[v];
+ document.querySelectorAll(".coll-buy .vt").forEach(function(b){var on=b.dataset.v===v;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
+ document.querySelectorAll(".coll-buy .sz").forEach(function(b){b.onclick=function(){z=+b.dataset.z;ZS[v]=z;draw()}})}
+/* Classic or Luxury: the price, the sizes and every scent's photo follow the choice (luxury shows the luxury-bottle shots) */
+function setV(nv){if(nv===v)return;v=nv;var S0=B.opt[v].sizes;z=S0.indexOf(ZS[v])>=0?ZS[v]:S0.indexOf(z)>=0?z:S0[0];
+ document.querySelectorAll("#car img[data-classic]").forEach(function(im){var d=im.dataset[v].split("|");im.src=d[0];if(d[1])im.srcset=d[1];im.alt=d[2]});
+ draw();if(cur===0&&$("sg"))show(1)}
+document.querySelectorAll(".coll-buy .vt").forEach(function(b){b.onclick=function(){setV(b.dataset.v)}});
+var add=$("cadd");if(add)add.onclick=function(){try{var K="vv-cart-v1",s=JSON.parse(localStorage.getItem(K)||"null")||{lines:[],ship:null,promo:null};s.lines=s.lines||[];var l=s.lines.find(function(x){return x.b===B.id&&x.z===z&&(x.s||"classic")===v});if(l)l.q=Math.min(10,l.q+1);else s.lines.push(v==="luxe"?{b:B.id,z:z,s:v,q:1}:{b:B.id,z:z,q:1});s.ts=Date.now();localStorage.setItem(K,JSON.stringify(s));var n=s.lines.reduce(function(a,l){return a+l.q},0),c=$("cart-count");c.textContent=n;c.hidden=false}catch(e){}
+ add.textContent="Added ✓";add.classList.add("done");var t=document.createElement("div");t.className="cart-toast on";t.innerHTML='Added '+B.name+' · '+z+' ml '+B.opt[v].label.toLowerCase()+' each <a href="/#cart-page">View cart</a>';document.body.appendChild(t);setTimeout(function(){add.textContent="Add the set";add.classList.remove("done")},1400);setTimeout(function(){t.remove()},3200)};
 /* the photos are a swipeable strip: one swipe moves one slide, it wraps around, the dots and arrows step it, a tap opens that scent's page */
 var tr=document.querySelector("#car .track"),dots=document.querySelectorAll("#car .dots button"),HREF=[].slice.call(tr.children).map(function(f){return f.dataset.href});
-var S=vvStrip(tr,HREF.length,function(i){dots.forEach(function(d,k){d.classList.toggle("on",k===i);d.setAttribute("aria-selected",k===i)})},function(i){if(HREF[i])location.href=HREF[i]});
-dots.forEach(function(d){d.onclick=function(){S.go(+d.dataset.i)}});
+function mark(i){cur=i;dots.forEach(function(d,k){d.classList.toggle("on",k===i);d.setAttribute("aria-selected",k===i)})}
+function show(i){mark(i);S.go(i)}
+var S=vvStrip(tr,HREF.length,mark,function(i){if(HREF[i])location.href=HREF[i]});
+dots.forEach(function(d){d.onclick=function(){show(+d.dataset.i)}});
 document.querySelector("#car .prev").onclick=function(){S.step(-1)};document.querySelector("#car .next").onclick=function(){S.step(1)};
 tr.tabIndex=0;tr.addEventListener("keydown",function(e){if(e.key==="ArrowLeft"){S.step(-1);e.preventDefault()}if(e.key==="ArrowRight"){S.step(1);e.preventDefault()}});
 (function(){var t=document.getElementById("mctrack");if(!t)return;document.querySelectorAll(".mc-btn").forEach(function(b){b.onclick=function(){t.scrollBy({left:+b.dataset.d*t.clientWidth*.8,behavior:"smooth"})}})})();
