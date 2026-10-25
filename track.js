@@ -27,8 +27,9 @@
       ga("event","sign_up",{method:d.method||"email"});
       fb("track","Lead",{content_name:d.method||"email"});
     }else if(name==="sherpa_result"){
-      ga("event","sherpa_result",{top_pick:d.pick||""});
-      fb("trackCustom","SherpaResult",{top_pick:d.pick||""});
+      var sr={top_pick:d.pick||"",picks:d.picks||"",wearer:d.who||"",vibe:d.vibe||"",occasion:d.occasion||"",quiz_mode:d.mode||""};
+      ga("event","sherpa_result",sr);
+      fb("trackCustom","SherpaResult",sr);
     }else{
       ga("event",name,d);
       fb("trackCustom",name,d);

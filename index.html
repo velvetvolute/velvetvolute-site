@@ -2384,18 +2384,24 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   const bk=box.querySelector(".qz-back");if(bk)bk.onclick=()=>{step--;draw()};
   const nx=box.querySelector(".qz-next");if(nx)nx.onclick=()=>{step++;draw()};
   bindToggle();box.parentElement.scrollTop=0}
+ /* Analytics: one sherpa_result per distinct set of answers per page view (retakes with new answers count again);
+    opens, pick taps, "add the set" and "show all" are tracked too. All no-ops off the live domain (track.js). */
+ const shT=function(n,d){try{if(window.vvTrack)vvTrack(n,d||{})}catch(e){}},shSeen=new Set();let shOpened=false;
+ function shResult(how){try{const r=picks();if(!r.length)return;const sig=how+"|"+JSON.stringify(ans);if(shSeen.has(sig))return;shSeen.add(sig);
+  shT("sherpa_result",{pick:r[0].p.name,picks:r.map(x=>x.p.name).join(" | "),who:ans.who||"",vibe:[].concat(ans.vibe||[]).join(","),occasion:ans.occ||"",mode:how})}catch(e){}}
  function results(){
+  shResult("steps");
   box.innerHTML=toggleHTML()+`<div class="qz-step">Scent Sherpa</div><h3 class="qz-q" id="qz-title">Here’s where I’d start</h3>${resultsHTML(picks())}
    <div class="qz-links"><button type="button" data-a="again">Retake the quiz</button><button type="button" data-a="shop">Show all matches</button></div>`;
   bindToggle();bindRes();box.parentElement.scrollTop=0}
  function bindRes(){
   const avail=picks().filter(x=>inStock(x.p));
-  box.querySelectorAll(".qz-view").forEach(b=>b.onclick=()=>showCard(+b.dataset.i));bindCap();
+  box.querySelectorAll(".qz-view").forEach(b=>b.onclick=()=>{const p=PRODUCTS[+b.dataset.i];shT("sherpa_pick_view",{pick:p?p.name:""});showCard(+b.dataset.i)});bindCap();
   box.querySelectorAll(".qz-pyr").forEach(d=>d.ontoggle=()=>{d.open?openNotes.add(+d.dataset.i):openNotes.delete(+d.dataset.i)});
   box.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const a=b.dataset.a;
    if(a==="again"||a==="clear"){step=0;ans={};draw()}
-   else if(a==="set"){avail.forEach(x=>Cart.add(x.p,"classic",2));close();Cart.open()}
-   else if(a==="shop"){const order=ranked().filter(x=>fits(x.p)).map(x=>x.i);
+   else if(a==="set"){shT("sherpa_add_set",{picks:avail.map(x=>x.p.name).join(" | "),count:avail.length});avail.forEach(x=>Cart.add(x.p,"classic",2));close();Cart.open()}
+   else if(a==="shop"){shT("sherpa_show_all",{});const order=ranked().filter(x=>fits(x.p)).map(x=>x.i);
     picks().forEach(x=>{if(!order.includes(x.i))order.unshift(x.i)});
     setFilters("All scents","all","all");sherpaSet=order;render();close();const sb=document.getElementById("sherpa-bar");setTimeout(()=>window.scrollTo({top:sb.getBoundingClientRect().top+scrollY-document.querySelector("header").offsetHeight-16,behavior:"smooth"}),30)}})}
  function setFilters(fv,sv,gv){sherpaSet=null;brandSel.clear();fam=fv;sea=sv;gen=gv;fs.value=fv;document.getElementById("sea").value=sv;genChips();chips();render()}
@@ -2405,8 +2411,8 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  function showPill(){pill.hidden=!(hasAns()&&(mode==="quick"||step>=Q.length))}
  /* keep keyboard focus inside the dialog while it is open */
  function trap(e){if(ov.hidden||e.key!=="Tab")return;const f=[...ov.querySelectorAll("button,[href],input,select,textarea,summary,[tabindex]:not([tabindex='-1'])")].filter(el=>!el.disabled&&el.offsetParent!==null);if(!f.length)return;const first=f[0],lastEl=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();lastEl.focus()}else if(!e.shiftKey&&document.activeElement===lastEl){e.preventDefault();first.focus()}}
- function open(){loadDB();last=document.activeElement;pill.hidden=true;if(mode==="steps"&&step<Q.length&&!hasAns())step=0;draw();ov.hidden=false;document.body.style.overflow="hidden";document.body.classList.add("qz-open");moreLinks();setTimeout(()=>{moreLinks();const t=box.querySelector(".qz-m.on");if(t)t.focus({preventScroll:true})},30)}
- function close(){ov.hidden=true;document.body.style.overflow="";document.body.classList.remove("qz-open");showPill();if(window.VVSherpaRefresh)window.VVSherpaRefresh();if(last&&last.focus)last.focus({preventScroll:true})}
+ function open(){if(!shOpened){shOpened=true;shT("sherpa_open",{})}loadDB();last=document.activeElement;pill.hidden=true;if(mode==="steps"&&step<Q.length&&!hasAns())step=0;draw();ov.hidden=false;document.body.style.overflow="hidden";document.body.classList.add("qz-open");moreLinks();setTimeout(()=>{moreLinks();const t=box.querySelector(".qz-m.on");if(t)t.focus({preventScroll:true})},30)}
+ function close(){if(mode==="quick"&&ans.who&&hasAns())shResult("quick");ov.hidden=true;document.body.style.overflow="";document.body.classList.remove("qz-open");showPill();if(window.VVSherpaRefresh)window.VVSherpaRefresh();if(last&&last.focus)last.focus({preventScroll:true})}
  document.querySelectorAll("[data-quiz]").forEach(b=>b.onclick=open);
  document.getElementById("qz-x").onclick=close;
  pill.querySelector(".qz-pill-go").onclick=open;pill.querySelector(".qz-pill-x").onclick=()=>{pill.hidden=true};
