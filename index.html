@@ -1980,7 +1980,7 @@ function render(){
  let list=PRODUCTS.filter((p,i)=>passes(p,i));
  const byBrand=(a,b)=>a.brand.localeCompare(b.brand)||a.name.localeCompare(b.name);
  if(sherpaSet&&sortBy==="new")list.sort((a,b)=>sherpaSet.indexOf(PRODUCTS.indexOf(a))-sherpaSet.indexOf(PRODUCTS.indexOf(b)));else list.sort(sortBy==="brand"?byBrand:sortBy==="brand-desc"?(a,b)=>byBrand(b,a):sortBy==="new"?(a,b)=>(ADDED[b.sq]||"").localeCompare(ADDED[a.sq]||"")||byBrand(a,b):sortBy==="low"?(a,b)=>low(a)-low(b)||byBrand(a,b):(a,b)=>low(b)-low(a)||byBrand(a,b));
- if(!sherpaSet&&(sortBy==="brand"||sortBy==="brand-desc"))list=list.filter(isSpot).concat(list.filter(p=>!isSpot(p)));
+ if(!sherpaSet&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"))list=list.filter(isSpot).concat(list.filter(p=>!isSpot(p)));
  const cnt=`${list.length} fragrance${list.length===1?"":"s"}`;
  document.getElementById("count").textContent=cnt;document.getElementById("count2").textContent=cnt;document.getElementById("fdone-n").textContent=cnt;
  if(sb){sb.hidden=!sherpaSet;if(sherpaSet)document.getElementById("sherpa-n").textContent=cnt}
