@@ -828,7 +828,12 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .sidx .more a{color:var(--ink);margin:0 8px}
 
 /* phone shop: two scents per row (Oct 2026). Cards keep a 2-line write-up and headline notes; the story, Top/Heart/Base and per-ml prices live on each scent's page */
-.card .hi,.card .m-more{display:none}
+.card .hi{display:none}
+.card .pills{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 2px}
+.card .pill{display:inline-block;padding:4px 10px;border-radius:30px;font:500 11.5px/1.2 var(--sans);letter-spacing:.02em;white-space:nowrap}
+.card .pill.pf{border:1px solid var(--ink);color:var(--ink)}
+.card .pill.pv{background:#6b1e2e;color:#f5d9b5;border:1px solid #6b1e2e}
+.card .rm{display:inline;margin:0 0 0 1px;padding:0;background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
 @media(max-width:720px){
  #grid.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}
  #grid .card,#grid .card *{min-width:0}
@@ -858,7 +863,9 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 }
 @media(max-width:720px){
  #grid .card .story-more{display:none}
- #grid .card .notes,#grid .card .spot-why,#grid .card .mood{margin-top:6px;font-size:13px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+ #grid .card .notes,#grid .card .spot-why,#grid .card .mood{margin-top:6px;font-size:13px;line-height:1.35;display:block;-webkit-line-clamp:unset;max-height:none;overflow:visible}
+ #grid .card .pills{flex-direction:column;align-items:flex-start;gap:4px;margin:6px 0 0}
+ #grid .card .pill{padding:3px 8px;font-size:10px;letter-spacing:0}
  #grid .card .hi{display:block;margin:5px 0 0;font:400 11px/1.35 var(--sans);opacity:.9;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
  #grid .card .hi b{font-weight:600}
  #grid .card .name{min-height:0}
@@ -868,8 +875,6 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
  #grid .card .body{display:flex;flex-direction:column;flex:1}
  #grid .card .vials{margin-top:0}
  #grid .card .hi{margin:auto 0 8px;padding-top:8px}
- #grid .card .m-more{display:inline-block;align-self:flex-start;margin:4px 0 0;padding:2px 0;background:none;border:0;color:var(--ink);font:600 11px var(--sans);letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
- #grid .card .m-more[hidden]{display:none}
  #grid .card.m-side{align-self:start}
  #grid .card .m-open{-webkit-line-clamp:unset!important;display:block!important;max-height:none!important;overflow:visible!important}
 }
@@ -1980,24 +1985,37 @@ function strip(track,N,onIdx,onTap){const SL=[...track.children];let vi=+track.d
  let wacc=0,wt=0,wdone=false;
  track.addEventListener("wheel",e=>{if(Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;e.preventDefault();const now=Date.now();if(now-wt>200){wacc=0;wdone=false}wt=now;wacc+=e.deltaX;if(!wdone&&Math.abs(wacc)>40){wdone=true;step(wacc>0?1:-1)}},{passive:false});
  return {go:i=>{if(i!==((vi%N)+N)%N)go(i)}}}
+/* Card pills: scent profile (from the scent's family) + one vibe, in the Scent Sherpa's playlist words. Vibes start from the Sherpa's scoring, hand-checked per scent; add one for every new scent. */
+const VIBE_PILL={sexy:"Smooth & sexy",boss:"Boss mode",party:"Party ’til 5am",adventure:"Adventurous",cozy:"Cozy & comforting",dark:"Dark & mysterious",clean:"Clean & effortless",sunny:"Sunny & playful",quiet:"Quiet luxury"};
+const VIBE_OF={"Terre d'Hermès Eau de Parfum Intense": "boss", "Homme Intense": "quiet", "Oud Minérale": "dark", "Noir Extreme Eau de Parfum": "sexy", "Café Rose": "dark", "Kalan": "clean", "Erba Leather": "sexy", "Erba Gold": "sunny", "La Mélodie Maximal Parfum": "clean", "Or Noir Café Parfum": "cozy", "Le Piano Eau de Parfum": "clean", "Zoltan Extrait de Parfum": "boss", "I Will Eau de Parfum": "quiet", "Uomo Signature Eau de Parfum": "sexy", "Gentleman Réserve Privée Eau de Parfum": "quiet", "Le Male Elixir Parfum": "party", "Replica Coffee Break": "cozy", "Replica Jazz Club": "cozy", "Baccarat Rouge 540 Eau de Parfum": "party", "Petit Matin Eau de Parfum": "clean", "Ani Extrait de Parfum": "sexy", "Fan Your Flames Extrait de Parfum": "party", "Fan Your Flames X Extrait de Parfum": "cozy", "Hacivat Extrait de Parfum": "boss", "Kredo Extrait de Parfum": "quiet", "Papilefiko Extrait de Parfum": "quiet", "Deziro Extrait de Parfum": "adventure", "Tempfluo Extrait de Parfum": "sexy", "Hundred Silent Ways X Extrait de Parfum": "dark", "Wulong Cha X Extrait de Parfum": "adventure", "Nefs Extrait de Parfum": "dark", "Suède et Safran Extrait de Parfum": "dark", "Wulong Cha Extrait de Parfum": "clean", "Tero Extrait de Parfum": "cozy", "Althaïr Eau de Parfum": "sexy", "Black Orchid Eau de Parfum": "dark", "Noir Eau de Parfum": "quiet", "Ombre Leather Eau de Parfum": "boss", "Tuscan Leather Eau de Parfum": "dark", "Uomo Born in Roma Coral Fantasy": "sunny", "Uomo Born in Roma Green Stravaganza": "adventure", "Uomo (2021)": "quiet", "Uomo Born in Roma Yellow Dream": "sunny", "Uomo Born in Roma Purple Melancholia": "cozy", "Eros Najim Parfum": "party", "Erba Pura Eau de Parfum": "party", "La Nuit de L'Homme Eau de Toilette": "sexy"};
+function pillsHTML(p){const f=FAM_LABEL[p.cat]||p.cat,v=VIBE_PILL[VIBE_OF[p.name]];return `<div class="pills">${f?`<span class="pill pf">${f}</span>`:""}${v?`<span class="pill pv">${v}</span>`:""}</div>`}
 /* phone cards: up to 3 headline notes, one from each tier first (the full Top/Heart/Base lives on the scent's page) */
 function noteHi(p){if(!p.n)return "";const t=p.n,tiers=t.h.length||t.b.length?[t.t,t.h,t.b]:[t.t],out=[];
  for(let k=0;out.length<3&&k<8;k++)tiers.forEach(r=>{if(r[k]&&out.length<3&&!out.includes(r[k]))out.push(r[k])});return out.join(", ")}
 function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v],sp=isSpot(p);
  return `<article class="card${sp?" spot":""}" data-i="${i}">
    <div class="photo">${sp?`<div class="spot-rib"><span class="rib-vv">VV</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?photoStrip(p,st):bottleArt(p,i)}</div>
-   <div class="body"><div class="brand"><a class="tlink" href="${hUrl(p.brand)}">${p.brand}</a><span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name"><a class="tlink" href="${pUrl(p)}">${p.name}</a></div>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}<button type="button" class="m-more" aria-expanded="false">Read more</button>${p.n?`<p class="hi"><b>Notes:</b> ${noteHi(p)}</p>`:""}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
+   <div class="body"><div class="brand"><a class="tlink" href="${hUrl(p.brand)}">${p.brand}</a><span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name"><a class="tlink" href="${pUrl(p)}">${p.name}</a></div>${pillsHTML(p)}${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<p class="hi"><b>Notes:</b> ${noteHi(p)}</p>`:""}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
    <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}${k==="luxe"?'<span class="vup">+$3</span>':k==="roll"?'<span class="vup">+$4</span>':""}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
    <div class="sizes">${V.sizes.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml<span class="pml-b">${pml(p,st.v,z)}</span></button>`).join("")}</div>
    <div class="buyrow"><div class="price">${priceHTML(p,st.v,st.z)}</div>${inStock(p)?`<button type="button" class="order add">Add to cart</button>`:""}</div></div></article>`}
+/* Phone cards: the write-up is cut to two lines ending in "…read more" (same font as the paragraph); tapping expands it in place. */
+const phoneCards=()=>matchMedia("(max-width:720px)").matches;
+function fitWU(el){const full=el.dataset.full,open=el.classList.contains("m-open");
+ if(!phoneCards()){el.textContent=full;return}
+ const esc=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+ if(open){el.innerHTML=esc(full)+' <button type="button" class="rm" aria-expanded="true">read less</button>'}
+ else{el.textContent=full;const lh=parseFloat(getComputedStyle(el).lineHeight)||18,max=lh*2+2;
+  if(el.scrollHeight>max){const w=full.split(" ");let lo=1,hi=w.length;
+   while(lo<hi){const m=(lo+hi+1)>>1;el.innerHTML=esc(w.slice(0,m).join(" ").replace(/[,.;:\s]+$/,""))+'…<button type="button" class="rm" aria-expanded="false">read more</button>';if(el.scrollHeight<=max)lo=m;else hi=m-1}
+   el.innerHTML=esc(w.slice(0,lo).join(" ").replace(/[,.;:\s]+$/,""))+'…<button type="button" class="rm" aria-expanded="false">read more</button>'}}
+ const b=el.querySelector(".rm");if(b)b.onclick=e=>{e.preventDefault();el.classList.toggle("m-open");fitWU(el);sideFix(el.closest(".card"))}}
+function sideFix(card){const on=card.querySelector(".m-open");card.classList.toggle("m-x",!!on);
+ [...g.children].forEach(c=>{if(c.classList.contains("m-x")){c.classList.remove("m-side");return}c.classList.toggle("m-side",[...g.children].some(o=>o.classList.contains("m-x")&&Math.abs(o.offsetTop-c.offsetTop)<4))})}
+let wuT;addEventListener("resize",()=>{clearTimeout(wuT);wuT=setTimeout(()=>g.querySelectorAll(".card").forEach(c=>{const w=c.querySelector("[data-full]");if(w)fitWU(w)}),150)});
 function bind(card){const i=+card.dataset.i,p=PRODUCTS[i],st=state[i];
- const mm=card.querySelector(".m-more"),mw=card.querySelector(".spot-why,.mood,.notes");
- if(mm&&mw){requestAnimationFrame(()=>{if(getComputedStyle(mm).display!=="none"&&mw.scrollHeight<=mw.clientHeight+2)mm.hidden=true});
-  mm.onclick=()=>{const open=mw.classList.toggle("m-open");mm.textContent=open?"Read less":"Read more";mm.setAttribute("aria-expanded",open);
-   /* the card beside an opened one keeps its own height instead of stretching to match */
-   const row=[...g.children].filter(c=>c!==card&&Math.abs(c.offsetTop-card.offsetTop)<4);card.classList.toggle("m-x",open);
-   row.forEach(c=>c.classList.toggle("m-side",[...g.children].some(o=>o.classList.contains("m-x")&&Math.abs(o.offsetTop-c.offsetTop)<4)&&!c.classList.contains("m-x")))}}
+ const mw=card.querySelector(".spot-why,.mood,.notes");if(mw){mw.dataset.full=mw.textContent;fitWU(mw)}
  const sm=card.querySelector(".story-more"),mp=card.querySelector(".mood");
  if(sm&&mp){if(mp.scrollHeight<=mp.clientHeight+2)sm.hidden=true;sm.onclick=()=>{const open=mp.classList.toggle("clamp")===false;sm.textContent=open?"Show less":"Read the story";sm.setAttribute("aria-expanded",open);card.style.minHeight="";equalize()}}
  /* changing the vial type (tab or swipe) updates the card in place; a size you tapped is remembered per type, otherwise the current size carries over when offered */
