@@ -826,6 +826,49 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .sidx .clist a:hover{text-decoration:underline}
 @media(max-width:560px){.sidx-d summary{font-size:18px}.sidx-d summary small{font-size:12px}}
 .sidx .more a{color:var(--ink);margin:0 8px}
+
+/* phone shop: two scents per row (Oct 2026). Cards keep a 2-line write-up and headline notes; the story, Top/Heart/Base and per-ml prices live on each scent's page */
+.card .hi{display:none}
+@media(max-width:720px){
+ #grid.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}
+ #grid .card,#grid .card *{min-width:0}
+ #grid .card .photo img{max-width:100%}
+ #grid .card .pyr,#grid .card .vdesc,#grid .card .pml-b,#grid .card .sprays,#grid .card .gender{display:none}
+ #grid .card .body{padding:10px 10px 12px}
+ #grid .card .photo .slide figcaption{padding:5px 6px;font-size:10px;letter-spacing:.04em}
+ #grid .card .spot-rib{font-size:9.5px;padding:5px 7px;letter-spacing:.04em}
+ #grid .card .brand{font-size:11px;letter-spacing:.01em;margin-bottom:2px}
+ #grid .card .name{font-size:16px;line-height:1.2;min-height:2.4em}
+ #grid .card .limited,#grid .card .zod-tag{font-size:10px;margin-top:4px}
+ #grid .card .vials{margin-top:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+ #grid .card .vt{padding:6px 0;font-size:10px;letter-spacing:0;min-width:0}
+ #grid .card .vt .vup{display:none}
+ #grid .card .sizes{margin-top:6px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+ #grid .card .sz{padding:7px 0;font-size:11.5px;min-width:0}
+ #grid .card .buyrow{margin-top:8px;display:block}
+ #grid .card .price{font-size:20px;line-height:1.1}
+ #grid .card .price small{display:block;font-size:10px;margin-top:2px}
+ #grid .card .order{margin-top:8px;padding:10px 0;font-size:11px;letter-spacing:.14em}
+}
+@media(max-width:720px){
+ #grid .card .vials{padding:3px;border-radius:20px}
+ #grid .card .vt{text-transform:none;font-size:11px;letter-spacing:0;padding:6px 0;border-radius:16px;white-space:nowrap}
+ #grid .card .vt::before{display:none}
+ #grid .card .photo .slide figcaption{padding:4px 6px;font-size:10.5px}
+}
+@media(max-width:720px){
+ #grid .card .story-more{display:none}
+ #grid .card .notes,#grid .card .spot-why,#grid .card .mood{margin-top:6px;font-size:13px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+ #grid .card .hi{display:block;margin:5px 0 0;font:400 11px/1.35 var(--sans);opacity:.9;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+ #grid .card .hi b{font-weight:600}
+ #grid .card .name{min-height:0}
+ #grid .card .story{margin:0}
+ #grid .card .notes,#grid .card .spot-why,#grid .card .mood{margin-bottom:0;max-height:none}
+ #grid.grid{align-items:stretch}
+ #grid .card .body{display:flex;flex-direction:column;flex:1}
+ #grid .card .vials{margin-top:auto;padding-top:3px}
+ #grid .card .hi{margin-bottom:8px}
+}
 </style>
 <link rel="stylesheet" href="/nav.css">
 <script src="/nav.js" defer></script><script src="/track.js" defer></script>
@@ -1933,10 +1976,13 @@ function strip(track,N,onIdx,onTap){const SL=[...track.children];let vi=+track.d
  let wacc=0,wt=0,wdone=false;
  track.addEventListener("wheel",e=>{if(Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;e.preventDefault();const now=Date.now();if(now-wt>200){wacc=0;wdone=false}wt=now;wacc+=e.deltaX;if(!wdone&&Math.abs(wacc)>40){wdone=true;step(wacc>0?1:-1)}},{passive:false});
  return {go:i=>{if(i!==((vi%N)+N)%N)go(i)}}}
+/* phone cards: up to 3 headline notes, one from each tier first (the full Top/Heart/Base lives on the scent's page) */
+function noteHi(p){if(!p.n)return "";const t=p.n,tiers=t.h.length||t.b.length?[t.t,t.h,t.b]:[t.t],out=[];
+ for(let k=0;out.length<3&&k<8;k++)tiers.forEach(r=>{if(r[k]&&out.length<3&&!out.includes(r[k]))out.push(r[k])});return out.join(", ")}
 function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v],sp=isSpot(p);
  return `<article class="card${sp?" spot":""}" data-i="${i}">
    <div class="photo">${sp?`<div class="spot-rib"><span class="rib-vv">VV</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?photoStrip(p,st):bottleArt(p,i)}</div>
-   <div class="body"><div class="brand"><a class="tlink" href="${hUrl(p.brand)}">${p.brand}</a><span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name"><a class="tlink" href="${pUrl(p)}">${p.name}</a></div>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
+   <div class="body"><div class="brand"><a class="tlink" href="${hUrl(p.brand)}">${p.brand}</a><span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name"><a class="tlink" href="${pUrl(p)}">${p.name}</a></div>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<p class="hi"><b>Notes:</b> ${noteHi(p)}</p>`:""}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
    <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}${k==="luxe"?'<span class="vup">+$3</span>':k==="roll"?'<span class="vup">+$4</span>':""}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
    <div class="sizes">${V.sizes.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml<span class="pml-b">${pml(p,st.v,z)}</span></button>`).join("")}</div>
