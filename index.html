@@ -828,7 +828,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .sidx .more a{color:var(--ink);margin:0 8px}
 
 /* phone shop: two scents per row (Oct 2026). Cards keep a 2-line write-up and headline notes; the story, Top/Heart/Base and per-ml prices live on each scent's page */
-.card .hi{display:none}
+.card .hi,.card .m-more{display:none}
 @media(max-width:720px){
  #grid.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}
  #grid .card,#grid .card *{min-width:0}
@@ -866,8 +866,12 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
  #grid .card .notes,#grid .card .spot-why,#grid .card .mood{margin-bottom:0;max-height:none}
  #grid.grid{align-items:stretch}
  #grid .card .body{display:flex;flex-direction:column;flex:1}
- #grid .card .vials{margin-top:auto;padding-top:3px}
- #grid .card .hi{margin-bottom:8px}
+ #grid .card .vials{margin-top:0}
+ #grid .card .hi{margin:auto 0 8px;padding-top:8px}
+ #grid .card .m-more{display:inline-block;align-self:flex-start;margin:4px 0 0;padding:2px 0;background:none;border:0;color:var(--ink);font:600 11px var(--sans);letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+ #grid .card .m-more[hidden]{display:none}
+ #grid .card.m-side{align-self:start}
+ #grid .card .m-open{-webkit-line-clamp:unset!important;display:block!important;max-height:none!important;overflow:visible!important}
 }
 </style>
 <link rel="stylesheet" href="/nav.css">
@@ -1982,12 +1986,18 @@ function noteHi(p){if(!p.n)return "";const t=p.n,tiers=t.h.length||t.b.length?[t
 function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v],sp=isSpot(p);
  return `<article class="card${sp?" spot":""}" data-i="${i}">
    <div class="photo">${sp?`<div class="spot-rib"><span class="rib-vv">VV</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?photoStrip(p,st):bottleArt(p,i)}</div>
-   <div class="body"><div class="brand"><a class="tlink" href="${hUrl(p.brand)}">${p.brand}</a><span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name"><a class="tlink" href="${pUrl(p)}">${p.name}</a></div>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<p class="hi"><b>Notes:</b> ${noteHi(p)}</p>`:""}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
+   <div class="body"><div class="brand"><a class="tlink" href="${hUrl(p.brand)}">${p.brand}</a><span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name"><a class="tlink" href="${pUrl(p)}">${p.name}</a></div>${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}<button type="button" class="m-more" aria-expanded="false">Read more</button>${p.n?`<p class="hi"><b>Notes:</b> ${noteHi(p)}</p>`:""}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
    <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}${k==="luxe"?'<span class="vup">+$3</span>':k==="roll"?'<span class="vup">+$4</span>':""}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
    <div class="sizes">${V.sizes.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml<span class="pml-b">${pml(p,st.v,z)}</span></button>`).join("")}</div>
    <div class="buyrow"><div class="price">${priceHTML(p,st.v,st.z)}</div>${inStock(p)?`<button type="button" class="order add">Add to cart</button>`:""}</div></div></article>`}
 function bind(card){const i=+card.dataset.i,p=PRODUCTS[i],st=state[i];
+ const mm=card.querySelector(".m-more"),mw=card.querySelector(".spot-why,.mood,.notes");
+ if(mm&&mw){requestAnimationFrame(()=>{if(getComputedStyle(mm).display!=="none"&&mw.scrollHeight<=mw.clientHeight+2)mm.hidden=true});
+  mm.onclick=()=>{const open=mw.classList.toggle("m-open");mm.textContent=open?"Read less":"Read more";mm.setAttribute("aria-expanded",open);
+   /* the card beside an opened one keeps its own height instead of stretching to match */
+   const row=[...g.children].filter(c=>c!==card&&Math.abs(c.offsetTop-card.offsetTop)<4);card.classList.toggle("m-x",open);
+   row.forEach(c=>c.classList.toggle("m-side",[...g.children].some(o=>o.classList.contains("m-x")&&Math.abs(o.offsetTop-c.offsetTop)<4)&&!c.classList.contains("m-x")))}}
  const sm=card.querySelector(".story-more"),mp=card.querySelector(".mood");
  if(sm&&mp){if(mp.scrollHeight<=mp.clientHeight+2)sm.hidden=true;sm.onclick=()=>{const open=mp.classList.toggle("clamp")===false;sm.textContent=open?"Show less":"Read the story";sm.setAttribute("aria-expanded",open);card.style.minHeight="";equalize()}}
  /* changing the vial type (tab or swipe) updates the card in place; a size you tapped is remembered per type, otherwise the current size carries over when offered */
