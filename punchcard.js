@@ -11,7 +11,7 @@
     var W=360,H=150,s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+(pending?"Card full: lucky #7 is ready":(drops/2)+" of 6 stamps")+'">'
      +'<defs><linearGradient id="vvc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+CAMEL+'"/><stop offset="1" stop-color="'+CAMEL2+'"/></linearGradient></defs>'
      +'<rect x="1" y="1" width="'+(W-2)+'" height="'+(H-2)+'" rx="14" fill="url(#vvc)" stroke="'+M+'" stroke-opacity=".35"/>'
-     +'<text x="20" y="32" font-family="Cormorant Garamond,Georgia,serif" font-style="italic" font-size="19" fill="'+INK+'">The Real Ones</text>'
+     +'<text x="20" y="32" font-family="Cormorant Garamond,Georgia,serif" font-style="normal" font-size="19" fill="'+INK+'">The Real Ones</text>'
      +'<text x="'+(W-20)+'" y="31" text-anchor="end" font-family="Jost,system-ui,sans-serif" font-size="10" letter-spacing="1.6" fill="'+INK+'" fill-opacity=".75">'+(pending?"LUCKY #7 IS READY":(drops+" OF 12 VELVET DROPS"))+'</text>';
     for(var i=0;i<6;i++){
       var cx=34+i*44,cy=86,full=drops>=(i+1)*2;

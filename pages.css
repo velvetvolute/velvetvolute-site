@@ -57,7 +57,7 @@ h1{font:500 clamp(30px,4.2vw,46px)/1.08 var(--serif);letter-spacing:.01em;color:
 .fine{margin:14px 0 0;font:300 12.5px/1.5 var(--sans);color:#662029}
 .pp-story{margin-top:8px;max-width:62ch}
 .pp-story h2:first-child{margin-top:20px}
-.pp-story h2 em{font-style:italic;text-transform:none;letter-spacing:.12em;font-family:var(--serif);font-size:15px}
+.pp-story h2 em{font-style:normal;text-transform:none;letter-spacing:.12em;font-family:var(--serif);font-size:15px}
 .pp-story h2{text-align:left;font:500 13px var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin:30px 0 8px}
 .pp-story p{font:300 16.5px/1.7 var(--sans);color:#f5d9b5;margin:0}
 .pp-story p.mood{font:400 16px/1.8 var(--story)}
@@ -103,7 +103,7 @@ h1{font:500 clamp(30px,4.2vw,46px)/1.08 var(--serif);letter-spacing:.01em;color:
 .htile .pre{font:500 12px var(--serif);letter-spacing:.34em;text-transform:uppercase;opacity:.85;margin-bottom:4px}
 .htile .rule{width:26px;height:1px;margin:11px auto 9px;background:var(--gold);opacity:.75}
 .htile .o{font:400 10.5px var(--sans);letter-spacing:.26em;text-transform:uppercase;opacity:.8;min-height:1.2em}
-.htile .cnt{position:absolute;bottom:10px;right:12px;font:italic 600 15px var(--serif);opacity:.95}
+.htile .cnt{position:absolute;bottom:10px;right:12px;font:600 15px var(--serif);opacity:.95}
 .htile.soon{opacity:.72}
 .htile .art{max-width:78%;max-height:80px;width:auto;height:auto;object-fit:contain}
 /* camel variant, switched on by data-tiles="camel" on <html> */

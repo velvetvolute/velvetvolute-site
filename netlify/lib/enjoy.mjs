@@ -94,7 +94,7 @@ export function enjoyHTML(s, firstName, extra = "") {
    ${H3("A few fun facts")}
    <p style="margin:0 0 8px">&bull; A 10 ml decant is roughly <b>100 sprays</b>, about a month of daily wear.</p>
    <p style="margin:0 0 8px">&bull; The same scent smells different on two people. That's <b>skin chemistry</b>: pH, warmth, diet, even your moisturizer.</p>
-   <p style="margin:0">&bull; The trail you leave when you walk past is called <b>sillage</b>, pronounced <i>see-yazh</i>.</p>
+   <p style="margin:0">&bull; The trail you leave when you walk past is called <b>sillage</b>, pronounced <i style="font-style:normal">see-yazh</i>.</p>
 
    ${extra}
    <p style="margin:24px 0 8px">Want to go deeper? <a href="${SITE}/fragrance-101.html" style="color:#912b42">Fragrance 101</a> covers it all. When you're ready for your next find, the <a href="${SITE}" style="color:#912b42">Scent Sherpa</a> can help you curate your own playlist.</p>
