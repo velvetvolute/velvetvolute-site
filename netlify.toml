@@ -36,6 +36,39 @@
   to = "/card.html"
   status = 200
 
+# Short tracking links (UTM-tagged, so GA4 shows exactly which channel each visit came from).
+# 302 so a destination can be changed later without browsers caching the old one.
+#   velvetvolute.ca/ig -> Instagram bio (opens the link page)
+#   velvetvolute.ca/fb -> Facebook Page button + posts
+#   velvetvolute.ca/mp -> Facebook Marketplace listings
+#   velvetvolute.ca/g  -> Google Business Profile "Website" link
+#   velvetvolute.ca/hi -> links texted/messaged to friends (word of mouth)
+[[redirects]]
+  from = "/ig"
+  to = "/card?utm_source=instagram&utm_medium=social&utm_campaign=bio"
+  status = 302
+  force = true
+[[redirects]]
+  from = "/fb"
+  to = "/?utm_source=facebook&utm_medium=social&utm_campaign=page"
+  status = 302
+  force = true
+[[redirects]]
+  from = "/mp"
+  to = "/?utm_source=facebook_marketplace&utm_medium=social&utm_campaign=listing"
+  status = 302
+  force = true
+[[redirects]]
+  from = "/g"
+  to = "/?utm_source=google&utm_medium=organic&utm_campaign=business_profile"
+  status = 302
+  force = true
+[[redirects]]
+  from = "/hi"
+  to = "/?utm_source=friends&utm_medium=referral&utm_campaign=word_of_mouth"
+  status = 302
+  force = true
+
 [[headers]]
   for = "/img/*"
   [headers.values]
