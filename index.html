@@ -538,6 +538,11 @@ h1,h2,h3{text-wrap:balance}
 .x-def{font:400 17px/1.6 var(--story);color:var(--x-text);max-width:460px;margin:0}
 .x-def b{font-style:normal;font-weight:600;color:var(--x-gold)}
 .x-def small{font:400 13px var(--sans);font-style:normal;color:var(--x-soft)}
+/* dictionary-style definition, matching the gift box flap and the sample card (upright, no italics) */
+.x-def .x-def-l{display:block}
+.x-def .x-def-skin{color:var(--x-soft)}
+.x-def .x-def-et{display:block;margin-top:4px;font:500 11.5px/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--x-soft)}
+.x-def .x-def-et span{text-transform:none;letter-spacing:.02em;font:400 13px var(--story)}
 .x-lede{margin:24px 0 36px;max-width:500px;color:var(--x-text);font-size:17px}
 .x-ctas{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
 .x-hero figure{position:relative;margin:0 0 28px}
@@ -963,7 +968,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 <div class="x-hero" id="top"><div class="wrap">
   <div>
     <h1>Quiet luxury, <em>poured by hand</em></h1>
-    <p class="x-def"><b>vo·lute</b> <small>(vuh-LOOT)</small> · a soft, spiralling curl, like a wisp of smoke drifting through the air.</p>
+    <p class="x-def"><b>vo·lute</b> <small>(vuh-LOOT) · noun</small><span class="x-def-l">a soft, spiralling curl, like a wisp of smoke drifting through the air.</span><span class="x-def-l x-def-skin">Or a good scent, curling up off the skin.</span><span class="x-def-et">Latin <span>volūta</span>, “a scroll”</span></p>
     <p class="x-lede">A curated collection of luxury fragrances, each one thoughtfully chosen. Try them without committing to a full bottle: hand-decanted from authentic bottles, picked up in Ottawa or shipped across Canada.</p>
     <div class="x-ctas"><a class="x-btn x-solid" href="#shop">Browse fragrances</a><button type="button" class="x-btn x-line" data-quiz>Ask the Scent Sherpa</button></div>
   </div>
