@@ -2006,14 +2006,20 @@ function fitWU(el){const full=el.dataset.full,open=el.classList.contains("m-open
  if(!phoneCards()){el.textContent=full;return}
  const esc=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;");
  if(open){el.innerHTML=esc(full)+' <button type="button" class="rm" aria-expanded="true">read less</button>'}
- else{el.textContent=full;const lh=parseFloat(getComputedStyle(el).lineHeight)||18,max=lh*3+2;
+ else{el.textContent=full;const lh=parseFloat(getComputedStyle(el).lineHeight)||18,max=lh*(3+(+el.dataset.extra||0))+2;
   if(el.scrollHeight>max){const w=full.split(" ");let lo=1,hi=w.length;
    while(lo<hi){const m=(lo+hi+1)>>1;el.innerHTML=esc(w.slice(0,m).join(" ").replace(/[,.;:\s]+$/,""))+'…<button type="button" class="rm" aria-expanded="false">read more</button>';if(el.scrollHeight<=max)lo=m;else hi=m-1}
    el.innerHTML=esc(w.slice(0,lo).join(" ").replace(/[,.;:\s]+$/,""))+'…<button type="button" class="rm" aria-expanded="false">read more</button>'}}
- const b=el.querySelector(".rm");if(b)b.onclick=e=>{e.preventDefault();el.classList.toggle("m-open");fitWU(el);sideFix(el.closest(".card"))}}
+ const b=el.querySelector(".rm");if(b)b.onclick=e=>{e.preventDefault();el.classList.toggle("m-open");fitWU(el);sideFix(el.closest(".card"));fillRows()}}
+/* a card shorter than its row partner lets its write-up run on into the empty space, a whole line at a time */
+function fillRows(){if(!phoneCards())return;const cs=[...g.querySelectorAll(".card")];
+ cs.forEach(c=>{const w=c.querySelector("[data-full]");if(w){w.dataset.extra=0;fitWU(w)}});
+ cs.forEach(c=>{const w=c.querySelector("[data-full]"),hi=c.querySelector(".hi")||c.querySelector(".vials");if(!w||!hi||w.classList.contains("m-open")||c.classList.contains("m-side"))return;
+  const free=hi.getBoundingClientRect().top-w.getBoundingClientRect().bottom-10,lh=parseFloat(getComputedStyle(w).lineHeight)||18,n=Math.floor(free/lh);
+  if(n>0){w.dataset.extra=n;fitWU(w)}})}
 function sideFix(card){const on=card.querySelector(".m-open");card.classList.toggle("m-x",!!on);
  [...g.children].forEach(c=>{if(c.classList.contains("m-x")){c.classList.remove("m-side");return}c.classList.toggle("m-side",[...g.children].some(o=>o.classList.contains("m-x")&&Math.abs(o.offsetTop-c.offsetTop)<4))})}
-const refitWU=()=>g.querySelectorAll(".card").forEach(c=>{const w=c.querySelector("[data-full]");if(w)fitWU(w)});
+const refitWU=()=>{g.querySelectorAll(".card").forEach(c=>{const w=c.querySelector("[data-full]");if(w)fitWU(w)});fillRows()};
 let wuT;addEventListener("resize",()=>{clearTimeout(wuT);wuT=setTimeout(refitWU,150)});
 /* re-measure once the real fonts arrive, so the cut always lands on three full lines */
 if(document.fonts){document.fonts.ready.then(refitWU);if(document.fonts.addEventListener)document.fonts.addEventListener("loadingdone",refitWU);document.fonts.load('400 13px "Libre Baskerville"').then(refitWU).catch(()=>{})}
@@ -2063,7 +2069,7 @@ function render(){
  document.getElementById("count").textContent=cnt;document.getElementById("count2").textContent=cnt;document.getElementById("fdone-n").textContent=cnt;
  if(sb){sb.hidden=!sherpaSet;if(sherpaSet)document.getElementById("sherpa-n").textContent=cnt}
  filterOptions();
- g.innerHTML=list.map(cardHTML).join("");g.querySelectorAll(".card").forEach(bind);equalize()}
+ g.innerHTML=list.map(cardHTML).join("");g.querySelectorAll(".card").forEach(bind);equalize();fillRows()}
 chips();render();
 document.getElementById("sherpa-clear").onclick=()=>{sherpaSet=null;render()};
 (function(){const t=document.getElementById("tools"),bk=document.getElementById("fback"),btn=document.getElementById("fbtn");let lastF=null;
