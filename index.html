@@ -542,11 +542,11 @@ h1,h2,h3{text-wrap:balance}
 .x-def .x-def-l{display:block}
 .x-def .x-def-skin{color:var(--x-soft)}
 .x-def .x-def-et{display:block;margin-top:4px;font:500 11.5px/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--x-soft)}
-.x-def .x-def-et i{text-transform:none;letter-spacing:.02em;font:italic 500 15px "Cormorant Garamond",Georgia,serif}
-/* dictionary formatting (the one deliberate exception to the no-italics rule): the headword, part of speech and Latin source word are italic.
-   Cormorant's italic keeps the pointed v; Baskerville's italic v reads like a u */
-.x-def b.x-def-hw{font:italic 500 25px/1 "Cormorant Garamond",Georgia,serif;letter-spacing:.01em}
-.x-def small i{font-style:italic;font-family:"Cormorant Garamond",Georgia,serif;font-size:15px}
+.x-def .x-def-et i{text-transform:none;letter-spacing:.02em;font:500 15px "Cormorant Garamond",Georgia,serif;font-style:normal;display:inline-block;transform:skewX(-12deg)}
+/* dictionary formatting: the headword, part of speech and Latin source word look italic.
+   They are upright Cormorant slanted 12°, because both Cormorant's and Baskerville's true italic v are rounded and read like a u */
+.x-def b.x-def-hw{font:600 25px/1 "Cormorant Garamond",Georgia,serif;font-style:normal;letter-spacing:.01em;display:inline-block;transform:skewX(-12deg);margin-right:2px}
+.x-def small i{font:500 15px "Cormorant Garamond",Georgia,serif;font-style:normal;display:inline-block;transform:skewX(-12deg)}
 .x-lede{margin:24px 0 36px;max-width:500px;color:var(--x-text);font-size:17px}
 .x-ctas{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
 .x-hero figure{position:relative;margin:0 0 28px}
