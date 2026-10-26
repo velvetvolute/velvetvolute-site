@@ -79,7 +79,7 @@ function similar(p, n = 8) {
 /* ---------- shared chrome ---------- */
 const styleBlock = [...html.matchAll(/<style>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join("\n");
 const FONTS = html.match(/<link href="https:\/\/fonts\.googleapis\.com[^>]+>/)[0];
-const OG_DEFAULT = { src: "img/og-velvetvolute-cc70d7e8db.jpg", w: 1200, h: 630, alt: "Tom Ford Tuscan Leather bottle beside Velvet Volute decant vials, with the VV logo" };
+const OG_DEFAULT = { src: "img/og-velvetvolute-5f9fd6e097.jpg", w: 1200, h: 630, alt: "Tom Ford Tuscan Leather bottle beside Velvet Volute luxury decant bottles, with the VV logo" };
 /* image: { src, w, h, alt } for the social card (defaults to the site card); type: og:type (product, article, website);
    dates: { published, modified } for articles; jsonld: one object or an array, each written as its own script tag. */
 function head({ title, desc, url, image, jsonld, current, type, dates }) {
