@@ -5,7 +5,7 @@ description: EDT, EDP, Extrait and Parfum explained: oil percentages, how long e
 summary: Oil percentages, how long each concentration lasts, how many sprays to use, and how many wears you get from a 2, 5 or 10 ml decant.
 date: 2026-10-18
 updated: 2026-10-18
-image: img/lux-u-tempfluo-6f4ddb7872-2955.w1080.jpg
+image: img/lux-u-tempfluo-76ccb3096a-2955.w1080.jpg
 imageAlt: Nishane Tempfluo extrait bottle with 3, 5 and 10 ml Velvet Volute luxury decant bottles
 scents: I2YT222LFWFYRAWUXOQSDZPB, LMHN6IFHQPUTAW4H22NTVQKY, 6RRUWMTR6HR57YISIVFICWM3, IGK65TSUCPCGLTA7O7OP7XMT
 ---
