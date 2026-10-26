@@ -1000,7 +1000,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 <section id="shop"><div class="wrap">
   <div class="x-shop-head"><h2>Find your signature.<br>Build your collection.</h2><p>Every fragrance is thoughtfully chosen, with at least one new addition every month, and every scent has a story. Curate your own playlist by notes, season and mood.</p><p class="x-sherpa">Not sure where to start? <button type="button" data-quiz>Let the Scent Sherpa guide you</button></p></div>
   <div class="brandbar" id="brands"></div>
-  <div class="genbar" id="genbar" role="group" aria-label="Who it's for"><span>For</span><button type="button" class="gchip on" data-g="all">Everyone</button><button type="button" class="gchip" data-g="Men">Him</button><button type="button" class="gchip" data-g="Unisex">Unisex</button><button type="button" class="gchip" data-g="Women">Her</button></div>
+  <div class="genbar" id="genbar" role="group" aria-label="Who it's for"><span>For</span><button type="button" class="gchip on" data-g="all">Everyone</button><button type="button" class="gchip" data-g="Men">Him</button><button type="button" class="gchip" data-g="Women">Her</button></div>
   <div class="fbar"><button type="button" class="fbtn" id="fbtn" aria-controls="tools" aria-expanded="false"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Filters &amp; sort<span class="fcount" id="fcount" hidden></span></button><span class="count" id="count2"></span></div>
   <div class="fback" id="fback" hidden></div>
   <div class="tools" id="tools" role="dialog" aria-label="Filters and sort">
@@ -2536,8 +2536,8 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  if(location.hash==="#quiz")open();
 })();
 /* "Shop your picks" link in the Sherpa email: /?picks=ID,ID,ID shows just those scents, best first */
-/* ?for=him|unisex|her (the "For him" / "Unisex" link on scent and house pages): open the shop filtered */
-(function(){const m=/[?&]for=(him|unisex|her)\b/i.exec(location.search);if(!m)return;gen={him:"Men",unisex:"Unisex",her:"Women"}[m[1].toLowerCase()];genChips();render();
+/* ?for=him|unisex|her (the "For him" / "Unisex" link on scent and house pages): open the shop filtered. There is no Unisex chip, so a Unisex link opens the whole shop (Everyone). */
+(function(){const m=/[?&]for=(him|unisex|her)\b/i.exec(location.search);if(!m)return;gen={him:"Men",unisex:"all",her:"Women"}[m[1].toLowerCase()];genChips();render();
  const go=()=>{const s=document.getElementById("shop");if(s)s.scrollIntoView({block:"start"})};requestAnimationFrame(()=>setTimeout(go,60))})();
 (function(){const m=/[?&]picks=([A-Z0-9,]+)/.exec(location.search);if(!m)return;
  const order=m[1].split(",").map(id=>PRODUCTS.findIndex(p=>p.sq===id)).filter(i=>i>=0);if(!order.length)return;
