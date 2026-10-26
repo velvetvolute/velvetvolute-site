@@ -9,7 +9,7 @@ export const SHOP_EMAIL = "velvetvolute@gmail.com";
 export const ORDER_FROM = process.env.ORDER_EMAIL_FROM || "Velvet Volute <orders@velvetvolute.ca>";
 export const MARKETING_FROM = process.env.MARKETING_EMAIL_FROM || "Izzi at Velvet Volute <hello@velvetvolute.ca>";
 export const MAIL_COPY = process.env.ORDER_COPY_TO || SHOP_EMAIL;
-export const GOOGLE_REVIEW_URL = process.env.GOOGLE_REVIEW_URL || "https://www.facebook.com/share/19pYKmRDYj/";
+export const GOOGLE_REVIEW_URL = process.env.GOOGLE_REVIEW_URL || "https://www.facebook.com/velvetvolute";
 export const REVIEW_IS_GOOGLE = !!process.env.GOOGLE_REVIEW_URL;
 
 export const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));

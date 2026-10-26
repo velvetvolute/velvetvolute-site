@@ -178,7 +178,7 @@ export async function loyaltyExtras(s, email, first, token) {
     }
     const html = loyaltyBlock({ returnCode: ret.code, returnExpires: ret.expiresAt, referralCode: ref.code, punches, sherpaPickName: pick ? `${pick.brand} ${pick.short}`.trim() : "", claimUrl, email });
     const text = [
-      `Leave a review: ${process.env.GOOGLE_REVIEW_URL || "https://www.facebook.com/share/19pYKmRDYj/"}`,
+      `Leave a review: ${process.env.GOOGLE_REVIEW_URL || "https://www.facebook.com/velvetvolute"}`,
       `10% off your next order: ${ret.code}${ret.expiresAt ? ` (until ${new Date(ret.expiresAt).toLocaleDateString("en-CA")})` : ""}`,
       `Your referral code: ${ref.code} ($5 off a friend's first order; you get $5 each time)`,
       punches.pending > 0 ? `Stamp card: 6 of 6. Lucky #7 is on us: ${claimUrl || "see your inbox"}` : `Stamp card: ${fmtPunch(punches.cycle)} of 6 stamps. Lucky #7 is on us.`,
