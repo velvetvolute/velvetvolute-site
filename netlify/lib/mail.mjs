@@ -75,14 +75,14 @@ export function orderRows(items, { showPrice = true, right } = {}) {
 export const signoff = () => p(`Peace &amp; Love,<br><span style="font-family:${SERIF};font-size:20px">Izzi</span>`, "margin-top:22px");
 
 // Justin's branded email signature (same block as his Gmail signature): the merlot banner image
-// (img/email-signature-3.png, links to the site) over a row of live links. Goes under "Peace & Love, Izzi"
+// (img/email-signature-4.png, links to the site) over a row of live links. Goes under "Peace & Love, Izzi"
 // in every customer email. Widths are percentages so it shrinks with the email column on phones.
 export const SIG_TEXT = "Justin Izzi · Founder, Velvet Volute · 647-821-4994 · velvetvolute.ca · @velvetvolute.ca";
 export function emailSignature() {
   const L = "color:#F7DDBD;text-decoration:none", K = "color:#c6a070;font-size:10px;letter-spacing:2px";
   const item = (k, href, label) => `<span style="${K}">${k}</span>&nbsp;&nbsp;<a href="${href}" style="${L}">${label}</a>`;
   return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#6B1E2E" style="width:100%;max-width:600px;border-collapse:collapse;background:#6B1E2E;margin:18px 0 4px">
- <tr><td colspan="2" style="padding:0"><a href="${SITE}"><img src="${SITE}/img/email-signature-3.png" width="600" alt="Justin Izzi, Founder · Velvet Volute" style="display:block;width:100%;max-width:600px;height:auto;border:0"></a></td></tr>
+ <tr><td colspan="2" style="padding:0"><a href="${SITE}"><img src="${SITE}/img/email-signature-4.png" width="600" alt="Justin Izzi, Founder · Velvet Volute" style="display:block;width:100%;max-width:600px;height:auto;border:0"></a></td></tr>
  <tr><td width="28%" style="width:28%;padding:0;font-size:0;line-height:0">&nbsp;</td><td style="padding:0 12px 14px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:20px;color:#F7DDBD">${item("T", "tel:+16478214994", "647-821-4994")}&nbsp;&nbsp;&nbsp; ${item("W", SITE, "velvetvolute.ca")}<br>${item("E", `mailto:${SHOP_EMAIL}`, SHOP_EMAIL)}&nbsp;&nbsp;&nbsp; ${item("IG", "https://www.instagram.com/velvetvolute.ca/", "@velvetvolute.ca")}</td></tr>
 </table>`;
 }
