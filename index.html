@@ -2015,11 +2015,16 @@ function fitWU(el){const full=el.dataset.full,open=el.classList.contains("m-open
    el.innerHTML=esc(w.slice(0,lo).join(" ").replace(/[,.;:\s]+$/,""))+'…<button type="button" class="rm" aria-expanded="false">read more</button>'}}
  const b=el.querySelector(".rm");if(b)b.onclick=e=>{e.preventDefault();el.classList.toggle("m-open");fitWU(el);sideFix(el.closest(".card"));fillRows()}}
 /* a card shorter than its row partner lets its write-up run on into the empty space, a whole line at a time */
-function fillRows(){if(!phoneCards())return;const cs=[...g.querySelectorAll(".card")];
- cs.forEach(c=>{const w=c.querySelector("[data-full]");if(w){w.dataset.extra=0;fitWU(w)}});
+function fillRows(){const cs=[...g.querySelectorAll(".card")];
+ cs.forEach(c=>{const w=c.querySelector("[data-full]");if(w){w.style.lineHeight="";w.dataset.extra=0;if(phoneCards())fitWU(w)}});
+ if(!phoneCards())return;
+ const gapOf=(w,hi)=>hi.getBoundingClientRect().top-w.getBoundingClientRect().bottom;
  cs.forEach(c=>{const w=c.querySelector("[data-full]"),hi=c.querySelector(".hi")||c.querySelector(".vials");if(!w||!hi||w.classList.contains("m-open")||c.classList.contains("m-side"))return;
-  const free=hi.getBoundingClientRect().top-w.getBoundingClientRect().bottom-10,lh=parseFloat(getComputedStyle(w).lineHeight)||18,n=Math.floor(free/lh);
-  if(n>0){w.dataset.extra=n;fitWU(w)}})}
+  const lh=parseFloat(getComputedStyle(w).lineHeight)||18,n=Math.floor((gapOf(w,hi)-1)/lh);
+  if(n>0){w.dataset.extra=n;fitWU(w)}
+  /* the sliver left (under a line) is shared out as a touch more line spacing, capped so it never looks loose */
+  const left=gapOf(w,hi),lines=Math.round(w.offsetHeight/lh);
+  if(left>2&&lines>0)w.style.lineHeight=(lh+Math.min(2.5,(left-1)/lines))+"px"})}
 function sideFix(card){const on=card.querySelector(".m-open");card.classList.toggle("m-x",!!on);
  [...g.children].forEach(c=>{if(c.classList.contains("m-x")){c.classList.remove("m-side");return}c.classList.toggle("m-side",[...g.children].some(o=>o.classList.contains("m-x")&&Math.abs(o.offsetTop-c.offsetTop)<4))})}
 const refitWU=()=>{g.querySelectorAll(".card").forEach(c=>{const w=c.querySelector("[data-full]");if(w)fitWU(w)});fillRows()};
