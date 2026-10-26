@@ -249,7 +249,7 @@ function productPage(p) {
   <div class="pp-brandrow"><span class="pp-brand"><a href="${hUrl(p.brand)}">${esc(p.brand)}</a><a class="pp-gen" href="/?for=${p.g === "Men" ? "him" : "unisex"}#shop">${p.g === "Men" ? "For him" : "Unisex"}</a></span><span class="pp-deal" id="deal" hidden></span></div>
   <h1>${esc(p.name)}</h1>
   ${p.limited ? `<div class="limited">${esc(p.limited)}</div>` : ""}
-  <div class="pp-pills" aria-label="Scent profile and vibe">${[p.cat, p.cat2].filter(Boolean).map((c) => `<span class="pill pf"${FAM_COLOR[c] ? ` style="background:${FAM_COLOR[c][0]};color:${FAM_COLOR[c][1]}"` : ""}>${esc(FAM_LABEL[c] || c)}</span>`).join("")}${(VIBE_OF[p.name] || []).map((v) => `<span class="pill pv">${esc(VIBE_PILL[v])}</span>`).join("")}</div>
+  <div class="pp-pills" aria-label="Scent profile and vibe">${[p.cat, p.cat2].filter(Boolean).map((c) => `<span class="pill pf"${FAM_COLOR[c] ? ` style="background:${FAM_COLOR[c][0]};color:${FAM_COLOR[c][1]}"` : ""}>${esc(FAM_LABEL[c] || c)}</span>`).join("")}<span class="pp-br" aria-hidden="true"></span>${(VIBE_OF[p.name] || []).map((v) => `<span class="pill pv">${esc(VIBE_PILL[v])}</span>`).join("")}</div>
   <ul class="chips"><li>${SEA_TXT[p.sea]}</li><li>${TM_TXT[p.tm]}</li><li>${STR_TXT[p.str || 2]}</li></ul>
   ${sh.vibe ? `<p class="lede">${esc(sh.vibe)}</p>` : ""}
  </div>
