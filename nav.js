@@ -36,7 +36,7 @@
   /* ---------- search ---------- */
   var sbtn=document.getElementById("search-open");
   if(!sbtn)return;
-  var CHIPS=["Nishane","Tom Ford","Sweet","Fresh","Leather","Spicy","Vanilla","Oud","Tea","Coffee","Unisex","Evenings"];
+  var CHIPS=["Nishane","Tom Ford","Citrus","Fresh","Sweet","Amber","Leather","Spicy","Vanilla","Oud","Tea","Coffee","Unisex","Evenings"];
   var ov=document.createElement("div");ov.className="vvs";ov.id="vvs";ov.hidden=true;
   ov.innerHTML='<div class="vvs-box" role="dialog" aria-modal="true" aria-label="Search">'
    +'<div class="vvs-bar"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>'

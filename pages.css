@@ -337,8 +337,8 @@ a.sh-fab{text-decoration:none}
 .htile.has-bottle .rule{margin:4px auto 2px}
 .htile.has-bottle .cnt{margin-top:1px}
 
-/* scent page: two scent-profile pills (main + second family) and two vibe pills under the name, matching the shop cards */
+/* scent page: two scent-family pills in their family colours (main + second) and two outlined vibe pills under the name, matching the shop cards */
 .pp-pills{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
 .pp-pills .pill{display:inline-block;padding:5px 12px;border-radius:30px;font:500 12.5px/1.2 var(--sans);letter-spacing:.02em;white-space:nowrap}
-.pp-pills .pill.pf{border:1px solid var(--gold);color:var(--gold)}
-.pp-pills .pill.pv{background:var(--gold);color:var(--on-gold,#3e1019);border:1px solid var(--gold)}
+.pp-pills .pill.pf{border:1px solid rgba(82,25,36,.4)}
+.pp-pills .pill.pv{background:transparent;color:var(--gold);border:1.5px solid var(--gold);font-weight:600}
