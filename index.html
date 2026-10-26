@@ -2218,7 +2218,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
    ["quiet","Quiet luxury","Refined, understated, unmistakably expensive"],
    ["any","Surprise me"]]},
   {k:"sea",q:"When will you wear it most?",short:"Season",o:[["c","Fall & winter"],["w","Spring & summer"],["a","All year round"]]},
-  {k:"occ",q:"What's the occasion?",short:"Occasion",o:[["work","Work & daytime","Office, class, errands"],["gym","Gym & active","Workouts, sports, on the move"],["date","Date night","Dinner, drinks, close company"],["night","Night out","Bars, parties, late nights"],["special","A special occasion","Weddings, celebrations, the big night"],["any","A bit of everything"]]},
+  {k:"occ",multi:2,q:"What's the occasion?",short:"Occasion",hint:"Pick up to two.",o:[["work","Work & daytime","Office, class, errands"],["gym","Gym & active","Workouts, sports, on the move"],["date","Date night","Dinner, drinks, close company"],["night","Night out","Bars, parties, late nights"],["special","A special occasion","Weddings, celebrations, the big night"],["any","A bit of everything"]]},
   {k:"str",q:"How much presence do you want?",short:"Presence",o:[["1","Soft & close","Stays near the skin"],["2","Noticeable","Present without taking over"],["3","Bold","Fills the room"],["any","No preference"]]},
   {k:"avoid",multi:6,q:"Anything you’d rather steer clear of?",short:"Steer clear of",hint:"Pick any that apply, and I’ll leave them out.",o:[
    ["sweet","Dessert-level sweet","Vanilla, caramel, candy"],["loud","Room-filling","Anything people smell before they see you"],["fresh","Soapy or shower-gel fresh","Aquatic, sporty, clean-laundry"],
@@ -2228,7 +2228,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  const LIKE={"aventus": [["Hacivat Extrait de Parfum", 4], ["Ani Extrait de Parfum", 1], ["Uomo Born in Roma Yellow Dream", 1]], "bleu": [["Deziro Extrait de Parfum", 4], ["Le Piano Eau de Parfum", 1], ["Uomo Born in Roma Green Stravaganza", 1]], "sauvage": [["Deziro Extrait de Parfum", 2.5]], "adg": [["Deziro Extrait de Parfum", 2.5]], "libre": [["Tempfluo Extrait de Parfum", 4]], "blackopium": [["Hundred Silent Ways X Extrait de Parfum", 4], ["Replica Coffee Break", 1], ["Black Orchid Eau de Parfum", 1]], "lemale": [["Le Male Elixir Parfum", 4], ["I Will Eau de Parfum", 2.5]], "lebeau": [["Uomo Born in Roma Purple Melancholia", 4], ["Fan Your Flames X Extrait de Parfum", 1]], "eros": [["Eros Najim Parfum", 2.5], ["Uomo Born in Roma Yellow Dream", 2.5], ["Le Male Elixir Parfum", 1]], "invictus": [["La Mélodie Maximal Parfum", 4], ["Uomo Born in Roma Yellow Dream", 2.5]], "swy": [["I Will Eau de Parfum", 2.5], ["Eros Najim Parfum", 2.5], ["Uomo Born in Roma Yellow Dream", 2.5], ["Le Male Elixir Parfum", 1]], "mostwanted": [["Uomo Born in Roma Yellow Dream", 2.5], ["Tempfluo Extrait de Parfum", 2.5], ["Eros Najim Parfum", 1]], "layton": [["I Will Eau de Parfum", 4], ["Uomo Born in Roma Coral Fantasy", 3], ["Althaïr Eau de Parfum", 2.5], ["Uomo Signature Eau de Parfum", 2.5], ["Tero Extrait de Parfum", 1], ["Ani Extrait de Parfum", 1]], "diorhomme": [["Homme Intense", 5], ["Uomo (2021)", 4], ["Gentleman Réserve Privée Eau de Parfum", 4], ["La Nuit de L'Homme Eau de Toilette", 2.5], ["Noir Eau de Parfum", 2.5], ["Uomo Signature Eau de Parfum", 1]], "tobvan": [["Replica Jazz Club", 2.5], ["Fan Your Flames Extrait de Parfum", 2.5], ["Le Male Elixir Parfum", 1]], "oudwood": [["Kredo Extrait de Parfum", 2.5], ["Nefs Extrait de Parfum", 1]], "tuscan": [["Tuscan Leather Eau de Parfum", 4], ["Suède et Safran Extrait de Parfum", 4], ["Ombre Leather Eau de Parfum", 4]], "br540": [["Baccarat Rouge 540 Eau de Parfum", 4], ["Tempfluo Extrait de Parfum", 1], ["Erba Pura Eau de Parfum", 1], ["Hundred Silent Ways X Extrait de Parfum", 1]], "spicebomb": [["Le Male Elixir Parfum", 2.5], ["Replica Jazz Club", 2.5], ["Or Noir Café Parfum", 1], ["Zoltan Extrait de Parfum", 1]], "jazzclub": [["Replica Jazz Club", 4], ["Fan Your Flames Extrait de Parfum", 2.5]]};
  const LIKE_TXT={"aventus": "Creed Aventus", "bleu": "Bleu de Chanel", "sauvage": "Dior Sauvage", "adg": "Acqua di Giò", "libre": "YSL Libre", "blackopium": "YSL Black Opium", "lemale": "JPG Le Male", "lebeau": "JPG Le Beau", "eros": "Versace Eros", "invictus": "Rabanne Invictus", "swy": "Armani Stronger With You", "mostwanted": "Azzaro The Most Wanted", "layton": "PdM Layton", "diorhomme": "Dior Homme / Prada L'Homme", "tobvan": "TF Tobacco Vanille", "oudwood": "TF Oud Wood", "tuscan": "TF Tuscan Leather", "br540": "MFK Baccarat Rouge 540", "spicebomb": "Spicebomb Extreme", "jazzclub": "Replica Jazz Club"};
  let mode="steps",step=0,ans={},last=null;const openNotes=new Set();
- try{const sv=JSON.parse(sessionStorage.getItem("vv-scent")||"null");if(sv){mode=sv.mode||mode;step=sv.step||0;ans=sv.ans||{}}}catch(e){}
+ try{const sv=JSON.parse(sessionStorage.getItem("vv-scent")||"null");if(sv){mode=sv.mode||mode;step=sv.step||0;ans=sv.ans||{};if(typeof ans.occ==="string")ans.occ=[ans.occ]}}catch(e){}
  const saveQ=()=>{try{sessionStorage.setItem("vv-scent",JSON.stringify({mode,step,ans}))}catch(e){}};
  const hasAns=()=>Object.entries(ans).some(([k,v])=>k!=="lovesTyped"&&(Array.isArray(v)?v.length:v!==undefined&&v!==""));
  if(typeof ans.loves==="string"){ans.lovesTyped=ans.loves;ans.loves=[]}
@@ -2239,6 +2239,8 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   dark:p=>p.cat==="Leather"||(p.x||[]).some(t=>/oud|smoky|animalic/.test(t)),floral:p=>p.cat==="Floral"||p.cat2==="Floral",powdery:p=>(p.x||[]).includes("powdery")};
  const allNotes=p=>p._all||(p._all=[p.notes].concat(p.n?[...p.n.t,...p.n.h,...p.n.b]:[]).concat(p.x||[]).join(", "));
  const OCC_TM={work:"d",gym:"d",date:"n",night:"n",special:"n",any:"b"};
+ /* Occasion allows two picks: the answers, and the time of day they add up to (both halves of the day when the picks straddle it). */
+ const occs=()=>[].concat(ans.occ||[]).filter(v=>v&&v!=="any"),occTm=()=>{const t=new Set(occs().map(o=>OCC_TM[o]));return t.size===1?[...t][0]:"b"};
  /* ===== Vibes: each returns a score for a product from its family, descriptors, presence and time of day ===== */
  const xs=(p,re)=>(p.x||[]).some(t=>re.test(t)),fam2=(p,...c)=>c.includes(p.cat)||c.includes(p.cat2),st=p=>p.str||2,frsh=p=>p.cat==="Fresh"||p.cat==="Citrus",swt=p=>p.cat==="Sweet"||p.cat==="Amber";
  const VIBE={
@@ -2327,15 +2329,15 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  function fits(p){const f=(ans.fam||[]).filter(v=>v!=="any");
   const famOk=!f.length||f.some(c=>famOf(p).includes(c))||likeHits(p).length||lovesScore(p)>=6;
   const seaOk=!ans.sea||ans.sea==="a"||p.sea===ans.sea||p.sea==="a";
-  const tm=OCC_TM[ans.occ||"any"];const tmOk=tm==="b"||p.tm===tm||p.tm==="b";
+  const tm=occTm();const tmOk=tm==="b"||p.tm===tm||p.tm==="b";
   const avOk=!(ans.avoid||[]).some(a=>AVOID[a]&&AVOID[a](p));
   return famOk&&seaOk&&tmOk&&avOk&&whoOk(p)}
  function score(p){let s=0;const f=(ans.fam||[]).filter(v=>v!=="any");
   if(f.length)s+=f.includes(p.cat)?5:(p.cat2&&f.includes(p.cat2))?3.5:0;
   const se=ans.sea||"a";if(se==="a")s+=1;else s+=p.sea===se?3:p.sea==="a"?2:-3;
-  const tm=OCC_TM[ans.occ||"any"];if(tm==="b")s+=1;else s+=p.tm===tm?2:p.tm==="b"?1:-1;
+  const tm=occTm(),oc=occs();if(!oc.length)s+=1;else if(tm==="b")s+=p.tm==="b"?2:1;else s+=p.tm===tm?2:p.tm==="b"?1:-1;
   const st=p.str||2;
-  if(ans.occ==="work")s+=st<=2?1:-1;if(ans.occ==="gym"){s+=st<=2?1.5:-2;s+=(p.x||[]).some(t=>/aquatic|green|tea|fruity|aromatic/.test(t))||["Fresh","Citrus"].includes(p.cat)||["Fresh","Citrus"].includes(p.cat2)?2:0;s-=(p.x||[]).some(t=>/gourmand|boozy|oud|animalic|smoky/.test(t))||p.cat==="Leather"?1.5:0}if(ans.occ==="special")s+=st===3?1.5:0;if(ans.occ==="date")s+=(p.x||[]).some(t=>/gourmand|boozy|amber|musky|leather/.test(t))?1:0;if(ans.occ==="night")s+=st>=2?1:0;
+  if(oc.includes("work"))s+=st<=2?1:-1;if(oc.includes("gym")){s+=st<=2?1.5:-2;s+=(p.x||[]).some(t=>/aquatic|green|tea|fruity|aromatic/.test(t))||["Fresh","Citrus"].includes(p.cat)||["Fresh","Citrus"].includes(p.cat2)?2:0;s-=(p.x||[]).some(t=>/gourmand|boozy|oud|animalic|smoky/.test(t))||p.cat==="Leather"?1.5:0}if(oc.includes("special"))s+=st===3?1.5:0;if(oc.includes("date"))s+=(p.x||[]).some(t=>/gourmand|boozy|amber|musky|leather/.test(t))?1:0;if(oc.includes("night"))s+=st>=2?1:0;
   if(ans.str&&ans.str!=="any"){const d=Math.abs(st-Number(ans.str));s+=d===0?2:d===1?.5:-2}
   (ans.avoid||[]).forEach(a=>{if(AVOID[a]&&AVOID[a](p))s-=8});
   s+=vibeScore(p)*1.6;
@@ -2388,7 +2390,9 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
   if(f.length){if(f.includes(p.cat)&&ft.fam)cands.push(ft.fam);else if(p.cat2&&f.includes(p.cat2)&&ft.fam2)cands.push(ft.fam2)}
   const lvh=lovesHit(p).map(x=>dbShort(x.r));if(lvh.length&&!lk.length&&ft.like)cands.push(ft.like.replace("{s}",slot(list(lvh.slice(0,2)))));
   const vh=vibeHit(p);if(vh.length){const v=vh[0],g=PRODUCTS.indexOf(p)%VIBE_FIT[v].length;cands.push(VIBE_FIT[v].slice(g).concat(VIBE_FIT[v].slice(0,g)))}
-  if(ans.occ==="gym"){if(p.tm!=="n"){const g=PRODUCTS.indexOf(p)%GYM_TXT.length;cands.push(GYM_TXT.slice(g).concat(GYM_TXT.slice(0,g)))}}else if(ans.occ&&ans.occ!=="any"){const o=OCC_TXT[ans.occ],tm=OCC_TM[ans.occ];if(p.tm===tm&&ft.occ)cands.push(ft.occ.replace("{o}",slot(o)));else if(p.tm==="b"&&ft.occB)cands.push(ft.occB.replace("{o}",slot(o)))}
+  const oc=occs();if(oc.includes("gym")&&p.tm!=="n"){const g=PRODUCTS.indexOf(p)%GYM_TXT.length;cands.push(GYM_TXT.slice(g).concat(GYM_TXT.slice(0,g)))}
+  const on=oc.filter(o=>o!=="gym");if(on.length===2&&p.tm==="b"&&ft.occB&&OCC_TM[on[0]]!==OCC_TM[on[1]])cands.push(ft.occB.replace("{o}",slot(on.map(o=>OCC_TXT[o]).join(" and "))));
+  else on.forEach(o=>{const tm=OCC_TM[o];if(p.tm===tm&&ft.occ)cands.push(ft.occ.replace("{o}",slot(OCC_TXT[o])));else if(p.tm==="b"&&ft.occB)cands.push(ft.occB.replace("{o}",slot(OCC_TXT[o])))});
   const se=ans.sea;if(se&&se!=="a"){if(p.sea===se&&ft.sea)cands.push(ft.sea);else if(p.sea==="a"&&ft.seaAll)cands.push(ft.seaAll)}
   if(ans.str&&ans.str!=="any"&&(p.str||2)===Number(ans.str)&&ft.str)cands.push(ft.str);
   const kw=kwFor(p),seen=new Set([...kw(sh.vibe),...kw(sh.when)]);
@@ -2494,7 +2498,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
     opens, pick taps, "add the set" and "show all" are tracked too. All no-ops off the live domain (track.js). */
  const shT=function(n,d){try{if(window.vvTrack)vvTrack(n,d||{})}catch(e){}},shSeen=new Set();let shOpened=false;
  function shResult(how){try{const r=picks();if(!r.length)return;const sig=how+"|"+JSON.stringify(ans);if(shSeen.has(sig))return;shSeen.add(sig);
-  shT("sherpa_result",{pick:r[0].p.name,picks:r.map(x=>x.p.name).join(" | "),who:ans.who||"",vibe:[].concat(ans.vibe||[]).join(","),occasion:ans.occ||"",mode:how})}catch(e){}}
+  shT("sherpa_result",{pick:r[0].p.name,picks:r.map(x=>x.p.name).join(" | "),who:ans.who||"",vibe:[].concat(ans.vibe||[]).join(","),occasion:occs().join(","),mode:how})}catch(e){}}
  function results(){
   shResult("steps");
   box.innerHTML=toggleHTML()+`<div class="qz-step">Scent Sherpa</div><h3 class="qz-q" id="qz-title">Here’s where I’d start</h3>${resultsHTML(picks())}
