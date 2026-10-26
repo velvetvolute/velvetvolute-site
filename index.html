@@ -2013,7 +2013,11 @@ function fitWU(el){const full=el.dataset.full,open=el.classList.contains("m-open
  const b=el.querySelector(".rm");if(b)b.onclick=e=>{e.preventDefault();el.classList.toggle("m-open");fitWU(el);sideFix(el.closest(".card"))}}
 function sideFix(card){const on=card.querySelector(".m-open");card.classList.toggle("m-x",!!on);
  [...g.children].forEach(c=>{if(c.classList.contains("m-x")){c.classList.remove("m-side");return}c.classList.toggle("m-side",[...g.children].some(o=>o.classList.contains("m-x")&&Math.abs(o.offsetTop-c.offsetTop)<4))})}
-let wuT;addEventListener("resize",()=>{clearTimeout(wuT);wuT=setTimeout(()=>g.querySelectorAll(".card").forEach(c=>{const w=c.querySelector("[data-full]");if(w)fitWU(w)}),150)});
+const refitWU=()=>g.querySelectorAll(".card").forEach(c=>{const w=c.querySelector("[data-full]");if(w)fitWU(w)});
+let wuT;addEventListener("resize",()=>{clearTimeout(wuT);wuT=setTimeout(refitWU,150)});
+/* re-measure once the real fonts arrive, so the cut always lands on three full lines */
+if(document.fonts){document.fonts.ready.then(refitWU);if(document.fonts.addEventListener)document.fonts.addEventListener("loadingdone",refitWU);document.fonts.load('400 13px "Libre Baskerville"').then(refitWU).catch(()=>{})}
+addEventListener("load",refitWU);
 function bind(card){const i=+card.dataset.i,p=PRODUCTS[i],st=state[i];
  const mw=card.querySelector(".spot-why,.mood,.notes");if(mw){mw.dataset.full=mw.textContent;fitWU(mw)}
  const sm=card.querySelector(".story-more"),mp=card.querySelector(".mood");
