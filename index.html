@@ -2070,7 +2070,7 @@ function equalize(){return;const cs=[...g.querySelectorAll(".card")];
 let _eqT,_eqW=innerWidth;addEventListener("resize",()=>{if(innerWidth===_eqW)return;_eqW=innerWidth;clearTimeout(_eqT);_eqT=setTimeout(equalize,150)});
 document.fonts&&document.fonts.ready.then(()=>equalize());
 function passes(p,i,skip){return (!sherpaSet||sherpaSet.includes(i))&&(!brandSel.size||brandSel.has(p.brand))
- &&(skip==="fam"||fam==="All scents"||p.cat===fam||p.cat2===fam)&&(gen==="all"||(gen==="Women"?!!p.her:p.g===gen))&&(skip==="sea"||sea==="all"||p.sea===sea||p.sea==="a")}
+ &&(skip==="fam"||fam==="All scents"||p.cat===fam||p.cat2===fam)&&(gen==="all"||(gen==="Women"?!!p.her:gen==="Men"?p.g!=="Women":p.g===gen))&&(skip==="sea"||sea==="all"||p.sea===sea||p.sea==="a")}
 function filterOptions(){
  [...fs.options].forEach(o=>{if(o.value==="All scents")return;const n=PRODUCTS.filter((p,i)=>passes(p,i,"fam")&&(p.cat===o.value||p.cat2===o.value)).length;
   o.textContent=`${FAM_LABEL[o.value]||o.value} (${n})`;o.hidden=o.disabled=!n&&o.value!==fam});
