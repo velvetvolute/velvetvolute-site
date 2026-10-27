@@ -5,7 +5,7 @@ description: New to Nishane? Hacivat, Ani, Fan Your Flames, Wulong Cha and the T
 summary: Hacivat, Ani, Fan Your Flames, Wulong Cha and the five Time Capsule extraits. Who each one is for, and where to start.
 date: 2026-10-18
 updated: 2026-10-18
-image: img/nishane-hacivat-de51affda2-3024.w1080.jpg
+image: img/nishane-hacivat-8e7f1ef752-3024.w1080.jpg
 imageAlt: Nishane Hacivat extrait bottle with 2, 5 and 10 ml Velvet Volute decants
 scents: ZWRPIQIHVK7HZA2GOFV7NRE2, 5QQ4SJTXANHQPQIU7ORYBAJB, ZXPCML5QU6DKV5U2OFSVHC4Y, BABPMMILE54ZYB5JFIJY34IK, 6RRUWMTR6HR57YISIVFICWM3, AW3KVJLCAKI7SLNFDO6J7WPV
 ---
