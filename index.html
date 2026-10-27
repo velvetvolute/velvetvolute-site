@@ -444,6 +444,10 @@ a.cart-open{text-decoration:none}
 .spot-rib{position:absolute;top:12px;left:12px;z-index:2;padding:5px 12px;border-radius:20px;background:linear-gradient(135deg,#ffe3ab,#d5a667);color:#3e1019;font:600 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase}
 .rib-vv{display:inline-block;font:600 9.5px/1 var(--serif);letter-spacing:.04em;color:#6b1e2e;border:1.2px solid #6b1e2e;border-radius:50%;width:16px;height:16px;line-height:14px;text-align:center;margin-right:3px;vertical-align:-3px}
 .spot-rib span{font-size:11px}
+/* two lines: "<Month> Spotlight" with the VV mark beside it, then the % off */
+.spot-rib{display:grid;grid-template-columns:auto auto;justify-content:start;align-items:center;column-gap:7px;row-gap:3px;border-radius:14px;line-height:1.15;white-space:nowrap}
+.spot-rib .rib-vv{margin:0}
+.spot-rib .rp{grid-column:1/-1}
 .spot-why{margin:6px 0 10px;padding-left:0;border-left:0;font:400 14.5px/1.75 var(--story);color:#481620;letter-spacing:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-wrap:pretty}
 @media(prefers-reduced-motion:reduce){.card.spot .photo::after{animation:none}}
 /* zodiac season pick */
@@ -850,7 +854,8 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
  #grid .card .pyr,#grid .card .vdesc,#grid .card .pml-b,#grid .card .sprays,#grid .card .gender{display:none}
  #grid .card .body{padding:10px 10px 12px}
  #grid .card .photo .slide figcaption{padding:5px 6px;font-size:10px;letter-spacing:.04em}
- #grid .card .spot-rib{font-size:9.5px;padding:5px 7px;letter-spacing:.04em}
+ #grid .card .spot-rib{font-size:9.5px;padding:5px 9px;letter-spacing:.06em;column-gap:5px}
+ #grid .card .spot-rib .rt,#grid .card .spot-rib .rp{font-size:9.5px}
  #grid .card .brand{font-size:11px;letter-spacing:.01em;margin-bottom:2px}
  #grid .card .name{font-size:16px;line-height:1.2;min-height:2.4em}
  #grid .card .limited,#grid .card .zod-tag{font-size:10px;margin-top:4px}
@@ -2006,7 +2011,7 @@ function noteHi(p){if(!p.n)return "";const t=p.n,tiers=t.h.length||t.b.length?[t
  for(let k=0;out.length<3&&k<8;k++)tiers.forEach(r=>{if(r[k]&&out.length<3&&!out.includes(r[k]))out.push(r[k])});return out.join(", ")}
 function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v],sp=isSpot(p);
  return `<article class="card${sp?" spot":""}" data-i="${i}">
-   <div class="photo">${sp?`<div class="spot-rib"><span class="rib-vv">VV</span> ${SPOT.label} Spotlight · ${SPOT.pct}% off</div>`:""}${p.img?photoStrip(p,st):bottleArt(p,i)}</div>
+   <div class="photo">${sp?`<div class="spot-rib"><span class="rt">${SPOT.label} Spotlight</span><span class="rib-vv">VV</span><span class="rp">${SPOT.pct}% off</span></div>`:""}${p.img?photoStrip(p,st):bottleArt(p,i)}</div>
    <div class="body"><div class="brand"><a class="tlink" href="${hUrl(p.brand)}">${p.brand}</a><span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name"><a class="tlink" href="${pUrl(p)}">${p.name}</a></div>${pillsHTML(p)}${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<p class="hi"><b>Notes:</b> ${noteHi(p)}</p>`:""}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
    <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}${k==="luxe"?'<span class="vup">+$3</span>':k==="roll"?'<span class="vup">+$4</span>':""}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
