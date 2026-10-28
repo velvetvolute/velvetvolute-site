@@ -22,8 +22,7 @@
      "Suede"
     ],
     "vibe": "Calm & unshakable",
-    "sub": "belief",
-    "tile": "tc_AW3KVJLCAKI7SLNFDO6J7WPV"
+    "sub": "belief"
    },
    {
     "sq": "6RRUWMTR6HR57YISIVFICWM3",
@@ -40,8 +39,7 @@
      "Praline"
     ],
     "vibe": "Warm, sweet & carefree",
-    "sub": "the flow of time",
-    "tile": "tc_6RRUWMTR6HR57YISIVFICWM3"
+    "sub": "the flow of time"
    },
    {
     "sq": "HAQDGYJNCWMIHP5A5GJJSRHJ",
@@ -58,8 +56,7 @@
      "Balsam fir"
     ],
     "vibe": "Crisp, cool & contemplative",
-    "sub": "the butterfly effect",
-    "tile": "tc_HAQDGYJNCWMIHP5A5GJJSRHJ"
+    "sub": "the butterfly effect"
    },
    {
     "sq": "NIBHBS673EEIIPPGJSAEI7JY",
@@ -76,8 +73,7 @@
      "Vetiver"
     ],
     "vibe": "Breezy & effortless",
-    "sub": "desire",
-    "tile": "tc_NIBHBS673EEIIPPGJSAEI7JY"
+    "sub": "desire"
    },
    {
     "sq": "LIIP3QVKFSAXBVJPFFAID37G",
@@ -94,12 +90,10 @@
      "Sichuan pepper",
      "Patchouli"
     ],
-    "vibe": "Grounded, warm &amp; confident",
-    "tile": "tc_LIIP3QVKFSAXBVJPFFAID37G"
+    "vibe": "Grounded, warm &amp; confident"
    }
   ],
-  "nm_h": 92,
-  "obj": "50% 50%"
+  "nm_h": 92
  },
  {
   "slug": "02-born-in-roma",
@@ -227,20 +221,20 @@
     "vibe": "Sleek & refined"
    },
    {
-    "sq": "AW3KVJLCAKI7SLNFDO6J7WPV",
-    "house": "Nishane",
-    "short": "Kredo",
+    "house": "Sospiro",
+    "short": "Erba Leather",
     "year": 2022,
-    "r50": 390,
-    "r100": 550,
+    "r100": 435,
+    "s100": "100 ml",
     "intensity": 4,
-    "family": "Leather Oud",
+    "family": "Leather Fruity",
     "notes": [
-     "Osmanthus",
-     "Oud",
-     "Suede"
+     "Passion fruit",
+     "Leather",
+     "Amber"
     ],
-    "vibe": "Calm & unshakable"
+    "vibe": "Sunny, smooth & daring",
+    "sq": "ZRS2LCBJGQC3SPAYYPJID2TF"
    }
   ]
  },
@@ -248,25 +242,9 @@
   "slug": "04-tom-ford",
   "eyebrow": "COMPARE THE HOUSE",
   "title": "TOM FORD",
-  "subtitle": "The house essentials, side by side.",
+  "subtitle": "Four after-dark essentials, side by side.",
   "footer": "Four icons. One decant at a time.",
   "cols": [
-   {
-    "sq": "6IXPDR425PPISJBHT2OAGJZY",
-    "house": "Tom Ford",
-    "short": "Black Orchid",
-    "year": 2006,
-    "r50": 215,
-    "r100": 315,
-    "intensity": 5,
-    "family": "Amber Floral",
-    "notes": [
-     "Black truffle",
-     "Black orchid",
-     "Patchouli"
-    ],
-    "vibe": "Dark, rich & decadent"
-   },
    {
     "sq": "IEIPT6KIEZLX3W3U3CRDMOD6",
     "house": "Tom Ford",
@@ -282,6 +260,22 @@
      "Vanilla"
     ],
     "vibe": "Refined, with a wild side"
+   },
+   {
+    "house": "Tom Ford",
+    "short": "Noir Extreme",
+    "year": 2015,
+    "r50": 215,
+    "r100": 315,
+    "intensity": 4,
+    "family": "Amber Spicy",
+    "notes": [
+     "Cardamom",
+     "Kulfi",
+     "Sandalwood"
+    ],
+    "vibe": "Velvety & seductive",
+    "sq": "DPS3PDI4VSIKJ5BJA6YYQ6LL"
    },
    {
     "sq": "LMHN6IFHQPUTAW4H22NTVQKY",
@@ -300,30 +294,30 @@
     "vibe": "Rugged & easygoing"
    },
    {
-    "sq": "Q6IFTTHV75EK3RJTB474ZTI5",
     "house": "Tom Ford",
-    "short": "Tuscan Leather",
-    "year": 2007,
-    "r50": 390,
-    "r100": 600,
-    "intensity": 4,
-    "family": "Leather",
+    "short": "Oud Minérale",
+    "year": 2017,
+    "r50": 215,
+    "r100": 315,
+    "intensity": 3,
+    "family": "Marine Woody",
     "notes": [
-     "Raspberry",
-     "Saffron",
-     "Suede"
+     "Sea salt",
+     "Oud",
+     "Ambergris"
     ],
-    "vibe": "Bold & unapologetic"
+    "vibe": "Cool, salty & mysterious",
+    "sq": "BHTPR3LHPBN22W4MQTXAKWUF"
    }
   ]
  },
  {
-  "slug": "05-fyf-vs-fyf-x",
+  "slug": "05-tea-x-flames",
   "eyebrow": "THE ORIGINAL VS THE X",
-  "title": "FAN YOUR FLAMES",
-  "subtitle": "Nishane's cult classic, and its 10th-anniversary remix.",
+  "title": "TEA &#x27;X&#x27; FLAMES",
+  "title_fs": 66,
+  "subtitle": "Two Nishane icons, each beside its 10th-anniversary remix.",
   "footer": "Hear the original, then the remix.",
-  "name_fs": 34,
   "cols": [
    {
     "sq": "ZXPCML5QU6DKV5U2OFSVHC4Y",
@@ -356,38 +350,48 @@
      "Mastic"
     ],
     "vibe": "Soft, tropical & laid-back"
+   },
+   {
+    "house": "Nishane",
+    "short": "Wulong Cha",
+    "year": 2015,
+    "r50": 360,
+    "r100": 520,
+    "intensity": 3,
+    "family": "Citrus Tea",
+    "notes": [
+     "Oolong tea",
+     "Bergamot",
+     "Fig"
+    ],
+    "vibe": "Calm, bright & easy",
+    "sq": "V55WG46EP3VHSPNRPSWAJKOV"
+   },
+   {
+    "sq": "BABPMMILE54ZYB5JFIJY34IK",
+    "house": "Nishane",
+    "short": "Wulong Cha X",
+    "year": 2023,
+    "r50": 390,
+    "r100": 550,
+    "intensity": 4,
+    "family": "Green Floral",
+    "notes": [
+     "Yuzu",
+     "Green tea",
+     "Magnolia"
+    ],
+    "vibe": "Calm, clear &amp; refined"
    }
-  ],
-  "ph_h": 380,
-  "row_h": 64,
-  "notes_h": 88,
-  "obj": "50% 70%"
+  ]
  },
  {
-  "slug": "06-warm",
+  "slug": "06-coffeehouse",
   "eyebrow": "COMPARE THE COLLECTION",
-  "title": "THE WARM COLLECTION",
-  "title_fs": 60,
-  "subtitle": "Your cold-weather rotation, from first frost to the last snow.",
-  "footer": "Smooth and cozy. Try them all before you buy the bottle.",
+  "title": "THE COFFEEHOUSE",
+  "subtitle": "Four orders, one counter. First espresso to the last cup.",
+  "footer": "Order a flight before you buy the bottle.",
   "cols": [
-   {
-    "sq": "2SLX3E67ZUQTY7XT2OI2PLNR",
-    "house": "Armani",
-    "short": "I Will",
-    "year": 2026,
-    "r50": 150,
-    "s50": "60 ml",
-    "r100": 190,
-    "intensity": 3,
-    "family": "Amber Woody",
-    "notes": [
-     "Bergamot",
-     "Lavender",
-     "Vanilla"
-    ],
-    "vibe": "Confident & comforting"
-   },
    {
     "sq": "R6RQ2KN46KOJNXXLIK3Y5UHT",
     "house": "Maison Margiela",
@@ -420,11 +424,27 @@
     "vibe": "Rich & indulgent"
    },
    {
+    "sq": "E7TWUA2IZR65TXSYDMQKSHIL",
+    "house": "Valentino",
+    "short": "Green Stravaganza",
+    "year": 2024,
+    "r50": 140,
+    "r100": 170,
+    "intensity": 2,
+    "family": "Amber Fougère",
+    "notes": [
+     "Bergamot",
+     "Coffee",
+     "Vetiver"
+    ],
+    "vibe": "Fresh, crisp & wide awake"
+   },
+   {
     "sq": "CENIOXSZE3IM2XDDFTHGCQBE",
     "house": "Ferragamo",
     "short": "Uomo Signature",
     "year": 2018,
-    "r100": "US$108",
+    "r100": 150,
     "intensity": 4,
     "family": "Leather",
     "notes": [
@@ -442,8 +462,7 @@
   "title": "LAST CALL, BOTTLED",
   "title_fs": 60,
   "subtitle": "Rum, whisky and smoke. For the nights that run 'til 5am.",
-  "footer": "Pour one out. Try all three before you buy the bottle.",
-  "name_fs": 28,
+  "footer": "Pour one out. Try all four before you buy the bottle.",
   "cols": [
    {
     "sq": "JQWKMPNXK3MMHWNFVD3RZVTW",
@@ -494,6 +513,22 @@
      "Chestnut"
     ],
     "vibe": "Suave & smooth"
+   },
+   {
+    "house": "Nishane",
+    "short": "Nefs",
+    "year": 2019,
+    "r50": 905,
+    "s50": "50 ml",
+    "intensity": 5,
+    "family": "Amber Honey",
+    "notes": [
+     "Honey",
+     "Osmanthus",
+     "Oud"
+    ],
+    "vibe": "Opulent & nocturnal",
+    "sq": "OZ5Z33WF6IPMP7W6MNJWE47G"
    }
   ]
  },
@@ -522,20 +557,22 @@
     "vibe": "Sweet, spicy & addictive"
    },
    {
-    "sq": "6RRUWMTR6HR57YISIVFICWM3",
-    "house": "Nishane",
-    "short": "Tempfluo",
-    "year": 2022,
-    "r50": 390,
-    "r100": 550,
+    "house": "Parfums de Marly",
+    "short": "Althaïr",
+    "year": 2023,
+    "r50": 395,
+    "s50": "75 ml",
+    "r100": 545,
+    "s100": "125 ml",
     "intensity": 4,
-    "family": "Floral Fruity",
+    "family": "Amber Vanilla",
     "notes": [
-     "Saffron",
+     "Bourbon vanilla",
      "Praline",
-     "Vanilla"
+     "Cinnamon"
     ],
-    "vibe": "Warm, sweet & carefree"
+    "vibe": "Smooth, warm & polished",
+    "sq": "BIOLOUFPWNNQQ2BOBZSMYZI5"
    },
    {
     "sq": "2SLX3E67ZUQTY7XT2OI2PLNR",
@@ -555,109 +592,47 @@
     "vibe": "Confident & comforting"
    },
    {
-    "sq": "JQWKMPNXK3MMHWNFVD3RZVTW",
-    "house": "Maison Margiela",
-    "short": "Jazz Club",
-    "year": 2013,
-    "r50": 115,
-    "s50": "30 ml",
-    "r100": 195,
-    "intensity": 3,
-    "family": "Leather",
+    "house": "Jean Paul Gaultier",
+    "short": "Le Male Elixir",
+    "year": 2023,
+    "s100": "125 ml",
+    "r100": 210,
+    "intensity": 5,
+    "family": "Amber Fougère",
     "notes": [
-     "Rum",
-     "Tobacco leaf",
-     "Vanilla"
+     "Lavender",
+     "Honey",
+     "Tonka"
     ],
-    "vibe": "Smooth & smoky"
+    "vibe": "Bold, sweet & magnetic",
+    "sq": "XLJ4LPB4VDJPEJKLLWRUDVS5"
    }
   ]
  },
  {
-  "slug": "09-fresh",
-  "eyebrow": "COMPARE THE FRESH ONES",
-  "title": "FRESH &amp; BRIGHT",
-  "subtitle": "Clean, sunny and easy to wear. Your daytime rotation.",
-  "footer": "Find your fresh before you buy the bottle.",
-  "cols": [
-   {
-    "sq": "ZWRPIQIHVK7HZA2GOFV7NRE2",
-    "house": "Nishane",
-    "short": "Hacivat",
-    "year": 2017,
-    "r50": 390,
-    "r100": 550,
-    "intensity": 5,
-    "family": "Chypre",
-    "notes": [
-     "Pineapple",
-     "Patchouli",
-     "Oakmoss"
-    ],
-    "vibe": "Sharp, polished & confident"
-   },
-   {
-    "sq": "WC4P3J4BYGBICYUBCCPVGEOV",
-    "house": "Xerjoff",
-    "short": "Erba Pura",
-    "year": 2019,
-    "r50": 240,
-    "r100": 355,
-    "intensity": 5,
-    "family": "Amber Fruity",
-    "notes": [
-     "Sicilian orange",
-     "Mediterranean fruit",
-     "Vanilla"
-    ],
-    "vibe": "Bright, juicy & bold"
-   },
-   {
-    "sq": "NIBHBS673EEIIPPGJSAEI7JY",
-    "house": "Nishane",
-    "short": "Deziro",
-    "year": 2024,
-    "r50": 390,
-    "r100": 550,
-    "intensity": 3,
-    "family": "Aromatic Aquatic",
-    "notes": [
-     "Mandarin",
-     "Mint",
-     "Vetiver"
-    ],
-    "vibe": "Breezy & effortless"
-   },
-   {
-    "sq": "XRZWTFEH4VB5LESUQKZ2ZWWU",
-    "house": "Valentino",
-    "short": "Yellow Dream",
-    "year": 2021,
-    "r50": 140,
-    "intensity": 2,
-    "family": "Amber Spicy",
-    "notes": [
-     "Pineapple",
-     "Gingerbread",
-     "Vanilla"
-    ],
-    "vibe": "Sunny, sweet & playful"
-   }
-  ]
- },
- {
-  "slug": "10-nishane-x",
+  "slug": "09-nishane-x",
   "eyebrow": "NISHANE'S REMIXES",
   "title": "THE X COLLECTION",
   "title_fs": 66,
-  "subtitle": "Two classics, reimagined for Nishane's 10th anniversary.",
-  "footer": "Two remixes, two moods. Try both before you buy the bottle.",
-  "name_fs": 34,
-  "ph_h": 380,
-  "row_h": 64,
-  "notes_h": 88,
-  "obj": "50% 70%",
+  "subtitle": "Three classics, rewritten for Nishane's 10th anniversary.",
+  "footer": "Three remixes, three moods. Try them all before you buy the bottle.",
   "cols": [
+   {
+    "house": "Nishane",
+    "short": "Hundred Silent Ways X",
+    "year": 2023,
+    "r50": 390,
+    "r100": 550,
+    "intensity": 4,
+    "family": "White Floral",
+    "notes": [
+     "Tuberose",
+     "Peach",
+     "Vanilla"
+    ],
+    "vibe": "Sensual & hypnotic",
+    "sq": "RIDSP2UTX5Z3YD5AFG2WQ5LQ"
+   },
    {
     "sq": "PE33TD43HYRTTZC5A6JHU25A",
     "house": "Nishane",
@@ -688,8 +663,805 @@
      "Green tea",
      "Magnolia"
     ],
-    "vibe": "Calm, clear &amp; refined",
-    "obj": "50% 0%"
+    "vibe": "Calm, clear &amp; refined"
+   }
+  ]
+ },
+ {
+  "slug": "10-flower-and-stone",
+  "eyebrow": "COMPARE THE COLLECTION",
+  "title": "FLOWER &amp; STONE",
+  "subtitle": "Two blossoms, two stones, and the ground that holds them both.",
+  "footer": "Walk the whole garden before you buy the bottle.",
+  "cols": [
+   {
+    "house": "Tom Ford",
+    "short": "Café Rose",
+    "year": 2012,
+    "r50": 215,
+    "r100": 315,
+    "intensity": 3,
+    "family": "Floral Gourmand",
+    "notes": [
+     "Turkish rose",
+     "Coffee",
+     "Frankincense"
+    ],
+    "vibe": "Romantic & moody",
+    "sq": "OFGHAYPNNVQGBPZN7N5DPKQF"
+   },
+   {
+    "sq": "6IXPDR425PPISJBHT2OAGJZY",
+    "house": "Tom Ford",
+    "short": "Black Orchid",
+    "year": 2006,
+    "r50": 215,
+    "r100": 315,
+    "intensity": 5,
+    "family": "Amber Floral",
+    "notes": [
+     "Black truffle",
+     "Black orchid",
+     "Patchouli"
+    ],
+    "vibe": "Dark, rich & decadent"
+   },
+   {
+    "house": "Hermès",
+    "short": "Terre d'Hermès Intense",
+    "year": 2025,
+    "r50": 140,
+    "r100": 208,
+    "intensity": 3,
+    "family": "Woody Spicy",
+    "notes": [
+     "Bergamot",
+     "Coffee",
+     "Lava stone"
+    ],
+    "vibe": "Grounded & self-assured",
+    "sq": "WE3AYJUS5PPXVY3UKXPGE6SJ"
+   },
+   {
+    "house": "Tom Ford",
+    "short": "Oud Minérale",
+    "year": 2017,
+    "r50": 215,
+    "r100": 315,
+    "intensity": 3,
+    "family": "Marine Woody",
+    "notes": [
+     "Sea salt",
+     "Oud",
+     "Ambergris"
+    ],
+    "vibe": "Cool, salty & mysterious",
+    "sq": "BHTPR3LHPBN22W4MQTXAKWUF"
+   }
+  ]
+ },
+ {
+  "slug": "11-saffron",
+  "eyebrow": "COMPARE THE NOTE",
+  "title": "RED GOLD",
+  "subtitle": "Saffron, the world's most precious spice, four ways.",
+  "footer": "Find your saffron before you buy the bottle.",
+  "cols": [
+   {
+    "sq": "TC2TRWOK25KG3ZSUULU3PTSO",
+    "house": "Nishane",
+    "short": "Suède et Safran",
+    "year": 2015,
+    "r50": 360,
+    "intensity": 4,
+    "family": "Leather",
+    "notes": [
+     "Saffron",
+     "Suede",
+     "Leather"
+    ],
+    "vibe": "Sleek & refined"
+   },
+   {
+    "house": "Tom Ford",
+    "short": "Noir Extreme",
+    "year": 2015,
+    "r50": 215,
+    "r100": 315,
+    "intensity": 4,
+    "family": "Amber Spicy",
+    "notes": [
+     "Cardamom",
+     "Kulfi",
+     "Sandalwood"
+    ],
+    "vibe": "Velvety & seductive",
+    "sq": "DPS3PDI4VSIKJ5BJA6YYQ6LL"
+   },
+   {
+    "house": "Francis Kurkdjian",
+    "short": "Baccarat Rouge 540",
+    "year": 2015,
+    "r50": 325,
+    "s50": "35 ml",
+    "r100": 505,
+    "s100": "70 ml",
+    "intensity": 5,
+    "family": "Amber Floral",
+    "notes": [
+     "Saffron",
+     "Jasmine",
+     "Ambergris"
+    ],
+    "vibe": "Glowing & unforgettable",
+    "sq": "H3H6KYWKL24KR6EEZM7B7MIR"
+   },
+   {
+    "house": "Versace",
+    "short": "Eros Najim",
+    "year": 2024,
+    "r50": 162,
+    "r100": 219,
+    "intensity": 4,
+    "family": "Amber Oud",
+    "notes": [
+     "Caramel",
+     "Oud",
+     "Patchouli"
+    ],
+    "vibe": "Intense & magnetic",
+    "sq": "VATMWQOVHP5T5Y6NATNYLUIA"
+   }
+  ]
+ },
+ {
+  "slug": "12-holiday-spice",
+  "eyebrow": "COMPARE THE COLLECTION",
+  "title": "HOLIDAY SPICE",
+  "subtitle": "The oven's been on since noon. Four scents for the coldest month.",
+  "footer": "Stay in. Try all four before you buy the bottle.",
+  "cols": [
+   {
+    "sq": "XRZWTFEH4VB5LESUQKZ2ZWWU",
+    "house": "Valentino",
+    "short": "Yellow Dream",
+    "year": 2021,
+    "r50": 140,
+    "intensity": 2,
+    "family": "Amber Spicy",
+    "notes": [
+     "Pineapple",
+     "Gingerbread",
+     "Vanilla"
+    ],
+    "vibe": "Sunny, sweet & playful"
+   },
+   {
+    "sq": "LIIP3QVKFSAXBVJPFFAID37G",
+    "house": "Nishane",
+    "short": "Tero",
+    "year": 2022,
+    "r50": 390,
+    "r100": 550,
+    "intensity": 5,
+    "family": "Amber Spicy",
+    "notes": [
+     "Salted caramel",
+     "Sichuan pepper",
+     "Patchouli"
+    ],
+    "vibe": "Grounded, warm &amp; confident"
+   },
+   {
+    "sq": "5QQ4SJTXANHQPQIU7ORYBAJB",
+    "house": "Nishane",
+    "short": "Ani",
+    "year": 2019,
+    "r50": 360,
+    "r100": 520,
+    "intensity": 5,
+    "family": "Amber Floral",
+    "notes": [
+     "Ginger",
+     "Blackcurrant",
+     "Vanilla"
+    ],
+    "vibe": "Sweet, spicy & addictive"
+   },
+   {
+    "house": "Xerjoff",
+    "short": "Erba Gold",
+    "year": 2016,
+    "r50": 255,
+    "r100": 405,
+    "intensity": 4,
+    "family": "Fruity Spicy",
+    "notes": [
+     "Melon",
+     "Pear",
+     "Cardamom"
+    ],
+    "vibe": "Golden, juicy & generous",
+    "sq": "46L5E4AQVFWRPF542CFSLG65"
+   }
+  ]
+ },
+ {
+  "slug": "13-erba",
+  "eyebrow": "ONE FAMILY, THREE SUMMERS",
+  "title": "THE ERBA FAMILY",
+  "title_fs": 66,
+  "subtitle": "Golden, pure and leather-bound. Turin sunshine, three ways.",
+  "footer": "Find your Erba before you buy the bottle.",
+  "cols": [
+   {
+    "house": "Xerjoff",
+    "short": "Erba Gold",
+    "year": 2016,
+    "r50": 255,
+    "r100": 405,
+    "intensity": 4,
+    "family": "Fruity Spicy",
+    "notes": [
+     "Melon",
+     "Pear",
+     "Cardamom"
+    ],
+    "vibe": "Golden, juicy & generous",
+    "sq": "46L5E4AQVFWRPF542CFSLG65"
+   },
+   {
+    "sq": "WC4P3J4BYGBICYUBCCPVGEOV",
+    "house": "Xerjoff",
+    "short": "Erba Pura",
+    "year": 2019,
+    "r50": 240,
+    "r100": 355,
+    "intensity": 5,
+    "family": "Amber Fruity",
+    "notes": [
+     "Sicilian orange",
+     "Mediterranean fruit",
+     "Vanilla"
+    ],
+    "vibe": "Bright, juicy & bold"
+   },
+   {
+    "house": "Sospiro",
+    "short": "Erba Leather",
+    "year": 2022,
+    "r100": 435,
+    "s100": "100 ml",
+    "intensity": 4,
+    "family": "Leather Fruity",
+    "notes": [
+     "Passion fruit",
+     "Leather",
+     "Amber"
+    ],
+    "vibe": "Sunny, smooth & daring",
+    "sq": "ZRS2LCBJGQC3SPAYYPJID2TF"
+   }
+  ]
+ },
+ {
+  "slug": "14-fruity-with-depth",
+  "eyebrow": "COMPARE THE FRUITY ONES",
+  "title": "FRUITY, WITH DEPTH",
+  "title_fs": 62,
+  "subtitle": "Fruit that grew up. Juicy on top, something serious underneath.",
+  "footer": "Find your fruit before you buy the bottle.",
+  "cols": [
+   {
+    "sq": "WC4P3J4BYGBICYUBCCPVGEOV",
+    "house": "Xerjoff",
+    "short": "Erba Pura",
+    "year": 2019,
+    "r50": 240,
+    "r100": 355,
+    "intensity": 5,
+    "family": "Amber Fruity",
+    "notes": [
+     "Sicilian orange",
+     "Mediterranean fruit",
+     "Vanilla"
+    ],
+    "vibe": "Bright, juicy & bold"
+   },
+   {
+    "house": "Xerjoff",
+    "short": "Erba Gold",
+    "year": 2016,
+    "r50": 255,
+    "r100": 405,
+    "intensity": 4,
+    "family": "Fruity Spicy",
+    "notes": [
+     "Melon",
+     "Pear",
+     "Cardamom"
+    ],
+    "vibe": "Golden, juicy & generous",
+    "sq": "46L5E4AQVFWRPF542CFSLG65"
+   },
+   {
+    "sq": "ZWRPIQIHVK7HZA2GOFV7NRE2",
+    "house": "Nishane",
+    "short": "Hacivat",
+    "year": 2017,
+    "r50": 390,
+    "r100": 550,
+    "intensity": 5,
+    "family": "Chypre",
+    "notes": [
+     "Pineapple",
+     "Patchouli",
+     "Oakmoss"
+    ],
+    "vibe": "Sharp, polished & confident"
+   },
+   {
+    "sq": "Q6IFTTHV75EK3RJTB474ZTI5",
+    "house": "Tom Ford",
+    "short": "Tuscan Leather",
+    "year": 2007,
+    "r50": 390,
+    "r100": 600,
+    "intensity": 4,
+    "family": "Leather",
+    "notes": [
+     "Raspberry",
+     "Saffron",
+     "Suede"
+    ],
+    "vibe": "Bold & unapologetic"
+   }
+  ]
+ },
+ {
+  "slug": "15-woody-earthy",
+  "eyebrow": "COMPARE THE SCENT FAMILY",
+  "title": "WOODY &amp; EARTHY",
+  "title_fs": 64,
+  "subtitle": "Cedar, vetiver, stone and moss. The family that keeps you grounded.",
+  "footer": "Find your wood before you buy the bottle.",
+  "cols": [
+   {
+    "house": "Hermès",
+    "short": "Terre d'Hermès Intense",
+    "year": 2025,
+    "r50": 140,
+    "r100": 208,
+    "intensity": 3,
+    "family": "Woody Spicy",
+    "notes": [
+     "Bergamot",
+     "Coffee",
+     "Lava stone"
+    ],
+    "vibe": "Grounded & self-assured",
+    "sq": "WE3AYJUS5PPXVY3UKXPGE6SJ"
+   },
+   {
+    "sq": "ZWRPIQIHVK7HZA2GOFV7NRE2",
+    "house": "Nishane",
+    "short": "Hacivat",
+    "year": 2017,
+    "r50": 390,
+    "r100": 550,
+    "intensity": 5,
+    "family": "Chypre",
+    "notes": [
+     "Pineapple",
+     "Patchouli",
+     "Oakmoss"
+    ],
+    "vibe": "Sharp, polished & confident"
+   },
+   {
+    "sq": "CPQZVESNT2M27ETVZCOK7U6U",
+    "house": "Givenchy",
+    "short": "Gentleman Réserve Privée",
+    "year": 2022,
+    "r50": 143,
+    "s50": "60 ml",
+    "r100": 178,
+    "intensity": 4,
+    "family": "Amber Vanilla",
+    "notes": [
+     "Whisky",
+     "Iris",
+     "Chestnut"
+    ],
+    "vibe": "Suave & smooth"
+   },
+   {
+    "sq": "AW3KVJLCAKI7SLNFDO6J7WPV",
+    "house": "Nishane",
+    "short": "Kredo",
+    "year": 2022,
+    "r50": 390,
+    "r100": 550,
+    "intensity": 4,
+    "family": "Leather Oud",
+    "notes": [
+     "Osmanthus",
+     "Oud",
+     "Suede"
+    ],
+    "vibe": "Calm & unshakable"
+   }
+  ]
+ },
+ {
+  "slug": "16-sweet-cozy",
+  "eyebrow": "COMPARE THE SCENT FAMILY",
+  "title": "SWEET &amp; COZY",
+  "subtitle": "The gourmands. Rum, praline, kulfi and coffee, worn like a sweater.",
+  "footer": "Find your sweet before you buy the bottle.",
+  "cols": [
+   {
+    "sq": "ZXPCML5QU6DKV5U2OFSVHC4Y",
+    "house": "Nishane",
+    "short": "Fan Your Flames",
+    "year": 2016,
+    "r50": 360,
+    "r100": 520,
+    "intensity": 4,
+    "family": "Amber Gourmand",
+    "notes": [
+     "Coconut",
+     "Rum",
+     "Tobacco"
+    ],
+    "vibe": "Warm, boozy & social"
+   },
+   {
+    "house": "Parfums de Marly",
+    "short": "Althaïr",
+    "year": 2023,
+    "r50": 395,
+    "s50": "75 ml",
+    "r100": 545,
+    "s100": "125 ml",
+    "intensity": 4,
+    "family": "Amber Vanilla",
+    "notes": [
+     "Bourbon vanilla",
+     "Praline",
+     "Cinnamon"
+    ],
+    "vibe": "Smooth, warm & polished",
+    "sq": "BIOLOUFPWNNQQ2BOBZSMYZI5"
+   },
+   {
+    "house": "Tom Ford",
+    "short": "Noir Extreme",
+    "year": 2015,
+    "r50": 215,
+    "r100": 315,
+    "intensity": 4,
+    "family": "Amber Spicy",
+    "notes": [
+     "Cardamom",
+     "Kulfi",
+     "Sandalwood"
+    ],
+    "vibe": "Velvety & seductive",
+    "sq": "DPS3PDI4VSIKJ5BJA6YYQ6LL"
+   },
+   {
+    "sq": "R6RQ2KN46KOJNXXLIK3Y5UHT",
+    "house": "Maison Margiela",
+    "short": "Coffee Break",
+    "year": 2019,
+    "r100": 195,
+    "intensity": 2,
+    "family": "Amber Fougère",
+    "notes": [
+     "Coffee",
+     "Milk",
+     "Lavender"
+    ],
+    "vibe": "Cozy & comforting"
+   }
+  ]
+ },
+ {
+  "slug": "17-amber-resinous",
+  "eyebrow": "COMPARE THE SCENT FAMILY",
+  "title": "AMBER &amp; RESINOUS",
+  "title_fs": 60,
+  "subtitle": "Golden, glowing and hard to place. The ones people ask about.",
+  "footer": "Find your glow before you buy the bottle.",
+  "cols": [
+   {
+    "house": "Francis Kurkdjian",
+    "short": "Baccarat Rouge 540",
+    "year": 2015,
+    "r50": 325,
+    "s50": "35 ml",
+    "r100": 505,
+    "s100": "70 ml",
+    "intensity": 5,
+    "family": "Amber Floral",
+    "notes": [
+     "Saffron",
+     "Jasmine",
+     "Ambergris"
+    ],
+    "vibe": "Glowing & unforgettable",
+    "sq": "H3H6KYWKL24KR6EEZM7B7MIR"
+   },
+   {
+    "house": "Nishane",
+    "short": "Nefs",
+    "year": 2019,
+    "r50": 905,
+    "s50": "50 ml",
+    "intensity": 5,
+    "family": "Amber Honey",
+    "notes": [
+     "Honey",
+     "Osmanthus",
+     "Oud"
+    ],
+    "vibe": "Opulent & nocturnal",
+    "sq": "OZ5Z33WF6IPMP7W6MNJWE47G"
+   },
+   {
+    "sq": "IEIPT6KIEZLX3W3U3CRDMOD6",
+    "house": "Tom Ford",
+    "short": "Noir",
+    "year": 2012,
+    "retail_text": "Hard to find",
+    "retail_small": "Off Canadian shelves",
+    "intensity": 5,
+    "family": "Amber Woody",
+    "notes": [
+     "Violet",
+     "Iris",
+     "Vanilla"
+    ],
+    "vibe": "Refined, with a wild side"
+   },
+   {
+    "house": "Versace",
+    "short": "Eros Najim",
+    "year": 2024,
+    "r50": 162,
+    "r100": 219,
+    "intensity": 4,
+    "family": "Amber Oud",
+    "notes": [
+     "Caramel",
+     "Oud",
+     "Patchouli"
+    ],
+    "vibe": "Intense & magnetic",
+    "sq": "VATMWQOVHP5T5Y6NATNYLUIA"
+   }
+  ]
+ },
+ {
+  "slug": "18-fresh-green",
+  "eyebrow": "COMPARE THE SCENT FAMILY",
+  "title": "FRESH &amp; GREEN",
+  "subtitle": "Tea, sea air and herbs. Scents that smell like breathing room.",
+  "footer": "Find your fresh before you buy the bottle.",
+  "cols": [
+   {
+    "sq": "NIBHBS673EEIIPPGJSAEI7JY",
+    "house": "Nishane",
+    "short": "Deziro",
+    "year": 2024,
+    "r50": 390,
+    "r100": 550,
+    "intensity": 3,
+    "family": "Aromatic Aquatic",
+    "notes": [
+     "Mandarin",
+     "Mint",
+     "Vetiver"
+    ],
+    "vibe": "Breezy & effortless"
+   },
+   {
+    "sq": "BABPMMILE54ZYB5JFIJY34IK",
+    "house": "Nishane",
+    "short": "Wulong Cha X",
+    "year": 2023,
+    "r50": 390,
+    "r100": 550,
+    "intensity": 4,
+    "family": "Green Floral",
+    "notes": [
+     "Yuzu",
+     "Green tea",
+     "Magnolia"
+    ],
+    "vibe": "Calm, clear &amp; refined"
+   },
+   {
+    "house": "Nishane",
+    "short": "Wulong Cha",
+    "year": 2015,
+    "r50": 360,
+    "r100": 520,
+    "intensity": 3,
+    "family": "Citrus Tea",
+    "notes": [
+     "Oolong tea",
+     "Bergamot",
+     "Fig"
+    ],
+    "vibe": "Calm, bright & easy",
+    "sq": "V55WG46EP3VHSPNRPSWAJKOV"
+   },
+   {
+    "house": "Tom Ford",
+    "short": "Oud Minérale",
+    "year": 2017,
+    "r50": 215,
+    "r100": 315,
+    "intensity": 3,
+    "family": "Marine Woody",
+    "notes": [
+     "Sea salt",
+     "Oud",
+     "Ambergris"
+    ],
+    "vibe": "Cool, salty & mysterious",
+    "sq": "BHTPR3LHPBN22W4MQTXAKWUF"
+   }
+  ]
+ },
+ {
+  "slug": "19-warm-spicy",
+  "eyebrow": "COMPARE THE SCENT FAMILY",
+  "title": "WARM &amp; SPICY",
+  "subtitle": "Cardamom, pepper, cinnamon and ginger. The family with a pulse.",
+  "footer": "Find your spice before you buy the bottle.",
+  "cols": [
+   {
+    "house": "Parfums de Marly",
+    "short": "Kalan",
+    "year": 2019,
+    "r50": 405,
+    "s50": "75 ml",
+    "r100": 560,
+    "s100": "125 ml",
+    "intensity": 4,
+    "family": "Woody Spicy",
+    "notes": [
+     "Blood orange",
+     "Black pepper",
+     "Tonka"
+    ],
+    "vibe": "Bright, spicy & self-assured",
+    "sq": "R3KAYAHVJKUU3656OK6URCZN"
+   },
+   {
+    "house": "Yves Saint Laurent",
+    "short": "La Nuit de L'Homme",
+    "year": 2009,
+    "r100": 185,
+    "s100": "100 ml",
+    "intensity": 3,
+    "family": "Aromatic Spicy",
+    "notes": [
+     "Cardamom",
+     "Lavender",
+     "Cedar"
+    ],
+    "vibe": "Smooth, quiet & seductive",
+    "sq": "I2YT222LFWFYRAWUXOQSDZPB"
+   },
+   {
+    "sq": "LIIP3QVKFSAXBVJPFFAID37G",
+    "house": "Nishane",
+    "short": "Tero",
+    "year": 2022,
+    "r50": 390,
+    "r100": 550,
+    "intensity": 5,
+    "family": "Amber Spicy",
+    "notes": [
+     "Salted caramel",
+     "Sichuan pepper",
+     "Patchouli"
+    ],
+    "vibe": "Grounded, warm &amp; confident"
+   },
+   {
+    "sq": "5QQ4SJTXANHQPQIU7ORYBAJB",
+    "house": "Nishane",
+    "short": "Ani",
+    "year": 2019,
+    "r50": 360,
+    "r100": 520,
+    "intensity": 5,
+    "family": "Amber Floral",
+    "notes": [
+     "Ginger",
+     "Blackcurrant",
+     "Vanilla"
+    ],
+    "vibe": "Sweet, spicy & addictive"
+   }
+  ]
+ },
+ {
+  "slug": "20-floral-powdery",
+  "eyebrow": "COMPARE THE SCENT FAMILY",
+  "title": "FLORAL &amp; POWDERY",
+  "title_fs": 60,
+  "subtitle": "Tuberose, rose, iris and jasmine. Flowers, worn with confidence.",
+  "footer": "Find your flower before you buy the bottle.",
+  "cols": [
+   {
+    "house": "Nishane",
+    "short": "Hundred Silent Ways X",
+    "year": 2023,
+    "r50": 390,
+    "r100": 550,
+    "intensity": 4,
+    "family": "White Floral",
+    "notes": [
+     "Tuberose",
+     "Peach",
+     "Vanilla"
+    ],
+    "vibe": "Sensual & hypnotic",
+    "sq": "RIDSP2UTX5Z3YD5AFG2WQ5LQ"
+   },
+   {
+    "house": "Tom Ford",
+    "short": "Café Rose",
+    "year": 2012,
+    "r50": 215,
+    "r100": 315,
+    "intensity": 3,
+    "family": "Floral Gourmand",
+    "notes": [
+     "Turkish rose",
+     "Coffee",
+     "Frankincense"
+    ],
+    "vibe": "Romantic & moody",
+    "sq": "OFGHAYPNNVQGBPZN7N5DPKQF"
+   },
+   {
+    "house": "Dior",
+    "short": "Homme Intense",
+    "year": 2011,
+    "r50": 142,
+    "r100": 200,
+    "intensity": 4,
+    "family": "Powdery Woody",
+    "notes": [
+     "Iris",
+     "Ambrette",
+     "Cedar"
+    ],
+    "vibe": "Elegant & velvet-soft",
+    "sq": "5U276SCQYNDNP3GZJGCQIST5"
+   },
+   {
+    "sq": "6RRUWMTR6HR57YISIVFICWM3",
+    "house": "Nishane",
+    "short": "Tempfluo",
+    "year": 2022,
+    "r50": 390,
+    "r100": 550,
+    "intensity": 4,
+    "family": "Floral Fruity",
+    "notes": [
+     "Saffron",
+     "Orange blossom",
+     "Praline"
+    ],
+    "vibe": "Warm, sweet & carefree"
    }
   ]
  }

@@ -344,7 +344,7 @@ function housesIndex(groups) {
 /* ---------- collection pages ---------- */
 const setOpts = (b) => Object.entries(SET_VIALS).flatMap(([v, o]) => o.sizes.map((z) => ({ v, z, base: bBase(b, z, v), price: bPrice(b, z, v) })));
 /* collection id -> its comparison chart (when the slugs differ); collections without one link to the Compare index */
-const COLL_COMPARE = { leather: "leather-suede", "tea-x-flames": "fyf-vs-fyf-x", coffeehouse: "warm" };
+const COLL_COMPARE = { leather: "leather-suede" };
 function collectionPage(b) {
   const items = bItems(b), url = cUrl(b), ready = bReady(b);
   const title = `${b.name} | ${b.house} decant set | Velvet Volute`;

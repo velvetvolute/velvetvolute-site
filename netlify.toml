@@ -146,3 +146,18 @@
   from = "/collections/warm"
   to = "/collections/coffeehouse/"
   status = 301
+
+[[redirects]]
+  from = "/compare/warm/*"
+  to = "/compare/coffeehouse/"
+  status = 301
+
+[[redirects]]
+  from = "/compare/fyf-vs-fyf-x/*"
+  to = "/compare/tea-x-flames/"
+  status = 301
+
+[[redirects]]
+  from = "/compare/fresh/*"
+  to = "/compare/fresh-green/"
+  status = 301

@@ -25,84 +25,192 @@
  "leather-suede": {
   "name": "Leather & Suede",
   "h1": "Four leathers, compared",
-  "desc": "Tom Ford Ombré Leather, Tuscan Leather, Nishane Suède et Safran and Kredo compared: notes, intensity, season and decant prices. Find your leather in Ottawa.",
+  "desc": "Tom Ford Ombré Leather and Tuscan Leather, Nishane Suède et Safran and Sospiro Erba Leather compared: notes, intensity, season and decant prices in Ottawa.",
   "intro": [
-   "Leather is a mood, not a note. It can be smooth and worn-in, smoky and loud, sleek and tailored, or deep and calm. These four cover the whole range.",
-   "Two from Tom Ford, two from Nishane. All four are in the Leather & Suede Collection if you'd rather try them together."
+   "Leather is a mood, not a note. It can be broken-in and easy, bold and loud, tailored and soft, or sunlit and fruity. These four cover the whole range.",
+   "Two from Tom Ford, one from Nishane, one from Sospiro. All four make up the Leather & Suede Collection if you'd rather try them together."
   ],
-  "pick": "Ombré Leather is the easiest first leather. Tuscan Leather if you want to be noticed, Suède et Safran if you want polish, Kredo if you want quiet depth."
+  "pick": "Ombré Leather is the easiest first leather. Tuscan Leather if you want to be noticed, Suède et Safran if you want polish, Erba Leather if you want leather that still feels like summer.",
+  "bundle": "leather"
  },
  "tom-ford": {
   "name": "Tom Ford",
   "h1": "The Tom Ford essentials, compared",
-  "desc": "Tom Ford Black Orchid, Noir, Ombré Leather and Tuscan Leather compared: notes, intensity, season, retail and Velvet Volute decant prices, from Ottawa.",
+  "desc": "Tom Ford Noir, Noir Extreme, Ombré Leather and Oud Minérale compared: four after-dark essentials. Notes, intensity, season, retail and decant prices, from Ottawa.",
   "intro": [
-   "Four Tom Fords, four very different nights. Black Orchid is the dark one, Noir the dressed-up one, Ombré Leather the easy one, Tuscan Leather the loud one.",
-   "A full bottle of any of these is a commitment. A 2 ml decant is not."
+   "Tom Ford built Noir around a man with two sides: the polished one everyone meets, and the darker one very few get to know. These four belong to the second one.",
+   "Noir is the dressed-up original, Noir Extreme the creamier encore, Ombré Leather the jacket you never take off, Oud Minérale the coastline after dark."
   ],
-  "pick": "Ombré Leather if you're new to the house. Black Orchid if you like them rich and sweet. Tuscan Leather if you already know you love leather."
- },
- "fyf-vs-fyf-x": {
-  "name": "Nishane Fan Your Flames",
-  "h1": "Fan Your Flames vs Fan Your Flames X",
-  "desc": "Nishane Fan Your Flames and Fan Your Flames X compared: the coconut, rum and tobacco original against its woodier 10th-anniversary remix. Notes and prices.",
-  "intro": [
-   "The original is a late night with coconut shisha: coconut, rum and tobacco smoke, warm and addictive. The X is the same night turned down, with thyme and mastic pulling it somewhere greener and more tropical.",
-   "Same idea, two volumes. Hear the original, then the remix."
-  ],
-  "pick": "If you want the one everybody talks about, start with the original. If sweet usually gets too much for you, start with the X.",
-  "bundle": "tea-x-flames"
- },
- "warm": {
-  "name": "The Warm Collection",
-  "h1": "The Warm Collection, compared",
-  "desc": "Armani I Will, Margiela Coffee Break, Claude Marsal Or Noir Café and Ferragamo Uomo Signature compared: notes, intensity, season and decant prices in Ottawa.",
-  "intro": [
-   "Your cold-weather rotation. Vanilla and lavender, coffee and milk, toffee and espresso, cinnamon over leather. Four ways to feel warm from first frost to the last snow.",
-   "None of these shout. They're the ones people lean in for."
-  ],
-  "pick": "I Will if you want one scent for the whole season. Coffee Break for the softest, Or Noir Café for the sweetest, Uomo Signature for the sharpest."
+  "pick": "Ombré Leather if you're new to the house. Noir Extreme if you want sweet and seductive, Noir if you want old-school elegance, Oud Minérale if you want something nobody else in the room is wearing.",
+  "bundle": "tom-ford"
  },
  "boozy": {
   "name": "The Boozy Collection",
   "h1": "Last call, bottled: the boozy ones, compared",
-  "desc": "Margiela Jazz Club, Nishane Fan Your Flames and Givenchy Gentleman Réserve Privée compared: rum, whisky and smoke. Notes, intensity, season and decant prices.",
+  "desc": "Margiela Jazz Club, Nishane Fan Your Flames and Nefs, and Givenchy Gentleman Réserve Privée compared: rum, whisky, honey and smoke. Notes and decant prices.",
   "intro": [
-   "Rum, whisky and smoke. Jazz Club is the leather armchair in a dim bar, Fan Your Flames is the night out with your people, Réserve Privée is the one glass of good whisky at the end.",
-   "Three different bars. Same closing time."
+   "Tonight's tab. Jazz Club is the rum in a dim Brooklyn bar, Fan Your Flames is the coconut rum out by the fire, Réserve Privée is the one glass of good whisky, and Nefs is the honeyed nightcap with rose and oud.",
+   "Four different bars. Same closing time."
   ],
-  "pick": "Jazz Club is the safe first pour. Fan Your Flames if you want sweet and loud, Réserve Privée if you want polished.",
+  "pick": "Jazz Club is the safe first pour. Fan Your Flames if you want sweet and social, Réserve Privée if you want polished, Nefs if you want the richest thing on the menu.",
   "bundle": "boozy"
  },
  "vanilla": {
   "name": "Vanilla",
   "h1": "Four ways to wear vanilla, compared",
-  "desc": "Nishane Ani, Tempfluo, Armani I Will and Margiela Jazz Club compared: the same vanilla note, four different moods. Notes, intensity, season and decant prices.",
+  "desc": "Nishane Ani, Parfums de Marly Althaïr, Armani I Will and Jean Paul Gaultier Le Male Elixir compared: one note, four moods. Notes, intensity and decant prices.",
   "intro": [
-   "Same note, four completely different moods. Vanilla can be spicy and addictive, golden and carefree, confident and clean, or smoky and dark.",
-   "If you've only ever smelled vanilla as a dessert, this is the table to read."
+   "Vanilla is the fruit of an orchid that blooms for a single day, and almost everywhere it grows it has to be pollinated by hand. Perfumers treat it like a lead role. Here it plays four.",
+   "Ani spices it with blue ginger, Althaïr gilds it with praline and cinnamon, I Will keeps it hushed over lavender, Le Male Elixir drenches it in honey and tonka."
   ],
-  "pick": "Ani if you want the famous one. Tempfluo if you want bright, I Will if you want everyday, Jazz Club if you want smoke."
- },
- "fresh": {
-  "name": "Fresh & Bright",
-  "h1": "The fresh ones, compared",
-  "desc": "Nishane Hacivat, Xerjoff Erba Pura, Nishane Deziro and Valentino Yellow Dream compared: clean, sunny daytime scents. Notes, intensity, season and decant prices.",
-  "intro": [
-   "Clean, sunny and easy to wear. Your daytime rotation. Pineapple and oakmoss, Sicilian orange, mint and sea air, pineapple and gingerbread.",
-   "Fresh doesn't have to mean forgettable. Two of these are among the strongest scents in the shop."
-  ],
-  "pick": "Hacivat is the one to try if you only try one. Erba Pura if you like them juicy, Deziro if you want calm, Yellow Dream if you want sweet."
+  "pick": "Ani if you want the famous one. Althaïr if you want it rich and polished, I Will for every day, Le Male Elixir if you want to be noticed from across the room.",
+  "bundle": "vanilla"
  },
  "nishane-x": {
   "name": "Nishane X Collection",
   "h1": "Nishane's remixes, compared",
-  "desc": "Nishane Fan Your Flames X and Wulong Cha X compared: two classics reimagined for the house's 10th anniversary. Notes, intensity, season and decant prices.",
+  "desc": "Nishane Hundred Silent Ways X, Fan Your Flames X and Wulong Cha X compared: three classics rewritten for the house's 10th anniversary. Notes and decant prices.",
   "intro": [
-   "For its tenth anniversary Nishane handed two classics to new perfumers with one brief: keep the idea, change the mood. Fan Your Flames X goes greener and more tropical. Wulong Cha X trades oolong for green tea and magnolia.",
-   "Two remixes, two moods."
+   "An X usually crosses something out. At Nishane it marks a second draft. For its tenth anniversary the house handed three of its classics to perfumers with one brief: keep the idea, change the mood.",
+   "Hundred Silent Ways X says it after dark, Fan Your Flames X walks the original through an herb garden, Wulong Cha X lets the oolong cool and blossom."
   ],
-  "pick": "Wulong Cha X for daytime and warm weather. Fan Your Flames X for everything after.",
+  "pick": "Wulong Cha X for daytime, Fan Your Flames X for everything after, Hundred Silent Ways X when you want to be remembered.",
   "bundle": "nishane-x"
+ },
+ "tea-x-flames": {
+  "name": "Tea 'X' Flames",
+  "h1": "The originals vs the X: Fan Your Flames and Wulong Cha, compared",
+  "desc": "Nishane Fan Your Flames, Fan Your Flames X, Wulong Cha and Wulong Cha X compared side by side: two icons and their remixes. Notes, intensity and decant prices.",
+  "intro": [
+   "Two Nishane icons, each standing next to its tenth-anniversary remix. Fan Your Flames is a bonfire of rum, coconut and tobacco; its X throws thyme and mastic on the flames. Wulong Cha is oolong steeped with bergamot and fig; its X opens the tea-house window to green tea and magnolia.",
+   "Read across the row to hear how an original changes when the house hands it to a new perfumer."
+  ],
+  "pick": "Fan Your Flames if you want the one everybody talks about, its X if sweet usually gets too much for you. Wulong Cha for an easy everyday, Wulong Cha X when you want it cooler and more floral.",
+  "bundle": "tea-x-flames"
+ },
+ "coffeehouse": {
+  "name": "The Coffeehouse Collection",
+  "h1": "The Coffeehouse Collection, compared",
+  "desc": "Margiela Coffee Break, Claude Marsal Or Noir Café, Valentino Green Stravaganza and Ferragamo Uomo Signature compared: four coffee scents, notes and decant prices.",
+  "intro": [
+   "Four orders at one counter. Coffee Break is the milky latte on a cold Stockholm morning. Or Noir Café is the sweet one for the table, toffee and cinnamon over the espresso. Green Stravaganza takes its cup out to a sunny terrace. Uomo Signature has the seat by the window with the last cup of the day.",
+   "Coffee in perfume can be soft, sweet, bright or dressed up. This table shows which is which."
+  ],
+  "pick": "Coffee Break for the softest, Or Noir Café for the sweetest, Green Stravaganza for daytime, Uomo Signature for date night.",
+  "bundle": "coffeehouse"
+ },
+ "flower-and-stone": {
+  "name": "The Flower & Stone Collection",
+  "h1": "Flower & Stone, compared",
+  "desc": "Tom Ford Café Rose, Black Orchid and Oud Minérale with Hermès Terre d'Hermès Intense compared: two blossoms, two stones. Notes, intensity and decant prices.",
+  "intro": [
+   "Some flowers grow out of rock. Café Rose is a Turkish rose steeped in dark coffee. Black Orchid blooms out of black truffle and patchouli, dark as soil after rain.",
+   "Then the stones. Terre d'Hermès Intense is earth after a fire, pepper and coffee over lava stone. Oud Minérale is the shoreline, salt drying on warm rock."
+  ],
+  "pick": "Black Orchid if you want the boldest. Café Rose for a romantic evening, Terre d'Hermès Intense for an everyday signature, Oud Minérale if you want cool and unexpected.",
+  "bundle": "flower-and-stone"
+ },
+ "saffron": {
+  "name": "The Saffron Collection",
+  "h1": "Red gold: four saffron fragrances, compared",
+  "desc": "Nishane Suède et Safran, Tom Ford Noir Extreme, MFK Baccarat Rouge 540 and Versace Eros Najim compared: saffron four ways. Notes, intensity and decant prices.",
+  "intro": [
+   "Each thread of saffron is picked by hand from a crocus that gives up only three, which is why it costs more by weight than any other spice. These four each put that red gold to work in their own way.",
+   "Suède et Safran sews it into soft suede, Noir Extreme melts it into a creamy kulfi accord, Baccarat Rouge 540 lets it glow over ambergris, Eros Najim burns it down to caramel and oud."
+  ],
+  "pick": "Baccarat Rouge 540 if you want the one people stop you to ask about. Suède et Safran for refined, Noir Extreme for seductive, Eros Najim for loud and late.",
+  "bundle": "saffron"
+ },
+ "holiday-spice": {
+  "name": "The Holiday Spice Collection",
+  "h1": "Holiday Spice, compared",
+  "desc": "Valentino Yellow Dream, Nishane Tero and Ani, and Xerjoff Erba Gold compared: gingerbread, caramel, ginger and golden fruit. Notes, intensity and decant prices.",
+  "intro": [
+   "It's the middle of December and the oven has been on since noon. Yellow Dream is the gingerbread cooling on the rack, Tero the salted caramel someone keeps stirring, Ani the ginger tea steaming on the counter.",
+   "Erba Gold takes the last seat at the table, bringing orange and warm spice in from the cold."
+  ],
+  "pick": "Ani if you want the crowd favourite. Tero for the deepest and warmest, Yellow Dream for playful, Erba Gold if you want the season bright instead of heavy.",
+  "bundle": "holiday-spice"
+ },
+ "erba": {
+  "name": "The Erba Collection",
+  "h1": "The Erba family, compared",
+  "desc": "Xerjoff Erba Gold and Erba Pura with Sospiro Erba Leather compared: three summers from Turin. Notes, intensity, retail and Velvet Volute decant prices.",
+  "intro": [
+   "Erba is Italian for grass, the green that pushes up through the old stone of Turin. Two sister houses there, Xerjoff and Sospiro, turned the word into a small dynasty of sunshine.",
+   "Erba Gold came first, all pear, melon and warm spice. Erba Pura made the name famous with its Mediterranean fruit bowl. Erba Leather lined the fruit with soft leather."
+  ],
+  "pick": "Erba Pura if you want the famous one. Erba Gold for something warmer and rarer, Erba Leather if you want the fruit with a little edge.",
+  "bundle": "erba"
+ },
+ "fruity-with-depth": {
+  "name": "Fruity, with depth",
+  "h1": "Fruity, with depth: four grown-up fruit scents, compared",
+  "desc": "Xerjoff Erba Pura and Erba Gold, Nishane Hacivat and Tom Ford Tuscan Leather compared: juicy fruit over something serious. Notes, intensity and decant prices.",
+  "intro": [
+   "Fruit in perfume gets a bad reputation, mostly from body sprays. These four are the opposite. The fruit is the first thing you notice, not the only thing.",
+   "Erba Pura sets a Mediterranean fruit bowl on amber and musk, Erba Gold warms pear and melon with cardamom, Hacivat grounds pineapple in oakmoss and dry woods, and Tuscan Leather rubs raspberry into rich leather."
+  ],
+  "pick": "Erba Pura if you want the crowd-pleaser. Erba Gold for warmer and rarer, Hacivat for crisp and polished, Tuscan Leather if you want the fruit to have a dark side."
+ },
+ "woody-earthy": {
+  "name": "Woody & earthy",
+  "h1": "Woody & earthy fragrances, compared",
+  "desc": "Hermès Terre d'Hermès Intense, Nishane Hacivat and Kredo, and Givenchy Gentleman Réserve Privée compared: four woody, earthy scents. Notes and decant prices.",
+  "intro": [
+   "Every fragrance needs a spine, and woods are it. Cedar is dry and clean, vetiver smells of roots pulled from damp earth, oakmoss is the forest floor, and Terre d'Hermès adds actual stone.",
+   "These four are the woodiest in the collection, from mineral and peppery to mossy, whisky-warm and oud-dark."
+  ],
+  "pick": "Terre d'Hermès Intense for an everyday signature. Hacivat for sharp and fresh, Réserve Privée for smooth evenings, Kredo for quiet depth."
+ },
+ "sweet-cozy": {
+  "name": "Sweet & cozy",
+  "h1": "Sweet & cozy: four gourmand fragrances, compared",
+  "desc": "Nishane Fan Your Flames, Parfums de Marly Althaïr, Tom Ford Noir Extreme and Margiela Coffee Break compared: four gourmands. Notes, intensity and decant prices.",
+  "intro": [
+   "Gourmand comes from the French word for someone who loves good food, and these four take the name seriously: coconut rum, Bourbon vanilla and praline, a saffron kulfi, a milky coffee.",
+   "Done well, sweet doesn't smell like a bakery. It smells like warm skin and the last hour of a good night."
+  ],
+  "pick": "Coffee Break for the softest. Althaïr for polished and rich, Fan Your Flames for the most fun, Noir Extreme for date night."
+ },
+ "amber-resinous": {
+  "name": "Amber & resinous",
+  "h1": "Amber & resinous fragrances, compared",
+  "desc": "MFK Baccarat Rouge 540, Nishane Nefs, Tom Ford Noir and Versace Eros Najim compared: four golden, glowing ambers. Notes, intensity, retail and decant prices.",
+  "intro": [
+   "Amber isn't a single ingredient. It's a glow perfumers build from resins, a little vanilla and modern materials like ambroxan that echo the ambergris prized for centuries.",
+   "These four are the warmest, most radiant things in the collection: crystalline and airy, honeyed and opulent, powdery and refined, or caramel-dark."
+  ],
+  "pick": "Baccarat Rouge 540 if you want the most recognisable. Noir for refined, Eros Najim for loud, Nefs if you want the richest."
+ },
+ "fresh-green": {
+  "name": "Fresh & green",
+  "h1": "Fresh & green fragrances, compared",
+  "desc": "Nishane Deziro, Wulong Cha and Wulong Cha X with Tom Ford Oud Minérale compared: tea, sea air and herbs. Notes, intensity, season and decant prices.",
+  "intro": [
+   "Think of the air after rain, a pot of tea cooling by an open window, sea salt drying on your skin. Fresh and green scents are less about sweetness and more about space.",
+   "Deziro brings sea air and mint, the two Wulong Chas brew oolong and green tea, Oud Minérale pairs salt with a surprising smoky oud."
+  ],
+  "pick": "Wulong Cha for an easy everyday. Deziro for summer, Wulong Cha X for something cooler and more floral, Oud Minérale if you want fresh with an edge."
+ },
+ "warm-spicy": {
+  "name": "Warm & spicy",
+  "h1": "Warm & spicy fragrances, compared",
+  "desc": "Parfums de Marly Kalan, YSL La Nuit de L'Homme and Nishane Tero and Ani compared: cardamom, pepper, cinnamon and ginger. Notes, intensity and decant prices.",
+  "intro": [
+   "Spices built the old trade routes, and they still bring the heat. Cardamom feels cool and sparkling, black pepper adds bite, cinnamon and ginger glow like embers.",
+   "Kalan opens with blood orange and pepper, La Nuit de L'Homme is cardamom whispered close to the skin, Tero stirs cinnamon into salted caramel, Ani warms blue ginger with vanilla."
+  ],
+  "pick": "La Nuit de L'Homme for the easiest everyday. Kalan for bright and confident, Ani for sweet and addictive, Tero for the deepest and warmest."
+ },
+ "floral-powdery": {
+  "name": "Floral & powdery",
+  "h1": "Floral & powdery fragrances, compared",
+  "desc": "Nishane Hundred Silent Ways X and Tempfluo, Tom Ford Café Rose and Dior Homme Intense compared: tuberose, rose, iris and jasmine. Notes and decant prices.",
+  "intro": [
+   "Forget the idea that flowers are only for her. Rose, iris, jasmine and tuberose are some of the most precious materials in perfumery, and some of the most loved men's scents lean on them hard.",
+   "Hundred Silent Ways X is tuberose after dark, Café Rose a rose steeped in coffee, Dior Homme Intense the iris that made men's powder cool, Tempfluo jasmine and orange blossom over praline."
+  ],
+  "pick": "Dior Homme Intense if you're new to florals. Tempfluo for warm and easy, Café Rose for romantic, Hundred Silent Ways X when you want to be remembered."
  }
 }
