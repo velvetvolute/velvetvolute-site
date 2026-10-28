@@ -24,6 +24,11 @@ export function methodOf(order) {
   if (ref.includes("PICKUP")) return "pickup";
   if (ref.includes("LOCAL")) return "local";
   if (ref.includes("CANADA") || ref.includes("ONQC") || ref.includes("ROC")) return "ship";
+  /* hand-made orders (Square invoices, Dashboard, API) carry no reference tag: fall back to the order's live fulfillment type */
+  const types = (order.fulfillments || []).filter((f) => f && f.state !== "CANCELED").map((f) => f.type);
+  if (types.includes("SHIPMENT")) return "ship";
+  if (types.includes("DELIVERY")) return "local";
+  if (types.includes("PICKUP")) return "pickup";
   return "unknown";
 }
 

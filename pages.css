@@ -351,3 +351,6 @@ a.sh-fab{text-decoration:none}
 /* phones: family pills on the first line, vibe pills on the second, on every scent page */
 .pp-pills .pp-br{display:none}
 @media(max-width:720px){.pp-pills .pp-br{display:block;flex-basis:100%;height:0}}
+
+/* independent-decanter disclaimer under the buy box */
+.pp-disc{margin-top:6px;font-size:12px;opacity:.8}

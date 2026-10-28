@@ -241,6 +241,7 @@ function productPage(p) {
    <div class="sizes" role="group" aria-label="Size" id="sizes"></div>
    <div class="buyrow"><div class="price" id="price"></div>${inStock(p) ? `<button type="button" class="order add" id="add">Add to cart</button>` : `<span class="soon-tag">${esc(p.limited || "Arriving soon")} · not yet orderable</span>`}</div>
    <p class="fine">Hand-decanted from an authentic bottle into a new vial. Free shipping in Canada over $85, or pick up in Ottawa.</p>
+   <p class="fine pp-disc">Velvet Volute is an independent decanter and is not affiliated with or endorsed by ${esc(p.brand)}. Every decant is poured from an authentic bottle.</p>
   </section>
  </div>
  </div>
