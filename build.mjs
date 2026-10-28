@@ -343,6 +343,8 @@ function housesIndex(groups) {
 
 /* ---------- collection pages ---------- */
 const setOpts = (b) => Object.entries(SET_VIALS).flatMap(([v, o]) => o.sizes.map((z) => ({ v, z, base: bBase(b, z, v), price: bPrice(b, z, v) })));
+/* collection id -> its comparison chart (when the slugs differ); collections without one link to the Compare index */
+const COLL_COMPARE = { leather: "leather-suede", "tea-x-flames": "fyf-vs-fyf-x", coffeehouse: "warm" };
 function collectionPage(b) {
   const items = bItems(b), url = cUrl(b), ready = bReady(b);
   const title = `${b.name} | ${b.house} decant set | Velvet Volute`;
@@ -359,7 +361,8 @@ function collectionPage(b) {
 <section class="coll wrap">
  <div class="coll-left">
  <div class="coll-head"><div class="eyebrow">${esc(b.house)} · ${items.length} scents · ${BUNDLES.pct}% off the set</div><h1>${esc(b.name)}</h1>
- <p class="lede">${esc(b.blurb)}</p></div>
+ <p class="lede">${esc(b.blurb)}</p>
+ ${(() => { const c = COMPARES.find((x) => x.slug === (COLL_COMPARE[b.id] || b.id)); return c ? `<a class="coll-cmp" href="${compUrl(c)}"><span>Compare them side by side</span><small>Launch year, retail vs decant price, intensity, notes, vibe and season in one chart →</small></a>` : `<a class="coll-cmp" href="/compare/"><span>Compare the collection</span><small>Side-by-side charts for the Time Capsule, Born in Roma, Tom Ford and more →</small></a>`; })()}</div>
  </div>
  <div class="coll-right">
  <div class="carousel" id="car"><div class="track" role="link" title="Open the full page" aria-label="Scents in this collection, swipe to change">${collArt(b) ? `<figure class="slide" id="sg" data-href=""><img src="/${collArt(b)}" srcset="${ss(collArt(b))}" sizes="(min-width:900px) 46vw, 100vw" width="720" height="720" alt="${attr(b.name)}: ${attr(items.map(shortName).join(", "))}" decoding="async"><figcaption><b>The whole set</b><span>${items.length} scents · ${BUNDLES.pct}% off</span></figcaption></figure>` : ""}${items.map((p, i) => `<figure class="slide" id="s${i}" data-href="${pUrl(p)}"><img src="/${p.img}"${ss(p.img) ? ` srcset="${ss(p.img)}" sizes="(min-width:900px) 46vw, 100vw"` : ""} data-classic="/${p.img}|${ss(p.img)}|${attr(bottleAlt(p, "classic"))}" data-luxe="/${p.imgL || p.img}|${ss(p.imgL || p.img)}|${attr(bottleAlt(p, "luxe"))}" width="720" height="720" alt="${attr(bottleAlt(p, "classic"))}" loading="${i || collArt(b) ? "lazy" : "eager"}" decoding="async"><figcaption><b>${esc(shortName(p))}</b><span>${esc(p.brand)} · ${inStock(p) ? `from ${money(low(p))}` : esc(p.limited || "arriving soon")}</span><a class="more" href="${pUrl(p)}">Full page →</a></figcaption></figure>`).join("")}</div>
@@ -533,8 +536,8 @@ function comparePage(c) {
     ["Retail, full bottle", retail],
     ["Velvet Volute decants", (x) => inStock(x.p) ? `<a href="${pUrl(x.p)}">$${x.p.p[2]}–${x.p.p[10]}</a><small>2 to 10 ml</small>` : `<a href="${pUrl(x.p)}">${esc(x.p.limited || "Arriving soon")}</a>`],
     ["Intensity", (x) => `${x.intensity ?? 3} / 5<span class="dots-i" aria-hidden="true">${"●".repeat(x.intensity ?? 3)}${"○".repeat(5 - (x.intensity ?? 3))}</span>`],
-    ["Family", (x) => esc(unesc(x.family))],
-    ["Key notes", (x) => x.notes.map(esc).join("<br>")],
+    ["Family", (x) => `<span class="fam-t">${esc(unesc(x.family))}</span>`],
+    ["Key notes", (x) => x.notes.map((n) => `<span class="kn">${esc(n)}</span>`).join("")],
     ["Vibe", (x) => `<em>${esc(unesc(x.vibe))}</em>`],
     ["Season", (x) => `${SEA_TXT[x.p.sea]}<small>${TM_TXT[x.p.tm]}</small>`],
   ];
@@ -550,7 +553,7 @@ function comparePage(c) {
   <div class="tbl cmp-tbl"><table>
    <caption class="sr">${esc(compName(c))}: ${esc(names.join(" vs "))}</caption>
    <thead><tr><th scope="col"><span class="sr">Scent</span></th>${cols.map((x) => `<th scope="col"><a href="${pUrl(x.p)}"><img src="/${x.p.img}" width="120" height="120" alt="" decoding="async"><b>${esc(unesc(x.short))}</b><small>${esc(x.p.brand)}</small></a></th>`).join("")}</tr></thead>
-   <tbody>${rows.map(([lbl, fn]) => `<tr><th scope="row">${lbl}</th>${cols.map((x) => `<td>${fn(x)}</td>`).join("")}</tr>`).join("")}</tbody>
+   <tbody>${rows.map(([lbl, fn]) => `<tr${lbl === "Velvet Volute decants" ? ' class="r-vv"' : ""}><th scope="row">${lbl}</th>${cols.map((x) => `<td>${fn(x)}</td>`).join("")}</tr>`).join("")}</tbody>
   </table></div>
   <p class="tbl-note">Retail is the regular Canadian price for a full bottle. Decant prices are Velvet Volute's, in CAD, for the 2 ml and 10 ml Classic vials. Swipe the table sideways on a phone.</p>
   <h2>Where to start</h2>

@@ -363,3 +363,28 @@ a.sh-fab{text-decoration:none}
 
 /* compare index on phones: compact article rows (thumbnail + title) so every comparison is a tap away */
 @media(max-width:719px){.cmp-tiles{gap:10px}.cmp-tiles .ctile{flex-direction:row;align-items:center}.cmp-tiles .ctile .ph.one{flex:0 0 96px}.cmp-tiles .ctile .ph.one img{aspect-ratio:4/5;object-position:50% 0}.cmp-tiles .ctile .t{padding:10px 14px}.cmp-tiles .ctile .nm{font-size:20px}.cmp-tiles .ctile .pr{font-size:12.5px;line-height:1.4}}
+
+/* collection page: link to the matching comparison chart */
+.coll-cmp{display:flex;flex-direction:column;gap:4px;margin:18px 0 0;padding:14px 16px;border:1px solid rgba(198,160,112,.55);border-radius:4px;color:var(--ink);text-decoration:none;transition:background .15s}
+.coll-cmp span{font:500 12.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.coll-cmp small{font:400 14px/1.5 var(--sans);color:var(--muted)}
+.coll-cmp:hover,.coll-cmp:focus-visible{background:rgba(198,160,112,.12);outline:none}
+
+/* comparison tables: depth and texture (Oct 28) — layered merlot, a lit header, soft zebra rows, camel band on our prices */
+.cmp-tbl{border:1px solid rgba(198,160,112,.45);border-radius:8px;background:radial-gradient(120% 70% at 0% 0%,rgba(145,43,66,.55),transparent 60%),radial-gradient(90% 60% at 100% 100%,rgba(198,160,112,.10),transparent 70%),linear-gradient(180deg,#561725,#3a0e18);box-shadow:0 26px 50px -24px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,225,190,.10)}
+.cmp-tbl table{color:#f3e1c6}
+.cmp-tbl th,.cmp-tbl td{border-top:1px solid rgba(198,160,112,.16);padding:13px 16px}
+.cmp-tbl thead th{background:linear-gradient(180deg,#2a0910,#3e1019 85%);border-bottom:2px solid rgba(198,160,112,.55);padding-top:16px}
+.cmp-tbl thead th a img{width:72px;height:72px;border:1px solid rgba(198,160,112,.55);box-shadow:0 10px 18px -10px rgba(0,0,0,.9)}
+.cmp-tbl thead th a b{font-size:18px;color:#fde3b9}
+.cmp-tbl tbody tr:nth-child(even) td{background:rgba(0,0,0,.14)}
+.cmp-tbl tbody tr:hover td{background:rgba(198,160,112,.07)}
+.cmp-tbl tbody th{background:linear-gradient(90deg,#3a0e18,#4a1520);border-right:1px solid rgba(198,160,112,.35);color:#d8b07c}
+.cmp-tbl tr.r-vv td{background:linear-gradient(180deg,rgba(198,160,112,.22),rgba(198,160,112,.12))!important}
+.cmp-tbl tr.r-vv th{color:#f5d9b5;background:linear-gradient(90deg,#4a1520,#5e1c2c)}
+.cmp-tbl tr.r-vv td a{font:600 17px var(--sans);color:#fde3b9;text-decoration:none;border-bottom:1px solid rgba(253,227,185,.5)}
+.cmp-tbl .dots-i{color:#e6c79d;font-size:12px;letter-spacing:.18em}
+.cmp-tbl .fam-t{display:inline-block;padding:4px 10px;border:1px solid rgba(198,160,112,.5);border-radius:6px;font:500 12.5px/1.3 var(--sans);color:#f3e1c6;background:rgba(198,160,112,.08)}
+.cmp-tbl .kn{display:block;padding:3px 0 3px 12px;position:relative}
+.cmp-tbl .kn::before{content:"";position:absolute;left:0;top:.82em;width:5px;height:5px;border-radius:50%;background:#c6a070}
+.cmp-tbl td em{color:#fde3b9;font-size:15px}
