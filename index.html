@@ -782,6 +782,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .bundle .shots{display:flex;gap:10px;margin:0 0 16px}
 .bundle .shots img{width:72px;height:72px;object-fit:cover;border-radius:50%;background:#956c41}
 .bundle .blurb{font:400 15px/1.75 var(--story);margin:0 0 16px;color:#481620}
+.bundle .blurb .rm{display:inline;margin:0 0 0 1px;padding:0;background:none;border:0;color:inherit;font:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .bundle ul{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px}
 .bundle li a{display:inline-block;background:rgba(107,30,46,.1);border:0;border-radius:999px;padding:6px 12px;font:500 13px/1.2 var(--sans);color:#521924;text-decoration:none;cursor:pointer}
 .bundle li a:hover{background:rgba(107,30,46,.2)}
@@ -801,7 +802,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 @media (max-width:900px){.x-colls>.bundle{flex-basis:min(86%,520px)}}
 @media (max-width:768px){.x-colls{gap:14px}}
 @media (max-width:768px){.x-coll-head{flex-direction:column;align-items:flex-start}.bundle{padding:22px}.bundle .shots img{width:58px;height:58px}}
-@media (max-width:420px){.bundle .buy{grid-template-columns:1fr}.bundle .price{justify-self:start;text-align:left}}
+@media (max-width:420px){.bundle .buy{grid-template-columns:1fr;gap:10px}.bundle .price{justify-self:start;text-align:left}.bundle .opts{flex-direction:row;flex-wrap:wrap;gap:6px}.bundle .sizes button{padding:8px 11px}}
 .cl-sub{display:block;margin-top:2px;font-size:12.5px;opacity:.85}
 
 /* compact card */
@@ -2253,7 +2254,7 @@ function collections(){
  document.getElementById("coll-pct").textContent=BUNDLES.pct+"%";
  box.innerHTML=BUNDLES.bundles.map((b,bi)=>{const ps=bItems(b),ready=bReady(b);
   return `<article class="bundle" data-b="${bi}">${COLL_ART[b.id]?`<a class="bshot-link" href="/collections/${esc(b.id)}/" aria-label="See the ${esc(b.name)}"><img class="bshot" src="${COLL_ART[b.id]}" style="${collFrame(bi)}" srcset="${vvSet(COLL_ART[b.id])}" sizes="(max-width:700px) 94vw, 560px" alt="${esc(b.name)} bottles side by side" width="1200" height="1200" loading="lazy" decoding="async"><img class="bstamp" src="/img/vv-stamp.svg" alt="" width="113" height="113"></a>`:""}<span class="house">${esc(b.house)} · ${ps.length} scents</span><h3><a class="tlink bname" href="/collections/${esc(b.id)}/">${esc(b.name)}</a></h3>
-  <p class="blurb">${esc(b.blurb)}</p>
+  <p class="blurb" data-full="${esc(b.blurb)}">${esc(b.blurb)}</p>
   <ul>${ps.map(p=>`<li><a href="${pUrl(p)}">${esc(shortName(p))}${inStock(p)?"":` <span class="soon">· arriving soon</span>`}</a></li>`).join("")}</ul>
   <div class="buy"><div class="opts"><div class="sizes vstyle" role="group" aria-label="Vial type">${Object.entries(SETV).filter(([,o])=>o.sizes().length).map(([k,o],i)=>`<button type="button" data-v="${k}" class="${i?"":"on"}" aria-pressed="${!i}">${o.label}</button>`).join("")}</div><div class="sizes vsize" role="group" aria-label="Size"></div></div>
   <div class="price"></div>
@@ -2274,6 +2275,17 @@ function collections(){
  const step=()=>cards.length>1?cards[1].offsetLeft-cards[0].offsetLeft:box.clientWidth;
  const sync=()=>{const i=Math.round(box.scrollLeft/step()),max=box.scrollWidth-box.clientWidth-4;cnt.textContent=Math.min(cards.length,i+1)+" / "+cards.length;prev.disabled=box.scrollLeft<4;next.disabled=box.scrollLeft>=max};
  prev.onclick=()=>box.scrollBy({left:-step(),behavior:"smooth"});next.onclick=()=>box.scrollBy({left:step(),behavior:"smooth"});
+ /* stories open half-collapsed: at most half the lines, and short enough that the whole card fits on screen top to bottom */
+ const fitBlurb=el=>{const full=el.dataset.full,card=el.closest(".bundle"),e=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+  if(el.classList.contains("open")){el.innerHTML=e(full)+' <button type="button" class="rm" aria-expanded="true">read less</button>'}
+  else{el.textContent=full;const lh=parseFloat(getComputedStyle(el).lineHeight)||26,fullH=el.scrollHeight,lines=Math.round(fullH/lh);
+   const head=document.querySelector(".nav,header,.site-head"),top=head?Math.min(head.offsetHeight,90):70,avail=innerHeight-top-24;
+   const fit=Math.floor((fullH-(card.offsetHeight-avail))/lh),keep=Math.max(2,Math.min(Math.ceil(lines/2),fit));
+   if(lines>keep){const max=keep*lh+2,w=full.split(" "),cut=m=>e(w.slice(0,m).join(" ").replace(/[,.;:\s]+$/,""))+'…<button type="button" class="rm" aria-expanded="false">read more</button>';let lo=1,hi=w.length;
+    while(lo<hi){const m=(lo+hi+1)>>1;el.innerHTML=cut(m);if(el.scrollHeight<=max)lo=m;else hi=m-1}el.innerHTML=cut(lo)}}
+  const b=el.querySelector(".rm");if(b)b.onclick=ev=>{ev.preventDefault();el.classList.toggle("open");fitBlurb(el)}};
+ const fitAll=()=>box.querySelectorAll(".blurb[data-full]").forEach(fitBlurb);fitAll();
+ let cw=innerWidth;addEventListener("resize",()=>{if(innerWidth!==cw){cw=innerWidth;fitAll()}});if(document.fonts)document.fonts.ready.then(fitAll);
  let raf=0;box.addEventListener("scroll",()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(sync)},{passive:true});addEventListener("resize",sync);sync();
 }
 fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(!j||!Array.isArray(j.bundles))return;
