@@ -918,6 +918,21 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .x-hero .x-def{margin-left:14px;padding:4px 0 4px 18px;border-left:3px solid var(--x-gold2)}
 /* Phones: the hero photo only pushed the products further down (the link-preview image is a separate file) */
 @media(max-width:720px){.x-hero figure{display:none}}
+
+/* Fragrance houses live inside Filters & sort, as a multi-select chip panel */
+.hlabel{display:flex;align-items:center;gap:10px}
+.hbtn{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;min-width:180px;background:var(--surface);color:var(--ink);border:1px solid var(--line);padding:8px 12px;font:400 13px var(--sans);letter-spacing:.04em;text-transform:none;border-radius:4px;cursor:pointer;text-align:left}
+:root[data-palette="camel-m"] .hbtn{background:#ac8153;color:#521924;border-color:#5c3d20}
+.hbtn svg{flex:none;transition:transform .2s}.hbtn[aria-expanded="true"] svg{transform:rotate(180deg)}
+.tools .hpanel{flex-basis:100%;order:20;margin:2px 0 0;justify-content:center;flex-wrap:wrap;overflow:visible;-webkit-mask-image:none;mask-image:none;padding:0}
+.tools .hpanel[hidden]{display:none}
+@media(max-width:720px){
+ .tools{max-height:88vh;overflow-y:auto}
+ .hlabel{justify-content:space-between;color:#dab68b}
+ .hbtn{flex:0 1 62%;min-width:0}
+ .tools .hpanel{order:0;margin:-4px 0 4px;justify-content:flex-start}
+ .tools .hpanel .chip{white-space:nowrap}
+}
 </style>
 <link rel="stylesheet" href="/nav.css">
 <script src="/nav.js" defer></script><script src="/track.js" defer></script>
@@ -1021,12 +1036,13 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 
 <section id="shop"><div class="wrap">
   <div class="x-shop-head"><p class="x-sherpa">Not sure where to start? <button type="button" data-quiz>Let the Scent Sherpa guide you</button></p></div>
-  <div class="brandbar" id="brands"></div>
   <div class="genbar" id="genbar" role="group" aria-label="Who it's for"><span>For</span><button type="button" class="gchip on" data-g="all">Everyone</button><button type="button" class="gchip" data-g="Men">Him</button><button type="button" class="gchip" data-g="Women">Her</button></div>
   <div class="fbar"><button type="button" class="fbtn" id="fbtn" aria-controls="tools" aria-expanded="false"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Filters &amp; sort<span class="fcount" id="fcount" hidden></span></button><span class="count" id="count2"></span></div>
   <div class="fback" id="fback" hidden></div>
   <div class="tools" id="tools" role="dialog" aria-label="Filters and sort">
     <div class="sheet-head"><b>Filters &amp; sort</b><button type="button" id="fclose" aria-label="Close filters">&times;</button></div>
+    <label class="hlabel">Fragrance house<button type="button" class="hbtn" id="hbtn" aria-expanded="false" aria-controls="brands"><span id="hsum">All houses</span><svg viewBox="0 0 12 8" width="11" height="8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></label>
+    <div class="brandbar hpanel" id="brands" hidden></div>
     <label id="fam-l">Scent<select id="fam"></select></label>
     <label id="sea-l">Season<select id="sea"><option value="all">Any season</option><option value="c">Fall &amp; winter</option><option value="w">Spring &amp; summer</option></select></label>
     <label>Sort<select id="sort">
@@ -1901,8 +1917,9 @@ document.getElementById("sea").onchange=e=>{sea=e.target.value;render()};
 fs.onchange=()=>{fam=fs.value;render()};const gb=document.getElementById("genbar");function genChips(){gb.querySelectorAll(".gchip").forEach(b=>{b.classList.toggle("on",b.dataset.g===gen);b.setAttribute("aria-pressed",b.dataset.g===gen)})}
 gb.querySelectorAll(".gchip").forEach(b=>b.onclick=()=>{gen=b.dataset.g;genChips();render()});ss.onchange=()=>{sortBy=ss.value;render()};
 function chips(){bb.innerHTML=brands.map(c=>{const n=c==="All brands"?PRODUCTS.length:PRODUCTS.filter(p=>p.brand===c).length;
- const on=c==="All brands"?!brandSel.size:brandSel.has(c);return `<button class="chip ${on?'on':''}" data-c="${c}" aria-pressed="${on}">${c}<small>${n}</small></button>`}).join("");
- bb.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{const c=b.dataset.c;if(c==="All brands")brandSel.clear();else if(brandSel.has(c))brandSel.delete(c);else brandSel.add(c);if(brandSel.size===brands.length-1)brandSel.clear();chips();render()})}
+ const on=c==="All brands"?!brandSel.size:brandSel.has(c);return `<button class="chip ${on?'on':''}" data-c="${c}" aria-pressed="${on}">${c==="All brands"?"All houses":c}<small>${n}</small></button>`}).join("");
+ bb.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{const c=b.dataset.c;if(c==="All brands")brandSel.clear();else if(brandSel.has(c))brandSel.delete(c);else brandSel.add(c);if(brandSel.size===brands.length-1)brandSel.clear();chips();render()});
+ const hs=document.getElementById("hsum");if(hs){const sel=[...brandSel];hs.textContent=!sel.length?"All houses":sel.length===1?sel[0]:`${sel[0]} +${sel.length-1}`}}
 const VIALS={classic:{label:"Classic",key:"p",sizes:[2,5,10]},luxe:{label:"Luxury",key:"l",sizes:[3,5,10]},roll:{label:"Roll-on",key:"r",sizes:[5,10]}};
 const ROLL_EXTRA=4; /* roll-on = Classic price + $4 */
 const up5=n=>Math.ceil(n/5)*5;
@@ -2101,7 +2118,7 @@ function filterOptions(){
  [...ss2.options].forEach(o=>{if(o.value==="all")return;const n=PRODUCTS.filter((p,i)=>passes(p,i,"sea")&&(p.sea===o.value||p.sea==="a")).length;
   const only=PRODUCTS.filter((p,i)=>passes(p,i,"sea")&&p.sea===o.value).length;any+=only;o.textContent=`${o.value==="c"?"Fall & winter":"Spring & summer"} (${n})`;o.hidden=o.disabled=!only&&o.value!==sea});
  document.getElementById("sea-l").hidden=!any&&sea==="all";
- const act=(fam!=="All scents")+(sea!=="all")+(sortBy!=="new");const fc=document.getElementById("fcount");fc.hidden=!act;fc.textContent=act}
+ const act=(fam!=="All scents")+(sea!=="all")+(sortBy!=="new")+(brandSel.size?1:0);const fc=document.getElementById("fcount");fc.hidden=!act;fc.textContent=act}
 function render(){
  const sb=document.getElementById("sherpa-bar");
  let list=PRODUCTS.filter((p,i)=>passes(p,i));
@@ -2123,13 +2140,16 @@ document.getElementById("sherpa-clear").onclick=()=>{sherpaSet=null;render()};
  const open=()=>{lastF=document.activeElement;t.classList.add("open");bk.hidden=false;btn.setAttribute("aria-expanded","true");document.body.style.overflow="hidden";setTimeout(()=>document.getElementById("fclose").focus(),30)};
  const close=()=>{t.classList.remove("open");bk.hidden=true;btn.setAttribute("aria-expanded","false");document.body.style.overflow="";if(lastF&&lastF.focus)lastF.focus({preventScroll:true})};
  btn.onclick=open;bk.onclick=close;document.getElementById("fclose").onclick=close;document.getElementById("fdone").onclick=()=>{close();document.getElementById("grid").scrollIntoView({behavior:"smooth",block:"start"})};
- document.getElementById("fclear").onclick=()=>{fam="All scents";sea="all";sortBy="new";fs.value=fam;document.getElementById("sea").value=sea;ss.value=sortBy;render()};
+ document.getElementById("fclear").onclick=()=>{brandSel.clear();chips();fam="All scents";sea="all";sortBy="new";fs.value=fam;document.getElementById("sea").value=sea;ss.value=sortBy;render()};
  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&t.classList.contains("open"))close()});})();
 fetch("spotlight.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(!j||!Array.isArray(j.picks))return;const now=Date.now();
  if(now>Date.parse(j.until+"T23:59:59-05:00")||(j.from&&now<Date.parse(j.from+"T00:00:00-04:00")))return;
  SPOT={pct:Number(j.pct)||15,ids:j.picks.map(x=>String(x.sq)),label:j.label||"",title:j.title||"",why:Object.fromEntries(j.picks.map(x=>[String(x.sq),x.why||""]))};
  spotBand();render();if(window.Cart&&Cart.refresh)Cart.refresh()}).catch(()=>{});
 
+
+/* Fragrance house picker (inside Filters & sort): tap to open, choose as many houses as you like */
+(function(){const hb=document.getElementById("hbtn"),hp=document.getElementById("brands");if(!hb||!hp)return;hb.onclick=e=>{e.preventDefault();const o=hp.hidden;hp.hidden=!o;hb.setAttribute("aria-expanded",o)}})();
 /* ===== SPOTLIGHT BAND (homepage redesign) =====
    Shows this month's spotlight picks above the shop, from the same spotlight.json.
    Optional "title" in spotlight.json sets the heading; otherwise it reads "<label> picks". */
