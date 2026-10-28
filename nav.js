@@ -36,30 +36,50 @@
   /* ---------- search ---------- */
   var sbtn=document.getElementById("search-open");
   if(!sbtn)return;
-  var CHIPS=["Nishane","Tom Ford","Citrus","Fresh","Sweet","Amber","Leather","Spicy","Vanilla","Oud","Tea","Coffee","Unisex","Evenings"];
+  var CHIPS=["Nishane","Tom Ford","Citrus","Fresh","Sweet","Amber","Leather","Spicy","Vanilla","Oud","Tea","Coffee","Rum tobacco","Lavender vanilla","Evenings"];
   var ov=document.createElement("div");ov.className="vvs";ov.id="vvs";ov.hidden=true;
   ov.innerHTML='<div class="vvs-box" role="dialog" aria-modal="true" aria-label="Search">'
    +'<div class="vvs-bar"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>'
    +'<input class="vvs-in" id="vvs-in" type="search" placeholder="Search scents, notes, houses…" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search">'
    +'<button type="button" class="vvs-x" aria-label="Close search">&times;</button></div>'
-   +'<div id="vvs-body"><p class="vvs-hint">Try a fragrance, a house, a note or a mood</p><div class="vvs-chips">'+CHIPS.map(function(c){return '<button type="button">'+c+'</button>'}).join("")+'</div></div></div>';
+   +'<div id="vvs-body"><p class="vvs-hint">Try a fragrance, a house, a mood, or notes together like “lavender vanilla”</p><div class="vvs-chips">'+CHIPS.map(function(c){return '<button type="button">'+c+'</button>'}).join("")+'</div></div></div>';
   document.body.insertBefore(ov,document.body.firstChild);
   var inp=ov.querySelector("#vvs-in"),body=ov.querySelector("#vvs-body"),sx=ov.querySelector(".vvs-x"),DATA=null,slast=null,st,sel=-1;
   var home=ov.querySelector("#vvs-body").innerHTML;
   function norm(s){return String(s).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase()}
   function load(){if(DATA)return Promise.resolve(DATA);return fetch(ROOT+"search.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){DATA=j.map(function(d){d._n=norm(d.b+" "+d.n);d._k=norm(d.k||"");return d});return DATA})}
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  /* Note search: type one or more notes ("lavender vanilla", "tobacco, rum") and every fragrance that has ALL of them comes up, with the matching notes shown */
+  var NOTEW=null;
+  function noteWords(){if(NOTEW)return NOTEW;NOTEW={};DATA.forEach(function(d){if(d.o){d._o=d.o.map(function(x){return{raw:x,w:norm(x).split(/[^a-z0-9]+/).filter(Boolean)}});d._o.forEach(function(x){x.w.forEach(function(w){NOTEW[w]=1})})}});return NOTEW}
+  function noteHit(d,w){if(!d._o)return null;for(var i=0;i<d._o.length;i++){var ws=d._o[i].w;for(var j=0;j<ws.length;j++)if(ws[j].indexOf(w)===0)return d._o[i].raw}return null}
+  function isNoteWord(w){var N=noteWords();if(N[w])return true;if(w.length<3)return false;for(var k in N)if(k.indexOf(w)===0)return true;return false}
+  function thumb(d){return d.i?'<img class="vvs-th" src="'+href(d.i)+'" alt="" loading="lazy">':'<span class="vvs-th ico">'+(d.t==="house"?"H":d.t==="collection"?"C":"VV")+'</span>'}
+  function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
   function render(q){
-    q=norm(q.trim());sel=-1;
+    var raw=q;q=norm(q.trim());sel=-1;
     if(!q){body.innerHTML=home;return}
-    var words=q.split(/\s+/).filter(Boolean);
+    var words=q.split(/[\s,+&\/;]+/).map(function(w){return w.replace(/[^a-z0-9'-]/g,"")}).filter(function(w){return w&&w!=="and"&&w!=="with"&&w!=="notes"&&w!=="note"});
+    if(!words.length){body.innerHTML=home;return}
+    /* note mode when every word is a note and none of them is part of a house or fragrance name on its own */
+    var nameHit=DATA.some(function(d){return d.t!=="scent"&&words.every(function(w){return d._n.indexOf(w)>=0})})||DATA.some(function(d){return d.t==="scent"&&words.every(function(w){return d._n.indexOf(" "+w)>=0||d._n.indexOf(w)===0})});
+    if(!nameHit&&words.every(isNoteWord)){
+      var res=[];DATA.forEach(function(d){if(d.t!=="scent")return;var m=[];for(var i=0;i<words.length;i++){var h=noteHit(d,words[i]);if(!h)return;if(m.indexOf(h)<0)m.push(h)}res.push({d:d,m:m,soon:!/^From/.test(d.s)})});
+      res.sort(function(a,b){return a.soon-b.soon||a.d.b.localeCompare(b.d.b)});
+      var label=words.map(function(w){return cap(w)}).join(" + ");
+      if(!res.length){body.innerHTML='<p class="vvs-none">No fragrance in the collection has '+esc(label)+' together yet. Try fewer notes, or <a href="'+href("index.html").replace(/\/index\.html$/,"/")+'#quiz">ask the Scent Sherpa</a>.</p>';return}
+      body.innerHTML='<p class="vvs-nh">'+res.length+' fragrance'+(res.length===1?"":"s")+' with <b>'+esc(label)+'</b></p><ul class="vvs-res">'+res.map(function(h){var d=h.d;
+        return '<li><a href="'+href(d.u)+'">'+thumb(d)+'<span class="vvs-t"><span class="vvs-b">'+esc(d.b)+'</span><span class="vvs-n">'+esc(d.n)+'</span><span class="vvs-s"><span class="vvs-nt">'+h.m.map(esc).join(" · ")+'</span> · '+esc(d.s)+'</span></span></a></li>'}).join("")+'</ul>';
+      return}
     var hits=DATA.map(function(d){var s=0;
       words.forEach(function(w){if(d._n.indexOf(w)===0||d._n.indexOf(" "+w)>=0)s+=6;else if(d._n.indexOf(w)>=0)s+=4;else if(d._k.indexOf(w)>=0)s+=2;else s-=10});
-      if(d.t==="scent")s+=1;return{d:d,s:s}}).filter(function(h){return h.s>0}).sort(function(a,b){return b.s-a.s}).slice(0,12);
-    if(!hits.length){body.innerHTML='<p class="vvs-none">Nothing matches “'+esc(q)+'”. Try a note (vanilla, oud, tea), a house, or <a href="'+href("index.html").replace(/\/index\.html$/,"/")+'#quiz">ask the Scent Sherpa</a>.</p>';return}
+      if(d.t==="scent")s+=1;var all=words.every(function(w){return d._n.indexOf(w)>=0||d._k.indexOf(w)>=0});return{d:d,s:s,all:all}}).filter(function(h){return h.s>0});
+    /* a mixed search like "tom ford vanilla" keeps only results that match every word, when there are any */
+    if(hits.some(function(h){return h.all}))hits=hits.filter(function(h){return h.all});
+    hits=hits.sort(function(a,b){return b.s-a.s}).slice(0,12);
+    if(!hits.length){body.innerHTML='<p class="vvs-none">Nothing matches “'+esc(raw.trim())+'”. Try a note (vanilla, oud, tea), a house, or <a href="'+href("index.html").replace(/\/index\.html$/,"/")+'#quiz">ask the Scent Sherpa</a>.</p>';return}
     body.innerHTML='<ul class="vvs-res">'+hits.map(function(h){var d=h.d;
-      var th=d.i?'<img class="vvs-th" src="'+href(d.i)+'" alt="" loading="lazy">':'<span class="vvs-th ico">'+(d.t==="house"?"H":d.t==="collection"?"C":"VV")+'</span>';
-      return '<li><a href="'+href(d.u)+'">'+th+'<span class="vvs-t"><span class="vvs-b">'+esc(d.b)+'</span><span class="vvs-n">'+esc(d.n)+'</span><span class="vvs-s">'+esc(d.s)+'</span></span></a></li>'}).join("")+'</ul>';
+      return '<li><a href="'+href(d.u)+'">'+thumb(d)+'<span class="vvs-t"><span class="vvs-b">'+esc(d.b)+'</span><span class="vvs-n">'+esc(d.n)+'</span><span class="vvs-s">'+esc(d.s)+'</span></span></a></li>'}).join("")+'</ul>';
   }
   function sOpen(){slast=document.activeElement;clearTimeout(st);ov.hidden=false;lock("vvs-lock",true);
     requestAnimationFrame(function(){requestAnimationFrame(function(){ov.classList.add("on");try{inp.focus({preventScroll:true})}catch(e){inp.focus()}})});load().then(function(){if(inp.value)render(inp.value)})}

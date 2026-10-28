@@ -613,7 +613,7 @@ if (COMPARES.length) out("compare/index.html", compareIndex());
 /* search index for the header search (nav.js): scents, houses, collections and the main pages */
 const SEARCH = [
   ...PRODUCTS.map((p) => ({ t: "scent", b: p.brand, n: p.name, u: pUrl(p), i: "/" + p.img, s: inStock(p) ? `From ${money(low(p))}` : (p.limited || "Arriving soon"),
-    k: [p.cat, p.cat2, FAM_LABEL[p.cat], FAM_LABEL[p.cat2], ...(p.x || []), ...noteList(p), p.g, SEA_TXT[p.sea], TM_TXT[p.tm]].filter(Boolean).join(" ") })),
+    k: [p.cat, p.cat2, FAM_LABEL[p.cat], FAM_LABEL[p.cat2], ...(p.x || []), ...noteList(p), p.g, SEA_TXT[p.sea], TM_TXT[p.tm]].filter(Boolean).join(" ") , o: [...new Set([...noteList(p), ...p.notes.replace(/\.$/, "").split(/,| and | over | with | on /).map((x) => x.trim()).filter((x) => x && x.split(" ").length <= 3)].map((x) => x.replace(/^(a|an|the) /i, "")))].filter((x, i, arr) => arr.findIndex((y) => y.toLowerCase() === x.toLowerCase()) === i).map((x) => x.charAt(0).toUpperCase() + x.slice(1)) })),
   ...groups.map(([brand, items]) => ({ t: "house", b: "Fragrance house", n: brand, u: hUrl(brand), s: `${items.length} scent${items.length === 1 ? "" : "s"}`, k: items.map((p) => p.name).join(" ") })),
   ...BUNDLES.bundles.map((b) => ({ t: "collection", b: "Curated collection", n: b.name, u: cUrl(b), s: `${bItems(b).length} scents, ${BUNDLES.pct}% off`, k: bItems(b).map((p) => p.brand + " " + p.name).join(" ") })),
   { t: "page", b: "Guide", n: "Fragrance 101", u: "/fragrance-101", s: "EDT vs EDP vs Extrait vs Parfum, notes, families, how to wear it", k: "concentration edt edp extrait parfum beginner guide longevity sillage projection notes families glossary" },

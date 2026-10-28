@@ -84,6 +84,8 @@ body.mnav-lock{overflow:hidden}
 .vvs-b{display:block;font:600 10.5px 'Jost',system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#c6a070}
 .vvs-n{display:block;font:500 18px/1.2 'Cormorant Garamond',Georgia,serif;color:#f5d9b5;overflow-wrap:anywhere}
 .vvs-s{display:block;margin-top:2px;font:400 13px 'Jost',system-ui,sans-serif;color:#dab68b}
+.vvs-nh{margin:0;padding:14px 18px 2px;font:400 13px 'Jost',system-ui,sans-serif;color:#dab68b}.vvs-nh b{font-weight:600;color:#f5d9b5}
+.vvs-nt{color:#f5d9b5}
 .vvs-none{padding:18px 18px 22px;color:#dab68b;font:400 15px 'Jost',system-ui,sans-serif}
 .vvs-none a{color:#f5d9b5}
 body.vvs-lock{overflow:hidden}
