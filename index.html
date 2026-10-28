@@ -927,10 +927,13 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .tools .hpanel{flex-basis:100%;order:20;margin:2px 0 0;justify-content:center;flex-wrap:wrap;overflow:visible;-webkit-mask-image:none;mask-image:none;padding:0}
 .tools .hpanel[hidden]{display:none}
 @media(max-width:720px){
- .tools{max-height:88vh;overflow-y:auto}
+ /* one column only: the panel scrolls up and down, never sideways, and Show stays pinned at the bottom */
+ .tools{max-height:88vh;overflow-y:auto;overflow-x:hidden;flex-wrap:nowrap;padding-bottom:0}
+ .tools>*{flex-shrink:0}
  .hlabel{justify-content:space-between;color:#dab68b}
  .hbtn{flex:0 1 62%;min-width:0}
- .tools .hpanel{order:0;margin:-4px 0 4px;justify-content:flex-start}
+ .tools .hpanel{order:0;flex-basis:auto;margin:-4px 0 4px;justify-content:flex-start}
+ .tools .sheet-foot{position:sticky;bottom:0;z-index:1;margin:4px -20px 0;padding:12px 20px calc(14px + env(safe-area-inset-bottom,0px));background:#3e1019;border-top:1px solid rgba(198,160,112,.25)}
  .tools .hpanel .chip{white-space:nowrap}
 }
 </style>
