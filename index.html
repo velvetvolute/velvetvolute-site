@@ -525,8 +525,8 @@ nav a:hover{color:var(--x-gold)}
 .x-label{display:inline-block;font:500 12px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--x-gold2)}
 .x-btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 30px;border-radius:999px;font:500 12px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:background .2s,color .2s}
 .x-btn:active{transform:translateY(1px)}
-.x-solid{background:var(--x-gold);color:var(--x-deep);border:1px solid var(--x-gold)}
-.x-solid:hover{background:#EDCEA5}
+.x-solid{background:var(--x-gold2);color:var(--x-deep);border:1px solid var(--x-gold2)}
+.x-solid:hover{background:#d4b083;border-color:#d4b083}
 .x-line{background:transparent;color:var(--x-gold);border:1px solid var(--x-gold)} /* taste-skill-ignore: hero secondary button */
 .x-line:hover{background:var(--x-gold);color:var(--x-deep)}
 .x-tlink,#zodiac button{display:inline-flex;align-items:center;min-height:44px;padding:0;border:0;background:none;font:500 16px/1.2 var(--sans);letter-spacing:0;text-transform:none;color:var(--x-gold);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px;cursor:pointer;border-radius:0;transition:color .2s}
@@ -913,6 +913,11 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 
 .x-hero-sub{text-align:left;margin:34px 0 0;font:400 clamp(1.75rem,3.4vw,2.6rem)/1.1 var(--serif);color:var(--x-gold);text-wrap:balance}
 .x-hero-sub+.x-lede{margin:14px 0 32px}
+
+/* Definition set off by a camel rule, indented in from the headline */
+.x-hero .x-def{margin-left:14px;padding:4px 0 4px 18px;border-left:3px solid var(--x-gold2)}
+/* Phones: the hero photo only pushed the products further down (the link-preview image is a separate file) */
+@media(max-width:720px){.x-hero figure{display:none}}
 </style>
 <link rel="stylesheet" href="/nav.css">
 <script src="/nav.js" defer></script><script src="/track.js" defer></script>
@@ -1001,7 +1006,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
     <p class="x-def"><b class="x-def-hw">vo·lute</b> <small>(vuh-LOOT) · <i>noun</i></small><span class="x-def-l">a soft, spiralling curl, like a wisp of smoke drifting through the air</span><span class="x-def-l x-def-skin">(or a good scent, curling up off the skin).</span><span class="x-def-et">Latin <i>volūta</i>, “a scroll”</span></p>
     <h2 class="x-hero-sub">Find your signature.<br>Build your collection.</h2>
     <p class="x-lede">Every fragrance is thoughtfully chosen, with at least one new addition every month, and every scent has a story. Curate your own playlist by notes, season and mood.</p>
-    <div class="x-ctas"><a class="x-btn x-solid" href="#shop">Browse fragrances</a><button type="button" class="x-btn x-line" data-quiz>Ask the Scent Sherpa</button></div>
+    <div class="x-ctas"><a class="x-btn x-solid" href="#shop">Browse fragrances</a></div>
   </div>
   <figure>
     <img src="img/lux-tf-tuscan-leather-5ad5fc8590-2455.w1080.jpg" width="1000" height="1000" srcset="img/lux-tf-tuscan-leather-5ad5fc8590-2455.w640.jpg 640w, img/lux-tf-tuscan-leather-5ad5fc8590-2455.w1080.jpg 1080w, img/lux-tf-tuscan-leather-5ad5fc8590-2455.w1600.jpg 1600w, img/lux-tf-tuscan-leather-5ad5fc8590-2455.jpg 2455w" sizes="(max-width:900px) 92vw, 560px" alt="Tom Ford Tuscan Leather full bottle beside luxury glass decant bottles in 3, 5 and 10 ml">
