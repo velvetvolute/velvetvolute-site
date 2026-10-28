@@ -950,6 +950,8 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .fdot{display:inline-block;flex:none;width:11px;height:11px;border-radius:50%;margin-right:8px;vertical-align:-1px;box-shadow:0 0 0 1px rgba(245,217,181,.55)}
 .hbtn #famsum{display:inline-flex;align-items:center}
 .fampanel .chip{display:inline-flex;align-items:center}
+.fampanel .chip:disabled{opacity:.38;cursor:default}
+.fam-hint{flex-basis:100%;margin:2px 2px 0;font:400 13px/1.4 var(--sans);text-transform:none;letter-spacing:normal;opacity:.8}
 
 @media(max-width:720px){.tools label>select,.tools label>.hbtn{flex:none;width:60%}}
 </style>
@@ -1946,14 +1948,14 @@ const ADDED={"WE3AYJUS5PPXVY3UKXPGE6SJ":"2026-10-23T05:15","5U276SCQYNDNP3GZJGCQ
 const brands=["All brands",...[...new Set(PRODUCTS.map(p=>p.brand))].sort()];
 const FAM_ORDER=["Citrus","Fresh","Floral","Sweet","Amber","Spicy","Woody","Leather"];
 const fams=["All scents",...FAM_ORDER.filter(c=>PRODUCTS.some(p=>p.cat===c||p.cat2===c))];
-const brandSel=new Set();let fam="All scents",gen="all",sea="all",sortBy="new",sherpaSet=null;
+const brandSel=new Set(),famSel=new Set(),FAM_MAX=3;const setFam=v=>{famSel.clear();if(v&&v!=="All scents")famSel.add(v)};let gen="all",sea="all",sortBy="new",sherpaSet=null;
 const FAM_LABEL={Citrus:"Citrus & fruity",Fresh:"Fresh & green",Floral:"Floral & powdery",Sweet:"Sweet & cozy",Amber:"Amber & resinous",Spicy:"Warm & spicy",Woody:"Woody & earthy",Leather:"Leather & smoky"};
 /* scent-family pill colours [fill, text]; text is merlot or camel, whichever reads better on the fill */
 const FAM_COLOR={Citrus:["#f2c230","#521924"],Fresh:["#9caf88","#521924"],Floral:["#e8a9b8","#521924"],Sweet:["#f5e6c8","#521924"],Amber:["#e07a14","#521924"],Spicy:["#a8321e","#f5d9b5"],Woody:["#74502f","#f5d9b5"],Leather:["#262222","#f5d9b5"]};
 const bb=document.getElementById("brands"),g=document.getElementById("grid"),fs=document.getElementById("fam"),ss=document.getElementById("sort");
 fs.innerHTML=fams.map(c=>`<option value="${c}">${FAM_LABEL[c]||c}</option>`).join("");
 document.getElementById("sea").onchange=e=>{sea=e.target.value;render()};
-fs.onchange=()=>{fam=fs.value;render()};const gb=document.getElementById("genbar");function genChips(){gb.querySelectorAll(".gchip").forEach(b=>{b.classList.toggle("on",b.dataset.g===gen);b.setAttribute("aria-pressed",b.dataset.g===gen)})}
+fs.onchange=()=>{setFam(fs.value);render()};const gb=document.getElementById("genbar");function genChips(){gb.querySelectorAll(".gchip").forEach(b=>{b.classList.toggle("on",b.dataset.g===gen);b.setAttribute("aria-pressed",b.dataset.g===gen)})}
 gb.querySelectorAll(".gchip").forEach(b=>b.onclick=()=>{gen=b.dataset.g;genChips();render()});ss.onchange=()=>{sortBy=ss.value;render()};
 function chips(){bb.innerHTML=brands.map(c=>{const n=c==="All brands"?PRODUCTS.length:PRODUCTS.filter(p=>p.brand===c).length;
  const on=c==="All brands"?!brandSel.size:brandSel.has(c);return `<button class="chip ${on?'on':''}" data-c="${c}" aria-pressed="${on}">${c==="All brands"?"All houses":c}<small>${n}</small></button>`}).join("");
@@ -2149,21 +2151,23 @@ function equalize(){return;const cs=[...g.querySelectorAll(".card")];
 let _eqT,_eqW=innerWidth;addEventListener("resize",()=>{if(innerWidth===_eqW)return;_eqW=innerWidth;clearTimeout(_eqT);_eqT=setTimeout(equalize,150)});
 document.fonts&&document.fonts.ready.then(()=>equalize());
 function passes(p,i,skip){return (!sherpaSet||sherpaSet.includes(i))&&(!brandSel.size||brandSel.has(p.brand))
- &&(skip==="fam"||fam==="All scents"||p.cat===fam||p.cat2===fam)&&(gen==="all"||(gen==="Women"?!!p.her:gen==="Men"?p.g!=="Women":p.g===gen))&&(skip==="sea"||sea==="all"||p.sea===sea||p.sea==="a")}
+ &&(skip==="fam"||!famSel.size||famSel.has(p.cat)||famSel.has(p.cat2))&&(gen==="all"||(gen==="Women"?!!p.her:gen==="Men"?p.g!=="Women":p.g===gen))&&(skip==="sea"||sea==="all"||p.sea===sea||p.sea==="a")}
 function filterOptions(){
  [...fs.options].forEach(o=>{if(o.value==="All scents")return;const n=PRODUCTS.filter((p,i)=>passes(p,i,"fam")&&(p.cat===o.value||p.cat2===o.value)).length;
-  o.textContent=`${FAM_LABEL[o.value]||o.value} (${n})`;o.hidden=o.disabled=!n&&o.value!==fam});
+  o.textContent=`${FAM_LABEL[o.value]||o.value} (${n})`;o.hidden=o.disabled=!n&&!famSel.has(o.value)});
  const ss2=document.getElementById("sea");let any=0;
  [...ss2.options].forEach(o=>{if(o.value==="all")return;const n=PRODUCTS.filter((p,i)=>passes(p,i,"sea")&&(p.sea===o.value||p.sea==="a")).length;
   const only=PRODUCTS.filter((p,i)=>passes(p,i,"sea")&&p.sea===o.value).length;any+=only;o.textContent=`${o.value==="c"?"Fall & winter":"Spring & summer"} (${n})`;o.hidden=o.disabled=!only&&o.value!==sea});
  document.getElementById("sea-l").hidden=!any&&sea==="all";
  const fp=document.getElementById("fampanel"),fsum=document.getElementById("famsum");
  if(fp){const dot=c=>FAM_COLOR[c]?`<span class="fdot" style="background:${FAM_COLOR[c][0]}"></span>`:"";
-  fp.innerHTML=[...fs.options].filter(o=>!o.hidden).map(o=>{const on=o.value===fam,lbl=o.value==="All scents"?"All scents":o.textContent.replace(/ \((\d+)\)$/,"");const n=(o.textContent.match(/\((\d+)\)$/)||[])[1];
-   return `<button type="button" class="chip ${on?"on":""}" data-f="${o.value}" aria-pressed="${on}">${dot(o.value)}${lbl}${n?`<small>${n}</small>`:""}</button>`}).join("");
-  fp.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{fam=b.dataset.f;fs.value=fam;fp.hidden=true;document.getElementById("fambtn").setAttribute("aria-expanded","false");render()});
-  if(fsum)fsum.innerHTML=fam==="All scents"?"All scents":`${dot(fam)}${FAM_LABEL[fam]||fam}`}
- const act=(fam!=="All scents")+(sea!=="all")+(sortBy!=="new")+(brandSel.size?1:0);const fc=document.getElementById("fcount");fc.hidden=!act;fc.textContent=act}
+  fp.innerHTML=[...fs.options].filter(o=>!o.hidden).map(o=>{const all=o.value==="All scents",on=all?!famSel.size:famSel.has(o.value),full=!all&&!on&&famSel.size>=FAM_MAX,lbl=o.value==="All scents"?"All scents":o.textContent.replace(/ \((\d+)\)$/,"");const n=(o.textContent.match(/\((\d+)\)$/)||[])[1];
+   return `<button type="button" class="chip ${on?"on":""}" data-f="${o.value}" aria-pressed="${on}"${full?" disabled":""}>${dot(o.value)}${lbl}${n?`<small>${n}</small>`:""}</button>`}).join("");
+  fp.insertAdjacentHTML("beforeend",`<p class="fam-hint">${famSel.size>=FAM_MAX?"That's 3, the most you can pick. Tap one to remove it.":"Pick up to 3 scents."}</p>`);
+  /* multi-select, up to 3: tapping toggles a scent, "All scents" clears; the panel stays open so shoppers can add more */
+  fp.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{const f=b.dataset.f;if(f==="All scents"){famSel.clear();fp.hidden=true;document.getElementById("fambtn").setAttribute("aria-expanded","false")}else if(famSel.has(f))famSel.delete(f);else if(famSel.size<FAM_MAX)famSel.add(f);render()});
+  const fl=[...famSel];if(fsum)fsum.innerHTML=!fl.length?"All scents":fl.map(dot).join("")+(FAM_LABEL[fl[0]]||fl[0])+(fl.length>1?` +${fl.length-1}`:"")}
+ const act=(famSel.size?1:0)+(sea!=="all")+(sortBy!=="new")+(brandSel.size?1:0);const fc=document.getElementById("fcount");fc.hidden=!act;fc.textContent=act}
 function render(){
  const sb=document.getElementById("sherpa-bar");
  let list=PRODUCTS.filter((p,i)=>passes(p,i));
@@ -2185,7 +2189,7 @@ document.getElementById("sherpa-clear").onclick=()=>{sherpaSet=null;render()};
  const open=()=>{lastF=document.activeElement;t.classList.add("open");bk.hidden=false;btn.setAttribute("aria-expanded","true");document.body.style.overflow="hidden";setTimeout(()=>document.getElementById("fclose").focus(),30)};
  const close=()=>{t.classList.remove("open");bk.hidden=true;btn.setAttribute("aria-expanded","false");document.body.style.overflow="";if(lastF&&lastF.focus)lastF.focus({preventScroll:true})};
  btn.onclick=open;bk.onclick=close;document.getElementById("fclose").onclick=close;document.getElementById("fdone").onclick=()=>{close();document.getElementById("grid").scrollIntoView({behavior:"smooth",block:"start"})};
- document.getElementById("fclear").onclick=()=>{brandSel.clear();chips();fam="All scents";sea="all";sortBy="new";fs.value=fam;document.getElementById("sea").value=sea;ss.value=sortBy;render()};
+ document.getElementById("fclear").onclick=()=>{brandSel.clear();chips();famSel.clear();sea="all";sortBy="new";fs.value="All scents";document.getElementById("sea").value=sea;ss.value=sortBy;render()};
  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&t.classList.contains("open"))close()});})();
 fetch("spotlight.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(!j||!Array.isArray(j.picks))return;const now=Date.now();
  if(now>Date.parse(j.until+"T23:59:59-05:00")||(j.from&&now<Date.parse(j.from+"T00:00:00-04:00")))return;
@@ -2199,7 +2203,7 @@ fetch("spotlight.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
 /* ===== SPOTLIGHT BAND (homepage redesign) =====
    Shows this month's spotlight picks above the shop, from the same spotlight.json.
    Optional "title" in spotlight.json sets the heading; otherwise it reads "<label> picks". */
-function vvJump(i){sherpaSet=null;brandSel.clear();fam="All scents";sea="all";gen="all";fs.value=fam;document.getElementById("sea").value=sea;genChips();chips();render();
+function vvJump(i){sherpaSet=null;brandSel.clear();famSel.clear();sea="all";gen="all";fs.value="All scents";document.getElementById("sea").value=sea;genChips();chips();render();
  const c=g.querySelector(`.card[data-i="${i}"]`);if(c){c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}}
 function spotBand(){
  /* The October picks are pinned first in the shop and carry their own badge; this just names them, right above the cards. */
@@ -2221,7 +2225,7 @@ fetch("zodiac.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
  const M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],d=x=>M[x[0]-1]+" "+x[1],off=offPct(p);
  el.innerHTML=`<div class="zl"><div class="zg" aria-hidden="true">${z.glyph}︎</div>${p.imgL||p.img?`<img class="zi" src="${(p.imgL||p.img).replace(".w1080",".w640")}" width="64" height="64" loading="lazy" alt="${p.brand} ${p.name}">`:""}</div><div class="zt"><div class="ze"><b>${z.sign} season pick</b>${off?`<i class="zoff">${off}% off</i>`:""}<span>${d(z.from)} – ${d(z.to)}</span></div><h3>${p.brand} ${p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"")}</h3><p>${z.why}</p><button type="button">See the scent</button></div>`;
  el.hidden=false;document.getElementById("spotlight").hidden=false;render();if(window.Cart&&Cart.refresh)Cart.refresh();
- el.querySelector("button").onclick=()=>{sherpaSet=null;brandSel.clear();fam="All scents";sea="all";gen="all";fs.value=fam;document.getElementById("sea").value=sea;genChips();chips();render();
+ el.querySelector("button").onclick=()=>{sherpaSet=null;brandSel.clear();famSel.clear();sea="all";gen="all";fs.value="All scents";document.getElementById("sea").value=sea;genChips();chips();render();
   const c=g.querySelector(`.card[data-i="${i}"]`);if(c){c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}};
 }).catch(()=>{});
 
@@ -2275,17 +2279,13 @@ function collections(){
  const step=()=>cards.length>1?cards[1].offsetLeft-cards[0].offsetLeft:box.clientWidth;
  const sync=()=>{const i=Math.round(box.scrollLeft/step()),max=box.scrollWidth-box.clientWidth-4;cnt.textContent=Math.min(cards.length,i+1)+" / "+cards.length;prev.disabled=box.scrollLeft<4;next.disabled=box.scrollLeft>=max};
  prev.onclick=()=>box.scrollBy({left:-step(),behavior:"smooth"});next.onclick=()=>box.scrollBy({left:step(),behavior:"smooth"});
- /* stories open half-collapsed: at most half the lines, and short enough that the whole card fits on screen top to bottom */
- const fitBlurb=el=>{const full=el.dataset.full,card=el.closest(".bundle"),e=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;");
-  if(el.classList.contains("open")){el.innerHTML=e(full)+' <button type="button" class="rm" aria-expanded="true">read less</button>'}
-  else{el.textContent=full;const lh=parseFloat(getComputedStyle(el).lineHeight)||26,fullH=el.scrollHeight,lines=Math.round(fullH/lh);
-   const head=document.querySelector(".nav,header,.site-head"),top=head?Math.min(head.offsetHeight,90):70,avail=innerHeight-top-24;
-   const fit=Math.floor((fullH-(card.offsetHeight-avail))/lh),keep=Math.max(2,Math.min(Math.ceil(lines/2),fit));
-   if(lines>keep){const max=keep*lh+2,w=full.split(" "),cut=m=>e(w.slice(0,m).join(" ").replace(/[,.;:\s]+$/,""))+'…<button type="button" class="rm" aria-expanded="false">read more</button>';let lo=1,hi=w.length;
-    while(lo<hi){const m=(lo+hi+1)>>1;el.innerHTML=cut(m);if(el.scrollHeight<=max)lo=m;else hi=m-1}el.innerHTML=cut(lo)}}
+ /* stories open collapsed: about 45% of the story shows (cut at a word), the rest sits under "read more" */
+ const fitBlurb=el=>{const full=el.dataset.full,e=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+  if(el.classList.contains("open"))el.innerHTML=e(full)+' <button type="button" class="rm" aria-expanded="true">read less</button>';
+  else{let cut=full.lastIndexOf(" ",Math.round(full.length*.45));if(cut<1)cut=full.length;
+   el.innerHTML=cut<full.length?e(full.slice(0,cut).replace(/[,.;:\s]+$/,""))+'…<button type="button" class="rm" aria-expanded="false">read more</button>':e(full)}
   const b=el.querySelector(".rm");if(b)b.onclick=ev=>{ev.preventDefault();el.classList.toggle("open");fitBlurb(el)}};
- const fitAll=()=>box.querySelectorAll(".blurb[data-full]").forEach(fitBlurb);fitAll();
- let cw=innerWidth;addEventListener("resize",()=>{if(innerWidth!==cw){cw=innerWidth;fitAll()}});if(document.fonts)document.fonts.ready.then(fitAll);
+ box.querySelectorAll(".blurb[data-full]").forEach(fitBlurb);
  let raf=0;box.addEventListener("scroll",()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(sync)},{passive:true});addEventListener("resize",sync);sync();
 }
 fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(!j||!Array.isArray(j.bundles))return;
@@ -2622,7 +2622,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
    else if(a==="shop"){shT("sherpa_show_all",{});const order=ranked().filter(x=>fits(x.p)).map(x=>x.i);
     picks().forEach(x=>{if(!order.includes(x.i))order.unshift(x.i)});
     setFilters("All scents","all","all");sherpaSet=order;render();close();const sb=document.getElementById("sherpa-bar");setTimeout(()=>window.scrollTo({top:sb.getBoundingClientRect().top+scrollY-document.querySelector("header").offsetHeight-16,behavior:"smooth"}),30)}})}
- function setFilters(fv,sv,gv){sherpaSet=null;brandSel.clear();fam=fv;sea=sv;gen=gv;fs.value=fv;document.getElementById("sea").value=sv;genChips();chips();render()}
+ function setFilters(fv,sv,gv){sherpaSet=null;brandSel.clear();setFam(fv);sea=sv;gen=gv;fs.value=fv;document.getElementById("sea").value=sv;genChips();chips();render()}
  function showCard(i){setFilters("All scents","all","all");close();
   const c=g.querySelector(`.card[data-i="${i}"]`);if(!c)return;c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}
  const pill=document.getElementById("qz-pill");
@@ -2646,7 +2646,7 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  const go=()=>{const s=document.getElementById("shop");if(s)s.scrollIntoView({block:"start"})};requestAnimationFrame(()=>setTimeout(go,60))})();
 (function(){const m=/[?&]picks=([A-Z0-9,]+)/.exec(location.search);if(!m)return;
  const order=m[1].split(",").map(id=>PRODUCTS.findIndex(p=>p.sq===id)).filter(i=>i>=0);if(!order.length)return;
- sherpaSet=order;brandSel.clear();fam="All scents";sea="all";gen="all";fs.value=fam;document.getElementById("sea").value=sea;genChips();chips();render();
+ sherpaSet=order;brandSel.clear();famSel.clear();sea="all";gen="all";fs.value="All scents";document.getElementById("sea").value=sea;genChips();chips();render();
  setTimeout(()=>{const sb=document.getElementById("sherpa-bar");window.scrollTo({top:sb.getBoundingClientRect().top+scrollY-document.querySelector("header").offsetHeight-16})},120)})();
 /* Sign-up card: bottom-right, after 30 s or on exit intent (desktop), once per 30 days, never for a known email. */
 (function(){const card=document.getElementById("su-card");if(!card)return;
