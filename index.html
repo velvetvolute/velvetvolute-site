@@ -936,6 +936,13 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
  .tools .sheet-foot{position:sticky;bottom:0;z-index:1;margin:4px -20px 0;padding:12px 20px calc(14px + env(safe-area-inset-bottom,0px));background:#3e1019;border-top:1px solid rgba(198,160,112,.25)}
  .tools .hpanel .chip{white-space:nowrap}
 }
+
+/* colour dot for each scent family (Scent picker) */
+.fdot{display:inline-block;flex:none;width:11px;height:11px;border-radius:50%;margin-right:8px;vertical-align:-1px;box-shadow:0 0 0 1px rgba(245,217,181,.55)}
+.hbtn #famsum{display:inline-flex;align-items:center}
+.fampanel .chip{display:inline-flex;align-items:center}
+
+@media(max-width:720px){.tools label>select,.tools label>.hbtn{flex:none;width:60%}}
 </style>
 <link rel="stylesheet" href="/nav.css">
 <script src="/nav.js" defer></script><script src="/track.js" defer></script>
@@ -1046,7 +1053,8 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
     <div class="sheet-head"><b>Filters &amp; sort</b><button type="button" id="fclose" aria-label="Close filters">&times;</button></div>
     <label class="hlabel">Fragrance house<button type="button" class="hbtn" id="hbtn" aria-expanded="false" aria-controls="brands"><span id="hsum">All houses</span><svg viewBox="0 0 12 8" width="11" height="8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></label>
     <div class="brandbar hpanel" id="brands" hidden></div>
-    <label id="fam-l">Scent<select id="fam"></select></label>
+    <label id="fam-l">Scent<select id="fam" hidden></select><button type="button" class="hbtn" id="fambtn" aria-expanded="false" aria-controls="fampanel"><span id="famsum">All scents</span><svg viewBox="0 0 12 8" width="11" height="8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></label>
+    <div class="brandbar hpanel fampanel" id="fampanel" hidden></div>
     <label id="sea-l">Season<select id="sea"><option value="all">Any season</option><option value="c">Fall &amp; winter</option><option value="w">Spring &amp; summer</option></select></label>
     <label>Sort<select id="sort">
       <option value="new" selected>Recently added</option>
@@ -2121,6 +2129,12 @@ function filterOptions(){
  [...ss2.options].forEach(o=>{if(o.value==="all")return;const n=PRODUCTS.filter((p,i)=>passes(p,i,"sea")&&(p.sea===o.value||p.sea==="a")).length;
   const only=PRODUCTS.filter((p,i)=>passes(p,i,"sea")&&p.sea===o.value).length;any+=only;o.textContent=`${o.value==="c"?"Fall & winter":"Spring & summer"} (${n})`;o.hidden=o.disabled=!only&&o.value!==sea});
  document.getElementById("sea-l").hidden=!any&&sea==="all";
+ const fp=document.getElementById("fampanel"),fsum=document.getElementById("famsum");
+ if(fp){const dot=c=>FAM_COLOR[c]?`<span class="fdot" style="background:${FAM_COLOR[c][0]}"></span>`:"";
+  fp.innerHTML=[...fs.options].filter(o=>!o.hidden).map(o=>{const on=o.value===fam,lbl=o.value==="All scents"?"All scents":o.textContent.replace(/ \((\d+)\)$/,"");const n=(o.textContent.match(/\((\d+)\)$/)||[])[1];
+   return `<button type="button" class="chip ${on?"on":""}" data-f="${o.value}" aria-pressed="${on}">${dot(o.value)}${lbl}${n?`<small>${n}</small>`:""}</button>`}).join("");
+  fp.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{fam=b.dataset.f;fs.value=fam;fp.hidden=true;document.getElementById("fambtn").setAttribute("aria-expanded","false");render()});
+  if(fsum)fsum.innerHTML=fam==="All scents"?"All scents":`${dot(fam)}${FAM_LABEL[fam]||fam}`}
  const act=(fam!=="All scents")+(sea!=="all")+(sortBy!=="new")+(brandSel.size?1:0);const fc=document.getElementById("fcount");fc.hidden=!act;fc.textContent=act}
 function render(){
  const sb=document.getElementById("sherpa-bar");
@@ -2152,7 +2166,8 @@ fetch("spotlight.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
 
 
 /* Fragrance house picker (inside Filters & sort): tap to open, choose as many houses as you like */
-(function(){const hb=document.getElementById("hbtn"),hp=document.getElementById("brands");if(!hb||!hp)return;hb.onclick=e=>{e.preventDefault();const o=hp.hidden;hp.hidden=!o;hb.setAttribute("aria-expanded",o)}})();
+(function(){const P=[["hbtn","brands"],["fambtn","fampanel"]].map(([b,p])=>[document.getElementById(b),document.getElementById(p)]).filter(x=>x[0]&&x[1]);
+ P.forEach(([b,p])=>b.onclick=e=>{e.preventDefault();const o=p.hidden;P.forEach(([b2,p2])=>{p2.hidden=true;b2.setAttribute("aria-expanded","false")});p.hidden=!o;b.setAttribute("aria-expanded",o)})})();
 /* ===== SPOTLIGHT BAND (homepage redesign) =====
    Shows this month's spotlight picks above the shop, from the same spotlight.json.
    Optional "title" in spotlight.json sets the heading; otherwise it reads "<label> picks". */
