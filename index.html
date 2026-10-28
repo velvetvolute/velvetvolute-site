@@ -1100,7 +1100,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
     <span class="count" id="count"></span>
     <div class="sheet-foot"><button type="button" id="fclear">Clear all</button><button type="button" id="fdone">Show <span id="fdone-n"></span></button></div>
   </div>
-  <div class="sherpa-bar" id="sherpa-bar" hidden><span>Showing the <b id="sherpa-n"></b> that fit your Scent Sherpa answers, best matches first.</span><span class="sb-act"><button type="button" data-quiz>Change answers</button><button type="button" id="sherpa-clear">Show all fragrances</button></span></div>
+  <div class="sherpa-bar" id="sherpa-bar" hidden><span id="sherpa-t">Showing the <b id="sherpa-n"></b> that fit your Scent Sherpa answers, best matches first.</span><span class="sb-act"><button type="button" data-quiz>Change answers</button><button type="button" id="sherpa-clear">Show all fragrances</button></span></div>
   <div class="spot-line" id="spot-line" hidden><span class="x-label" id="spot-label"></span><h3 id="spot-title"></h3></div>
   <div class="grid" id="grid"></div>
   <div class="suggest">
@@ -1972,7 +1972,7 @@ const ADDED={"WE3AYJUS5PPXVY3UKXPGE6SJ":"2026-10-23T05:15","5U276SCQYNDNP3GZJGCQ
 const brands=["All brands",...[...new Set(PRODUCTS.map(p=>p.brand))].sort()];
 const FAM_ORDER=["Citrus","Fresh","Floral","Sweet","Amber","Spicy","Woody","Leather"];
 const fams=["All scents",...FAM_ORDER.filter(c=>PRODUCTS.some(p=>p.cat===c||p.cat2===c))];
-const brandSel=new Set(),famSel=new Set(),FAM_MAX=3;const setFam=v=>{famSel.clear();if(v&&v!=="All scents")famSel.add(v)};let gen="all",sea="all",sortBy="new",sherpaSet=null;
+const brandSel=new Set(),famSel=new Set(),FAM_MAX=3;const setFam=v=>{famSel.clear();if(v&&v!=="All scents")famSel.add(v)};let gen="all",sea="all",sortBy="new",sherpaSet=null,searchQ=null;
 const FAM_LABEL={Citrus:"Citrus & fruity",Fresh:"Fresh & green",Floral:"Floral & powdery",Sweet:"Sweet & cozy",Amber:"Amber & resinous",Spicy:"Warm & spicy",Woody:"Woody & earthy",Leather:"Leather & smoky"};
 /* scent-family pill colours [fill, text]; text is merlot or camel, whichever reads better on the fill */
 const FAM_COLOR={Citrus:["#f2c230","#521924"],Fresh:["#9caf88","#521924"],Floral:["#e8a9b8","#521924"],Sweet:["#f5e6c8","#521924"],Amber:["#e07a14","#521924"],Spicy:["#a8321e","#f5d9b5"],Woody:["#74502f","#f5d9b5"],Leather:["#262222","#f5d9b5"]};
@@ -2203,7 +2203,9 @@ function render(){
  if(!sherpaSet&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"))list=list.filter(isSpot).concat(list.filter(p=>!isSpot(p)));
  const cnt=`${list.length} fragrance${list.length===1?"":"s"}`;
  document.getElementById("count").textContent=cnt;document.getElementById("count2").textContent=cnt;document.getElementById("fdone-n").textContent=cnt;
- if(sb){sb.hidden=!sherpaSet;if(sherpaSet)document.getElementById("sherpa-n").textContent=cnt}
+ if(sb){sb.hidden=!sherpaSet;if(sherpaSet){const st=document.getElementById("sherpa-t"),qb=sb.querySelector("[data-quiz]");
+  if(searchQ){st.innerHTML=`Showing the <b>${cnt}</b> with <b>${searchQ.replace(/&/g,"&amp;").replace(/</g,"&lt;")}</b>.`;if(qb)qb.hidden=true}
+  else{st.innerHTML=`Showing the <b id="sherpa-n">${cnt}</b> that fit your Scent Sherpa answers, best matches first.`;if(qb)qb.hidden=false}}}
  filterOptions();
  const sl=document.getElementById("spot-line");if(sl)sl.hidden=!(window._spotReady&&list.length&&isSpot(list[0])&&!sherpaSet&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"));
  /* when the Spotlight heading shows, a divider closes the pinned picks so the rest of the grid doesn't read as part of the Spotlight */
@@ -2211,7 +2213,7 @@ function render(){
  if(nSpot>0)cards.splice(nSpot,0,'<div class="spot-break" role="separator"><span>The full collection</span></div>');
  g.innerHTML=cards.join("");g.querySelectorAll(".card").forEach(bind);equalize();fillRows()}
 chips();render();
-document.getElementById("sherpa-clear").onclick=()=>{sherpaSet=null;render()};
+document.getElementById("sherpa-clear").onclick=()=>{if(searchQ){try{sessionStorage.removeItem("vvSearch");history.replaceState(null,"",location.pathname+"#shop")}catch(e){}}sherpaSet=null;searchQ=null;render()};
 (function(){const t=document.getElementById("tools"),bk=document.getElementById("fback"),btn=document.getElementById("fbtn");let lastF=null;
  const open=()=>{lastF=document.activeElement;t.classList.add("open");bk.hidden=false;btn.setAttribute("aria-expanded","true");document.body.style.overflow="hidden";setTimeout(()=>document.getElementById("fclose").focus(),30)};
  const close=()=>{t.classList.remove("open");bk.hidden=true;btn.setAttribute("aria-expanded","false");document.body.style.overflow="";if(lastF&&lastF.focus)lastF.focus({preventScroll:true})};
@@ -2230,7 +2232,7 @@ fetch("spotlight.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
 /* ===== SPOTLIGHT BAND (homepage redesign) =====
    Shows this month's spotlight picks above the shop, from the same spotlight.json.
    Optional "title" in spotlight.json sets the heading; otherwise it reads "<label> picks". */
-function vvJump(i){sherpaSet=null;brandSel.clear();famSel.clear();sea="all";gen="all";fs.value="All scents";document.getElementById("sea").value=sea;genChips();chips();render();
+function vvJump(i){sherpaSet=null;searchQ=null;brandSel.clear();famSel.clear();sea="all";gen="all";fs.value="All scents";document.getElementById("sea").value=sea;genChips();chips();render();
  const c=g.querySelector(`.card[data-i="${i}"]`);if(c){c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}}
 function spotBand(){
  /* The October picks are pinned first in the shop and carry their own badge; this just names them, right above the cards. */
@@ -2252,7 +2254,7 @@ fetch("zodiac.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
  const M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],d=x=>M[x[0]-1]+" "+x[1],off=offPct(p);
  el.innerHTML=`<div class="zl"><div class="zg" aria-hidden="true">${z.glyph}︎</div>${p.imgL||p.img?`<img class="zi" src="${(p.imgL||p.img).replace(".w1080",".w640")}" width="64" height="64" loading="lazy" alt="${p.brand} ${p.name}">`:""}</div><div class="zt"><div class="ze"><b>${z.sign} season pick</b>${off?`<i class="zoff">${off}% off</i>`:""}<span>${d(z.from)} – ${d(z.to)}</span></div><h3>${p.brand} ${p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"")}</h3><p>${z.why}</p><button type="button">See the scent</button></div>`;
  el.hidden=false;document.getElementById("spotlight").hidden=false;render();if(window.Cart&&Cart.refresh)Cart.refresh();
- el.querySelector("button").onclick=()=>{sherpaSet=null;brandSel.clear();famSel.clear();sea="all";gen="all";fs.value="All scents";document.getElementById("sea").value=sea;genChips();chips();render();
+ el.querySelector("button").onclick=()=>{sherpaSet=null;searchQ=null;brandSel.clear();famSel.clear();sea="all";gen="all";fs.value="All scents";document.getElementById("sea").value=sea;genChips();chips();render();
   const c=g.querySelector(`.card[data-i="${i}"]`);if(c){c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}};
 }).catch(()=>{});
 
@@ -2651,8 +2653,8 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
    else if(a==="set"){shT("sherpa_add_set",{picks:avail.map(x=>x.p.name).join(" | "),count:avail.length});avail.forEach(x=>Cart.add(x.p,"classic",2));close();Cart.open()}
    else if(a==="shop"){shT("sherpa_show_all",{});const order=ranked().filter(x=>fits(x.p)).map(x=>x.i);
     picks().forEach(x=>{if(!order.includes(x.i))order.unshift(x.i)});
-    setFilters("All scents","all","all");sherpaSet=order;render();close();const sb=document.getElementById("sherpa-bar");setTimeout(()=>window.scrollTo({top:sb.getBoundingClientRect().top+scrollY-document.querySelector("header").offsetHeight-16,behavior:"smooth"}),30)}})}
- function setFilters(fv,sv,gv){sherpaSet=null;brandSel.clear();setFam(fv);sea=sv;gen=gv;fs.value=fv;document.getElementById("sea").value=sv;genChips();chips();render()}
+    setFilters("All scents","all","all");searchQ=null;sherpaSet=order;render();close();const sb=document.getElementById("sherpa-bar");setTimeout(()=>window.scrollTo({top:sb.getBoundingClientRect().top+scrollY-document.querySelector("header").offsetHeight-16,behavior:"smooth"}),30)}})}
+ function setFilters(fv,sv,gv){sherpaSet=null;searchQ=null;brandSel.clear();setFam(fv);sea=sv;gen=gv;fs.value=fv;document.getElementById("sea").value=sv;genChips();chips();render()}
  function showCard(i){setFilters("All scents","all","all");close();
   const c=g.querySelector(`.card[data-i="${i}"]`);if(!c)return;c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}
  const pill=document.getElementById("qz-pill");
@@ -2676,8 +2678,14 @@ fetch("bundles.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if
  const go=()=>{const s=document.getElementById("shop");if(s)s.scrollIntoView({block:"start"})};requestAnimationFrame(()=>setTimeout(go,60))})();
 (function(){const m=/[?&]picks=([A-Z0-9,]+)/.exec(location.search);if(!m)return;
  const order=m[1].split(",").map(id=>PRODUCTS.findIndex(p=>p.sq===id)).filter(i=>i>=0);if(!order.length)return;
- sherpaSet=order;brandSel.clear();famSel.clear();sea="all";gen="all";fs.value="All scents";document.getElementById("sea").value=sea;genChips();chips();render();
+ searchQ=null;sherpaSet=order;brandSel.clear();famSel.clear();sea="all";gen="all";fs.value="All scents";document.getElementById("sea").value=sea;genChips();chips();render();
  setTimeout(()=>{const sb=document.getElementById("sherpa-bar");window.scrollTo({top:sb.getBoundingClientRect().top+scrollY-document.querySelector("header").offsetHeight-16})},120)})();
+/* "See all in the shop" from the header search: shows just those fragrances, with the search named in the bar above the grid */
+window.VVShowSearch=function(){let d;try{d=JSON.parse(sessionStorage.getItem("vvSearch")||"null")}catch(e){}if(!d||!Array.isArray(d.u))return false;
+ const order=d.u.map(u=>PRODUCTS.findIndex(p=>pUrl(p)===u)).filter(i=>i>=0);if(!order.length)return false;
+ sherpaSet=order;searchQ=String(d.q||"your search").slice(0,60);try{history.replaceState(null,"","?q="+encodeURIComponent(searchQ)+"#shop")}catch(e){}brandSel.clear();famSel.clear();sea="all";gen="all";fs.value="All scents";document.getElementById("sea").value=sea;genChips();chips();render();
+ setTimeout(()=>{const sb=document.getElementById("sherpa-bar");window.scrollTo({top:sb.getBoundingClientRect().top+scrollY-document.querySelector("header").offsetHeight-16,behavior:"smooth"})},120);return true};
+if(/[?&]q=/.test(location.search))window.VVShowSearch();
 /* Sign-up card: bottom-right, after 30 s or on exit intent (desktop), once per 30 days, never for a known email. */
 (function(){const card=document.getElementById("su-card");if(!card)return;
  const get=k=>{try{return localStorage.getItem(k)||""}catch(e){return ""}},set=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
