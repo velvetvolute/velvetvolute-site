@@ -406,6 +406,12 @@ nav a{white-space:nowrap}
 :root[data-palette="camel-m"] .btn.qz-next{background:#6b1e2e;border:1px solid #6b1e2e;color:#c6a070;font-weight:600}
 :root[data-palette="camel-m"] .btn.qz-next:hover:not([disabled]){background:#8d2b3f;border-color:#8d2b3f;color:#dab68b}
 :root[data-palette="camel-m"] .btn.qz-next[disabled]{opacity:.5}
+/* helper text in the quiz was Jost Light (300) and read thin on camel: regular weight, a touch larger */
+.qz-card{font-weight:400}
+:root[data-palette="camel-m"] :is(.qz-hint,.qz-gl span,.qz-none,.qz-links button,.qz-back){font-weight:400;color:#4a1520}
+.qz-hint{font-size:15px;line-height:1.55;letter-spacing:.005em}
+/* colour dots get a fine merlot ring so light colours (Sweet & cozy's cream) still show on cream pills */
+.qz-c .dot,.fdot{box-shadow:0 0 0 1.5px rgba(62,16,25,.38)}
 /* Quick pick family stories: merlot card, camel heading, cream story, picks as camel pills */
 .qz-fc{background:#5a1927;border-radius:8px;padding:16px 16px 14px;color:#f3e1c6}
 .qz-fc h5{margin:0 0 8px;display:flex;align-items:center;gap:9px;font:500 22px/1.15 var(--serif);color:#dab68b}
