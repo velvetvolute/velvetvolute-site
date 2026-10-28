@@ -911,7 +911,8 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .spot-line h3{margin:6px 0 0;font:400 clamp(1.5rem,3vw,2rem)/1.15 var(--serif);color:var(--x-gold)}
 @media(max-width:720px){#spotlight .zodiac{grid-template-columns:auto 1fr;gap:14px;padding:12px 14px}#spotlight .zodiac .zi{width:56px;height:56px}#spotlight .zodiac button{grid-column:auto;justify-self:start}}
 
-.x-hero .x-def+.x-ctas{margin-top:32px}
+.x-hero-sub{text-align:left;margin:34px 0 0;font:400 clamp(1.75rem,3.4vw,2.6rem)/1.1 var(--serif);color:var(--x-gold);text-wrap:balance}
+.x-hero-sub+.x-lede{margin:14px 0 32px}
 </style>
 <link rel="stylesheet" href="/nav.css">
 <script src="/nav.js" defer></script><script src="/track.js" defer></script>
@@ -998,6 +999,8 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
   <div>
     <h1>Curated fragrance decants</h1>
     <p class="x-def"><b class="x-def-hw">vo·lute</b> <small>(vuh-LOOT) · <i>noun</i></small><span class="x-def-l">a soft, spiralling curl, like a wisp of smoke drifting through the air</span><span class="x-def-l x-def-skin">(or a good scent, curling up off the skin).</span><span class="x-def-et">Latin <i>volūta</i>, “a scroll”</span></p>
+    <h2 class="x-hero-sub">Find your signature.<br>Build your collection.</h2>
+    <p class="x-lede">Every fragrance is thoughtfully chosen, with at least one new addition every month, and every scent has a story. Curate your own playlist by notes, season and mood.</p>
     <div class="x-ctas"><a class="x-btn x-solid" href="#shop">Browse fragrances</a><button type="button" class="x-btn x-line" data-quiz>Ask the Scent Sherpa</button></div>
   </div>
   <figure>
@@ -1012,7 +1015,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 </div></section>
 
 <section id="shop"><div class="wrap">
-  <div class="x-shop-head"><h2>Find your signature.<br>Build your collection.</h2><p>Every fragrance is thoughtfully chosen, with at least one new addition every month, and every scent has a story. Curate your own playlist by notes, season and mood.</p><p class="x-sherpa">Not sure where to start? <button type="button" data-quiz>Let the Scent Sherpa guide you</button></p></div>
+  <div class="x-shop-head"><p class="x-sherpa">Not sure where to start? <button type="button" data-quiz>Let the Scent Sherpa guide you</button></p></div>
   <div class="brandbar" id="brands"></div>
   <div class="genbar" id="genbar" role="group" aria-label="Who it's for"><span>For</span><button type="button" class="gchip on" data-g="all">Everyone</button><button type="button" class="gchip" data-g="Men">Him</button><button type="button" class="gchip" data-g="Women">Her</button></div>
   <div class="fbar"><button type="button" class="fbtn" id="fbtn" aria-controls="tools" aria-expanded="false"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Filters &amp; sort<span class="fcount" id="fcount" hidden></span></button><span class="count" id="count2"></span></div>
