@@ -938,6 +938,9 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 #spotlight .zodiac button:hover{background:none;color:var(--x-text)}
 .spot-line{margin:6px 0 14px}
 .spot-line h3{margin:6px 0 0;font:400 clamp(1.5rem,3vw,2rem)/1.15 var(--serif);color:var(--x-gold)}
+.spot-break{grid-column:1/-1;display:flex;align-items:center;gap:14px;margin:18px 0 6px;font:500 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--x-gold)}
+.spot-break::before,.spot-break::after{content:"";flex:1;height:1px;background:rgba(198,160,112,.45)}
+@media(max-width:720px){.spot-break{margin:14px 0 4px}}
 @media(max-width:720px){#spotlight .zodiac{grid-template-columns:auto 1fr;gap:14px;padding:12px 14px}#spotlight .zodiac .zi{width:56px;height:56px}#spotlight .zodiac button{grid-column:auto;justify-self:start}}
 
 .x-hero-sub{text-align:left;margin:34px 0 0;font:400 clamp(1.75rem,3.4vw,2.6rem)/1.1 var(--serif);color:var(--x-gold);text-wrap:balance}
@@ -2203,7 +2206,10 @@ function render(){
  if(sb){sb.hidden=!sherpaSet;if(sherpaSet)document.getElementById("sherpa-n").textContent=cnt}
  filterOptions();
  const sl=document.getElementById("spot-line");if(sl)sl.hidden=!(window._spotReady&&list.length&&isSpot(list[0])&&!sherpaSet&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"));
- g.innerHTML=list.map(cardHTML).join("");g.querySelectorAll(".card").forEach(bind);equalize();fillRows()}
+ /* when the Spotlight heading shows, a divider closes the pinned picks so the rest of the grid doesn't read as part of the Spotlight */
+ const cards=list.map(cardHTML),nSpot=sl&&!sl.hidden?list.findIndex(p=>!isSpot(p)):-1;
+ if(nSpot>0)cards.splice(nSpot,0,'<div class="spot-break" role="separator"><span>The full collection</span></div>');
+ g.innerHTML=cards.join("");g.querySelectorAll(".card").forEach(bind);equalize();fillRows()}
 chips();render();
 document.getElementById("sherpa-clear").onclick=()=>{sherpaSet=null;render()};
 (function(){const t=document.getElementById("tools"),bk=document.getElementById("fback"),btn=document.getElementById("fbtn");let lastF=null;
