@@ -93,7 +93,8 @@
     "vibe": "Grounded, warm &amp; confident"
    }
   ],
-  "nm_h": 92
+  "nm_h": 92,
+  "ph_h": 230
  },
  {
   "slug": "02-born-in-roma",
@@ -164,7 +165,8 @@
     ],
     "vibe": "Moody, pensive & seductive"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "03-leather-suede",
@@ -236,7 +238,8 @@
     "vibe": "Sunny, smooth & daring",
     "sq": "ZRS2LCBJGQC3SPAYYPJID2TF"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "04-tom-ford",
@@ -309,7 +312,8 @@
     "vibe": "Cool, salty & mysterious",
     "sq": "BHTPR3LHPBN22W4MQTXAKWUF"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "05-tea-x-flames",
@@ -383,7 +387,8 @@
     ],
     "vibe": "Calm, clear &amp; refined"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "06-coffeehouse",
@@ -454,7 +459,8 @@
     ],
     "vibe": "Sharp & dressed-up"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "07-boozy",
@@ -530,7 +536,8 @@
     "vibe": "Opulent & nocturnal",
     "sq": "OZ5Z33WF6IPMP7W6MNJWE47G"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "08-vanilla",
@@ -607,7 +614,8 @@
     "vibe": "Bold, sweet & magnetic",
     "sq": "XLJ4LPB4VDJPEJKLLWRUDVS5"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "09-nishane-x",
@@ -665,7 +673,9 @@
     ],
     "vibe": "Calm, clear &amp; refined"
    }
-  ]
+  ],
+  "ph_h": 252,
+  "nm_h": 92
  },
  {
   "slug": "10-flower-and-stone",
@@ -738,7 +748,8 @@
     "vibe": "Cool, salty & mysterious",
     "sq": "BHTPR3LHPBN22W4MQTXAKWUF"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "11-saffron",
@@ -812,7 +823,8 @@
     "vibe": "Intense & magnetic",
     "sq": "VATMWQOVHP5T5Y6NATNYLUIA"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "12-holiday-spice",
@@ -884,7 +896,8 @@
     "vibe": "Golden, juicy & generous",
     "sq": "46L5E4AQVFWRPF542CFSLG65"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "13-erba",
@@ -942,7 +955,8 @@
     "vibe": "Sunny, smooth & daring",
     "sq": "ZRS2LCBJGQC3SPAYYPJID2TF"
    }
-  ]
+  ],
+  "ph_h": 291
  },
  {
   "slug": "14-fruity-with-depth",
@@ -1016,7 +1030,8 @@
     ],
     "vibe": "Bold & unapologetic"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "15-woody-earthy",
@@ -1091,7 +1106,8 @@
     ],
     "vibe": "Calm & unshakable"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "16-sweet-cozy",
@@ -1165,7 +1181,8 @@
     ],
     "vibe": "Cozy & comforting"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "17-amber-resinous",
@@ -1241,7 +1258,8 @@
     "vibe": "Intense & magnetic",
     "sq": "VATMWQOVHP5T5Y6NATNYLUIA"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "18-fresh-green",
@@ -1314,7 +1332,8 @@
     "vibe": "Cool, salty & mysterious",
     "sq": "BHTPR3LHPBN22W4MQTXAKWUF"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "19-warm-spicy",
@@ -1389,7 +1408,8 @@
     ],
     "vibe": "Sweet, spicy & addictive"
    }
-  ]
+  ],
+  "ph_h": 230
  },
  {
   "slug": "20-floral-powdery",
@@ -1463,6 +1483,7 @@
     ],
     "vibe": "Warm, sweet & carefree"
    }
-  ]
+  ],
+  "ph_h": 230
  }
 ]
