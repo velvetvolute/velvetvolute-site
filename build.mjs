@@ -108,7 +108,7 @@ ${FONTS}
 <div class="bar">Free Ottawa hand delivery over $65 · Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
   <button type="button" class="menu-open" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><a class="logo" href="/"><span class="mono">VV</span>Velvet <span>Volute</span></a>
-  <nav><a href="/#shop">Shop</a><a href="/houses/"${current === "houses" ? ' aria-current="page"' : ""}>Fragrance Houses</a><a href="/collections/"${current === "collections" ? ' aria-current="page"' : ""}>Curated Collections</a><a href="/fragrance-101">Fragrance 101</a><a href="/about">About the Brand</a><a href="/rewards">Rewards</a><a href="/how-it-works">How It Works</a><a href="/contact">Contact</a></nav><div class="icons"><button type="button" class="search-open" id="search-open" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></button><a class="cart-open" href="/#cart-page" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></a></div>
+  <nav><a href="/#shop">Shop</a><a href="/houses/"${current === "houses" ? ' aria-current="page"' : ""}>Fragrance Houses</a><a href="/collections/"${current === "collections" ? ' aria-current="page"' : ""}>Curated Collections</a><a href="/fragrance-101">Fragrance 101</a><a href="/compare/"${current === "compare" ? ' aria-current="page"' : ""}>Compare</a><a href="/about">About the Brand</a><a href="/rewards">Rewards</a><a href="/how-it-works">How It Works</a><a href="/contact">Contact</a></nav><div class="icons"><button type="button" class="search-open" id="search-open" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></button><a class="cart-open" href="/#cart-page" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span><span class="cart-count" id="cart-count" hidden>0</span></a></div>
 </div></header>
 <main>`;
 }
@@ -538,7 +538,7 @@ function comparePage(c) {
     ["Vibe", (x) => `<em>${esc(unesc(x.vibe))}</em>`],
     ["Season", (x) => `${SEA_TXT[x.p.sea]}<small>${TM_TXT[x.p.tm]}</small>`],
   ];
-  return head({ title, desc: w.desc, url, image: { src: img.jpg, w: 1080, h: 1350, alt: compAlt(c) }, jsonld: ld, type: "article" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Compare", href: "/compare/" }, { name: compName(c) }]) + `
+  return head({ title, desc: w.desc, url, image: { src: img.jpg, w: 1080, h: 1350, alt: compAlt(c) }, jsonld: ld, type: "article", current: "compare" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Compare", href: "/compare/" }, { name: compName(c) }]) + `
 <section class="cmp wrap">
  <div class="cmp-head">
   <h1>${esc(w.h1)}</h1>
@@ -566,7 +566,7 @@ function compareIndex() {
   const url = "/compare/", title = "Compare fragrances side by side | Velvet Volute decants, Ottawa";
   const desc = "Side-by-side fragrance comparison tables from Velvet Volute, Ottawa: Nishane's Time Capsule, Valentino Born in Roma, four leathers, Tom Ford, vanilla and more.";
   const ld = [crumbLD([{ name: "Shop", href: "/" }, { name: "Compare" }]), { "@context": "https://schema.org", "@type": "CollectionPage", name: "Compare the collection", url: SITE + url, description: desc, hasPart: COMPARES.map((c) => ({ "@type": "WebPage", name: `${compName(c)} compared`, url: SITE + compUrl(c) })) }];
-  return head({ title, desc, url, jsonld: ld }) + crumbs([{ name: "Shop", href: "/" }, { name: "Compare" }]) + `
+  return head({ title, desc, url, jsonld: ld, current: "compare" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Compare" }]) + `
 <section class="cmps wrap">
  <h1>Compare the collection</h1>
  <p class="lede">The same scents, side by side: launch year, retail, decant prices, intensity, notes, vibe and season. Each chart has an accessible table underneath it.</p>

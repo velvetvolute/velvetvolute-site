@@ -476,6 +476,38 @@ a.cart-open{text-decoration:none}
 
 /* fragrance 101 */
 .f101{margin:0 auto;max-width:1040px;text-align:center}
+/* Fragrance 101 hub: pick an article, read it on its own, step to the next */
+.f1-cards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:14px;text-align:left}
+.f1-cards a{display:flex;flex-direction:column;height:100%;box-sizing:border-box;padding:20px 22px;background:#ac8153;border-radius:4px;color:#481620;text-decoration:none;transition:transform .15s,background .15s}
+.f1-cards a:hover,.f1-cards a:focus-visible{background:#b88d5e;transform:translateY(-2px);outline:none}
+.f1-cards .f1-n{font:600 12px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:#662029}
+.f1-cards b{margin:6px 0 6px;font:500 23px/1.15 var(--serif);color:#481620}
+.f1-cards span:last-child{font-size:14.5px;line-height:1.55;color:#5a1f28}
+.f1-more a{background:transparent;border:1px solid rgba(198,160,112,.55);color:var(--ink)}
+.f1-more a:hover,.f1-more a:focus-visible{background:rgba(198,160,112,.12)}
+.f1-more .f1-n{color:var(--gold)}.f1-more b{color:var(--ink)}.f1-more span:last-child{color:var(--muted)}
+.f1-sub{margin:48px 0 18px}
+.f1-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:720px;margin:0 auto 22px;text-align:left}
+.f1-bar.bot{margin:30px auto 0;border-top:1px solid rgba(198,160,112,.35);padding-top:18px}
+.f1-bar a,.f1-bar button{background:none;border:0;padding:6px 0;color:var(--gold);font:500 13px var(--sans);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;cursor:pointer}
+.f1-bar a:hover{color:var(--ink)}
+.f1-bar .nx{text-align:right;margin-left:auto}.f1-bar small{display:block;letter-spacing:normal;text-transform:none;font:400 14px var(--serif);color:var(--ink);margin-top:2px}
+/* reading mode (JS): one article at a time */
+.f1-js .f101-more{display:none}
+.f1-js:not(.f1-reading) #concentrations,.f1-js:not(.f1-reading) .crash{display:none}
+.f1-reading .f1-hub{display:none}
+.f1-reading #concentrations:not(.f1-on),.f1-reading .crash:not(.f1-on){display:none}
+.f1-reading .crash{margin-top:0}
+.f1-reading .crash>.eyebrow,.f1-reading .crash>h2,.f1-reading .crash>.lede{display:none}
+.f1-reading .lessons{grid-template-columns:1fr;max-width:720px;margin:0 auto}
+.f1-reading .lessons li:not(.f1-on){display:none}
+.f1-reading .lessons li{padding:30px 32px}
+.f1-reading .lessons h3{font-size:clamp(28px,4vw,36px)}
+.f1-reading .lessons p{font-size:16.5px;line-height:1.75}
+.f1-reading .crash.f1-gl .lessons{display:none}
+.f1-reading .crash:not(.f1-gl) .glossary{display:none}
+.f1-reading .glossary{margin-top:0}
+@media(max-width:700px){.f1-cards{grid-template-columns:1fr}.f1-reading .lessons li{padding:24px 20px}}
 .f101 h1{margin:10px 0 14px;text-wrap:balance}
 .f101 .eyebrow{margin:0}
 .f101 h2{margin:10px 0 14px;text-wrap:balance}
@@ -547,13 +579,36 @@ header{border-bottom:0}
 <div class="bar">Free Ottawa hand delivery over $65 · Free Canada-wide shipping over $85 · Ottawa pickup · Authentic bottles only</div>
 <header><div class="wrap nav">
   <button type="button" class="menu-open" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><a class="logo" href="/"><span class="mono">VV</span>Velvet <span>Volute</span></a>
-  <nav><a href="/#shop">Shop</a><a href="/houses/">Fragrance Houses</a><a href="/collections/">Curated Collections</a><a href="/fragrance-101" aria-current="page">Fragrance 101</a><a href="/about">About the Brand</a><a href="/rewards">Rewards</a><a href="/how-it-works">How It Works</a><a href="/contact">Contact</a></nav><div class="icons"><button type="button" class="search-open" id="search-open" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></button><a class="cart-open" href="/#cart" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span></a></div>
+  <nav><a href="/#shop">Shop</a><a href="/houses/">Fragrance Houses</a><a href="/collections/">Curated Collections</a><a href="/fragrance-101" aria-current="page">Fragrance 101</a><a href="/compare/">Compare</a><a href="/about">About the Brand</a><a href="/rewards">Rewards</a><a href="/how-it-works">How It Works</a><a href="/contact">Contact</a></nav><div class="icons"><button type="button" class="search-open" id="search-open" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></button><a class="cart-open" href="/#cart" aria-label="Open cart"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-lbl">Cart</span></a></div>
 </div></header>
 
 <main><section class="about how-page f101-page" id="f101"><div class="wrap">
   <div class="f101" id="fragrance-101">
+    <div class="f1-hub" id="articles">
+      <p class="eyebrow">Learn fragrance</p>
+      <h1>Fragrance 101</h1>
+      <p class="lede">Short reads on how fragrance works, written for people who are just getting into it. No gatekeeping. Pick one to start.</p>
+      <ol class="f1-cards">
+        <li><a href="#concentrations"><span class="f1-n">01</span><b>EDT, EDP, Extrait, Parfum</b><span>What the words on the bottle mean, and how long each one lasts.</span></a></li>
+        <li><a href="#pyramid"><span class="f1-n">02</span><b>A scent is a story in three acts</b><span>Top, heart and base notes, and why the first spray lies.</span></a></li>
+        <li><a href="#families"><span class="f1-n">03</span><b>Know your families</b><span>The eight scent families the shop is sorted by.</span></a></li>
+        <li><a href="#wear"><span class="f1-n">04</span><b>How to wear it</b><span>Where to spray, how many sprays, and how to store it.</span></a></li>
+        <li><a href="#moment"><span class="f1-n">05</span><b>Match the moment</b><span>Day or night, summer or winter, office or date.</span></a></li>
+        <li><a href="#niche"><span class="f1-n">06</span><b>Designer vs. niche</b><span>Fashion houses vs. perfume houses, and where decants shine.</span></a></li>
+        <li><a href="#smart"><span class="f1-n">07</span><b>Find your scent the smart way</b><span>Sample first, wear it properly, then go big.</span></a></li>
+        <li><a href="#glossary"><span class="f1-n">08</span><b>Words you'll hear</b><span>Sillage, dry-down, flanker and the rest, in plain English.</span></a></li>
+      </ol>
+      <h2 class="f1-sub">Go deeper</h2>
+      <ul class="f1-cards f1-more">
+        <li><a href="/guides/edt-vs-edp-vs-extrait/"><span class="f1-n">Guide</span><b>EDT vs EDP vs Extrait: what the labels actually mean</b><span>Longevity to expect, and how many wear-days a 2, 5 or 10 ml decant gives you.</span></a></li>
+        <li><a href="/guides/nishane-for-beginners/"><span class="f1-n">Guide</span><b>Nishane for beginners: which one to try first</b><span>Hacivat, Ani, Fan Your Flames, Wulong Cha and the Time Capsule, and who each is for.</span></a></li>
+        <li><a href="/guides/fragrance-decants-ottawa/"><span class="f1-n">Guide</span><b>Where to buy fragrance decants in Ottawa</b><span>What a decant is, how we pour, sizes and prices, pickup and shipping.</span></a></li>
+        <li><a href="/compare/"><span class="f1-n">Compare</span><b>Compare the collection</b><span>Side-by-side tables: the Time Capsule, Born in Roma, Tom Ford and more.</span></a></li>
+      </ul>
+    </div>
+    <div class="f1a" id="concentrations">
     <p class="eyebrow">Fragrance 101</p>
-    <h1>EDT, EDP, Extrait, Parfum: what's the difference?</h1>
+    <h2 class="f1-h">EDT, EDP, Extrait, Parfum: what's the difference?</h2>
     <p class="lede">Those words on a bottle aren't just French flair. They tell you how much fragrance oil is in the juice versus alcohol, and that shapes how long a scent wears, how close it sits to the skin and how little you need.</p>
     <ul class="tiers">
       <li>
@@ -596,50 +651,51 @@ header{border-bottom:0}
       </ul>
     </div>
 
+    </div>
     <div class="crash" id="crash-course">
       <p class="eyebrow">The crash course</p>
       <h2>Everything else a beginner should know</h2>
       <p class="lede">New to this? Here's the rest of what I wish someone had told me at the start. Six short lessons, no gatekeeping.</p>
       <ul class="lessons">
-        <li>
-          <span class="l-n">01</span>
+        <li id="pyramid">
+          <span class="l-n">02</span>
           <h3>A scent is a story in three acts</h3>
           <p>Every fragrance is built as a pyramid. <b>Top notes</b> are the first 15 minutes: citrus, pepper, bright and loud. <b>Heart notes</b> take over for the next few hours: florals, spices, tea, the character of the scent. <b>Base notes</b> are the dry-down: woods, amber, musk, leather, vanilla. That's what people actually smell on you most of the day.</p>
           <p class="l-tip">Never judge a fragrance by the first spray. Give it an hour. The dry-down is the real scent.</p>
         </li>
-        <li>
-          <span class="l-n">02</span>
+        <li id="families">
+          <span class="l-n">03</span>
           <h3>Know your families</h3>
-          <p>Fragrances group into families by their dominant character. The collection is sorted by six: <b>Sweet</b> (vanilla, tonka, coffee: Coffee Break, Fan Your Flames), <b>Fresh</b> (citrus, tea, green: Le Piano, Wulong Cha), <b>Spicy</b> (cardamom, saffron, pepper: La Nuit de L'Homme, Nefs), <b>Woody</b> (cedar, fir, sandalwood: Papilefiko), <b>Leather</b> (smoky, suede: Tuscan Leather, Kredo) and <b>Floral</b> (orchid, iris, rose: Black Orchid, Tempfluo).</p>
+          <p>Fragrances group into families by their dominant character, and the shop is sorted by eight: <b>Citrus &amp; fruity</b> (Le Piano, Erba Gold), <b>Fresh &amp; green</b> (Deziro, Wulong Cha), <b>Floral &amp; powdery</b> (Hundred Silent Ways X, Café Rose), <b>Sweet &amp; cozy</b> (Fan Your Flames, Althaïr), <b>Amber &amp; resinous</b> (Baccarat Rouge 540, Nefs), <b>Warm &amp; spicy</b> (Kalan, La Nuit de L'Homme), <b>Woody &amp; earthy</b> (Terre d'Hermès Intense, Hacivat) and <b>Leather &amp; smoky</b> (Tuscan Leather, Ombre Leather).</p>
           <p class="l-tip">Found one you love? Filter the shop by its family. Its cousins are the safest next step.</p>
         </li>
-        <li>
-          <span class="l-n">03</span>
+        <li id="wear">
+          <span class="l-n">04</span>
           <h3>How to wear it</h3>
           <p>Spray on clean, moisturized skin where you're warm: neck, chest, inside the wrists. Two sprays for an Extrait, three or four for an EDP, more for an EDT. Don't rub your wrists together; let it settle. Skin gives you the full story; a spray on a scarf or sweater lasts for days but skips the dry-down.</p>
           <p class="l-tip">Store bottles and vials somewhere cool and dark, cap on. Not the bathroom: heat and steam are what age a fragrance.</p>
         </li>
-        <li>
-          <span class="l-n">04</span>
+        <li id="moment">
+          <span class="l-n">05</span>
           <h3>Match the moment</h3>
           <p>Heat amplifies a fragrance; cold mutes it. Sweet, spicy, leather and amber scents bloom in cooler weather and after dark. Fresh, citrus, tea and green scents are built for daytime, summer, the office and the gym, where you want to be noticed, not announced.</p>
           <p class="l-tip">The shop filters by Warm weather / Cold weather and Day / Night, so you can build a rotation, not a one-scent wardrobe.</p>
         </li>
-        <li>
-          <span class="l-n">05</span>
+        <li id="niche">
+          <span class="l-n">06</span>
           <h3>Designer vs. niche</h3>
           <p><b>Designer</b> fragrances come from fashion houses (YSL, Valentino, Versace, Givenchy, Jean Paul Gaultier): widely available, crowd-pleasing, easier on the wallet. <b>Niche</b> houses do nothing but perfume (Nishane, Xerjoff, Maison Francis Kurkdjian, Parfums de Marly, Claude Marsal): more distinctive, better materials, often $200 to $600+ a bottle. Tom Ford sits in between.</p>
           <p class="l-tip">Niche is where decants shine. Ten millilitres of a $400 bottle lets you live with it for a month before you ever commit.</p>
         </li>
-        <li>
-          <span class="l-n">06</span>
+        <li id="smart">
+          <span class="l-n">07</span>
           <h3>Find your scent the smart way</h3>
           <p>Fragrance smells different on every person, so a blind full-bottle buy is a gamble. Instead: start with 2 ml samples, wear each one for a full day, two or three times, in the setting you'd actually wear it. Notice what you reach for again. A 10 ml decant is roughly 100 sprays, a month of daily wear, before a 100 ml bottle (a year or more) is worth it.</p>
           <p class="l-tip">Not sure where to start? Take the <a href="/#quiz">Scent Sherpa</a>'s quiz. It asks who's wearing it and what you like, then explains why each pick fits.</p>
         </li>
       </ul>
 
-      <div class="glossary">
+      <div class="glossary" id="glossary">
         <h3>Words you'll hear</h3>
         <dl>
           <div class="gi"><dt>Longevity</dt><dd>How many hours a scent lasts on your skin.</dd></div>
@@ -668,6 +724,23 @@ header{border-bottom:0}
   </aside>
   <p class="how-cta"><a class="btn" href="/#shop">Shop the collection</a><a class="btn" href="/#quiz">or ask the Scent Sherpa</a></p>
  </div></section></main>
+<script>
+/* Fragrance 101 reader: the hub lists every article; opening one (#pyramid etc.) shows it alone with back / previous / next */
+(function(){var root=document.documentElement,body=document.body,crash=document.getElementById("crash-course"),conc=document.getElementById("concentrations");if(!crash||!conc)return;
+ var A=[["concentrations","EDT, EDP, Extrait, Parfum"],["pyramid","A scent is a story in three acts"],["families","Know your families"],["wear","How to wear it"],["moment","Match the moment"],["niche","Designer vs. niche"],["smart","Find your scent the smart way"],["glossary","Words you'll hear"]];
+ body.classList.add("f1-js");
+ function bars(i){var p=A[i-1],n=A[i+1];
+  return {top:'<div class="f1-bar top"><a href="#articles">&larr; All articles</a><span class="f1-n" style="font:500 12px var(--sans);letter-spacing:.16em;color:var(--gold)">'+(i+1)+' of '+A.length+'</span></div>',
+   bot:'<div class="f1-bar bot">'+(p?'<a href="#'+p[0]+'">&larr; Previous<small>'+p[1]+'</small></a>':'<a href="#articles">&larr; All articles</a>')+(n?'<a class="nx" href="#'+n[0]+'">Next &rarr;<small>'+n[1]+'</small></a>':'<a class="nx" href="#articles">All articles &rarr;</a>')+'</div>'}}
+ function clear(){document.querySelectorAll(".f1-on").forEach(function(e){e.classList.remove("f1-on")});crash.classList.remove("f1-gl");document.querySelectorAll(".f1-bar").forEach(function(e){e.remove()})}
+ function show(){var id=location.hash.slice(1),i=A.findIndex(function(a){return a[0]===id});clear();
+  if(i<0){body.classList.remove("f1-reading");if(id==="articles"){var h=document.getElementById("articles");if(h)h.scrollIntoView()}return}
+  body.classList.add("f1-reading");var el=document.getElementById(id),wrap=el;
+  if(id==="concentrations")conc.classList.add("f1-on");else{crash.classList.add("f1-on");el.classList.add("f1-on");if(id==="glossary")crash.classList.add("f1-gl")}
+  var b=bars(i),host=id==="concentrations"?conc:crash;host.insertAdjacentHTML("afterbegin",b.top);host.insertAdjacentHTML("beforeend",b.bot);
+  var hd=document.querySelector("header");window.scrollTo(0,Math.max(0,host.getBoundingClientRect().top+scrollY-(hd?hd.offsetHeight:0)-16))}
+ addEventListener("hashchange",show);show()})();
+</script>
 <style>
 .f101-more{max-width:860px;margin:40px auto 0;padding:28px 32px;text-align:left;border:1px solid rgba(198,160,112,.5);border-radius:4px}
 .f101-more h2{margin:0 0 16px;font:500 26px/1.15 var(--serif);color:var(--ink);text-align:center;letter-spacing:0;text-transform:none}
