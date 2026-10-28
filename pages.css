@@ -354,3 +354,9 @@ a.sh-fab{text-decoration:none}
 
 /* independent-decanter disclaimer under the buy box */
 .pp-disc{margin-top:6px;font-size:12px;opacity:.8}
+
+/* compare charts: the whole chart is a button that opens it full screen (shared lightbox in nav.js) */
+.pp-zoom.cmp-zoom{position:relative;display:block;width:100%;margin:0;padding:0;border:0;border-radius:0;background:none;letter-spacing:normal;text-transform:none;cursor:zoom-in}
+.cmp-zoom-tag{position:absolute;right:12px;bottom:12px;padding:7px 12px;border-radius:999px;background:rgba(62,16,25,.85);border:1px solid rgba(245,217,181,.5);color:#f5d9b5;font:500 11px var(--sans);letter-spacing:.12em;text-transform:uppercase;opacity:.9;transition:opacity .2s}
+.cmp-zoom:hover .cmp-zoom-tag,.cmp-zoom:focus-visible .cmp-zoom-tag{opacity:1;background:#6b1e2e}
+.cmp-zoom:focus-visible{outline:2px solid #c6a070;outline-offset:3px}

@@ -544,7 +544,7 @@ function comparePage(c) {
   <h1>${esc(w.h1)}</h1>
   <p class="lede">${esc(unesc(c.subtitle))}</p>
  </div>
- <figure class="cmp-img"><picture>${img.webp ? `<source type="image/webp" srcset="/${img.webp}">` : ""}<img src="/${img.jpg}" width="1080" height="1350" alt="${attr(compAlt(c))}" fetchpriority="high" decoding="async"></picture><figcaption>${esc(unesc(c.footer || ""))} The same numbers are in the table below.</figcaption></figure>
+ <figure class="cmp-img"><button type="button" class="pp-zoom cmp-zoom" data-full="/${img.jpg}" aria-label="View the chart full screen"><picture>${img.webp ? `<source type="image/webp" srcset="/${img.webp}">` : ""}<img src="/${img.jpg}" width="1080" height="1350" alt="${attr(compAlt(c))}" fetchpriority="high" decoding="async"></picture><span class="cmp-zoom-tag" aria-hidden="true">View full screen</span></button><figcaption>${esc(unesc(c.footer || ""))} The same numbers are in the table below.</figcaption></figure>
  <div class="cmp-text">
   ${w.intro.map((t) => `<p>${esc(t)}</p>`).join("")}
   <div class="tbl cmp-tbl"><table>
