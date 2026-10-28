@@ -892,6 +892,24 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
  #grid .card.m-side{align-self:start}
  #grid .card .m-open{-webkit-line-clamp:unset!important;display:block!important;max-height:none!important;overflow:visible!important}
 }
+
+/* Compact season pick strip (replaces the big spotlight band) + the spotlight heading above the pinned cards */
+.x-spot.x-spot-mini{padding:18px 0 4px;background:none}
+#spotlight .zodiac{display:grid;grid-template-columns:auto 1fr;align-items:start;gap:16px;margin:0;padding:14px 16px;border:1px solid rgba(198,160,112,.35);border-radius:10px;background:var(--x-surface)}
+#spotlight .zodiac .zl{display:flex;flex-direction:column;align-items:center;gap:8px}
+#spotlight .zodiac .zg{width:40px;height:40px;font-size:20px}
+#spotlight .zodiac .zi{width:64px;height:64px;object-fit:cover;border-radius:6px;display:block}
+#spotlight .zodiac .ze{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font:400 12.5px/1.3 var(--sans);color:var(--x-soft)}
+#spotlight .zodiac .ze b{display:inline;font:500 11px/1 var(--sans);letter-spacing:.2em}
+#spotlight .zodiac .zoff{margin:0;padding:3px 9px;font-size:11.5px}
+#spotlight .zodiac .ze span{margin:0;font-size:12px}
+#spotlight .zodiac h3{font:500 19px/1.15 var(--serif);margin:6px 0 4px}
+#spotlight .zodiac p{font-size:14px;line-height:1.55;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:none}
+#spotlight .zodiac button{margin-top:6px;padding:0;border:0;background:none;color:var(--x-gold);font:500 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;border-radius:0}
+#spotlight .zodiac button:hover{background:none;color:var(--x-text)}
+.spot-line{margin:6px 0 14px}
+.spot-line h3{margin:6px 0 0;font:400 clamp(1.5rem,3vw,2rem)/1.15 var(--serif);color:var(--x-gold)}
+@media(max-width:720px){#spotlight .zodiac{grid-template-columns:auto 1fr;gap:14px;padding:12px 14px}#spotlight .zodiac .zi{width:56px;height:56px}#spotlight .zodiac button{grid-column:auto;justify-self:start}}
 </style>
 <link rel="stylesheet" href="/nav.css">
 <script src="/nav.js" defer></script><script src="/track.js" defer></script>
@@ -987,18 +1005,8 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
   </figure>
 </div></div>
 
-<div class="x-trust" aria-label="Why Velvet Volute"><ul class="wrap">
-  <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg><div><b>Authentic bottles only</b><span>Poured from sealed, genuine bottles</span></div></li>
-  <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" aria-hidden="true"><path d="M10 3h4v4l3 3v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V10l3-3V3Z"/><path d="M7 14h10"/></svg><div><b>Try before you buy</b><span>2 to 10 ml, spray or roll-on</span></div></li>
-  <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg><div><b>Pickup, delivery or shipping</b><span>Free Ottawa pickup, free local hand delivery over $65, or shipped across Canada (free over $85)</span></div></li>
-</ul></div>
 
-<section class="x-spot" id="spotlight" aria-label="This month's picks" hidden><div class="wrap">
-  <div class="x-spot-head" id="spot-head" hidden>
-    <div><span class="x-label" id="spot-label"></span><h2 id="spot-title"></h2></div>
-    <span class="x-pct" id="spot-pct"></span>
-  </div>
-  <div class="x-picks" id="spot-picks"></div>
+<section class="x-spot x-spot-mini" id="spotlight" aria-label="Season pick" hidden><div class="wrap">
   <aside class="zodiac" id="zodiac" hidden></aside>
 </div></section>
 
@@ -1023,6 +1031,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
     <div class="sheet-foot"><button type="button" id="fclear">Clear all</button><button type="button" id="fdone">Show <span id="fdone-n"></span></button></div>
   </div>
   <div class="sherpa-bar" id="sherpa-bar" hidden><span>Showing the <b id="sherpa-n"></b> that fit your Scent Sherpa answers, best matches first.</span><span class="sb-act"><button type="button" data-quiz>Change answers</button><button type="button" id="sherpa-clear">Show all fragrances</button></span></div>
+  <div class="spot-line" id="spot-line" hidden><span class="x-label" id="spot-label"></span><h3 id="spot-title"></h3></div>
   <div class="grid" id="grid"></div>
   <div class="suggest">
     <p class="suggest-q">Didn't find what you were looking for?</p>
@@ -2097,6 +2106,7 @@ function render(){
  document.getElementById("count").textContent=cnt;document.getElementById("count2").textContent=cnt;document.getElementById("fdone-n").textContent=cnt;
  if(sb){sb.hidden=!sherpaSet;if(sherpaSet)document.getElementById("sherpa-n").textContent=cnt}
  filterOptions();
+ const sl=document.getElementById("spot-line");if(sl)sl.hidden=!(window._spotReady&&list.length&&isSpot(list[0])&&!sherpaSet&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"));
  g.innerHTML=list.map(cardHTML).join("");g.querySelectorAll(".card").forEach(bind);equalize();fillRows()}
 chips();render();
 document.getElementById("sherpa-clear").onclick=()=>{sherpaSet=null;render()};
@@ -2109,7 +2119,7 @@ document.getElementById("sherpa-clear").onclick=()=>{sherpaSet=null;render()};
 fetch("spotlight.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(!j||!Array.isArray(j.picks))return;const now=Date.now();
  if(now>Date.parse(j.until+"T23:59:59-05:00")||(j.from&&now<Date.parse(j.from+"T00:00:00-04:00")))return;
  SPOT={pct:Number(j.pct)||15,ids:j.picks.map(x=>String(x.sq)),label:j.label||"",title:j.title||"",why:Object.fromEntries(j.picks.map(x=>[String(x.sq),x.why||""]))};
- render();spotBand();if(window.Cart&&Cart.refresh)Cart.refresh()}).catch(()=>{});
+ spotBand();render();if(window.Cart&&Cart.refresh)Cart.refresh()}).catch(()=>{});
 
 /* ===== SPOTLIGHT BAND (homepage redesign) =====
    Shows this month's spotlight picks above the shop, from the same spotlight.json.
@@ -2117,16 +2127,11 @@ fetch("spotlight.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
 function vvJump(i){sherpaSet=null;brandSel.clear();fam="All scents";sea="all";gen="all";fs.value=fam;document.getElementById("sea").value=sea;genChips();chips();render();
  const c=g.querySelector(`.card[data-i="${i}"]`);if(c){c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}}
 function spotBand(){
- const band=document.getElementById("spotlight"),box=document.getElementById("spot-picks");if(!band||!box)return;
+ /* The October picks are pinned first in the shop and carry their own badge; this just names them, right above the cards. */
  const idx=SPOT.ids.map(id=>PRODUCTS.findIndex(p=>p.sq===id)).filter(i=>i>=0&&isSpot(PRODUCTS[i]));if(!idx.length)return;
- const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
- box.innerHTML=idx.map(i=>{const p=PRODUCTS[i],z=Object.keys(p.p).map(Number).sort((a,b)=>a-b)[0],was=p.p[z],now=unit(p,"p",z);
-  return `<article class="x-pick">${p.imgL||p.img?`<a class="x-img" href="${pUrl(p)}" aria-label="${esc(p.brand+" "+p.name)}"><img src="${p.imgL||p.img}" width="180" height="180" loading="lazy" alt="${esc(p.brand+" "+p.name)} bottle and vials"></a>`:""}<div><span class="house"><a class="tlink" href="${hUrl(p.brand)}">${esc(p.brand)}</a></span><h3><a class="tlink" href="${pUrl(p)}">${esc(p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,""))}</a></h3><p>${esc(SPOT.why[p.sq]||p.notes)}</p><span class="from">From ${now<was?`<s>$${was}</s>`:""}$${now} for ${z} ml</span><button type="button" class="x-tlink" data-jump="${i}">See the scent</button></div></article>`}).join("");
- box.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>vvJump(+b.dataset.jump));
- document.getElementById("spot-label").textContent=SPOT.label?`The ${SPOT.label} spotlight`:"The spotlight";
+ document.getElementById("spot-label").textContent=(SPOT.label?`The ${SPOT.label} spotlight`:"The spotlight")+` · ${SPOT.pct}% off`;
  document.getElementById("spot-title").textContent=SPOT.title||`${SPOT.label} picks`;
- document.getElementById("spot-pct").textContent=`${SPOT.pct}% off this month`;
- document.getElementById("spot-head").hidden=false;band.hidden=false;
+ window._spotReady=true;
 }
 
 /* ===== ZODIAC SEASON PICK =====
@@ -2139,7 +2144,7 @@ fetch("zodiac.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
  const i=PRODUCTS.findIndex(p=>(z.sq&&p.sq===z.sq)||p.name===z.name);if(i<0)return;
  const p=PRODUCTS[i];ZOD={pct:Number(j.pct)||0,sq:p.sq||"",sign:z.sign,glyph:z.glyph};
  const M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],d=x=>M[x[0]-1]+" "+x[1],off=offPct(p);
- el.innerHTML=`<div class="zg" aria-hidden="true">${z.glyph}︎</div><div><div class="ze"><b>${z.sign} season pick</b>${off?` <i class="zoff">${off}% off</i>`:""}<span>${d(z.from)} – ${d(z.to)}</span></div><h3>${p.brand} ${p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"")}</h3><p>${z.why}</p></div><button type="button">See the scent</button>`;
+ el.innerHTML=`<div class="zl"><div class="zg" aria-hidden="true">${z.glyph}︎</div>${p.imgL||p.img?`<img class="zi" src="${(p.imgL||p.img).replace(".w1080",".w640")}" width="64" height="64" loading="lazy" alt="${p.brand} ${p.name}">`:""}</div><div class="zt"><div class="ze"><b>${z.sign} season pick</b>${off?`<i class="zoff">${off}% off</i>`:""}<span>${d(z.from)} – ${d(z.to)}</span></div><h3>${p.brand} ${p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"")}</h3><p>${z.why}</p><button type="button">See the scent</button></div>`;
  el.hidden=false;document.getElementById("spotlight").hidden=false;render();if(window.Cart&&Cart.refresh)Cart.refresh();
  el.querySelector("button").onclick=()=>{sherpaSet=null;brandSel.clear();fam="All scents";sea="all";gen="all";fs.value=fam;document.getElementById("sea").value=sea;genChips();chips();render();
   const c=g.querySelector(`.card[data-i="${i}"]`);if(c){c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}};
