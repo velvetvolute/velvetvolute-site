@@ -161,3 +161,8 @@
   from = "/compare/fresh/*"
   to = "/compare/fresh-green/"
   status = 301
+
+[[redirects]]
+  from = "/fragrance/dolce-and-gabbana-the-one-for-men/*"
+  to = "/fragrance/dolce-and-gabbana-the-one/"
+  status = 301

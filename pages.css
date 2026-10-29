@@ -368,10 +368,16 @@ a.sh-fab{text-decoration:none}
 @media(max-width:719px){.cmp-tiles{gap:10px}.cmp-tiles .ctile{flex-direction:row;align-items:center}.cmp-tiles .ctile .ph.one{flex:0 0 96px}.cmp-tiles .ctile .ph.one img{aspect-ratio:4/5;object-position:50% 0}.cmp-tiles .ctile .t{padding:10px 14px}.cmp-tiles .ctile .nm{font-size:20px}.cmp-tiles .ctile .pr{font-size:12.5px;line-height:1.4}}
 
 /* collection page: link to the matching comparison chart */
-.coll-cmp{display:flex;flex-direction:column;gap:4px;margin:18px 0 0;padding:14px 16px;border:1px solid rgba(198,160,112,.55);border-radius:4px;color:var(--ink);text-decoration:none;transition:background .15s}
-.coll-cmp span{font:500 12.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
-.coll-cmp small{font:400 14px/1.5 var(--sans);color:var(--muted)}
-.coll-cmp:hover,.coll-cmp:focus-visible{background:rgba(198,160,112,.12);outline:none}
+.coll-cmp{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;margin:18px 0 0;padding:16px 16px 16px 14px;border-radius:6px;
+ background:linear-gradient(135deg,#f3d39c 0%,#d9ad6e 55%,#c6a070 100%);color:#3e1019;text-decoration:none;
+ box-shadow:0 10px 24px -14px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .15s,box-shadow .15s}
+.coll-cmp .cc-ico{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:#6b1e2e;color:#f5d9b5;font-style:normal}
+.coll-cmp .cc-t{display:flex;flex-direction:column;gap:3px;font-weight:400;min-width:0}
+.coll-cmp span{font:600 13px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#4a1520}
+.coll-cmp small{font:400 14px/1.45 var(--sans);color:#5a2230}
+.coll-cmp .cc-go{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#6b1e2e;color:#f5d9b5;font:500 18px/1 var(--sans);font-style:normal}
+.coll-cmp:hover,.coll-cmp:focus-visible{transform:translateY(-1px);box-shadow:0 14px 28px -14px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.35);outline:none}
+.coll-cmp:focus-visible{outline:2px solid #f5d9b5;outline-offset:3px}
 
 /* comparison tables: depth and texture (Oct 28) — layered merlot, a lit header, soft zebra rows, camel band on our prices */
 .cmp-tbl{border:1px solid rgba(198,160,112,.45);border-radius:8px;background:radial-gradient(120% 70% at 0% 0%,rgba(145,43,66,.55),transparent 60%),radial-gradient(90% 60% at 100% 100%,rgba(198,160,112,.10),transparent 70%),linear-gradient(180deg,#561725,#3a0e18);box-shadow:0 26px 50px -24px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,225,190,.10)}
@@ -391,3 +397,4 @@ a.sh-fab{text-decoration:none}
 .cmp-tbl .kn{display:block;padding:3px 0 3px 12px;position:relative}
 .cmp-tbl .kn::before{content:"";position:absolute;left:0;top:.82em;width:5px;height:5px;border-radius:50%;background:#c6a070}
 .cmp-tbl td em{color:#fde3b9;font-size:15px}
+@media(max-width:420px){.coll-cmp span{font-size:12px;letter-spacing:.1em}.coll-cmp{gap:12px}}
