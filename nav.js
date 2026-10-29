@@ -8,6 +8,22 @@
   addEventListener("pageshow",function(e){try{var nt=performance.getEntriesByType("navigation")[0];
     if(!e.persisted&&!location.hash&&(!nt||nt.type==="navigate")&&scrollY>0)scrollTo(0,0)}catch(x){}});
 
+  /* ---------- concentration tips (EDT / EDP / Extrait / Parfum): hover on desktop, press and hold on phones ---------- */
+  (function(){var tip=null,cur=null,hold=null;
+    function el(){if(!tip){tip=document.createElement("div");tip.className="vv-tip";tip.setAttribute("role","tooltip");document.body.appendChild(tip)}return tip}
+    function show(t){var s=t.getAttribute("data-tip");if(!s)return;cur=t;var d=el();d.textContent=s;d.classList.remove("below");d.style.left="0px";d.style.top="0px";
+      var r=t.getBoundingClientRect(),w=d.offsetWidth,h=d.offsetHeight,vw=document.documentElement.clientWidth,x=r.left+r.width/2-w/2;x=Math.max(10,Math.min(x,vw-w-10));
+      var y=r.top-h-10;if(y<70){y=r.bottom+10;d.classList.add("below")}
+      d.style.left=x+"px";d.style.top=y+"px";d.style.setProperty("--ax",(r.left+r.width/2-x)+"px");d.classList.add("on")}
+    function hide(){clearTimeout(hold);cur=null;if(tip)tip.classList.remove("on")}
+    var fine=window.matchMedia&&matchMedia("(hover:hover) and (pointer:fine)").matches;
+    if(fine){document.addEventListener("mouseover",function(e){var t=e.target.closest&&e.target.closest(".conc[data-tip]");if(t&&t!==cur)show(t);else if(!t&&cur)hide()})}
+    document.addEventListener("touchstart",function(e){var t=e.target.closest&&e.target.closest(".conc[data-tip]");if(!t){if(cur)hide();return}clearTimeout(hold);hold=setTimeout(function(){show(t)},120)},{passive:true});
+    ["touchend","touchcancel"].forEach(function(n){document.addEventListener(n,hide,{passive:true})});
+    document.addEventListener("contextmenu",function(e){if(e.target.closest&&e.target.closest(".conc[data-tip]"))e.preventDefault()});
+    addEventListener("scroll",hide,{passive:true});
+  })();
+
   /* ---------- side menu ---------- */
   var btn=document.getElementById("menu-open"),src=document.querySelector("header .nav nav");
   if(btn&&src){
