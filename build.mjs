@@ -53,7 +53,7 @@ const hUrl = (brand) => `/houses/${hSlug(brand)}/`;
 const cUrl = (b) => `/collections/${b.id}/`;
 const dName = (p) => p.name.replace(/ Eau de Parfum Intense$/, " Intense").replace(CONC, ""); // concentration shows as a small tag
 const CONC_LABEL = { EDP: "Eau de Parfum (EDP)", Extrait: "Extrait de Parfum", Parfum: "Parfum", EDT: "Eau de Toilette (EDT)" };
-const concTag = (p) => (p.c ? `<span class="conc" title="${CONC_LABEL[p.c]}"><i>${p.c}</i></span>` : "");
+const concTag = (p) => (p.c ? `<span class="conc${p.c === "Extrait" || p.c === "Parfum" ? " lc" : ""}" title="${CONC_LABEL[p.c]}"><i>${p.c}</i></span>` : "");
 const shortName = (p) => p.name.replace(/^Uomo Born in Roma /, "").replace(/^Gentleman /, "").replace(/^Replica /, "").replace(CONC, "");
 const low = (p) => Math.min(...Object.values(p.p));
 const money = (n) => "$" + (Number.isInteger(n) ? n : n.toFixed(2));
