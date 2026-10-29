@@ -927,7 +927,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 #spotlight .zodiac{display:grid;grid-template-columns:auto 1fr;align-items:start;gap:16px;margin:0;padding:14px 16px;border:1px solid rgba(198,160,112,.35);border-radius:10px;background:var(--x-surface)}
 #spotlight .zodiac .zl{display:flex;flex-direction:column;align-items:center;gap:8px}
 #spotlight .zodiac .zg{width:40px;height:40px;font-size:20px}
-#spotlight .zodiac .zi{width:64px;height:64px;object-fit:cover;border-radius:6px;display:block}
+#spotlight .zodiac .zi{width:96px;height:96px;object-fit:cover;border-radius:6px;display:block}
 #spotlight .zodiac .ze{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font:400 12.5px/1.3 var(--sans);color:var(--x-soft)}
 #spotlight .zodiac .ze b{display:inline;font:500 11px/1 var(--sans);letter-spacing:.2em}
 #spotlight .zodiac .zoff{margin:0;padding:3px 9px;font-size:11.5px}
@@ -954,7 +954,7 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .spot-break{grid-column:1/-1;display:flex;align-items:center;gap:14px;margin:18px 0 6px;font:500 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--x-gold)}
 .spot-break::before,.spot-break::after{content:"";flex:1;height:1px;background:rgba(198,160,112,.45)}
 @media(max-width:720px){.spot-break{margin:14px 0 4px}}
-@media(max-width:720px){#spotlight .zodiac{grid-template-columns:auto 1fr;gap:14px;padding:12px 14px}#spotlight .zodiac .zi{width:56px;height:56px}#spotlight .zodiac button{grid-column:auto;justify-self:start}}
+@media(max-width:720px){#spotlight .zodiac{grid-template-columns:auto 1fr;gap:14px;padding:12px 14px}#spotlight .zodiac .zi{width:84px;height:84px}#spotlight .zodiac button{grid-column:auto;justify-self:start}}
 
 .x-hero-sub{text-align:left;margin:34px 0 0;font:400 clamp(1.75rem,3.4vw,2.6rem)/1.1 var(--serif);color:var(--x-gold);text-wrap:balance}
 .x-hero-sub+.x-lede{margin:14px 0 32px}
@@ -2306,7 +2306,7 @@ fetch("zodiac.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
  const i=PRODUCTS.findIndex(p=>(z.sq&&p.sq===z.sq)||p.name===z.name);if(i<0)return;
  const p=PRODUCTS[i];ZOD={pct:Number(j.pct)||0,sq:p.sq||"",sign:z.sign,glyph:z.glyph,why:z.why||""};
  const M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],d=x=>M[x[0]-1]+" "+x[1],off=offPct(p);
- el.innerHTML=`<div class="zl"><div class="zg" aria-hidden="true">${z.glyph}︎</div>${p.imgL||p.img?`<img class="zi" src="${(p.imgL||p.img).replace(".w1080",".w640")}" width="64" height="64" loading="lazy" alt="${p.brand} ${p.name}">`:""}</div><div class="zt"><div class="ze"><b>${z.sign} season pick</b>${off?`<i class="zoff">${off}% off</i>`:""}<span>${d(z.from)} – ${d(z.to)}</span></div><h3>${p.brand} ${p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"")}</h3><p>${z.why}</p><button type="button">See the scent</button></div>`;
+ el.innerHTML=`<div class="zl"><div class="zg" aria-hidden="true">${z.glyph}︎</div>${p.imgL||p.img?`<img class="zi" src="${(p.imgL||p.img).replace(".w1080",".w640")}" width="96" height="96" loading="lazy" alt="${p.brand} ${p.name}">`:""}</div><div class="zt"><div class="ze"><b>${z.sign} Szn pick</b>${off?`<i class="zoff">${off}% off</i>`:""}<span>${d(z.from)} – ${d(z.to)}</span></div><h3>${p.brand} ${p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"")}</h3><p>${z.why}</p><button type="button">See the scent</button></div>`;
  el.hidden=false;document.getElementById("spotlight").hidden=false;render();if(window.Cart&&Cart.refresh)Cart.refresh();
  el.querySelector("button").onclick=()=>{sherpaSet=null;searchQ=null;brandSel.clear();famSel.clear();sea="all";gen="all";fs.value="All scents";document.getElementById("sea").value=sea;genChips();chips();render();
   const c=g.querySelector(`.card[data-i="${i}"]`);if(c){c.scrollIntoView({behavior:"smooth",block:"center"});c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash")}};
