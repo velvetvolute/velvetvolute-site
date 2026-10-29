@@ -53,7 +53,7 @@ const hUrl = (brand) => `/houses/${hSlug(brand)}/`;
 const cUrl = (b) => `/collections/${b.id}/`;
 const dName = (p) => p.name.replace(/ Eau de Parfum Intense$/, " Intense").replace(CONC, ""); // concentration shows as a small tag
 const CONC_LABEL = { EDP: "Eau de Parfum (EDP)", Extrait: "Extrait de Parfum", Parfum: "Parfum", EDT: "Eau de Toilette (EDT)" };
-const concTag = (p) => (p.c && p.c !== "EDT" ? `<span class="conc" title="${CONC_LABEL[p.c]}">${p.c}</span>` : "");
+const concTag = (p) => (p.c ? `<span class="conc" title="${CONC_LABEL[p.c]}">${p.c}</span>` : "");
 const shortName = (p) => p.name.replace(/^Uomo Born in Roma /, "").replace(/^Gentleman /, "").replace(/^Replica /, "").replace(CONC, "");
 const low = (p) => Math.min(...Object.values(p.p));
 const money = (n) => "$" + (Number.isInteger(n) ? n : n.toFixed(2));
@@ -622,7 +622,7 @@ for (const c of COMPARES) { if (!compImg(c).jpg) throw new Error("missing img/co
 if (COMPARES.length) out("compare/index.html", compareIndex());
 /* search index for the header search (nav.js): scents, houses, collections and the main pages */
 const SEARCH = [
-  ...PRODUCTS.map((p) => ({ t: "scent", b: p.brand, n: dName(p) + (p.c && p.c !== "EDT" ? " " + p.c : ""), u: pUrl(p), i: "/" + p.img, s: inStock(p) ? `From ${money(low(p))}` : (p.limited || "Arriving soon"),
+  ...PRODUCTS.map((p) => ({ t: "scent", b: p.brand, n: dName(p) + (p.c ? " " + p.c : ""), u: pUrl(p), i: "/" + p.img, s: inStock(p) ? `From ${money(low(p))}` : (p.limited || "Arriving soon"),
     k: [p.cat, p.cat2, FAM_LABEL[p.cat], FAM_LABEL[p.cat2], ...(p.x || []), ...noteList(p), p.g, SEA_TXT[p.sea], TM_TXT[p.tm]].filter(Boolean).join(" ") , o: [...new Set([...noteList(p), ...p.notes.replace(/\.$/, "").split(/,| and | over | with | on /).map((x) => x.trim()).filter((x) => x && x.split(" ").length <= 3)].map((x) => x.replace(/^(a|an|the) /i, "")))].filter((x, i, arr) => arr.findIndex((y) => y.toLowerCase() === x.toLowerCase()) === i).map((x) => x.charAt(0).toUpperCase() + x.slice(1)) })),
   ...groups.map(([brand, items]) => ({ t: "house", b: "Fragrance house", n: brand, u: hUrl(brand), s: `${items.length} scent${items.length === 1 ? "" : "s"}`, k: items.map((p) => p.name).join(" ") })),
   ...BUNDLES.bundles.map((b) => ({ t: "collection", b: "Curated collection", n: b.name, u: cUrl(b), s: `${bItems(b).length} scents, ${BUNDLES.pct}% off`, k: bItems(b).map((p) => p.brand + " " + p.name).join(" ") })),
