@@ -313,7 +313,8 @@ function housePage(brand, items) {
     `${brand} decants: ${list(n)}. 2 to 10 ml from ${from} CAD, poured from sealed bottles. Ottawa pickup or shipped across Canada.`]));
   const facts = [meta.founded ? ["Founded", meta.founded] : null, meta.city ? ["Home", meta.city] : null, meta.known ? ["Known for", meta.known] : null].filter(Boolean);
   const ld = [crumbLD([{ name: "Shop", href: "/" }, { name: "Fragrance Houses", href: "/houses/" }, { name: brand }]), { "@context": "https://schema.org", "@type": "CollectionPage", name: `${brand} at Velvet Volute`, url: SITE + url, description: desc }];
-  return head({ title, desc, url, jsonld: ld, current: "houses" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Fragrance Houses", href: "/houses/" }, { name: brand }]) + `
+  const hp = live.find((p) => p.img) || items.find((p) => p.img);
+  return head({ title, desc, url, image: hp ? { src: hp.img, w: 1000, h: 1000, alt: bottleAlt(hp, "classic") } : null, jsonld: ld, current: "houses" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Fragrance Houses", href: "/houses/" }, { name: brand }]) + `
 <section class="house wrap">
  <div class="house-head">${houseTile(brand, meta, items.length, false).replace("<a ", '<div ').replace("</a>", "</div>").replace(/href="[^"]*"/, "")}
   <div class="house-about"><h1>${esc(brand)}</h1>
@@ -357,7 +358,7 @@ function collectionPage(b) {
     `${b.name}: ${items.length} ${b.house} scents as a matching set of 2 ml or 5 ml decants, ${BUNDLES.pct}% off. Poured from sealed bottles. Ottawa pickup or shipping across Canada.`,
     `${b.name}: ${items.length} scents as a matching set of 2 ml or 5 ml decants, ${BUNDLES.pct}% off. Poured from sealed bottles. Ottawa pickup or shipped across Canada.`]);
   const ld = [crumbLD([{ name: "Shop", href: "/" }, { name: "Curated Collections", href: "/collections/" }, { name: b.name }]), { "@context": "https://schema.org", "@type": "Product", name: b.name, description: desc, url: SITE + url, image: items.map((p) => `${SITE}/${p.img}`), brand: { "@type": "Brand", name: b.house }, offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: Math.min(...setOpts(b).map((o) => o.price)), highPrice: Math.max(...setOpts(b).map((o) => o.price)), offerCount: setOpts(b).length, availability: ready ? "https://schema.org/InStock" : "https://schema.org/PreOrder" } }];
-  return head({ title, desc, url, image: collArt(b) || items[0]?.img, jsonld: ld, current: "collections" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Curated Collections", href: "/collections/" }, { name: b.name }]) + `
+  return head({ title, desc, url, image: (collArt(b) || items[0]?.img) ? { src: collArt(b) || items[0].img, w: 1080, h: 1080, alt: `${b.name}: ${items.map((p) => p.brand + " " + p.name).join(", ")}, with Velvet Volute decants` } : null, jsonld: ld, current: "collections" }) + crumbs([{ name: "Shop", href: "/" }, { name: "Curated Collections", href: "/collections/" }, { name: b.name }]) + `
 <section class="coll wrap">
  <div class="coll-left">
  <div class="coll-head"><div class="eyebrow">${esc(b.house)} · ${items.length} scents · ${BUNDLES.pct}% off the set</div><h1>${esc(b.name)}</h1>
