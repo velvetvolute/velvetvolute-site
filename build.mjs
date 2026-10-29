@@ -53,6 +53,7 @@ const hUrl = (brand) => `/houses/${hSlug(brand)}/`;
 const cUrl = (b) => `/collections/${b.id}/`;
 const dName = (p) => p.name.replace(/ Eau de Parfum Intense$/, " Intense").replace(CONC, ""); // concentration shows as a small tag
 const CONC_LABEL = { EDP: "Eau de Parfum (EDP)", Extrait: "Extrait de Parfum", Parfum: "Parfum", EDT: "Eau de Toilette (EDT)" };
+const FAM_TIP = {"Citrus": "Citrus & fruity: lemon, bergamot, orange and ripe fruit. Bright, sunny and uplifting.", "Fresh": "Fresh & green: herbs, tea, sea air and leaves. Clean, airy and easy to wear.", "Floral": "Floral & powdery: rose, jasmine, iris and soft powder. Elegant and romantic.", "Sweet": "Sweet & cozy: vanilla, tonka, caramel and coffee. Warm and comforting.", "Amber": "Amber & resinous: amber, incense and resins. Rich, glowing and long-lasting.", "Spicy": "Warm & spicy: cardamom, pepper, cinnamon and saffron. Warmth with a little heat.", "Woody": "Woody & earthy: cedar, vetiver, sandalwood and patchouli. Grounded and calm.", "Leather": "Leather & smoky: leather, suede, tobacco and smoke. Bold and moody."};
 const CONC_TIP = {"EDT": "Eau de Toilette: lighter and brighter, wears about 3 to 6 hours.", "EDP": "Eau de Parfum: richer, the everyday sweet spot, about 5 to 8+ hours.", "Extrait": "Extrait de Parfum: the most concentrated, sits close, about 8 to 12+ hours.", "Parfum": "Parfum: a house's strongest version of a scent, about 8 to 12+ hours."};
 const concTag = (p) => (p.c ? `<span class="conc${p.c === "Extrait" || p.c === "Parfum" ? " lc" : ""}" data-tip="${attr(CONC_TIP[p.c])}" aria-label="${attr(CONC_TIP[p.c])}"><i>${p.c}</i></span>` : "");
 const shortName = (p) => p.name.replace(/^Uomo Born in Roma /, "").replace(/^Gentleman /, "").replace(/^Replica /, "").replace(CONC, "");
@@ -254,7 +255,7 @@ function productPage(p) {
   <div class="pp-brandrow"><span class="pp-brand"><a href="${hUrl(p.brand)}">${esc(p.brand)}</a><a class="pp-gen" href="/?for=${p.g === "Men" ? "him" : "unisex"}#shop">${p.g === "Men" ? "For him" : "Unisex"}</a></span><span class="pp-deal" id="deal" hidden></span></div>
   <h1>${esc(dName(p))}${concTag(p)}</h1>
   ${p.limited ? `<div class="limited">${esc(p.limited)}</div>` : ""}
-  <div class="pp-pills" aria-label="Scent profile and vibe">${[p.cat, p.cat2].filter(Boolean).map((c) => `<span class="pill pf"${FAM_COLOR[c] ? ` style="background:${FAM_COLOR[c][0]};color:${FAM_COLOR[c][1]}"` : ""}>${esc(FAM_LABEL[c] || c)}</span>`).join("")}<span class="pp-br" aria-hidden="true"></span>${(VIBE_OF[p.name] || []).map((v) => `<span class="pill pv">${esc(VIBE_PILL[v])}</span>`).join("")}</div>
+  <div class="pp-pills" aria-label="Scent profile and vibe">${[p.cat, p.cat2].filter(Boolean).map((c) => `<span class="pill pf"${FAM_COLOR[c] ? ` style="background:${FAM_COLOR[c][0]};color:${FAM_COLOR[c][1]}"` : ""}${FAM_TIP[c] ? ` data-tip="${attr(FAM_TIP[c])}"` : ""}>${esc(FAM_LABEL[c] || c)}</span>`).join("")}<span class="pp-br" aria-hidden="true"></span>${(VIBE_OF[p.name] || []).map((v) => `<span class="pill pv">${esc(VIBE_PILL[v])}</span>`).join("")}</div>
   <ul class="chips"><li>${SEA_TXT[p.sea]}</li><li>${TM_TXT[p.tm]}</li><li>${STR_TXT[p.str || 2]}</li></ul>
   ${sh.vibe ? `<p class="lede">${esc(sh.vibe)}</p>` : ""}
  </div>

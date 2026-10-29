@@ -405,4 +405,4 @@ h1 .conc{font-size:12px;vertical-align:8px}
 .coll-list .conc{font-size:9.5px;padding:4px calc(5px - .12em) 4px 5px;margin-left:6px;vertical-align:1px}
 .conc i{display:inline-block;transform:translateY(-.5px);font-style:normal}
 .conc.lc i{transform:translateY(-.5px)}
-.conc{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;cursor:help}
+[data-tip]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;cursor:help}
