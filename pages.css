@@ -166,7 +166,8 @@ html[data-tiles="camel"] .htile .rule{background:#521924}
 .coll-left,.coll-right{display:contents}
 .coll-head{order:1}.carousel{order:2}.coll-buy{order:3}
 /* phones: title, then the photos, then the story and compare link, then the price card */
-@media(max-width:899px){.coll-head{display:contents}.coll-head>*{order:1}.coll-head>h1{margin-top:-16px}.coll-head>.lede,.coll-head>.coll-cmp{order:3;margin-top:0}.coll-head>.coll-cmp{margin-top:-6px}}
+@media(max-width:899px){.coll-head{display:contents}.coll-head>*{order:1}.coll-head>h1{margin-top:-16px}.coll-head>.lede{order:3;margin-top:0}.coll-head>.coll-cmp{order:4;margin-top:-4px}}
+#coll-lede .rm{display:inline;margin:0 0 0 2px;padding:0;background:none;border:0;color:inherit;font:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 @media(min-width:900px){.coll{grid-template-columns:minmax(0,46%) minmax(0,1fr);column-gap:48px;align-items:start}.coll-left,.coll-right{display:block}.coll-left,.coll-left-2{grid-column:2}.coll-right{grid-column:1;grid-row:1 / span 2;position:sticky;top:90px}.carousel{margin-top:0}}
 .carousel{margin:4px 0 0;max-width:620px}
 .track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border:1px solid var(--line);box-shadow:0 22px 40px -18px rgba(0,0,0,.6);background:#3e1019}

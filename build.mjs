@@ -361,7 +361,9 @@ function collectionPage(b) {
 <section class="coll wrap">
  <div class="coll-left">
  <div class="coll-head"><div class="eyebrow">${esc(b.house)} · ${items.length} scents · ${BUNDLES.pct}% off the set</div><h1>${esc(b.name)}</h1>
- <p class="lede">${esc(b.blurb)}</p>
+ <p class="lede" id="coll-lede">${esc(b.blurb)}</p>
+ <script>/* phones: show the first half of the story, the rest behind "read more" */(function(){var p=document.getElementById("coll-lede");if(!p||!matchMedia("(max-width:899px)").matches)return;var full=p.textContent,cut=full.lastIndexOf(" ",Math.round(full.length*.5));if(cut<40)return;
+ var esc=function(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;")};function draw(open){p.innerHTML=open?esc(full)+' <button type="button" class="rm" aria-expanded="true">read less</button>':esc(full.slice(0,cut).replace(/[,.;:\s]+$/,""))+'…<button type="button" class="rm" aria-expanded="false">read more</button>';p.querySelector(".rm").onclick=function(){draw(!open)}}draw(false)})();</script>
  ${(() => { const c = COMPARES.find((x) => x.slug === (COLL_COMPARE[b.id] || b.id)); return c ? `<a class="coll-cmp" href="${compUrl(c)}"><span>Compare them side by side</span><small>Launch year, retail vs decant price, intensity, notes, vibe and season in one chart →</small></a>` : `<a class="coll-cmp" href="/compare/"><span>Compare the collection</span><small>Side-by-side charts for the Time Capsule, Born in Roma, Tom Ford and more →</small></a>`; })()}</div>
  </div>
  <div class="coll-right">
