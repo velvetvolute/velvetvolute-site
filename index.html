@@ -2259,6 +2259,8 @@ function render(){
  /* "For him": men's scents first, then unisex that lean masculine, then the unisex top picks for women (Black Orchid, Tempfluo…). Price sorts are left as chosen. */
  const masc=p=>p.g==="Men"?0:p.her===1?2:1;
  if(gen==="Men"&&!sherpaSet&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"))list.sort((a,b)=>masc(a)-masc(b));
+ /* "For her": the scents that lean most feminine first (HER level 1), then the unisex ones that also work on her (level 2). Price sorts are left as chosen. */
+ if(gen==="Women"&&!sherpaSet&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"))list.sort((a,b)=>(a.her||9)-(b.her||9));
  if(!sherpaSet&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"))list=list.filter(isSpot).concat(list.filter(p=>!isSpot(p)));
  const cnt=`${list.length} fragrance${list.length===1?"":"s"}`;
  document.getElementById("count").textContent=cnt;document.getElementById("count2").textContent=cnt;document.getElementById("fdone-n").textContent=cnt;
