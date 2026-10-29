@@ -398,3 +398,8 @@ a.sh-fab{text-decoration:none}
 .cmp-tbl .kn::before{content:"";position:absolute;left:0;top:.82em;width:5px;height:5px;border-radius:50%;background:#c6a070}
 .cmp-tbl td em{color:#fde3b9;font-size:15px}
 @media(max-width:420px){.coll-cmp span{font-size:12px;letter-spacing:.1em}.coll-cmp{gap:12px}}
+
+/* concentration tag beside a fragrance name (EDP / Extrait / Parfum; Eau de Toilette has none) */
+.conc{display:inline-block;margin-left:10px;padding:3px 8px;border:1px solid currentColor;border-radius:3px;font:600 11px/1.2 var(--sans);letter-spacing:.12em;vertical-align:middle;opacity:.8;white-space:nowrap}
+h1 .conc{font-size:12px;vertical-align:6px}
+.coll-list .conc{font-size:9.5px;padding:1px 5px;margin-left:6px;vertical-align:1px}
