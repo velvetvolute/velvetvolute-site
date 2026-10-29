@@ -2261,14 +2261,16 @@ function render(){
  if(gen==="Men"&&!sherpaSet&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"))list.sort((a,b)=>masc(a)-masc(b));
  /* "For her": the scents that lean most feminine first (HER level 1), then the unisex ones that also work on her (level 2). Price sorts are left as chosen. */
  if(gen==="Women"&&!sherpaSet&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"))list.sort((a,b)=>(a.her||9)-(b.her||9));
- if(!sherpaSet&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"))list=list.filter(isSpot).concat(list.filter(p=>!isSpot(p)));
+ /* Spotlight (and the zodiac pick) are pinned and featured only on the unfiltered shop; once any filter or Him/Her is picked they sit in the results like any other scent that fits */
+ const anyFilter=gen!=="all"||brandSel.size||famSel.size||sea!=="all"||conc!=="all";
+ if(!sherpaSet&&!anyFilter&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"))list=list.filter(isSpot).concat(list.filter(p=>!isSpot(p)));
  const cnt=`${list.length} fragrance${list.length===1?"":"s"}`;
  document.getElementById("count").textContent=cnt;document.getElementById("count2").textContent=cnt;document.getElementById("fdone-n").textContent=cnt;
  if(sb){sb.hidden=!sherpaSet;if(sherpaSet){const st=document.getElementById("sherpa-t"),qb=sb.querySelector("[data-quiz]");
   if(searchQ){st.innerHTML=`Showing the <b>${cnt}</b> with <b>${searchQ.replace(/&/g,"&amp;").replace(/</g,"&lt;")}</b>.`;if(qb)qb.hidden=true}
   else{st.innerHTML=`Showing the <b id="sherpa-n">${cnt}</b> that fit your Scent Sherpa answers, best matches first.`;if(qb)qb.hidden=false}}}
  filterOptions();
- const sl=document.getElementById("spot-line");if(sl)sl.hidden=!(window._spotReady&&list.length&&isSpot(list[0])&&!sherpaSet&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"));
+ const sl=document.getElementById("spot-line");if(sl)sl.hidden=!(window._spotReady&&list.length&&isSpot(list[0])&&!sherpaSet&&!anyFilter&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"));
  /* when the Spotlight heading shows, a divider closes the pinned picks so the rest of the grid doesn't read as part of the Spotlight */
  /* Desktop: the Spotlight picks and the zodiac pick share one featured row, each under its own heading, and span the
     same width as a row of the grid below. Phones keep the pinned cards and the zodiac banner. */
