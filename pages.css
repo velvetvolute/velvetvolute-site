@@ -403,5 +403,5 @@ a.sh-fab{text-decoration:none}
 .conc{display:inline-block;margin-left:10px;padding:6px calc(8px - .12em) 6px 8px;border-radius:3px;background:#6b1e2e;color:#e7c28c;font:600 11px/1 var(--sans);letter-spacing:.12em;text-box:trim-both cap alphabetic;vertical-align:middle;white-space:nowrap}
 h1 .conc{font-size:12px;vertical-align:8px}
 .coll-list .conc{font-size:9.5px;padding:4px calc(5px - .12em) 4px 5px;margin-left:6px;vertical-align:1px}
-.conc i{display:inline-block;transform:translateY(.5px);font-style:normal}
+.conc i{display:inline-block;transform:translateY(-.5px);font-style:normal}
 .conc.lc i{transform:translateY(-.5px)}
