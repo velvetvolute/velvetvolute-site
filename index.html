@@ -2291,7 +2291,7 @@ function vvJump(i){sherpaSet=null;searchQ=null;brandSel.clear();famSel.clear();s
 function spotBand(){
  /* The October picks are pinned first in the shop and carry their own badge; this just names them, right above the cards. */
  const idx=SPOT.ids.map(id=>PRODUCTS.findIndex(p=>p.sq===id)).filter(i=>i>=0&&isSpot(PRODUCTS[i]));if(!idx.length)return;
- document.getElementById("spot-label").textContent=SPOT.label?`The ${SPOT.label} spotlight`:"The spotlight";
+ document.getElementById("spot-label").textContent=SPOT.label?`${SPOT.label} spotlight`:"Spotlight";
  document.getElementById("spot-title").textContent=SPOT.title||`${SPOT.label} picks`;
  window._spotReady=true;
 }
