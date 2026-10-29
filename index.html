@@ -938,6 +938,17 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 #spotlight .zodiac button:hover{background:none;color:var(--x-text)}
 .spot-line{margin:6px 0 14px}
 .spot-line h3{margin:6px 0 0;font:400 clamp(1.5rem,3vw,2rem)/1.15 var(--serif);color:var(--x-gold)}
+/* desktop featured row: Spotlight picks + zodiac pick, three wide cards across the width of a four-card row */
+.feat{grid-column:1/-1;display:grid;grid-template-columns:calc((200% - 26px)/3) 1fr;gap:26px;align-items:start}
+.feat-g{min-width:0}
+.feat-hd{margin:0 0 14px}
+.feat-hd h3{margin:6px 0 0;font:400 clamp(1.5rem,3vw,2rem)/1.15 var(--serif);color:var(--x-gold)}
+.feat-cards{display:grid;gap:26px;align-items:start}
+.feat-spot .feat-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+.feat .card .spot-why{font-size:15px;line-height:1.65}
+.feat .card .photo{max-height:none}
+.feat .card .vdesc{display:none}
+#spotlight.feat-on{display:none!important}
 .spot-break{grid-column:1/-1;display:flex;align-items:center;gap:14px;margin:18px 0 6px;font:500 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--x-gold)}
 .spot-break::before,.spot-break::after{content:"";flex:1;height:1px;background:rgba(198,160,112,.45)}
 @media(max-width:720px){.spot-break{margin:14px 0 4px}}
@@ -2025,7 +2036,7 @@ PRODUCTS.forEach(p=>{p.r={5:p.p[5]+ROLL_EXTRA,10:p.p[10]+ROLL_EXTRA}});
    so the discount shown here is the discount charged. Discounted prices round down to whole dollars. */
 let SPOT={pct:0,ids:[],label:"",why:{}};
 const isSpot=p=>!!SPOT.pct&&!!p.sq&&SPOT.ids.includes(p.sq)&&inStock(p);
-let ZOD={pct:0,sq:"",sign:"",glyph:""};
+let ZOD={pct:0,sq:"",sign:"",glyph:"",why:""};
 const isZod=p=>!!ZOD.pct&&!!p.sq&&p.sq===ZOD.sq&&inStock(p);
 const offPct=p=>Math.max(isSpot(p)?SPOT.pct:0,isZod(p)?ZOD.pct:0); /* never stacks: the bigger deal wins */
 const unit=(p,key,z)=>{const n=p[key][z],o=offPct(p);return o?Math.floor(n*(100-o)/100):n};
@@ -2140,10 +2151,10 @@ function pillsHTML(p){const f=FAM_LABEL[p.cat]||p.cat,col=FAM_COLOR[p.cat],v=VIB
 /* phone cards: up to 3 headline notes, one from each tier first (the full Top/Heart/Base lives on the scent's page) */
 function noteHi(p){if(!p.n)return "";const t=p.n,tiers=t.h.length||t.b.length?[t.t,t.h,t.b]:[t.t],out=[];
  for(let k=0;out.length<3&&k<8;k++)tiers.forEach(r=>{if(r[k]&&out.length<3&&!out.includes(r[k]))out.push(r[k])});return out.join(", ")}
-function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v],sp=isSpot(p);
- return `<article class="card${sp?" spot":""}" data-i="${i}">
-   <div class="photo">${sp?`<div class="spot-rib"><span class="rt">${SPOT.label} Spotlight</span><span class="rib-vv">VV</span><span class="rp">${SPOT.pct}% off</span></div>`:""}${p.img?photoStrip(p,st):bottleArt(p,i)}</div>
-   <div class="body"><div class="brand"><a class="tlink" href="${hUrl(p.brand)}">${p.brand}</a><span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name"><a class="tlink" href="${pUrl(p)}">${p.name}</a></div>${pillsHTML(p)}${p.limited?`<div class="limited">${p.limited}</div>`:""}${isZod(p)&&!sp?`<div class="zod-tag">${ZOD.glyph}\uFE0E ${ZOD.sign} season pick · ${ZOD.pct}% off</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<p class="hi"><b>Notes:</b> ${noteHi(p)}</p>`:""}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
+function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"classic",z:2});const V=VIALS[st.v],sp=isSpot(p),zd=isZod(p)&&!sp;
+ return `<article class="card${sp?" spot":zd?" spot zodc":""}" data-i="${i}">
+   <div class="photo">${sp?`<div class="spot-rib"><span class="rt">${SPOT.label} Spotlight</span><span class="rib-vv">VV</span><span class="rp">${SPOT.pct}% off</span></div>`:zd?`<div class="spot-rib"><span class="rt">${ZOD.glyph}\uFE0E ${ZOD.sign} pick</span><span class="rib-vv">VV</span><span class="rp">${ZOD.pct}% off</span></div>`:""}${p.img?photoStrip(p,st):bottleArt(p,i)}</div>
+   <div class="body"><div class="brand"><a class="tlink" href="${hUrl(p.brand)}">${p.brand}</a><span class="gender">${p.g==="Men"?"For him":"Unisex"}</span></div><div class="name"><a class="tlink" href="${pUrl(p)}">${p.name}</a></div>${pillsHTML(p)}${p.limited?`<div class="limited">${p.limited}</div>`:""}${sp&&SPOT.why[p.sq]?`<p class="spot-why">${SPOT.why[p.sq]}</p>`:zd&&ZOD.why?`<p class="spot-why">${ZOD.why}</p>`:p.mood?`<div class="story"><p class="mood clamp">${p.mood}</p><button type="button" class="story-more" aria-expanded="false">Read the story</button></div>`:`<div class="notes">${p.notes}</div>`}${p.n?`<p class="hi"><b>Notes:</b> ${noteHi(p)}</p>`:""}${p.n?`<details class="pyr"><summary>Full notes</summary><dl>${p.n.h.length||p.n.b.length?`<dt>Top</dt><dd>${p.n.t.join(", ")}</dd><dt>Heart</dt><dd>${p.n.h.join(", ")}</dd><dt>Base</dt><dd>${p.n.b.join(", ")}</dd>`:`<dt>Key notes</dt><dd>${p.n.t.join(", ")}</dd>`}</dl></details>`:""}
    <div class="vials">${Object.entries(VIALS).map(([k,o])=>`<button class="vt ${k===st.v?'on':''}" data-v="${k}">${o.label}${k==="luxe"?'<span class="vup">+$3</span>':k==="roll"?'<span class="vup">+$4</span>':""}</button>`).join("")}</div>
    <p class="vdesc">${vdescHTML(st.v,st.z)}</p>
    <div class="sizes">${V.sizes.map(z=>`<button class="sz ${z===st.z?'on':''}" data-s="${z}">${z} ml<span class="pml-b">${pml(p,st.v,z)}</span></button>`).join("")}</div>
@@ -2151,10 +2162,10 @@ function cardHTML(p){const i=PRODUCTS.indexOf(p),st=state[i]||(state[i]={v:"clas
 /* Phone cards: the write-up fills three full lines, with "…read more" dropping to the line below in "…read more" (same font as the paragraph); tapping expands it in place. */
 const phoneCards=()=>matchMedia("(max-width:720px)").matches;
 function fitWU(el){const full=el.dataset.full,open=el.classList.contains("m-open");
- if(!phoneCards()){el.textContent=full;return}
+ if(!phoneCards()&&!el.closest(".feat")){el.textContent=full;return}
  const esc=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;");
  if(open){el.innerHTML=esc(full)+' <button type="button" class="rm" aria-expanded="true">read less</button>'}
- else{el.textContent=full;const lh=parseFloat(getComputedStyle(el).lineHeight)||18,max=lh*(4+(+el.dataset.extra||0))+2;
+ else{el.textContent=full;const lh=parseFloat(getComputedStyle(el).lineHeight)||18,max=lh*((el.closest(".feat")?3:4)+(+el.dataset.extra||0))+2;
   if(el.scrollHeight>max){const w=full.split(" ");let lo=1,hi=w.length;
    while(lo<hi){const m=(lo+hi+1)>>1;el.innerHTML=esc(w.slice(0,m).join(" ").replace(/[,.;:\s]+$/,""))+'…<button type="button" class="rm" aria-expanded="false">read more</button>';if(el.scrollHeight<=max)lo=m;else hi=m-1}
    el.innerHTML=esc(w.slice(0,lo).join(" ").replace(/[,.;:\s]+$/,""))+'…<button type="button" class="rm" aria-expanded="false">read more</button>'}}
@@ -2240,6 +2251,16 @@ function render(){
  filterOptions();
  const sl=document.getElementById("spot-line");if(sl)sl.hidden=!(window._spotReady&&list.length&&isSpot(list[0])&&!sherpaSet&&(sortBy==="new"||sortBy==="brand"||sortBy==="brand-desc"));
  /* when the Spotlight heading shows, a divider closes the pinned picks so the rest of the grid doesn't read as part of the Spotlight */
+ /* Desktop: the Spotlight picks and the zodiac pick share one featured row, each under its own heading, and span the
+    same width as a row of the grid below. Phones keep the pinned cards and the zodiac banner. */
+ const zp=list.find(p=>isZod(p)&&!isSpot(p)),featOn=sl&&!sl.hidden&&!phoneCards()&&matchMedia("(min-width:900px)").matches;
+ document.getElementById("spotlight").classList.toggle("feat-on",!!(featOn&&zp));
+ if(featOn){const sps=list.filter(isSpot),rest=list.filter(p=>!isSpot(p)&&p!==zp);sl.hidden=true;
+  const hd=(lab,t)=>`<div class="feat-hd"><span class="x-label">${lab}</span><h3>${t}</h3></div>`;
+  g.innerHTML=`<div class="feat${zp?"":" no-zod"}"><div class="feat-g feat-spot" style="--n:${sps.length}">${hd(document.getElementById("spot-label").textContent,document.getElementById("spot-title").textContent)}<div class="feat-cards">${sps.map(cardHTML).join("")}</div></div>`
+   +(zp?`<div class="feat-g feat-zod">${hd(`Zodiac pick · ${ZOD.pct}% off`,`${ZOD.glyph}\uFE0E ${ZOD.sign} Szn`)}<div class="feat-cards">${cardHTML(zp)}</div></div>`:"")
+   +`</div><div class="spot-break" role="separator"><span>The full collection</span></div>`+rest.map(cardHTML).join("");
+  g.querySelectorAll(".card").forEach(bind);equalize();fillRows();return}
  const cards=list.map(cardHTML),nSpot=sl&&!sl.hidden?list.findIndex(p=>!isSpot(p)):-1;
  if(nSpot>0)cards.splice(nSpot,0,'<div class="spot-break" role="separator"><span>The full collection</span></div>');
  g.innerHTML=cards.join("");g.querySelectorAll(".card").forEach(bind);equalize();fillRows()}
@@ -2281,7 +2302,7 @@ fetch("zodiac.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
  const t=new Date(new Date().toLocaleString("en-US",{timeZone:"America/Toronto"})),md=(t.getMonth()+1)*100+t.getDate();
  const z=j.signs.find(x=>{const a=x.from[0]*100+x.from[1],b=x.to[0]*100+x.to[1];return a<=b?md>=a&&md<=b:md>=a||md<=b});if(!z)return;
  const i=PRODUCTS.findIndex(p=>(z.sq&&p.sq===z.sq)||p.name===z.name);if(i<0)return;
- const p=PRODUCTS[i];ZOD={pct:Number(j.pct)||0,sq:p.sq||"",sign:z.sign,glyph:z.glyph};
+ const p=PRODUCTS[i];ZOD={pct:Number(j.pct)||0,sq:p.sq||"",sign:z.sign,glyph:z.glyph,why:z.why||""};
  const M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],d=x=>M[x[0]-1]+" "+x[1],off=offPct(p);
  el.innerHTML=`<div class="zl"><div class="zg" aria-hidden="true">${z.glyph}︎</div>${p.imgL||p.img?`<img class="zi" src="${(p.imgL||p.img).replace(".w1080",".w640")}" width="64" height="64" loading="lazy" alt="${p.brand} ${p.name}">`:""}</div><div class="zt"><div class="ze"><b>${z.sign} season pick</b>${off?`<i class="zoff">${off}% off</i>`:""}<span>${d(z.from)} – ${d(z.to)}</span></div><h3>${p.brand} ${p.name.replace(/ (Extrait de Parfum|Eau de Parfum|Parfum)$/,"")}</h3><p>${z.why}</p><button type="button">See the scent</button></div>`;
  el.hidden=false;document.getElementById("spotlight").hidden=false;render();if(window.Cart&&Cart.refresh)Cart.refresh();

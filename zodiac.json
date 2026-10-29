@@ -1,5 +1,5 @@
 {
- "pct": 10,
+ "pct": 15,
  "note": "Each sign gets one pick. The pick is matched by sq (Square item id); name is for reference. Dates are month/day in Toronto time.",
  "signs": [
   {
