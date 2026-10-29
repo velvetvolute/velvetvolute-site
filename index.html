@@ -942,7 +942,8 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .feat{grid-column:1/-1;display:grid;grid-template-columns:calc((200% - 26px)/3) 1fr;gap:26px;align-items:start}
 .feat-g{min-width:0}
 .feat-hd{margin:0 0 14px}
-.feat-spot .feat-hd{width:fit-content;margin-left:auto;margin-right:auto;text-align:left}
+.feat-hd{width:fit-content;margin-left:auto;margin-right:auto;text-align:left}
+.feat-zod .feat-hd{padding-top:calc(1em + 10px)}
 .feat-hd h3{margin:6px 0 0;font:400 clamp(1.5rem,3vw,2rem)/1.15 var(--serif);color:var(--x-gold)}
 .feat-cards{display:grid;gap:26px;align-items:start}
 .feat-spot .feat-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -2257,9 +2258,9 @@ function render(){
  const zp=list.find(p=>isZod(p)&&!isSpot(p)),featOn=sl&&!sl.hidden&&!phoneCards()&&matchMedia("(min-width:900px)").matches;
  document.getElementById("spotlight").classList.toggle("feat-on",!!(featOn&&zp));
  if(featOn){const sps=list.filter(isSpot),rest=list.filter(p=>!isSpot(p)&&p!==zp);sl.hidden=true;
-  const hd=(lab,t)=>`<div class="feat-hd"><span class="x-label">${lab}</span><h3>${t}</h3></div>`;
+  const hd=(lab,t)=>`<div class="feat-hd">${lab?`<span class="x-label">${lab}</span>`:""}<h3>${t}</h3></div>`;
   g.innerHTML=`<div class="feat${zp?"":" no-zod"}"><div class="feat-g feat-spot" style="--n:${sps.length}">${hd(document.getElementById("spot-label").textContent,document.getElementById("spot-title").textContent)}<div class="feat-cards">${sps.map(cardHTML).join("")}</div></div>`
-   +(zp?`<div class="feat-g feat-zod">${hd(`Zodiac pick · ${ZOD.pct}% off`,`${ZOD.glyph}\uFE0E ${ZOD.sign} Szn`)}<div class="feat-cards">${cardHTML(zp)}</div></div>`:"")
+   +(zp?`<div class="feat-g feat-zod">${hd("",`${ZOD.glyph}\uFE0E ${ZOD.sign} Szn`)}<div class="feat-cards">${cardHTML(zp)}</div></div>`:"")
    +`</div><div class="spot-break" role="separator"><span>The full collection</span></div>`+rest.map(cardHTML).join("");
   g.querySelectorAll(".card").forEach(bind);equalize();fillRows();return}
  const cards=list.map(cardHTML),nSpot=sl&&!sl.hidden?list.findIndex(p=>!isSpot(p)):-1;
@@ -2290,7 +2291,7 @@ function vvJump(i){sherpaSet=null;searchQ=null;brandSel.clear();famSel.clear();s
 function spotBand(){
  /* The October picks are pinned first in the shop and carry their own badge; this just names them, right above the cards. */
  const idx=SPOT.ids.map(id=>PRODUCTS.findIndex(p=>p.sq===id)).filter(i=>i>=0&&isSpot(PRODUCTS[i]));if(!idx.length)return;
- document.getElementById("spot-label").textContent=(SPOT.label?`The ${SPOT.label} spotlight`:"The spotlight")+` · ${SPOT.pct}% off`;
+ document.getElementById("spot-label").textContent=SPOT.label?`The ${SPOT.label} spotlight`:"The spotlight";
  document.getElementById("spot-title").textContent=SPOT.title||`${SPOT.label} picks`;
  window._spotReady=true;
 }
