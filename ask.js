@@ -42,7 +42,7 @@
     var h='<div class="vva-ans t-'+esc(a.tier||"none")+'">';
     if(a.error)return h+'<p class="vva-err">'+esc(a.error)+' <a href="'+href("index.html").replace(/\/index\.html$/,"/")+'#quiz" class="vva-quiz">Try the quiz</a></p></div>';
     h+='<div class="vva-head">'+(a.tier&&a.tier!=="none"?'<span class="vva-dot" aria-hidden="true"></span>':'')+'<p>'+esc(a.headline)+'</p></div>';
-    if(a.understood&&a.mode!=="info")h+='<p class="vva-heard"><b>What I heard:</b> '+esc(a.understood)+'</p>';
+    if(a.understood&&a.mode==="picks")h+='<p class="vva-heard"><b>What I heard:</b> '+esc(a.understood)+'</p>';
     if(a.picks&&a.picks.length)h+='<ol class="vva-picks">'+a.picks.map(pickHTML).join("")+'</ol>';
     if(a.questions&&a.questions.length){var live=idx===turns.length-1;
       h+='<div class="vva-qs'+(live?"":" done")+'">'+a.questions.map(function(q,qi){return '<div class="vva-q" data-q="'+qi+'"><p>'+esc(q.q)+'</p><div class="vva-opts">'+(q.options||[]).map(function(o){return '<button type="button"'+(live?"":" disabled")+'>'+esc(o)+'</button>'}).join("")+'</div></div>'}).join("")

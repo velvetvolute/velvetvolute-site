@@ -138,7 +138,7 @@
   ov.addEventListener("click",function(e){if(e.target===ov)sClose()});
   body.addEventListener("click",function(e){var c=e.target.closest(".vvs-chips button");if(c){inp.value=c.textContent;load().then(function(){render(inp.value)});inp.focus()}});
   inp.addEventListener("input",function(){load().then(function(){render(inp.value)})});
-  body.addEventListener("click",function(e){var a=e.target.closest(".vvs-ask");if(!a)return;var q=a.getAttribute("data-ask");sClose();window.VVAsk.open(q)});
+  body.addEventListener("click",function(e){var a=e.target.closest(".vvs-ask");var qz=!a&&window.VVAsk&&VVAsk.on&&e.target.closest('a[href$="#quiz"]');if(!a&&!qz)return;e.preventDefault();var q=a?a.getAttribute("data-ask"):inp.value.trim();sClose();window.VVAsk.open(q)});
   body.addEventListener("click",function(e){var a=e.target.closest(".vvs-all");if(!a)return;try{sessionStorage.setItem("vvSearch",JSON.stringify({q:new URL(a.href).searchParams.get("q"),u:JSON.parse(a.getAttribute("data-u"))}))}catch(x){}
     /* already on the shop page: hand the list over without a reload */
     if(window.VVShowSearch&&window.VVShowSearch()){e.preventDefault();sClose()}});

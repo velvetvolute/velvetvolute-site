@@ -77,7 +77,9 @@ body.vva-lock{overflow:hidden}
 @media(max-width:600px){
  .vva{padding:0;align-items:stretch}
  .vva-box{max-width:none;height:100%;border-radius:0;border:0}
- .vva-top h2{font-size:21px}
+ .vva-ic{display:none}
+ .vva-top{padding-left:16px}
+ .vva-top h2{font-size:21px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
  .vva-scroll{padding:14px 14px 6px}
  .vva-lede{font-size:15px}
  .vva-pick{grid-template-columns:96px 1fr}
