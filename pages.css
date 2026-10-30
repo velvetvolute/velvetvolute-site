@@ -410,3 +410,6 @@ h1 .conc{font-size:12px;vertical-align:8px}
 .conc i{display:inline-block;transform:translateY(-.5px);font-style:normal}
 .conc.lc i{transform:translateY(-.5px)}
 [data-tip]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;cursor:help}
+/* fragrance page story: collapsed to its first 45% with read more */
+.m-cut .m-b{display:none}.m-cut.open .m-b{display:inline}.m-cut.open .m-dots{display:none}
+.m-cut .rm{display:inline;margin:0 0 0 2px;padding:0;background:none;border:0;color:inherit;font:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}

@@ -56,6 +56,9 @@ const CONC_LABEL = { EDP: "Eau de Parfum (EDP)", Extrait: "Extrait de Parfum", P
 const FAM_TIP = {"Citrus": "Citrus & fruity: lemon, bergamot, orange and ripe fruit. Bright, sunny and uplifting.", "Fresh": "Fresh & green: herbs, tea, sea air and leaves. Clean, airy and easy to wear.", "Floral": "Floral & powdery: rose, jasmine, iris and soft powder. Elegant and romantic.", "Sweet": "Sweet & cozy: vanilla, tonka, caramel and coffee. Warm and comforting.", "Amber": "Amber & resinous: amber, incense and resins. Rich, glowing and long-lasting.", "Spicy": "Warm & spicy: cardamom, pepper, cinnamon and saffron. Warmth with a little heat.", "Woody": "Woody & earthy: cedar, vetiver, sandalwood and patchouli. Grounded and calm.", "Leather": "Leather & smoky: leather, suede, tobacco and smoke. Bold and moody."};
 const CONC_TIP = {"EDT": "Eau de Toilette: lighter and brighter, wears about 3 to 6 hours.", "EDP": "Eau de Parfum: richer, the everyday sweet spot, about 5 to 8+ hours.", "Extrait": "Extrait de Parfum: the most concentrated, sits close, about 8 to 12+ hours.", "Parfum": "Parfum: a house's strongest version of a scent, about 8 to 12+ hours."};
 const concTag = (p) => (p.c ? `<span class="conc${p.c === "Extrait" || p.c === "Parfum" ? " lc" : ""}" data-tip="${attr(CONC_TIP[p.c])}" aria-label="${attr(CONC_TIP[p.c])}"><i>${p.c}</i></span>` : "");
+/* the story shows its first 45% (cut at a word) with "read more"; the full text stays in the page for search engines */
+const storyHTML = (t) => { const cut = t.lastIndexOf(" ", Math.round(t.length * 0.45)); if (cut < 60) return `<p class="mood">${esc(t)}</p>`;
+  return `<p class="mood m-cut"><span class="m-a">${esc(t.slice(0, cut).replace(/[,.;:]+$/, ""))}</span><span class="m-dots">…<button type="button" class="rm" aria-expanded="false">read more</button></span><span class="m-b"> ${esc(t.slice(cut + 1))} <button type="button" class="rm" aria-expanded="true">read less</button></span></p>`; };
 const shortName = (p) => p.name.replace(/^Uomo Born in Roma /, "").replace(/^Gentleman /, "").replace(/^Replica /, "").replace(CONC, "");
 const low = (p) => Math.min(...Object.values(p.p));
 const money = (n) => "$" + (Number.isInteger(n) ? n : n.toFixed(2));
@@ -262,7 +265,7 @@ function productPage(p) {
   ${sh.vibe ? `<p class="lede">${esc(sh.vibe)}</p>` : ""}
  </div>
  <div class="pp-story">
-  ${p.mood ? `<h2>The story</h2><p class="mood">${esc(p.mood)}</p>` : ""}
+  ${p.mood ? `<h2>The story</h2>${storyHTML(p.mood)}` : ""}
   ${sh.when ? `<h2>When to wear it</h2><p>${esc(sh.when)}</p>` : ""}
   ${p.herWhy ? `<h2>Why it <em>also</em> works for her</h2><p>${esc(p.herWhy)}</p>` : ""}
   <h2>Notes</h2>${pyramid}

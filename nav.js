@@ -24,6 +24,10 @@
     addEventListener("scroll",hide,{passive:true});
   })();
 
+  /* fragrance page story: read more / read less */
+  document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".m-cut .rm");if(!b)return;var p=b.closest(".m-cut"),o=p.classList.toggle("open");
+    p.querySelectorAll(".rm").forEach(function(x){x.setAttribute("aria-expanded",String(o))});if(!o)p.scrollIntoView({block:"nearest"})});
+
   /* ---------- side menu ---------- */
   var btn=document.getElementById("menu-open"),src=document.querySelector("header .nav nav");
   if(btn&&src){
