@@ -231,8 +231,10 @@ function productPage(p) {
   const sims = similar(p);
   const pyramid = p.n ? (p.n.h.length || p.n.b.length ? `<dl class="pyr3"><div><dt>Top</dt><dd>${p.n.t.map(esc).join(", ")}</dd></div><div><dt>Heart</dt><dd>${p.n.h.map(esc).join(", ")}</dd></div><div><dt>Base</dt><dd>${p.n.b.map(esc).join(", ")}</dd></div></dl>` : `<dl class="pyr3 flat"><div><dt>Key notes</dt><dd>${p.n.t.map(esc).join(", ")}</dd></div></dl>`) : `<p>${esc(p.notes)}</p>`;
   const data = { sq: p.sq, name: p.name, brand: p.brand, img: p.img, imgL: p.imgL, imgR: p.imgR, p: p.p, l: p.l, r: p.r, stock: inStock(p) };
-  const partOf = [...bundlesOf(p).map((b) => `<li><a href="${cUrl(b)}">${esc(b.name)}</a><span>${bItems(b).length} scents as a set, ${BUNDLES.pct}% off</span></li>`),
-    ...comparesOf(p).map((c) => `<li><a href="${compUrl(c)}">${esc(compName(c))}, compared</a><span>${esc(c.cols.map((x) => x.short).join(" vs "))}</span></li>`)];
+  /* "Part of": a small picture of each collection (its group shot) or comparison (the photo row of its chart) beside the link */
+  const thumb = (src, pos) => src ? `<img class="pl-th" src="/${src.replace(".w1080.", ".w640.")}" alt="" width="64" height="64" loading="lazy"${pos ? ` style="object-position:${pos}"` : ""}>` : `<span class="pl-th"></span>`;
+  const partOf = [...bundlesOf(p).map((b) => `<li>${thumb(collArt(b))}<div><a href="${cUrl(b)}">${esc(b.name)}</a><span>${bItems(b).length} scents as a set, ${BUNDLES.pct}% off</span></div></li>`),
+    ...comparesOf(p).map((c) => { const cb = BUNDLES.bundles.find((x) => (COLL_COMPARE[x.id] || x.id) === c.slug); const im = cb && collArt(cb); const ps = c.cols.map((x) => PRODUCTS.find((q) => q.sq === x.sq)).filter((q) => q && q.img).slice(0, 4); const quad = ps.length >= 4 ? `<span class="pl-th pl-quad">${ps.map((q) => `<img src="/${q.img.replace(".w1080.", ".w640.")}" alt="" width="32" height="32" loading="lazy">`).join("")}</span>` : thumb(compImg(c).jpg, "50% 30%"); return `<li>${im ? thumb(im) : quad}<div><a href="${compUrl(c)}">${esc(compName(c))}, compared</a><span>${esc(c.cols.map((x) => x.short).join(" • "))}</span></div></li>`; })];
   return head({ title, desc, url, image: { src: p.img, w: 1000, h: 1000, alt: bottleAlt(p, "classic") }, jsonld: ld }) + crumbs([{ name: "Shop", href: "/" }, { name: p.brand, href: hUrl(p.brand) }, { name: p.name }]) + `
 <article class="pp wrap">
  <div class="pp-left">
@@ -569,7 +571,7 @@ function comparePage(c) {
   <ul class="cmp-links">${cols.map((x) => `<li><a href="${pUrl(x.p)}">${esc(x.p.brand)} ${esc(nameNoConc(x.p))}</a><span>${inStock(x.p) ? `from ${money(low(x.p))} · ${esc((SHERPA[x.p.name] || {}).vibe || x.p.notes)}` : esc(x.p.limited || "Arriving soon")}</span></li>`).join("")}</ul>
   ${bundle ? `<p class="cmp-set">Want all ${bItems(bundle).length}? <a href="${cUrl(bundle)}">${esc(bundle.name)}</a> pours them as a matching set, ${BUNDLES.pct}% off.</p>` : ""}
   ${ctaBox("Every decant is poured from a sealed full bottle, in 2, 5 or 10 ml. Ottawa pickup, free hand delivery over $65, or shipped across Canada.")}
-  <div class="more-guides" role="navigation" aria-label="More comparisons"><h2>More comparisons</h2><ul>${COMPARES.filter((x) => x !== c).map((x) => `<li><a href="${compUrl(x)}">${esc(compName(x))}</a><span>${esc(x.cols.map((y) => unesc(y.short)).join(" vs "))}</span></li>`).join("")}</ul></div>
+  <div class="more-guides" role="navigation" aria-label="More comparisons"><h2>More comparisons</h2><ul>${COMPARES.filter((x) => x !== c).map((x) => `<li><a href="${compUrl(x)}">${esc(compName(x))}</a><span>${esc(x.cols.map((y) => unesc(y.short)).join(" • "))}</span></li>`).join("")}</ul></div>
  </div>
 </section>` + tail();
 }
@@ -633,7 +635,7 @@ const SEARCH = [
   { t: "page", b: "Page", n: "About the Brand", u: "/about", s: "Who Velvet Volute is", k: "about izzi story brand curated" },
   { t: "page", b: "Page", n: "Contact", u: "/contact", s: "Email, Messenger, pickup & delivery", k: "contact email messenger facebook message pickup booking" },
   ...GUIDES.map((g) => ({ t: "page", b: "Guide", n: g.title, u: gUrl(g), s: g.summary, k: plain(g.body).toLowerCase().split(/\W+/).filter((w) => w.length > 3).slice(0, 400).join(" ") })),
-  ...COMPARES.map((c) => ({ t: "page", b: "Compare", n: `${compName(c)} compared`, u: compUrl(c), s: c.cols.map((x) => unesc(x.short)).join(" vs "), k: c.cols.map((x) => `${x.house} ${unesc(x.short)} ${unesc(x.family)} ${x.notes.join(" ")}`).join(" ") + " compare comparison versus side by side" })),
+  ...COMPARES.map((c) => ({ t: "page", b: "Compare", n: `${compName(c)} compared`, u: compUrl(c), s: c.cols.map((x) => unesc(x.short)).join(" • "), k: c.cols.map((x) => `${x.house} ${unesc(x.short)} ${unesc(x.family)} ${x.notes.join(" ")}`).join(" ") + " compare comparison versus side by side" })),
 ];
 writeFileSync(join(ROOT, "search.json"), JSON.stringify(SEARCH));
 /* catalogue for the Netlify functions (emails, Sherpa's pick, punch-card rewards): the same data as the
