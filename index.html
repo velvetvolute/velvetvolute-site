@@ -123,6 +123,7 @@ h2{font-family:var(--serif);font-weight:500;font-size:clamp(32px,5vw,48px);margi
 .vialnote b{color:var(--ink);font-weight:500}
 .gender{margin-top:3px;font:500 11.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .vsub{display:block;margin-top:2px;font-size:12.5px;letter-spacing:.06em;opacity:.8}
+.vd-s{display:none}
 .vdesc{margin:12px 0 2px;padding:2px 0 2px 12px;border-left:2px solid var(--gold);font:400 14px/1.45 var(--sans);color:var(--ink);min-height:2.9em}
 .sz{flex:1;border:0;background:rgba(74,21,32,.10);color:var(--ink);padding:8px 0;font:400 13px var(--sans);cursor:pointer}
 .sz.on{background:var(--ink);color:var(--bg)}
@@ -841,7 +842,8 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
 .buyrow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
 .buyrow .price{margin-top:0;font-size:24px;flex:1 1 auto;min-width:0;white-space:nowrap}
 .buyrow .price small{display:block;margin:2px 0 0}
-.buyrow .sprays{margin-top:2px;font-size:12.5px}
+.buyrow .sprays{display:inline-block;margin-top:5px;padding:2px 9px;border-radius:20px;background:#6b1e2e;color:#f0d3a8;font:600 12px/1.45 var(--sans);letter-spacing:.02em;opacity:1}
+.buyrow .sprays:empty{display:none}
 .buyrow .order{margin-top:0;flex:0 0 48%;padding:15px 8px;letter-spacing:.16em}
 .card .photo{aspect-ratio:auto}
 .card .photo img.shot{object-fit:cover;width:100%;height:auto;aspect-ratio:1/1}
@@ -887,7 +889,12 @@ section.x-coll{padding:var(--x-s4) 0;color:var(--x-text);background:radial-gradi
  #grid.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}
  #grid .card,#grid .card *{min-width:0}
  #grid .card .photo img{max-width:100%}
- #grid .card .pyr,#grid .card .vdesc,#grid .card .pml-b,#grid .card .sprays,#grid .card .gender{display:none}
+ #grid .card .pyr,#grid .card .pml-b,#grid .card .gender{display:none}
+ /* what each vial is + how many sprays: kept on phones, in a short form */
+ #grid .card .vdesc{display:block;margin:7px 0 0;padding:1px 0 1px 7px;border-left:2px solid var(--gold);font:400 11px/1.35 var(--sans);min-height:0}
+ #grid .card .vd-l{display:none}#grid .card .vd-s{display:inline}
+ #grid .card .sprays{display:inline-block;margin-top:5px;padding:2px 8px;border-radius:20px;background:#6b1e2e;color:#f0d3a8;font:600 11px/1.4 var(--sans);letter-spacing:.02em;opacity:1}
+ #grid .card .sprays:empty{display:none}
  #grid .card .body{padding:10px 10px 12px}
  #grid .card .photo .slide figcaption{padding:5px 6px;font-size:10px;letter-spacing:.04em}
  #grid .card .spot-rib{font-size:9.5px;padding:5px 9px;letter-spacing:.06em;column-gap:5px}
@@ -2184,7 +2191,10 @@ function bottleArt(p,i){
  ${vial}
 </svg>`}
 const STORE="https://velvet-volute.square.site/?location=LQAEH3F1YK86M";
-function vdescHTML(v,z){return v==="classic"?"A traditional glass screw-top atomizer.":v==="luxe"?`A thick-glass, pressurized atomizer, crimp-sealed for a fine, even mist.${z===5?" (The 5 ml adds a shatterproof resin shell over the glass.)":""}`:"A thick, clear glass bottle with a stainless steel rollerball and a walnut cap, for a precise dab on the go."}
+/* long line on desktop, short line on phone cards (two per row) */
+function vdescHTML(v,z){const L=v==="classic"?"A traditional glass screw-top atomizer.":v==="luxe"?`A thick-glass, pressurized atomizer, crimp-sealed for a fine, even mist.${z===5?" (The 5 ml adds a shatterproof resin shell over the glass.)":""}`:"A thick, clear glass bottle with a stainless steel rollerball and a walnut cap, for a precise dab on the go.";
+ const S=v==="classic"?"Glass screw-top spray":v==="luxe"?`Thick glass, crimp-sealed, fine mist${z===5?", shatterproof shell":""}`:"Glass rollerball, walnut cap";
+ return `<span class="vd-l">${L}</span><span class="vd-s">${S}</span>`}
 /* responsive photo set: maps hold the 1080px copy; the full-quality original and 640/1600 copies sit beside it */
 function vvSet(u){const m=/^(.*-(\d{3,5}))\.w1080\.jpg$/.exec(u||"");if(!m)return"";const b=m[1],W=+m[2];return[640,1080,1600].filter(w=>w<W).map(w=>`${b}.w${w}.jpg ${w}w`).concat(`${b}.jpg ${W}w`).join(", ")}
 const VKEYS=Object.keys(VIALS),VCAP={classic:["classic decant vials","Classic vials"],luxe:["luxury decant bottles","Luxury bottles"],roll:["roll-on vials","Roll-ons"]};
