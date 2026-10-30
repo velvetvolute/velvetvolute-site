@@ -3,6 +3,18 @@
 (function(){
   var ROOT=(document.currentScript&&document.currentScript.src)?document.currentScript.src.replace(/nav\.js(\?.*)?$/,""):"/";
   function href(u){return u.charAt(0)==="/"?u:ROOT+u}
+  /* Ask the Scent Sherpa (ask.js + ask.css, loaded on first open). Hidden until ASK_PUBLIC is true; until then
+     velvetvolute.ca/?ask=1 turns it on for this browser (?ask=0 turns it off) so it can be tested on the live site. */
+  var ASK_PUBLIC=false;
+  (function(){var q=location.search.match(/[?&]ask=([01])/);try{if(q)localStorage.setItem("vvAsk",q[1])}catch(e){}
+    var on=ASK_PUBLIC;try{var v=localStorage.getItem("vvAsk");if(v==="1")on=true;if(v==="0"&&!ASK_PUBLIC)on=false}catch(e){}
+    var loading=null;
+    function load(){if(window.VVAskPanel)return Promise.resolve();if(loading)return loading;window.VVAskRoot=ROOT;
+      loading=new Promise(function(res,rej){var l=document.createElement("link");l.rel="stylesheet";l.href=href("ask.css");document.head.appendChild(l);
+        var sc=document.createElement("script");sc.src=href("ask.js");sc.onload=function(){res()};sc.onerror=function(){loading=null;rej()};document.head.appendChild(sc)});return loading}
+    window.VVAsk={on:on,open:function(q){if(!on)return false;load().then(function(){window.VVAskPanel.open(q)});return true}};
+    if(on){document.documentElement.classList.add("vv-ask-on");if(/[?&]ask=1/.test(location.search))addEventListener("load",function(){setTimeout(function(){window.VVAsk.open()},400)})}
+  })();
   function lock(c,on){document.body.classList.toggle(c,on)}
   /* iOS sometimes opens a page tapped from the side menu scrolled to the bottom: a plain navigation (not back/forward, no #anchor) starts at the top */
   addEventListener("pageshow",function(e){try{var nt=performance.getEntriesByType("navigation")[0];
@@ -62,7 +74,7 @@
    +'<div class="vvs-bar"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>'
    +'<input class="vvs-in" id="vvs-in" type="search" placeholder="Search scents, notes, houses…" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search">'
    +'<button type="button" class="vvs-x" aria-label="Close search">&times;</button></div>'
-   +'<div id="vvs-body"><p class="vvs-hint">Try a fragrance, a house, a mood, or notes together like “lavender vanilla”</p><div class="vvs-chips">'+CHIPS.map(function(c){return '<button type="button">'+c+'</button>'}).join("")+'</div></div></div>';
+   +'<div id="vvs-body">'+(window.VVAsk&&VVAsk.on?'<button type="button" class="vvs-ask" data-ask=""><span class="vvs-ask-i" aria-hidden="true">✦</span><span><b>Ask the Scent Sherpa anything</b><small>Describe a mood, a memory or a perfume you love. I’ll pick three for you.</small></span></button>':'')+'<p class="vvs-hint">Try a fragrance, a house, a mood, or notes together like “lavender vanilla”</p><div class="vvs-chips">'+CHIPS.map(function(c){return '<button type="button">'+c+'</button>'}).join("")+'</div></div></div>';
   document.body.insertBefore(ov,document.body.firstChild);
   var inp=ov.querySelector("#vvs-in"),body=ov.querySelector("#vvs-body"),sx=ov.querySelector(".vvs-x"),DATA=null,slast=null,st,sel=-1;
   var home=ov.querySelector("#vvs-body").innerHTML;
@@ -87,7 +99,9 @@
   function isNoteWord(w){if(GROUPS[w]||RELATED[w])return true;var N=noteWords();if(N[w])return true;if(w.length<3)return false;for(var k in N)if(k.indexOf(w)===0)return true;return false}
   function thumb(d){return d.i?'<img class="vvs-th" src="'+href(d.i)+'" alt="" loading="lazy">':'<span class="vvs-th ico">'+(d.t==="house"?"H":d.t==="collection"?"C":"VV")+'</span>'}
   function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
-  function render(q){
+  function askRow(q){return window.VVAsk&&VVAsk.on&&q.trim().split(/\s+/).length>=2?'<button type="button" class="vvs-ask" data-ask="'+esc(q.trim())+'"><span class="vvs-ask-i" aria-hidden="true">✦</span><span><b>Ask the Scent Sherpa</b><small>“'+esc(q.trim())+'”</small></span></button>':''}
+  function render(q){render0(q);var r=askRow(q);if(r)body.insertAdjacentHTML("afterbegin",r)}
+  function render0(q){
     var raw=q;q=norm(q.trim());sel=-1;
     if(!q){body.innerHTML=home;return}
     q=q.replace(/lemon ?grass/g,"lemongrass").replace(/may ?chang/g,"maychang");var words=q.split(/[\s,+&\/;]+/).map(function(w){return w.replace(/[^a-z0-9'-]/g,"")}).filter(function(w){return w&&w!=="and"&&w!=="with"&&w!=="notes"&&w!=="note"});
@@ -124,6 +138,7 @@
   ov.addEventListener("click",function(e){if(e.target===ov)sClose()});
   body.addEventListener("click",function(e){var c=e.target.closest(".vvs-chips button");if(c){inp.value=c.textContent;load().then(function(){render(inp.value)});inp.focus()}});
   inp.addEventListener("input",function(){load().then(function(){render(inp.value)})});
+  body.addEventListener("click",function(e){var a=e.target.closest(".vvs-ask");if(!a)return;var q=a.getAttribute("data-ask");sClose();window.VVAsk.open(q)});
   body.addEventListener("click",function(e){var a=e.target.closest(".vvs-all");if(!a)return;try{sessionStorage.setItem("vvSearch",JSON.stringify({q:new URL(a.href).searchParams.get("q"),u:JSON.parse(a.getAttribute("data-u"))}))}catch(x){}
     /* already on the shop page: hand the list over without a reload */
     if(window.VVShowSearch&&window.VVShowSearch()){e.preventDefault();sClose()}});
@@ -134,7 +149,7 @@
   inp.addEventListener("keydown",function(e){var items=body.querySelectorAll(".vvs-res li");
     if(e.key==="ArrowDown"||e.key==="ArrowUp"){if(!items.length)return;e.preventDefault();sel=(sel+(e.key==="ArrowDown"?1:-1)+items.length)%items.length;
       items.forEach(function(li,i){li.classList.toggle("sel",i===sel)});items[sel].scrollIntoView({block:"nearest"})}
-    else if(e.key==="Enter"){var all=body.querySelector(".vvs-all");if(sel<0&&all){all.click();return}var li=items[sel>=0?sel:0];if(li)location.href=li.querySelector("a").href}
+    else if(e.key==="Enter"){var ak=body.querySelector(".vvs-ask[data-ask]:not([data-ask=\"\"])");if(sel<0&&ak&&(body.querySelector(".vvs-none")||inp.value.trim().split(/\s+/).length>=4)){ak.click();return}var all=body.querySelector(".vvs-all");if(sel<0&&all){all.click();return}var li=items[sel>=0?sel:0];if(li)location.href=li.querySelector("a").href}
     else if(e.key==="Escape"){sClose()}});
   document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!ov.hidden)sClose();if(e.key==="/"&&!/input|textarea|select/i.test(document.activeElement.tagName)&&ov.hidden){e.preventDefault();sOpen()}});
 })();

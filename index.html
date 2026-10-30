@@ -3170,8 +3170,11 @@ body.qz-open .su-card,.su-card.quiet{opacity:0;pointer-events:none}
  function set(k,v){try{sessionStorage.setItem(k,v)}catch(e){}}
  function hasPicks(){try{var s=JSON.parse(sessionStorage.getItem("vv-scent")||"null");return !!(s&&s.ans&&Object.keys(s.ans).length)}catch(e){return false}}
  function hide(){bub.classList.remove("on");bub.setAttribute("aria-hidden","true")}
- function show(){bub.classList.add("on");bub.setAttribute("aria-hidden","false")}
+ function show(){if(askOn()){document.getElementById("sh-msg").textContent="Tell me anything: a perfume you love, a mood, who it\u2019s for. I\u2019ll pick three for you and tell you how sure I am.";document.getElementById("sh-go").textContent="Ask me anything"}
+  bub.classList.add("on");bub.setAttribute("aria-hidden","false")}
+ function askOn(){return !!(window.VVAsk&&window.VVAsk.on)}
  function go(){hide();set(K,"1");
+  if(askOn()&&window.VVAsk.open())return;
   if(window.VVSherpa&&window.VVSherpa.open)window.VVSherpa.open();else location.href="/#quiz"}
  fab.onclick=go;document.getElementById("sh-go").onclick=go;
  /* Pill shrinks to the compass while scrolling down, grows back when scrolling up or near the top; re-checked when a page is shown again. */

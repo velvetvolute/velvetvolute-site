@@ -109,3 +109,10 @@ em,i,cite,dfn,var,address{font-style:normal}
 .vv-tip.on{opacity:1;transform:none}
 .vv-tip::after{content:"";position:absolute;left:var(--ax,50%);top:100%;margin-left:-6px;border:6px solid transparent;border-top-color:#3e1019}
 .vv-tip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#3e1019}
+
+/* search: Ask the Scent Sherpa row (only when the Ask panel is switched on) */
+.vvs-ask{display:flex;align-items:center;gap:12px;width:calc(100% - 24px);margin:12px 12px 4px;padding:12px 14px;border:1px solid #c6a070;border-radius:10px;background:rgba(198,160,112,.12);color:#f5d9b5;text-align:left;cursor:pointer;font:400 14px/1.4 'Jost',system-ui,sans-serif}
+.vvs-ask:hover,.vvs-ask:focus-visible{background:rgba(198,160,112,.22);outline:none}
+.vvs-ask-i{flex:none;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#c6a070;color:#3e1019;font-size:17px}
+.vvs-ask b{display:block;font-weight:500;color:#f5d9b5}
+.vvs-ask small{display:block;font-size:12.5px;color:#dab68b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:46ch}

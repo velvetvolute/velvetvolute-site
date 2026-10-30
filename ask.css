@@ -1,0 +1,91 @@
+/* Ask the Scent Sherpa panel (ask.js). Merlot + camel like the rest of the site; the match colours are tuned to read on merlot. */
+.vva{--ok:#9fd08f;--mid:#f0c75e;--low:#ee8a76;position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:24px 16px;background:rgba(20,4,8,.78);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;transition:opacity .2s}
+.vva.on{opacity:1}
+body.vva-lock{overflow:hidden}
+.vva-box{display:flex;flex-direction:column;width:100%;max-width:760px;height:min(860px,100%);background:#3e1019;border:1px solid #9e3b4f;border-radius:12px;box-shadow:0 30px 80px -20px rgba(0,0,0,.85);color:#f5d9b5;font:300 15px/1.6 'Jost',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;transform:translateY(10px);transition:transform .22s;overflow:hidden}
+.vva.on .vva-box{transform:none}
+.vva-top{display:flex;align-items:center;gap:10px;padding:12px 10px 12px 18px;border-bottom:1px solid rgba(198,160,112,.28)}
+.vva-ic svg{display:block;width:22px;height:22px;color:#c6a070}
+.vva-top h2{flex:1;margin:0;text-align:left;font:500 24px/1.1 'Cormorant Garamond',Georgia,serif;letter-spacing:.02em;color:#f5d9b5}
+.vva-new{border:1px solid rgba(198,160,112,.5);border-radius:30px;background:transparent;color:#dab68b;padding:6px 12px;font:400 12.5px 'Jost',system-ui,sans-serif;cursor:pointer}
+.vva-new:hover{color:#f5d9b5;border-color:#c6a070}
+.vva-x{width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:#dab68b;font-size:28px;line-height:1;cursor:pointer}
+.vva-x:hover,.vva-x:focus-visible{background:rgba(198,160,112,.14);color:#f5d9b5;outline:none}
+.vva-scroll{position:relative;flex:1;overflow-y:auto;overscroll-behavior:contain;padding:18px 18px 8px;scroll-behavior:smooth}
+.vva-lede{margin:4px 0 16px;font:400 16px/1.7 'Libre Baskerville',Georgia,serif;color:#f5d9b5}
+.vva-ex{display:flex;flex-wrap:wrap;gap:8px}
+.vva-ex button{border:1px solid #9e3b4f;border-radius:30px;background:rgba(158,59,79,.12);color:#f5d9b5;padding:8px 14px;font:400 13.5px/1.35 'Jost',system-ui,sans-serif;text-align:left;cursor:pointer}
+.vva-ex button:hover,.vva-ex button:focus-visible{border-color:#c6a070;outline:none}
+.vva-me{margin:18px 0 12px auto;max-width:82%;width:fit-content;padding:10px 14px;border-radius:14px 14px 4px 14px;background:#c6a070;color:#3e1019;font:400 15px/1.5 'Jost',system-ui,sans-serif;overflow-wrap:anywhere}
+.vva-thread>.vva-me:first-child{margin-top:4px}
+.vva-ans{margin:0 0 8px}
+.vva-head{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:10px;background:rgba(245,217,181,.06);border-left:4px solid #c6a070}
+.t-green .vva-head{border-left-color:var(--ok)}.t-yellow .vva-head{border-left-color:var(--mid)}.t-red .vva-head{border-left-color:var(--low)}
+.vva-dot{flex:none;width:12px;height:12px;margin-top:7px;border-radius:50%;background:#c6a070;box-shadow:0 0 0 4px rgba(198,160,112,.18)}
+.t-green .vva-dot{background:var(--ok);box-shadow:0 0 0 4px rgba(159,208,143,.18)}.t-yellow .vva-dot{background:var(--mid);box-shadow:0 0 0 4px rgba(240,199,94,.18)}.t-red .vva-dot{background:var(--low);box-shadow:0 0 0 4px rgba(238,138,118,.18)}
+.vva-head p{margin:0;font:400 16px/1.6 'Libre Baskerville',Georgia,serif;color:#f5d9b5}
+.vva-heard{margin:8px 2px 2px;font-size:13px;color:#dab68b}
+.vva-heard b{font-weight:500;color:#f5d9b5}
+.vva-picks{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:12px}
+.vva-pick{display:grid;grid-template-columns:132px 1fr;gap:0;border:1px solid rgba(198,160,112,.3);border-radius:10px;overflow:hidden;background:linear-gradient(180deg,#c6a070,#b48a5b)}
+.vva-ph{display:block;background:#2a0a10}
+.vva-ph img{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:4/5}
+.vva-pb{padding:12px 14px 14px;color:#3e1019}
+.vva-ph2{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.vva-rank{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;border:1px solid #6b1e2e;font:600 12px 'Jost',system-ui,sans-serif;color:#6b1e2e}
+.vva-sc{display:inline-flex;align-items:baseline;gap:1px;padding:3px 9px;border-radius:30px;background:#3e1019;color:#f5d9b5;font:600 15px/1.2 'Jost',system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.vva-sc small{font-size:11px;font-weight:400;opacity:.75}
+.c-green .vva-sc b{color:var(--ok)}.c-yellow .vva-sc b{color:var(--mid)}.c-red .vva-sc b{color:var(--low)}
+.vva-lb{font:500 11.5px 'Jost',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6b1e2e}
+.vva-lb::before{content:"";display:inline-block;width:8px;height:8px;margin-right:6px;border-radius:50%;vertical-align:1px;background:currentColor}
+.c-green .vva-lb::before{background:#3f8a36}.c-yellow .vva-lb::before{background:#b88a0f}.c-red .vva-lb::before{background:#b8412d}
+.vva-br{margin:0;font:400 12.5px 'Jost',system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6b1e2e}
+.vva-nm{margin:0 0 6px;font:700 22px/1.15 'Cormorant Garamond',Georgia,serif;color:#3e1019}
+.vva-nm a{color:inherit;text-decoration:none}
+.vva-nm a:hover{text-decoration:underline}
+.vva-conc{display:inline-block;margin-left:8px;padding:1px 7px;border-radius:4px;background:#6b1e2e;color:#e8c99a;font:500 10.5px/1.6 'Jost',system-ui,sans-serif;letter-spacing:.06em;vertical-align:3px}
+.vva-why{margin:0 0 8px;font:400 14px/1.65 'Libre Baskerville',Georgia,serif;color:#481620}
+.vva-see{font:500 13.5px 'Jost',system-ui,sans-serif;color:#6b1e2e;text-decoration:none;border-bottom:1px solid currentColor}
+.vva-see:hover{color:#912b42}
+.vva-qs{margin-top:12px;display:grid;gap:12px}
+.vva-q p{margin:0 0 7px;font-weight:400;color:#f5d9b5}
+.vva-opts{display:flex;flex-wrap:wrap;gap:7px}
+.vva-opts button{border:1px solid #9e3b4f;border-radius:30px;background:transparent;color:#f5d9b5;padding:7px 13px;font:400 13.5px 'Jost',system-ui,sans-serif;cursor:pointer}
+.vva-opts button:hover:not([disabled]){border-color:#c6a070}
+.vva-opts button.on{background:#c6a070;border-color:#c6a070;color:#3e1019}
+.vva-qs.done .vva-opts button{opacity:.55;cursor:default}
+.vva-send{justify-self:start;border:0;border-radius:30px;background:#c6a070;color:#3e1019;padding:10px 18px;font:600 12.5px 'Jost',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.vva-send[disabled]{opacity:.45;cursor:default}
+.vva-or,.vva-more{margin:2px 0 0;font-size:13px;color:#dab68b}
+.vva-more{margin-top:12px}
+.vva-err{margin:0;padding:12px 14px;border-radius:10px;background:rgba(238,138,118,.12);color:#f5d9b5}
+.vva-err a,.vva-fine a{color:#e8c99a}
+.vva-wait{display:flex;align-items:center;gap:12px;padding:12px 4px;color:#dab68b;font-size:14px}
+.vva-dots{display:inline-flex;gap:5px}
+.vva-dots i{width:7px;height:7px;border-radius:50%;background:#c6a070;animation:vvaB 1.2s infinite ease-in-out}
+.vva-dots i:nth-child(2){animation-delay:.15s}.vva-dots i:nth-child(3){animation-delay:.3s}
+@keyframes vvaB{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-4px)}}
+.vva-form{display:flex;align-items:flex-end;gap:10px;margin:0;padding:12px 14px 8px;border-top:1px solid rgba(198,160,112,.28)}
+.vva-form textarea{flex:1;min-width:0;resize:none;max-height:120px;padding:11px 14px;border:1px solid #9e3b4f;border-radius:22px;background:rgba(0,0,0,.18);color:#f5d9b5;font:400 16px/1.4 'Jost',system-ui,sans-serif;outline:none}
+.vva-form textarea:focus{border-color:#c6a070}
+.vva-form textarea::placeholder{color:#dab68b;opacity:.65}
+.vva-go{display:inline-flex;align-items:center;gap:7px;flex:none;height:44px;padding:0 18px;border:0;border-radius:22px;background:#c6a070;color:#3e1019;font:600 13px 'Jost',system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.vva-go svg{width:16px;height:16px}
+.vva-go[disabled]{opacity:.5;cursor:default}
+.vva-fine{margin:0;padding:0 16px 12px;font-size:11.5px;color:#dab68b;opacity:.85}
+.vva-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media(max-width:600px){
+ .vva{padding:0;align-items:stretch}
+ .vva-box{max-width:none;height:100%;border-radius:0;border:0}
+ .vva-top h2{font-size:21px}
+ .vva-scroll{padding:14px 14px 6px}
+ .vva-lede{font-size:15px}
+ .vva-pick{grid-template-columns:96px 1fr}
+ .vva-pb{padding:10px 12px 12px}
+ .vva-nm{font-size:20px}
+ .vva-why{font-size:13.5px}
+ .vva-go span{display:none}.vva-go{width:44px;padding:0;justify-content:center}
+ .vva-form{padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+}
+@media(prefers-reduced-motion:reduce){.vva,.vva-box{transition:none}.vva-dots i{animation:none;opacity:.7}}
+/* search overlay: "Ask the Scent Sherpa" row */
